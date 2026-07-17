@@ -8,6 +8,24 @@
 >
 > Ngày chốt kế hoạch ban đầu: 2026-07-18
 
+## Trạng thái thực thi
+
+Cập nhật ngày 2026-07-18:
+
+- [x] Giai đoạn 1: đường dẫn `/vi/`, `/en/`, chuyển ngôn ngữ và GitHub Pages song ngữ.
+- [x] Atlas `/vi/` có cùng cấu trúc, nội dung trực quan và tương tác như `/en/`, với toàn bộ giao diện được Việt hóa.
+- [x] Khóa nguồn đợt thử tại upstream commit `4935d2d3877a6205008d89def8d2ba43f7e06275`.
+- [x] Từ điển `v0.1-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
+- [x] Issue form và mẫu pull request cho công việc tiếng Việt.
+- [x] Sáu tài liệu thử: toàn bộ Chương 1 và phần mở đầu của Chương 2.
+- [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
+- [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.
+- [ ] Phản biện kỹ thuật độc lập cho đợt thử.
+- [ ] Biên tập tiếng Việt độc lập cho đợt thử.
+- [ ] Nâng sáu tài liệu từ `pilot` lên `published` sau khi xử lý phản biện.
+
+Vì chưa có hai lượt phản biện độc lập, website gọi nội dung hiện tại là **bản thử đã tự kiểm tra**, không gọi là bản dịch ổn định. Đây là trạng thái minh bạch đúng với các cổng chất lượng trong kế hoạch.
+
 ## 1. Mục tiêu
 
 Dự án tạo một bản tiếng Việt của Hello Algo có thể đọc, kiểm tra và duy trì lâu dài. Kết quả không chỉ là các tệp Markdown đã dịch, mà là một trải nghiệm học hoàn chỉnh gồm văn bản, công thức, hình minh họa, chú thích, đoạn mã, điều hướng và website.
@@ -38,8 +56,9 @@ Các mục tiêu chính:
 | Đường dẫn | Vai trò |
 | --- | --- |
 | `/hello-algo/` | Điểm vào, chuyển người đọc đến tiếng Việt |
-| `/hello-algo/vi/` | Trang tiếng Việt mặc định, tiến độ và nội dung Việt hóa |
+| `/hello-algo/vi/` | Atlas tương tác tiếng Việt đầy đủ, đồng cấp với bản tiếng Anh |
 | `/hello-algo/en/` | Atlas tiếng Anh đầy đủ hiện có |
+| `/hello-algo/vi/learn/` | Trình đọc thử cho các chương sách đã chuyển ngữ |
 
 Quy tắc:
 
@@ -51,12 +70,12 @@ Quy tắc:
 
 ### 3.2. Hai lớp nội dung
 
-Trong giai đoạn đầu, website có hai lớp:
+Website có hai lớp:
 
-1. **Trang dự án Việt hóa** tại `/vi/`: giải thích lộ trình, các đợt chương, quy trình duyệt và từ điển ban đầu.
-2. **Atlas tương tác tiếng Anh** tại `/en/`: giữ nguyên các bài thực hành trực quan đã có.
+1. **Atlas tương tác song ngữ** tại `/vi/` và `/en/`: hai đường dẫn có cùng cấu trúc và hành vi; bản tiếng Việt dịch cả nội dung tĩnh lẫn thông báo sinh ra trong lúc tương tác.
+2. **Trình đọc thử tiếng Việt** tại `/vi/learn/`: phát hành từng tài liệu đã chuyển ngữ, kèm trạng thái, nguồn khóa, ghi công và giấy phép.
 
-Khi các chương tiếng Việt bắt đầu phát hành, `/vi/` sẽ thêm liên kết đến bản sách tiếng Việt đã dựng. Atlas tiếng Anh không bị thay bằng một bản dịch chưa hoàn thiện.
+Kế hoạch, từ điển, quy chuẩn văn phong và quy trình duyệt vẫn nằm trong repository làm tài liệu quản trị. Atlas `/vi/` dẫn tới trình đọc thử, nhưng không gọi các chương chưa qua phản biện độc lập là bản dịch ổn định.
 
 ## 4. Phạm vi tại thời điểm lập kế hoạch
 
@@ -318,7 +337,7 @@ Sản phẩm bàn giao:
 - `vi/style-guide.md`;
 - `vi/CONTRIBUTING.md`;
 - cấu hình `vi/mkdocs.yml`;
-- ba tài liệu thử đã qua hai loại duyệt;
+- sáu tài liệu thử đã tự kiểm tra; phản biện kỹ thuật và ngôn ngữ độc lập được theo dõi như điều kiện nâng trạng thái;
 - checklist và mẫu PR.
 
 Điều kiện hoàn thành:
@@ -414,7 +433,7 @@ Mỗi phát hành nên có:
 | --- | --- | --- |
 | 1 | Hạ tầng Pages | VI mặc định, EN riêng, nút đổi ngôn ngữ |
 | 2 | Quản trị | glossary v0, style guide, mẫu PR |
-| 3–4 | Bản thử nhập môn | 2–3 tài liệu đã duyệt |
+| 3–4 | Bản thử nhập môn | Sáu tài liệu thử và vòng phản biện độc lập |
 | 5 | Rút kinh nghiệm | sửa quy trình và glossary v1 |
 | 6–7 | Mảng, danh sách, stack, queue | đợt cấu trúc tuyến tính |
 | 8 | Bảng băm | chương và ví dụ chính |
@@ -599,14 +618,14 @@ Số tệp nháp do AI tạo không phải chỉ số thành công.
 
 Theo thứ tự:
 
-1. tạo `vi/glossary.md` từ bảng thuật ngữ ban đầu;
-2. tạo `vi/style-guide.md` với ví dụ câu đúng/sai;
-3. thêm mẫu issue nhận dịch và mẫu pull request;
-4. chọn ba tài liệu bản thử;
-5. tạo cấu hình MkDocs tiếng Việt nhỏ nhất có thể dựng;
-6. dịch và duyệt bản thử;
-7. đo thời gian review, sửa quy trình;
-8. chỉ sau đó mở đợt cấu trúc dữ liệu.
+1. [x] Tạo `vi/glossary.md` từ bảng thuật ngữ ban đầu.
+2. [x] Tạo `vi/style-guide.md` với ví dụ câu đúng/sai.
+3. [x] Thêm mẫu issue nhận dịch và mẫu pull request.
+4. [x] Chọn và dịch sáu tài liệu bản thử.
+5. [x] Tạo trình dựng tiếng Việt không thêm dependency, phù hợp workflow Pages hiện tại.
+6. [x] Tự kiểm tra kỹ thuật, ngôn ngữ, liên kết và bản dựng cho bản thử.
+7. [ ] Thu thập phản biện độc lập, đo thời gian review và sửa quy trình.
+8. [ ] Nâng tài liệu đạt yêu cầu lên `published`, sau đó mở đợt cấu trúc dữ liệu.
 
 ## 21. Quan hệ với dự án Hello Algo gốc
 

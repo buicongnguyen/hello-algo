@@ -1,0 +1,47 @@
+name: Công việc dịch tiếng Việt
+description: Nhận dịch, phản biện hoặc báo lỗi một tài liệu Hello Algo tiếng Việt
+title: "[VI] "
+body:
+  - type: dropdown
+    id: work_type
+    attributes:
+      label: Loại công việc
+      options:
+        - Dịch tài liệu mới
+        - Phản biện kỹ thuật
+        - Biên tập tiếng Việt
+        - Báo lỗi bản dịch đã phát hành
+    validations:
+      required: true
+  - type: input
+    id: source_path
+    attributes:
+      label: Đường dẫn nguồn tiếng Anh
+      description: Ví dụ en/docs/chapter_introduction/what_is_dsa.md
+      placeholder: en/docs/...
+    validations:
+      required: true
+  - type: input
+    id: source_commit
+    attributes:
+      label: Commit nguồn
+      description: Commit upstream dùng để đối chiếu bản dịch
+      placeholder: 4935d2d...
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Phạm vi và điểm cần lưu ý
+      description: Nêu phần sẽ xử lý, thuật ngữ mới hoặc câu hỏi kỹ thuật.
+    validations:
+      required: true
+  - type: checkboxes
+    id: preparation
+    attributes:
+      label: Chuẩn bị
+      options:
+        - label: Tôi đã đọc vi/glossary.md và vi/style-guide.md.
+          required: true
+        - label: Tôi đã kiểm tra vi/translation-status.json để tránh trùng việc.
+          required: true

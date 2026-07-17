@@ -1,5 +1,8 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { buildVietnameseBook } from "./build-vi-book.mjs";
+import { checkBuiltSite } from "./check-dist.mjs";
+import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 
 await import("./check-site.mjs");
 
@@ -36,7 +39,14 @@ const englishOutput = path.join(outputRoot, "en");
 await mkdir(englishOutput, { recursive: true });
 await writeFile(path.join(englishOutput, "index.html"), builtEnglish);
 
-await cp(path.join(projectRoot, "vi"), path.join(outputRoot, "vi"), { recursive: true });
+const vietnameseOutput = path.join(outputRoot, "vi");
+await mkdir(vietnameseOutput, { recursive: true });
+for (const file of ["translation-status.json"]) {
+  await cp(path.join(projectRoot, "vi", file), path.join(vietnameseOutput, file));
+}
+await writeFile(path.join(vietnameseOutput, "index.html"), localizeVietnameseAtlas(sourceEnglish));
+
+const vietnameseBook = await buildVietnameseBook({ projectRoot, outputRoot });
 
 const redirectPage = `<!DOCTYPE html>
 <html lang="vi">
@@ -70,4 +80,6 @@ for (const file of motionFiles) {
   );
 }
 
-console.log(`Built bilingual GitHub Pages artifact in ${path.relative(projectRoot, outputRoot)} (Vietnamese default, English Atlas, ${coverFiles.length} covers, ${motionFiles.length} motion demos).`);
+await checkBuiltSite(outputRoot);
+
+console.log(`Built bilingual GitHub Pages artifact in ${path.relative(projectRoot, outputRoot)} (Vietnamese default, ${vietnameseBook.pageCount} pilot reading pages, English Atlas, ${coverFiles.length} covers, ${motionFiles.length} motion demos).`);

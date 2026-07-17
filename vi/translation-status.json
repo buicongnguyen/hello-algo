@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "sourceLanguage": "en",
+  "targetLanguage": "vi",
+  "sourceCommit": "4935d2d3877a6205008d89def8d2ba43f7e06275",
+  "updated": "2026-07-18",
+  "statusDefinitions": {
+    "planned": "Đã xếp vào lộ trình nhưng chưa có bản nháp",
+    "draft": "Đã có bản nháp, chưa hoàn tất phản biện",
+    "pilot": "Đã tự kiểm tra kỹ thuật, ngôn ngữ và bản dựng; đang chờ phản biện độc lập",
+    "published": "Đã qua đầy đủ phản biện và phát hành ổn định"
+  },
+  "documents": [
+    {
+      "source": "en/docs/chapter_introduction/index.md",
+      "target": "vi/docs/chapter_introduction/index.md",
+      "route": "vi/learn/",
+      "wave": 1,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_introduction/algorithms_are_everywhere.md",
+      "target": "vi/docs/chapter_introduction/algorithms_are_everywhere.md",
+      "route": "vi/learn/thuat-toan-o-khap-noi.html",
+      "wave": 1,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_introduction/what_is_dsa.md",
+      "target": "vi/docs/chapter_introduction/what_is_dsa.md",
+      "route": "vi/learn/thuat-toan-la-gi.html",
+      "wave": 1,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_introduction/summary.md",
+      "target": "vi/docs/chapter_introduction/summary.md",
+      "route": "vi/learn/tom-tat-chuong-1.html",
+      "wave": 1,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_computational_complexity/index.md",
+      "target": "vi/docs/chapter_computational_complexity/index.md",
+      "route": "vi/learn/phan-tich-do-phuc-tap.html",
+      "wave": 1,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_computational_complexity/performance_evaluation.md",
+      "target": "vi/docs/chapter_computational_complexity/performance_evaluation.md",
+      "route": "vi/learn/danh-gia-hieu-qua.html",
+      "wave": 1,
+      "status": "pilot"
+    }
+  ]
+}

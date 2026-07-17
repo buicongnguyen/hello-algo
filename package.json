@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "A bilingual Vietnamese translation project and interactive English learning companion for Hello Algo.",
+  "description": "A bilingual Vietnamese and English interactive learning companion for Hello Algo.",
   "scripts": {
     "build": "node scripts/build-site.mjs",
     "check": "node scripts/check-site.mjs",

@@ -1,5 +1,7 @@
 const root = document.documentElement;
 const themeToggle = document.querySelector("#theme-toggle");
+const locale = root.lang === "vi" ? window.HELLO_ALGO_LOCALE : null;
+const isVietnamese = Boolean(locale);
 
 const savedTheme = localStorage.getItem("hello-algo-atlas-theme");
 const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
@@ -147,6 +149,10 @@ const topicData = {
     link: "https://www.hello-algo.com/en/chapter_dynamic_programming/"
   }
 };
+
+if (locale?.topicData) {
+  Object.entries(locale.topicData).forEach(([key, translated]) => Object.assign(topicData[key], translated));
+}
 
 const topicEdges = [
   ["foundations", "complexity"], ["foundations", "arrays"],
@@ -349,6 +355,10 @@ const structureData = {
   }
 };
 
+if (locale?.structureData) {
+  Object.entries(locale.structureData).forEach(([key, translated]) => Object.assign(structureData[key], translated));
+}
+
 const structureButtons = [...document.querySelectorAll(".structure-tab")];
 
 function updateStructure(name) {
@@ -446,7 +456,7 @@ function drawTraversal() {
 function stopAuto() {
   if (autoTimer) clearInterval(autoTimer);
   autoTimer = null;
-  document.querySelector("#auto-play").textContent = "Auto play";
+  document.querySelector("#auto-play").textContent = isVietnamese ? "Tự chạy" : "Auto play";
 }
 
 function resetTraversal() {
@@ -456,31 +466,35 @@ function resetTraversal() {
   visited = [];
   current = null;
   traversalStep = 0;
-  document.querySelector("#step-label").textContent = "Ready";
-  document.querySelector("#current-node").textContent = "Start at A";
-  document.querySelector("#step-explanation").textContent = "Choose BFS or DFS, then advance one step at a time.";
+  document.querySelector("#step-label").textContent = isVietnamese ? "Sẵn sàng" : "Ready";
+  document.querySelector("#current-node").textContent = isVietnamese ? "Bắt đầu tại A" : "Start at A";
+  document.querySelector("#step-explanation").textContent = isVietnamese ? "Chọn BFS hoặc DFS, rồi tiến từng bước." : "Choose BFS or DFS, then advance one step at a time.";
   updateTraversalReadout();
 }
 
 function updateTraversalReadout() {
-  document.querySelector("#frontier-label").textContent = traversalMode === "bfs" ? "Queue · first in, first out" : "Stack · last in, first out";
+  document.querySelector("#frontier-label").textContent = traversalMode === "bfs"
+    ? (isVietnamese ? "Hàng đợi · vào trước, ra trước" : "Queue · first in, first out")
+    : (isVietnamese ? "Ngăn xếp · vào sau, ra trước" : "Stack · last in, first out");
   const frontierView = document.querySelector("#frontier-items");
   const displayFrontier = traversalMode === "dfs" ? [...frontier].reverse() : frontier;
-  frontierView.innerHTML = displayFrontier.length ? displayFrontier.map((node) => `<i>${node}</i>`).join("") : "<em>Empty</em>";
+  frontierView.innerHTML = displayFrontier.length ? displayFrontier.map((node) => `<i>${node}</i>`).join("") : `<em>${isVietnamese ? "Rỗng" : "Empty"}</em>`;
   const visitedView = document.querySelector("#visited-items");
-  visitedView.innerHTML = visited.length ? visited.map((node) => `<i>${node}</i>`).join("") : "<em>Nothing visited yet</em>";
+  visitedView.innerHTML = visited.length ? visited.map((node) => `<i>${node}</i>`).join("") : `<em>${isVietnamese ? "Chưa duyệt nút nào" : "Nothing visited yet"}</em>`;
   document.querySelector("#invariant-text").textContent = traversalMode === "bfs"
-    ? "The queue holds discovered nodes waiting for their turn. Its front is always processed next."
-    : "The stack holds discovered branches. Its top is always processed next, so the newest branch wins.";
+    ? (isVietnamese ? "Hàng đợi giữ các nút đã phát hiện đang chờ xử lý. Nút ở đầu luôn được xử lý tiếp theo." : "The queue holds discovered nodes waiting for their turn. Its front is always processed next.")
+    : (isVietnamese ? "Ngăn xếp giữ các nhánh đã phát hiện. Phần tử trên cùng luôn được xử lý tiếp nên nhánh mới nhất được ưu tiên." : "The stack holds discovered branches. Its top is always processed next, so the newest branch wins.");
   drawTraversal();
 }
 
 function nextTraversalStep() {
   if (!frontier.length) {
     current = null;
-    document.querySelector("#step-label").textContent = "Complete";
-    document.querySelector("#current-node").textContent = `Order: ${visited.join(" → ")}`;
-    document.querySelector("#step-explanation").textContent = `Every node reachable from A has been visited using ${traversalMode.toUpperCase()}.`;
+    document.querySelector("#step-label").textContent = isVietnamese ? "Hoàn tất" : "Complete";
+    document.querySelector("#current-node").textContent = `${isVietnamese ? "Thứ tự" : "Order"}: ${visited.join(" → ")}`;
+    document.querySelector("#step-explanation").textContent = isVietnamese
+      ? `Mọi nút có thể đi tới từ A đã được duyệt bằng ${traversalMode.toUpperCase()}.`
+      : `Every node reachable from A has been visited using ${traversalMode.toUpperCase()}.`;
     stopAuto();
     updateTraversalReadout();
     return false;
@@ -498,10 +512,14 @@ function nextTraversalStep() {
     frontier.push(...[...newlyDiscovered].reverse());
   }
 
-  document.querySelector("#step-label").textContent = `Step ${traversalStep}`;
-  document.querySelector("#current-node").textContent = `Visit ${current}`;
-  const addText = newlyDiscovered.length ? ` Discover ${newlyDiscovered.join(", ")} and add ${newlyDiscovered.length === 1 ? "it" : "them"} to the ${traversalMode === "bfs" ? "back of the queue" : "top of the stack"}.` : " Every neighbor is already discovered.";
-  document.querySelector("#step-explanation").textContent = `Remove ${current} from the ${traversalMode === "bfs" ? "front" : "top"}.${addText}`;
+  document.querySelector("#step-label").textContent = `${isVietnamese ? "Bước" : "Step"} ${traversalStep}`;
+  document.querySelector("#current-node").textContent = `${isVietnamese ? "Duyệt" : "Visit"} ${current}`;
+  const addText = isVietnamese
+    ? (newlyDiscovered.length ? ` Phát hiện ${newlyDiscovered.join(", ")} và thêm vào ${traversalMode === "bfs" ? "cuối hàng đợi" : "đỉnh ngăn xếp"}.` : " Mọi nút kề đều đã được phát hiện.")
+    : (newlyDiscovered.length ? ` Discover ${newlyDiscovered.join(", ")} and add ${newlyDiscovered.length === 1 ? "it" : "them"} to the ${traversalMode === "bfs" ? "back of the queue" : "top of the stack"}.` : " Every neighbor is already discovered.");
+  document.querySelector("#step-explanation").textContent = isVietnamese
+    ? `Lấy ${current} khỏi ${traversalMode === "bfs" ? "đầu hàng đợi" : "đỉnh ngăn xếp"}.${addText}`
+    : `Remove ${current} from the ${traversalMode === "bfs" ? "front" : "top"}.${addText}`;
   updateTraversalReadout();
   return true;
 }
@@ -522,7 +540,7 @@ document.querySelector("#next-step").addEventListener("click", nextTraversalStep
 document.querySelector("#reset-traversal").addEventListener("click", resetTraversal);
 document.querySelector("#auto-play").addEventListener("click", () => {
   if (autoTimer) { stopAuto(); return; }
-  document.querySelector("#auto-play").textContent = "Pause";
+  document.querySelector("#auto-play").textContent = isVietnamese ? "Tạm dừng" : "Pause";
   if (!frontier.length) resetTraversal();
   nextTraversalStep();
   autoTimer = setInterval(nextTraversalStep, 900);
@@ -538,7 +556,9 @@ function updateMotionControl(video) {
   const playing = !video.paused;
   button.setAttribute("aria-pressed", String(playing));
   button.querySelector("span").textContent = playing ? "Ⅱ" : "▶";
-  button.querySelector("b").textContent = playing ? "Pause animation" : "Play animation";
+  button.querySelector("b").textContent = playing
+    ? (isVietnamese ? "Tạm dừng hình động" : "Pause animation")
+    : (isVietnamese ? "Phát hình động" : "Play animation");
 }
 
 function playMotion(video, explicit = false) {
@@ -661,7 +681,9 @@ function updateComplexity() {
     const value = series.value(n);
     return `<div class="complexity-pill" style="--pill-color: ${cssColor(series.color)}"><span><i></i>${series.label}</span><b>${formatOperations(value)}</b></div>`;
   }).join("");
-  document.querySelector("#scale-message").textContent = `At n = ${n}, quadratic work is ${n.toLocaleString()}× larger than linear work. Exponential work reaches ${formatOperations(2 ** n)} steps.`;
+  document.querySelector("#scale-message").textContent = isVietnamese
+    ? `Khi n = ${n}, lượng công việc bậc hai lớn gấp ${n.toLocaleString()} lần tuyến tính. Lượng công việc hàm mũ đạt ${formatOperations(2 ** n)} bước.`
+    : `At n = ${n}, quadratic work is ${n.toLocaleString()}× larger than linear work. Exponential work reaches ${formatOperations(2 ** n)} steps.`;
   drawComplexity();
 }
 
@@ -692,8 +714,10 @@ function renderBinary() {
   document.querySelector("#binary-mid").textContent = binaryMid ?? "—";
   document.querySelector("#binary-high").textContent = binaryLow > binaryHigh ? "—" : binaryHigh;
   binaryNext.disabled = binaryDone;
-  binaryNext.textContent = binaryDone ? (binaryFound === null ? "Not present" : "Found") : "Compare midpoint";
-  binaryNext.setAttribute("aria-label", `Compare the midpoint while searching for ${target}`);
+  binaryNext.textContent = binaryDone
+    ? (binaryFound === null ? (isVietnamese ? "Không tồn tại" : "Not present") : (isVietnamese ? "Đã tìm thấy" : "Found"))
+    : (isVietnamese ? "So sánh điểm giữa" : "Compare midpoint");
+  binaryNext.setAttribute("aria-label", isVietnamese ? `So sánh điểm giữa khi tìm ${target}` : `Compare the midpoint while searching for ${target}`);
 }
 
 function resetBinary() {
@@ -704,9 +728,9 @@ function resetBinary() {
   binaryFound = null;
   binaryDone = false;
   const target = Number(binaryTarget.value);
-  document.querySelector("#binary-step").textContent = "Ready";
-  document.querySelector("#binary-status").textContent = `Search for ${target}`;
-  document.querySelector("#binary-explanation").textContent = "The full sorted array is the first candidate interval.";
+  document.querySelector("#binary-step").textContent = isVietnamese ? "Sẵn sàng" : "Ready";
+  document.querySelector("#binary-status").textContent = `${isVietnamese ? "Tìm" : "Search for"} ${target}`;
+  document.querySelector("#binary-explanation").textContent = isVietnamese ? "Toàn bộ mảng đã sắp xếp là khoảng ứng viên đầu tiên." : "The full sorted array is the first candidate interval.";
   renderBinary();
 }
 
@@ -716,29 +740,29 @@ function nextBinaryStep() {
   binaryMid = Math.floor((binaryLow + binaryHigh) / 2);
   const value = binaryValues[binaryMid];
   binaryStep += 1;
-  document.querySelector("#binary-step").textContent = `Comparison ${binaryStep}`;
+  document.querySelector("#binary-step").textContent = `${isVietnamese ? "Lần so sánh" : "Comparison"} ${binaryStep}`;
 
   if (value === target) {
     binaryFound = binaryMid;
     binaryDone = true;
-    document.querySelector("#binary-status").textContent = `Found ${target} at index ${binaryMid}`;
-    document.querySelector("#binary-explanation").textContent = `The midpoint value is ${value}, exactly the target. The search stops.`;
+    document.querySelector("#binary-status").textContent = isVietnamese ? `Tìm thấy ${target} tại chỉ mục ${binaryMid}` : `Found ${target} at index ${binaryMid}`;
+    document.querySelector("#binary-explanation").textContent = isVietnamese ? `Giá trị giữa là ${value}, đúng bằng mục tiêu. Quá trình tìm kiếm dừng lại.` : `The midpoint value is ${value}, exactly the target. The search stops.`;
   } else if (value < target) {
     const previous = binaryMid;
     binaryLow = binaryMid + 1;
-    document.querySelector("#binary-status").textContent = `${value} is too small`;
-    document.querySelector("#binary-explanation").textContent = `Discard indices 0 through ${previous}. Sorted order proves none of those values can equal ${target}.`;
+    document.querySelector("#binary-status").textContent = isVietnamese ? `${value} quá nhỏ` : `${value} is too small`;
+    document.querySelector("#binary-explanation").textContent = isVietnamese ? `Loại các chỉ mục từ 0 đến ${previous}. Thứ tự đã sắp xếp chứng minh không giá trị nào trong đó bằng ${target}.` : `Discard indices 0 through ${previous}. Sorted order proves none of those values can equal ${target}.`;
   } else {
     const previous = binaryMid;
     binaryHigh = binaryMid - 1;
-    document.querySelector("#binary-status").textContent = `${value} is too large`;
-    document.querySelector("#binary-explanation").textContent = `Discard indices ${previous} through ${binaryValues.length - 1}. Sorted order proves none of those values can equal ${target}.`;
+    document.querySelector("#binary-status").textContent = isVietnamese ? `${value} quá lớn` : `${value} is too large`;
+    document.querySelector("#binary-explanation").textContent = isVietnamese ? `Loại các chỉ mục từ ${previous} đến ${binaryValues.length - 1}. Thứ tự đã sắp xếp chứng minh không giá trị nào trong đó bằng ${target}.` : `Discard indices ${previous} through ${binaryValues.length - 1}. Sorted order proves none of those values can equal ${target}.`;
   }
 
   if (!binaryDone && binaryLow > binaryHigh) {
     binaryDone = true;
-    document.querySelector("#binary-status").textContent = `${target} is not present`;
-    document.querySelector("#binary-explanation").textContent = "The candidate interval is empty, so the target cannot be in the array.";
+    document.querySelector("#binary-status").textContent = isVietnamese ? `${target} không tồn tại` : `${target} is not present`;
+    document.querySelector("#binary-explanation").textContent = isVietnamese ? "Khoảng ứng viên đã rỗng nên mục tiêu không thể nằm trong mảng." : "The candidate interval is empty, so the target cannot be in the array.";
   }
   renderBinary();
 }
@@ -789,6 +813,10 @@ const choiceData = {
     question: "Can any optimal solution be transformed to include this local choice without becoming worse?"
   }
 };
+
+if (locale?.choiceData) {
+  Object.entries(locale.choiceData).forEach(([key, translated]) => Object.assign(choiceData[key], translated));
+}
 
 document.querySelectorAll(".choice-node").forEach((button) => {
   button.addEventListener("click", () => {
