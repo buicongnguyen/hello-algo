@@ -147,6 +147,34 @@ a { color: inherit; }
 
 .site-header nav a:hover { color: var(--text); }
 
+.language-switch {
+  padding: .2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .12rem;
+  border: 1px solid var(--line);
+  border-radius: .7rem;
+  background: var(--surface);
+}
+
+.language-switch a {
+  min-width: 36px;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: .48rem;
+  color: var(--muted);
+  text-decoration: none;
+  font: 800 .68rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .05em;
+}
+
+.language-switch a:hover { color: var(--text); }
+.language-switch a.active {
+  background: color-mix(in srgb, var(--blue) 16%, var(--surface-2));
+  color: var(--blue-2);
+}
+
 .icon-button {
   width: 40px;
   height: 40px;
@@ -688,7 +716,7 @@ input:focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 55%, tra
 
 @media (max-width: 1040px) {
   .site-header nav { display: none; }
-  .site-header .icon-button { margin-left: auto; }
+  .site-header .language-switch { margin-left: auto; }
   .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 5rem; }
   .hero-graph { width: min(100%, 650px); margin-inline: auto; }
   .roadmap-layout { grid-template-columns: 1fr; }

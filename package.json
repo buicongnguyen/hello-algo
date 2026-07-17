@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "An interactive visual learning companion for the English Hello Algo book.",
+  "description": "A bilingual Vietnamese translation project and interactive English learning companion for Hello Algo.",
   "scripts": {
     "build": "node scripts/build-site.mjs",
     "check": "node scripts/check-site.mjs",
-    "start": "node scripts/serve-site.mjs"
+    "start": "npm run build && node scripts/serve-site.mjs"
   },
   "engines": {
     "node": ">=24"

@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import path from "node:path";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
+const outputRoot = path.join(projectRoot, "dist");
 const port = Number(process.env.PORT || 4173);
 const types = {
   ".css": "text/css; charset=utf-8",
@@ -18,8 +19,9 @@ const types = {
 
 createServer(async (request, response) => {
   const requestPath = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
-  const candidate = path.resolve(projectRoot, `.${requestPath === "/" ? "/index.html" : requestPath}`);
-  if (!candidate.startsWith(projectRoot + path.sep)) {
+  const filePath = requestPath.endsWith("/") ? `${requestPath}index.html` : requestPath;
+  const candidate = path.resolve(outputRoot, `.${filePath}`);
+  if (!candidate.startsWith(outputRoot + path.sep)) {
     response.writeHead(403).end("Forbidden");
     return;
   }
@@ -33,5 +35,5 @@ createServer(async (request, response) => {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
   }
 }).listen(port, "127.0.0.1", () => {
-  console.log(`Hello Algo Atlas running at http://127.0.0.1:${port}`);
+  console.log(`Hello Algo bilingual site running at http://127.0.0.1:${port}`);
 });
