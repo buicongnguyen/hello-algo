@@ -1,103 +1,121 @@
 <p align="center">
-  <a href="https://www.hello-algo.com/">
-    <img src="https://www.hello-algo.com/index.assets/hello_algo_header.png" width="450"></a>
+  <a href="https://buicongnguyen.github.io/hello-algo/vi/">
+    <img src="https://www.hello-algo.com/index.assets/hello_algo_header.png" width="450" alt="Hello Algo"></a>
 </p>
 
 <p align="center">
-  <img style="height: 60px;" src="https://readme-typing-svg.demolab.com?font=Noto+Sans+SC&weight=400&duration=3500&pause=2000&color=21C8B8&center=true&vCenter=true&random=false&width=200&lines=Hello%2C+%E7%AE%97%E6%B3%95+!" alt="hello-algo-typing-svg" />
-  </br>
-  动画图解、一键运行的数据结构与算法教程
+  <img style="height: 60px;" src="https://readme-typing-svg.demolab.com?font=Noto+Sans&weight=400&duration=3500&pause=2000&color=21C8B8&center=true&vCenter=true&random=false&width=280&lines=Xin+ch%C3%A0o%2C+thu%E1%BA%ADt+to%C3%A1n!" alt="Xin chào, thuật toán!" />
+  <br>
+  Hướng dẫn cấu trúc dữ liệu và thuật toán bằng hình động, kèm mã nguồn có thể chạy ngay
 </p>
 
 <p align="center">
-  <a href="https://www.hello-algo.com/">
-    <img src="https://www.hello-algo.com/index.assets/btn_read_online_dark.svg" height="45"></a>
-  <a href="https://github.com/krahets/hello-algo/releases">
-    <img src="https://www.hello-algo.com/index.assets/btn_download_pdf_epub_dark.svg" height="45"></a>
+  <a href="https://buicongnguyen.github.io/hello-algo/vi/"><strong>Khám phá Atlas tiếng Việt</strong></a>
+  ·
+  <a href="https://buicongnguyen.github.io/hello-algo/vi/learn/"><strong>Đọc bản dịch thử</strong></a>
+  ·
+  <a href="https://github.com/krahets/hello-algo/releases"><strong>Tải PDF / EPUB gốc</strong></a>
 </p>
 
 <p align="center">
-  <img src="https://www.hello-algo.com/index.assets/animation.gif" width="395">
-  <img src="https://www.hello-algo.com/index.assets/running_code.gif" width="395">
+  <img src="https://www.hello-algo.com/index.assets/animation.gif" width="395" alt="Minh họa thuật toán bằng hình động">
+  <img src="https://www.hello-algo.com/index.assets/running_code.gif" width="395" alt="Chạy mã ví dụ trong Hello Algo">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-snow?logo=python&logoColor=3776AB" alt="" />
-  <img src="https://img.shields.io/badge/Java-snow?logo=coffeescript&logoColor=FC4C02" alt="" />
-  <img src="https://img.shields.io/badge/C%2B%2B-snow?logo=c%2B%2B&logoColor=00599C" alt="" />
-  <img src="https://img.shields.io/badge/C-snow?logo=c&logoColor=A8B9CC" alt="" />
-  <img src="https://img.shields.io/badge/C%23-snow?logo=csharp&logoColor=512BD4" alt="" />
-  <img src="https://img.shields.io/badge/JavaScript-snow?logo=javascript&logoColor=E9CE30" alt="" />
-  <img src="https://img.shields.io/badge/Go-snow?logo=go&logoColor=00ADD8" alt="" />
-  <img src="https://img.shields.io/badge/Swift-snow?logo=swift&logoColor=F05138" alt="" />
-  <img src="https://img.shields.io/badge/Rust-snow?logo=rust&logoColor=000000" alt="" />
-  <img src="https://img.shields.io/badge/Ruby-snow?logo=ruby&logoColor=CC342D" alt="" />
-  <img src="https://img.shields.io/badge/Kotlin-snow?logo=kotlin&logoColor=7F52FF" alt="" />
-  <img src="https://img.shields.io/badge/TypeScript-snow?logo=typescript&logoColor=3178C6" alt="" />
-  <img src="https://img.shields.io/badge/Dart-snow?logo=dart&logoColor=0175C2" alt="" />
+  <img src="https://img.shields.io/badge/Python-snow?logo=python&logoColor=3776AB" alt="Python" />
+  <img src="https://img.shields.io/badge/Java-snow?logo=coffeescript&logoColor=FC4C02" alt="Java" />
+  <img src="https://img.shields.io/badge/C%2B%2B-snow?logo=c%2B%2B&logoColor=00599C" alt="C++" />
+  <img src="https://img.shields.io/badge/C-snow?logo=c&logoColor=A8B9CC" alt="C" />
+  <img src="https://img.shields.io/badge/C%23-snow?logo=csharp&logoColor=512BD4" alt="C#" />
+  <img src="https://img.shields.io/badge/JavaScript-snow?logo=javascript&logoColor=E9CE30" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Go-snow?logo=go&logoColor=00ADD8" alt="Go" />
+  <img src="https://img.shields.io/badge/Swift-snow?logo=swift&logoColor=F05138" alt="Swift" />
+  <img src="https://img.shields.io/badge/Rust-snow?logo=rust&logoColor=000000" alt="Rust" />
+  <img src="https://img.shields.io/badge/Ruby-snow?logo=ruby&logoColor=CC342D" alt="Ruby" />
+  <img src="https://img.shields.io/badge/Kotlin-snow?logo=kotlin&logoColor=7F52FF" alt="Kotlin" />
+  <img src="https://img.shields.io/badge/TypeScript-snow?logo=typescript&logoColor=3178C6" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Dart-snow?logo=dart&logoColor=0175C2" alt="Dart" />
 </p>
 
 <p align="center">
-  简体中文
+  Tiếng Việt
   ｜
-  <a href="https://github.com/krahets/hello-algo/blob/main/zh-hant/README.md">繁體中文</a>
+  <a href="https://github.com/krahets/hello-algo/blob/main/README.md">简体中文</a>
   ｜
-  <a href="https://github.com/krahets/hello-algo/blob/main/en/README.md">English</a>
+  <a href="zh-hant/README.md">繁體中文</a>
   ｜
-  <a href="https://github.com/krahets/hello-algo/blob/main/ja/README.md">日本語</a>
+  <a href="en/README.md">English</a>
   ｜
-  <a href="https://github.com/krahets/hello-algo/blob/main/ru/README.md">Русский</a>
+  <a href="ja/README.md">日本語</a>
+  ｜
+  <a href="ru/README.md">Русский</a>
 </p>
 
-## 关于本书
-
-本项目旨在打造一本开源免费、新手友好的数据结构与算法入门教程。
-
-- 全书采用动画图解，内容清晰易懂、学习曲线平滑，引导初学者探索数据结构与算法的知识地图。
-- 源代码可一键运行，帮助读者在练习中提升编程技能，了解算法工作原理和数据结构底层实现。
-- 提倡读者互助学习，欢迎大家在评论区提出问题与分享见解，在交流讨论中共同进步。
-
-若本书对您有所帮助，请在页面右上角点个 Star :star: 支持一下，谢谢！
-
-## 推荐语
-
-> “一本通俗易懂的数据结构与算法入门书，引导读者手脑并用地学习，强烈推荐算法初学者阅读。”
+> [!NOTE]
 >
-> **—— 邓俊辉，清华大学计算机系教授**
+> Đây là fork cộng đồng của [Hello Algo](https://github.com/krahets/hello-algo). README tiếng Việt được đặt làm mặc định để thuận tiện theo dõi và phản biện. Giao diện Atlas tại `/vi/` đã được Việt hóa đầy đủ; bản dịch nội dung sách dài đang được phát hành từng đợt và chưa được mô tả là bản dịch ổn định.
 
-> “如果我当年学数据结构与算法的时候有《Hello 算法》，学起来应该会简单 10 倍！”
+## Về cuốn sách
+
+Dự án mã nguồn mở này hướng tới một giáo trình nhập môn cấu trúc dữ liệu và thuật toán miễn phí, thân thiện với người mới bắt đầu.
+
+- Hình minh họa động, nội dung dễ hiểu và lộ trình học liền mạch giúp người mới khám phá “bản đồ kiến thức” về cấu trúc dữ liệu và thuật toán.
+- Mã nguồn có thể chạy chỉ với một thao tác, giúp người đọc rèn luyện kỹ năng lập trình, hiểu cách thuật toán hoạt động và cách cấu trúc dữ liệu được triển khai bên dưới.
+- Dự án khuyến khích học tập thông qua chia sẻ. Bạn có thể đặt câu hỏi, đóng góp góc nhìn và cùng tiến bộ qua thảo luận.
+
+Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star: để ủng hộ cộng đồng. Xin cảm ơn!
+
+## Trải nghiệm tiếng Việt trong fork này
+
+- [Atlas tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/) có cùng 11 phần nội dung và tương tác với [Atlas tiếng Anh](https://buicongnguyen.github.io/hello-algo/en/).
+- [Bản đọc thử tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm sáu tài liệu mở đầu đã tự kiểm tra và đang chờ phản biện độc lập.
+- [Kế hoạch Việt hóa](VIETNAMESE_TRANSLATION_PLAN.md) mô tả lộ trình, tiêu chuẩn chất lượng, quy trình duyệt và cách đồng bộ với upstream.
+- [Từ điển thuật ngữ](vi/glossary.md), [quy chuẩn văn phong](vi/style-guide.md) và [hướng dẫn đóng góp](vi/CONTRIBUTING.md) giúp bản dịch nhất quán và dễ kiểm tra.
+
+## Lời giới thiệu
+
+> “Một cuốn sách nhập môn cấu trúc dữ liệu và thuật toán dễ hiểu, hướng dẫn người đọc kết hợp tư duy với thực hành. Rất đáng đọc đối với người mới học thuật toán!”
 >
-> **—— 李沐，亚马逊资深首席科学家**
+> **—— Junhui Deng, Giáo sư Khoa Khoa học và Công nghệ Máy tính, Đại học Thanh Hoa**
 
-## 鸣谢
+> “Nếu khi học cấu trúc dữ liệu và thuật toán tôi có cuốn *Hello Algo*, việc học có lẽ đã dễ hơn gấp 10 lần!”
+>
+> **—— Mu Li, Nhà khoa học trưởng cấp cao tại Amazon**
+
+## Lời cảm ơn đặc biệt
 
 <p align="left">
   <a href="https://go.warp.dev/hello-algo">
-    <img src="https://github.com/warpdotdev/brand-assets/blob/main/Github/Sponsor/Warp-Github-LG-02.png" alt="Warp-Github-LG-02" width="500"></a>
+    <img src="https://github.com/warpdotdev/brand-assets/blob/main/Github/Sponsor/Warp-Github-LG-02.png" alt="Warp" width="500"></a>
 </p>
 
-[Warp is built for coding with multiple AI agents.](https://go.warp.dev/hello-algo)
+[Warp được xây dựng cho việc lập trình với nhiều tác nhân AI.](https://go.warp.dev/hello-algo)
 
-强烈推荐 Warp 终端，高颜值 + 好用的 AI，体验非常棒！
+## Đóng góp
 
-## 贡献
+> [!IMPORTANT]
+>
+> Dự án hoan nghênh đóng góp cho bản tiếng Việt. Trước khi bắt đầu, vui lòng đọc [hướng dẫn đóng góp](vi/CONTRIBUTING.md), [từ điển thuật ngữ](vi/glossary.md) và [quy chuẩn văn phong](vi/style-guide.md).
 
-本开源书仍在持续更新之中，欢迎您参与本项目，一同为读者提供更优质的学习内容。
+Cuốn sách mã nguồn mở này vẫn đang được cập nhật. Mọi đóng góp đều giúp mang đến nội dung học tập tốt hơn cho người đọc.
 
-- [内容修正](https://www.hello-algo.com/chapter_appendix/contribution/)：请您协助修正或在评论区指出语法错误、内容缺失、文字歧义、无效链接或代码 bug 等问题。
-- [代码转译](https://github.com/krahets/hello-algo/issues/15)：期待您贡献各种语言代码，已支持 Python、Java、C++、Go、JavaScript 等 12 门编程语言。
-- 翻译审阅：欢迎您参与本项目的多语言翻译与校对工作，帮助更多读者用母语学习数据结构与算法。
+- [Sửa nội dung](https://www.hello-algo.com/en/chapter_appendix/contribution/): hỗ trợ sửa hoặc báo cáo lỗi ngữ pháp, nội dung thiếu, câu chữ mơ hồ, liên kết hỏng hay lỗi mã nguồn.
+- [Chuyển mã sang ngôn ngữ khác](https://github.com/krahets/hello-algo/issues/15): dự án hoan nghênh thêm các bản triển khai; hiện đã hỗ trợ 12 ngôn ngữ, gồm Python, Java, C++, Go và JavaScript.
+- Dịch và phản biện: tham gia chuyển ngữ, kiểm tra kỹ thuật hoặc biên tập tiếng Việt để nhiều người có thể học bằng tiếng mẹ đẻ.
 
-欢迎您提出宝贵意见和建议，如有任何问题请提交 Issues 或微信联系 `krahets-jyd` 。
+Bạn có thể gửi đề xuất hoặc câu hỏi qua [Issues của fork này](https://github.com/buicongnguyen/hello-algo/issues). Với các vấn đề liên quan đến dự án gốc, hãy dùng [Issues của Hello Algo](https://github.com/krahets/hello-algo/issues) hoặc liên hệ WeChat `krahets-jyd`.
 
-感谢本开源书的每一位撰稿人，是他们的无私奉献让这本书变得更好，他们是：
+Xin cảm ơn tất cả những người đã đóng góp cho Hello Algo. Sự cống hiến của họ đã giúp cuốn sách ngày càng hoàn thiện:
 
 <p align="left">
-    <a href="https://github.com/krahets/hello-algo/graphs/contributors">
-        <img width="770" src="https://contrib.rocks/image?repo=krahets/hello-algo&max=300&columns=16" />
-    </a>
+  <a href="https://github.com/krahets/hello-algo/graphs/contributors">
+    <img width="770" src="https://contrib.rocks/image?repo=krahets/hello-algo&max=300&columns=16" alt="Cộng đồng đóng góp cho Hello Algo" />
+  </a>
 </p>
 
-## License
+## Giấy phép và ghi công
 
-The texts, code, images, photos, and videos in this repository are licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+Văn bản, mã nguồn, hình ảnh, ảnh chụp và video trong repository này được chia sẻ theo giấy phép [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.vi).
+
+Hello Algo gốc do [krahets và cộng đồng đóng góp](https://github.com/krahets/hello-algo) phát triển. Phần chuyển ngữ trong fork này là tác phẩm phái sinh của cộng đồng, không ngụ ý được dự án gốc bảo trợ chính thức.
