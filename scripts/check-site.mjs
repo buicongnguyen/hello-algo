@@ -30,7 +30,16 @@ for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
   }
 }
 
-for (const selector of ["roadmap-canvas", "traversal-canvas", "complexity-canvas", "theme-toggle"]) {
+for (const selector of [
+  "roadmap-canvas",
+  "structure-visual",
+  "traversal-canvas",
+  "complexity-canvas",
+  "binary-array",
+  "binary-target",
+  "binary-next",
+  "theme-toggle"
+]) {
   if (!html.includes(`id="${selector}"`) || !js.includes(`#${selector}`)) {
     failures.push(`Interactive element is not wired: ${selector}`);
   }

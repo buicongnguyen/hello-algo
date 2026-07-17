@@ -262,6 +262,119 @@ function updateTopic(topic) {
 topicButtons.forEach((button) => button.addEventListener("click", () => updateTopic(button.dataset.topic)));
 updateTopic("foundations");
 
+const structureData = {
+  array: {
+    kicker: "Direct access",
+    complexity: "Access · O(1)",
+    title: "Array",
+    summary: "Values occupy neighboring memory slots, so an index can jump straight to its element. Moving later elements makes middle insertion expensive.",
+    use: "You need fast indexed reads and cache-friendly iteration.",
+    watch: "Middle insertions, deletions, and resizing can move many elements.",
+    shape: "Contiguous slots",
+    caption: "The address of an element follows directly from the base address and its index.",
+    className: "array-visual",
+    label: "Five array values stored in neighboring slots",
+    html: "<i><small>0</small>12</i><i><small>1</small>24</i><i><small>2</small>36</i><i><small>3</small>48</i><i><small>4</small>60</i>",
+    link: "https://www.hello-algo.com/en/chapter_array_and_linkedlist/"
+  },
+  linked: {
+    kicker: "Flexible links",
+    complexity: "Insert at node · O(1)",
+    title: "Linked list",
+    summary: "Each node stores a value and a reference to the next node. Changing references is cheap, but reaching position i requires following the chain.",
+    use: "Length changes often and you already hold the node where an edit belongs.",
+    watch: "Random access is linear, each node needs pointer space, and scattered storage is less cache-friendly.",
+    shape: "Scattered nodes",
+    caption: "The arrows—not physical adjacency—define the order.",
+    className: "linked-visual",
+    label: "Four linked-list nodes connected by references",
+    html: "<i>12</i><i>24</i><i>36</i><i>48</i>",
+    link: "https://www.hello-algo.com/en/chapter_array_and_linkedlist/"
+  },
+  stack: {
+    kicker: "Newest item first",
+    complexity: "Push / pop · O(1)",
+    title: "Stack",
+    summary: "A stack exposes one end: the last value pushed is the first one popped. The rule naturally models call frames, undo history, and DFS.",
+    use: "You need nested work, reversal, backtracking, parsing, or depth-first exploration.",
+    watch: "Only the top is directly available; searching through the stack remains linear.",
+    shape: "LIFO frontier",
+    caption: "Every push becomes the new top; every pop reveals the previous top.",
+    className: "stack-visual",
+    label: "Stack with the newest value shown at the top",
+    html: "<i>12</i><i>24</i><i>36</i><i>48</i>",
+    link: "https://www.hello-algo.com/en/chapter_stack_and_queue/"
+  },
+  queue: {
+    kicker: "Oldest item first",
+    complexity: "Enqueue / dequeue · O(1)",
+    title: "Queue",
+    summary: "New values join at the back while processing happens at the front. This preserves arrival order and makes breadth-first exploration possible.",
+    use: "You need fair scheduling, buffering, level-order traversal, or shortest hops in an unweighted graph.",
+    watch: "An array implementation needs a moving front or circular buffer to avoid shifting every value.",
+    shape: "FIFO frontier",
+    caption: "The first value to enter is the first value allowed to leave.",
+    className: "queue-visual",
+    label: "Queue flowing from the back toward the front",
+    html: "<i>12</i><i>24</i><i>36</i><i>48</i>",
+    link: "https://www.hello-algo.com/en/chapter_stack_and_queue/"
+  },
+  hash: {
+    kicker: "Key to bucket",
+    complexity: "Lookup · O(1) average",
+    title: "Hash table",
+    summary: "A hash function turns a key into a bucket index. Fast access depends on distributing keys well and resolving the collisions that still occur.",
+    use: "Exact-key lookup matters more than sorted order or range queries.",
+    watch: "High load factors increase collisions; expansion is expensive and worst-case lookup can degrade.",
+    shape: "Bucket array",
+    caption: "Different keys can map to the same bucket, so every implementation needs a collision strategy.",
+    className: "hash-visual",
+    label: "Five hash buckets with two values sharing one bucket",
+    html: "<i><small>0</small><b>—</b></i><i><small>1</small><b>Ada</b></i><i><small>2</small><b>Lin<br>Ken</b></i><i><small>3</small><b>—</b></i><i><small>4</small><b>Grace</b></i>",
+    link: "https://www.hello-algo.com/en/chapter_hashing/"
+  },
+  heap: {
+    kicker: "Priority without full order",
+    complexity: "Push / pop · O(log n)",
+    title: "Heap",
+    summary: "A max-heap guarantees that every parent is at least as large as its children. The root is immediately available even though siblings are not fully sorted.",
+    use: "You repeatedly need the smallest or largest item, a priority queue, or Top-k results.",
+    watch: "Finding an arbitrary value is still linear; a heap is not a fully sorted collection.",
+    shape: "Complete tree in an array",
+    caption: "Only the parent-child priority rule is guaranteed; that is enough to keep the winner at the root.",
+    className: "heap-visual",
+    label: "Max heap with the largest value at its root",
+    html: "<div><i>98</i></div><div><i>72</i><i>81</i></div><div><i>31</i><i>44</i><i>65</i><i>57</i></div>",
+    link: "https://www.hello-algo.com/en/chapter_heap/"
+  }
+};
+
+const structureButtons = [...document.querySelectorAll(".structure-tab")];
+
+function updateStructure(name) {
+  const data = structureData[name];
+  structureButtons.forEach((button) => {
+    const selected = button.dataset.structure === name;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  document.querySelector("#structure-kicker").textContent = data.kicker;
+  document.querySelector("#structure-complexity").textContent = data.complexity;
+  document.querySelector("#structure-title").textContent = data.title;
+  document.querySelector("#structure-summary").textContent = data.summary;
+  document.querySelector("#structure-use").textContent = data.use;
+  document.querySelector("#structure-watch").textContent = data.watch;
+  document.querySelector("#structure-shape-label").textContent = data.shape;
+  document.querySelector("#structure-caption").textContent = data.caption;
+  document.querySelector("#structure-link").href = data.link;
+  const visual = document.querySelector("#structure-visual");
+  visual.className = `structure-visual ${data.className}`;
+  visual.setAttribute("aria-label", data.label);
+  visual.innerHTML = data.html;
+}
+
+structureButtons.forEach((button) => button.addEventListener("click", () => updateStructure(button.dataset.structure)));
+
 const traversalCanvas = document.querySelector("#traversal-canvas");
 const traversalContext = traversalCanvas.getContext("2d");
 const graphNodes = {
@@ -499,6 +612,100 @@ function updateComplexity() {
 
 inputSlider.addEventListener("input", updateComplexity);
 updateComplexity();
+
+const binaryValues = [3, 8, 13, 18, 25, 31, 42, 57, 68, 74, 86, 93];
+const binaryTarget = document.querySelector("#binary-target");
+const binaryNext = document.querySelector("#binary-next");
+let binaryLow = 0;
+let binaryHigh = binaryValues.length - 1;
+let binaryMid = null;
+let binaryStep = 0;
+let binaryFound = null;
+let binaryDone = false;
+
+function renderBinary() {
+  const target = Number(binaryTarget.value);
+  document.querySelector("#binary-array").innerHTML = binaryValues.map((value, index) => {
+    const classes = ["binary-cell"];
+    if (index < binaryLow || index > binaryHigh) classes.push("discarded");
+    else classes.push("candidate");
+    if (index === binaryMid) classes.push("midpoint");
+    if (index === binaryFound) classes.push("found");
+    return `<i class="${classes.join(" ")}"><span>${value}</span><small>${index}</small></i>`;
+  }).join("");
+  document.querySelector("#binary-low").textContent = binaryLow > binaryHigh ? "—" : binaryLow;
+  document.querySelector("#binary-mid").textContent = binaryMid ?? "—";
+  document.querySelector("#binary-high").textContent = binaryLow > binaryHigh ? "—" : binaryHigh;
+  binaryNext.disabled = binaryDone;
+  binaryNext.textContent = binaryDone ? (binaryFound === null ? "Not present" : "Found") : "Compare midpoint";
+  binaryNext.setAttribute("aria-label", `Compare the midpoint while searching for ${target}`);
+}
+
+function resetBinary() {
+  binaryLow = 0;
+  binaryHigh = binaryValues.length - 1;
+  binaryMid = null;
+  binaryStep = 0;
+  binaryFound = null;
+  binaryDone = false;
+  const target = Number(binaryTarget.value);
+  document.querySelector("#binary-step").textContent = "Ready";
+  document.querySelector("#binary-status").textContent = `Search for ${target}`;
+  document.querySelector("#binary-explanation").textContent = "The full sorted array is the first candidate interval.";
+  renderBinary();
+}
+
+function nextBinaryStep() {
+  if (binaryDone) return;
+  const target = Number(binaryTarget.value);
+  binaryMid = Math.floor((binaryLow + binaryHigh) / 2);
+  const value = binaryValues[binaryMid];
+  binaryStep += 1;
+  document.querySelector("#binary-step").textContent = `Comparison ${binaryStep}`;
+
+  if (value === target) {
+    binaryFound = binaryMid;
+    binaryDone = true;
+    document.querySelector("#binary-status").textContent = `Found ${target} at index ${binaryMid}`;
+    document.querySelector("#binary-explanation").textContent = `The midpoint value is ${value}, exactly the target. The search stops.`;
+  } else if (value < target) {
+    const previous = binaryMid;
+    binaryLow = binaryMid + 1;
+    document.querySelector("#binary-status").textContent = `${value} is too small`;
+    document.querySelector("#binary-explanation").textContent = `Discard indices 0 through ${previous}. Sorted order proves none of those values can equal ${target}.`;
+  } else {
+    const previous = binaryMid;
+    binaryHigh = binaryMid - 1;
+    document.querySelector("#binary-status").textContent = `${value} is too large`;
+    document.querySelector("#binary-explanation").textContent = `Discard indices ${previous} through ${binaryValues.length - 1}. Sorted order proves none of those values can equal ${target}.`;
+  }
+
+  if (!binaryDone && binaryLow > binaryHigh) {
+    binaryDone = true;
+    document.querySelector("#binary-status").textContent = `${target} is not present`;
+    document.querySelector("#binary-explanation").textContent = "The candidate interval is empty, so the target cannot be in the array.";
+  }
+  renderBinary();
+}
+
+binaryTarget.addEventListener("change", resetBinary);
+binaryNext.addEventListener("click", nextBinaryStep);
+document.querySelector("#binary-reset").addEventListener("click", resetBinary);
+resetBinary();
+
+document.querySelectorAll(".sort-filter").forEach((button) => {
+  button.addEventListener("click", () => {
+    const filter = button.dataset.sortFilter;
+    document.querySelectorAll(".sort-filter").forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle("active", selected);
+      item.setAttribute("aria-pressed", String(selected));
+    });
+    document.querySelectorAll(".sorting-table tbody tr").forEach((row) => {
+      row.hidden = filter !== "all" && row.dataset.sortFamily !== filter;
+    });
+  });
+});
 
 const choiceData = {
   ordered: {

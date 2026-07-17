@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A visual learning companion for Hello Algo with an interactive roadmap, BFS and DFS traversal lab, complexity explorer, and chapter guide.">
+  <meta name="description" content="A visual learning companion for Hello Algo with interactive data-structure maps, BFS and DFS traversal, binary search, complexity, sorting, and problem-solving patterns.">
+  <meta property="og:title" content="Hello Algo Atlas">
+  <meta property="og:description" content="See how data structures and algorithms connect, then learn them through interactive visual labs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://buicongnguyen.github.io/hello-algo/">
   <meta name="theme-color" content="#07111f">
   <title>Hello Algo Atlas</title>
   <link rel="stylesheet" href="styles.css?v=20260717a">
@@ -19,8 +23,10 @@
     </a>
     <nav aria-label="Primary navigation">
       <a href="#roadmap">Learning graph</a>
+      <a href="#structures">Structures</a>
       <a href="#traversal">Traversal lab</a>
-      <a href="#complexity">Complexity</a>
+      <a href="#binary-search">Binary search</a>
+      <a href="#sorting">Sorting</a>
       <a href="#chapters">Chapters</a>
       <a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">Original book ↗</a>
     </nav>
@@ -39,8 +45,8 @@
         </div>
         <ul class="hero-stats" aria-label="Page summary">
           <li><strong>13</strong><span>connected topics</span></li>
-          <li><strong>2</strong><span>live graph traversals</span></li>
-          <li><strong>6</strong><span>complexity curves</span></li>
+          <li><strong>4</strong><span>interactive learning labs</span></li>
+          <li><strong>8</strong><span>sorts compared</span></li>
         </ul>
       </div>
 
@@ -113,9 +119,63 @@
       </div>
     </section>
 
+    <section class="section structures-section" id="structures">
+      <div class="section-heading">
+        <p class="eyebrow">02 · Data-structure field guide</p>
+        <h2>Choose the shape that makes the operation cheap</h2>
+        <p>The structure is not decoration—it decides which work is direct, which work requires a walk, and how values sit in memory.</p>
+      </div>
+
+      <div class="structure-shell">
+        <div class="structure-tabs" role="group" aria-label="Choose a data structure">
+          <button class="structure-tab active" type="button" data-structure="array" aria-pressed="true"><span>01</span>Array</button>
+          <button class="structure-tab" type="button" data-structure="linked" aria-pressed="false"><span>02</span>Linked list</button>
+          <button class="structure-tab" type="button" data-structure="stack" aria-pressed="false"><span>03</span>Stack</button>
+          <button class="structure-tab" type="button" data-structure="queue" aria-pressed="false"><span>04</span>Queue</button>
+          <button class="structure-tab" type="button" data-structure="hash" aria-pressed="false"><span>05</span>Hash table</button>
+          <button class="structure-tab" type="button" data-structure="heap" aria-pressed="false"><span>06</span>Heap</button>
+        </div>
+        <div class="structure-body">
+          <div class="structure-stage">
+            <div class="stage-label"><span>Memory shape</span><b id="structure-shape-label">Contiguous slots</b></div>
+            <div class="structure-visual array-visual" id="structure-visual" aria-label="Five array values stored in neighboring slots">
+              <i><small>0</small>12</i><i><small>1</small>24</i><i><small>2</small>36</i><i><small>3</small>48</i><i><small>4</small>60</i>
+            </div>
+            <p class="stage-caption" id="structure-caption">The address of an element follows directly from the base address and its index.</p>
+          </div>
+          <aside class="structure-copy" aria-live="polite">
+            <div class="detail-topline"><span id="structure-kicker">Direct access</span><span id="structure-complexity">Access · O(1)</span></div>
+            <h3 id="structure-title">Array</h3>
+            <p id="structure-summary">Values occupy neighboring memory slots, so an index can jump straight to its element. Moving later elements makes middle insertion expensive.</p>
+            <dl class="structure-facts">
+              <div><dt>Reach for it when</dt><dd id="structure-use">You need fast indexed reads and cache-friendly iteration.</dd></div>
+              <div><dt>Watch for</dt><dd id="structure-watch">Middle insertions, deletions, and resizing can move many elements.</dd></div>
+            </dl>
+            <a class="text-link" id="structure-link" href="https://www.hello-algo.com/en/chapter_array_and_linkedlist/" target="_blank" rel="noreferrer">Study this structure in Hello Algo →</a>
+          </aside>
+        </div>
+      </div>
+
+      <div class="operation-matrix-wrap">
+        <table class="operation-matrix">
+          <caption>Typical operation costs. Hash-table costs are average-case; linked-list insertion assumes the node is already known.</caption>
+          <thead><tr><th>Structure</th><th>Direct access</th><th>Search</th><th>Add / remove</th><th>Memory idea</th></tr></thead>
+          <tbody>
+            <tr><th>Array</th><td><b>O(1)</b> by index</td><td>O(n)</td><td>O(n) in middle</td><td>Contiguous</td></tr>
+            <tr><th>Linked list</th><td>O(n)</td><td>O(n)</td><td><b>O(1)</b> at known node</td><td>Scattered + links</td></tr>
+            <tr><th>Stack</th><td><b>O(1)</b> at top</td><td>O(n)</td><td><b>O(1)</b> push / pop</td><td>LIFO frontier</td></tr>
+            <tr><th>Queue</th><td><b>O(1)</b> at front</td><td>O(n)</td><td><b>O(1)</b> enqueue / dequeue</td><td>FIFO frontier</td></tr>
+            <tr><th>Hash table</th><td><b>O(1)</b> by key</td><td><b>O(1)</b> by key</td><td><b>O(1)</b> average</td><td>Keys → buckets</td></tr>
+            <tr><th>Heap</th><td><b>O(1)</b> min / max</td><td>O(n)</td><td>O(log n)</td><td>Partial tree order</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source-note">Concepts are paraphrased from the Hello Algo chapters on <a href="https://www.hello-algo.com/en/chapter_array_and_linkedlist/" target="_blank" rel="noreferrer">arrays and linked lists</a>, <a href="https://www.hello-algo.com/en/chapter_stack_and_queue/" target="_blank" rel="noreferrer">stacks and queues</a>, <a href="https://www.hello-algo.com/en/chapter_hashing/" target="_blank" rel="noreferrer">hashing</a>, and <a href="https://www.hello-algo.com/en/chapter_heap/" target="_blank" rel="noreferrer">heaps</a>.</p>
+    </section>
+
     <section class="section traversal-section" id="traversal">
       <div class="section-heading">
-        <p class="eyebrow">02 · BFS / DFS traversal lab</p>
+        <p class="eyebrow">03 · BFS / DFS traversal lab</p>
         <h2>Same graph. Different frontier.</h2>
         <p>Breadth-first search uses a queue and spreads level by level. Depth-first search uses a stack and follows one branch before returning.</p>
       </div>
@@ -160,7 +220,7 @@
 
     <section class="section complexity-section" id="complexity">
       <div class="section-heading centered-heading">
-        <p class="eyebrow">03 · Complexity explorer</p>
+        <p class="eyebrow">04 · Complexity explorer</p>
         <h2>Growth matters more than milliseconds</h2>
         <p>Move the input size and watch the operation counts separate. The vertical scale is logarithmic so every curve stays visible.</p>
       </div>
@@ -178,9 +238,85 @@
       </div>
     </section>
 
+    <section class="section binary-section" id="binary-search">
+      <div class="section-heading">
+        <p class="eyebrow">05 · Binary-search lab</p>
+        <h2>Throw away half, then repeat</h2>
+        <p>Binary search works because sorted data tells you which half cannot contain the target. Follow the interval until the value is found—or the interval becomes empty.</p>
+      </div>
+
+      <div class="binary-shell">
+        <div class="binary-toolbar">
+          <label for="binary-target">Target value
+            <select id="binary-target">
+              <option value="18">18 · left side</option>
+              <option value="42" selected>42 · near middle</option>
+              <option value="74">74 · right side</option>
+              <option value="91">91 · not present</option>
+            </select>
+          </label>
+          <div class="lab-actions">
+            <button class="small-button primary" id="binary-next" type="button">Compare midpoint</button>
+            <button class="small-button" id="binary-reset" type="button">Reset interval</button>
+          </div>
+        </div>
+        <div class="binary-grid">
+          <div class="binary-stage">
+            <div class="binary-array" id="binary-array" aria-label="Sorted array used for binary search"></div>
+            <div class="binary-scale" aria-hidden="true"><span>low</span><span>search interval</span><span>high</span></div>
+          </div>
+          <aside class="binary-readout" aria-live="polite">
+            <div class="readout-step"><span id="binary-step">Ready</span><strong id="binary-status">Search for 42</strong></div>
+            <p id="binary-explanation">The full sorted array is the first candidate interval.</p>
+            <div class="binary-variables">
+              <div><span>low</span><b id="binary-low">0</b></div>
+              <div><span>mid</span><b id="binary-mid">—</b></div>
+              <div><span>high</span><b id="binary-high">11</b></div>
+            </div>
+            <div class="invariant-card"><span>Loop invariant</span><p>If the target exists, it is still inside the highlighted interval.</p></div>
+          </aside>
+        </div>
+      </div>
+      <div class="binary-takeaways">
+        <article><span>Why it is fast</span><strong>O(log n)</strong><p>One comparison removes roughly half of the candidates.</p></article>
+        <article><span>What it needs</span><strong>Sorted + indexable</strong><p>Jumping to the middle is efficient in arrays, not linked lists.</p></article>
+        <article><span>When not to use it</span><strong>Small or changing data</strong><p>Sorting and maintaining order can cost more than a direct scan.</p></article>
+      </div>
+    </section>
+
+    <section class="section sorting-section" id="sorting">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">06 · Sorting fingerprints</p>
+        <h2>No single sort wins every column</h2>
+        <p>Efficiency, stability, extra memory, and input shape pull in different directions. Filter the table by the family of idea you want to compare.</p>
+      </div>
+      <div class="sort-filters" role="group" aria-label="Filter sorting algorithms">
+        <button class="sort-filter active" type="button" data-sort-filter="all" aria-pressed="true">All algorithms</button>
+        <button class="sort-filter" type="button" data-sort-filter="quadratic" aria-pressed="false">Simple · O(n²)</button>
+        <button class="sort-filter" type="button" data-sort-filter="comparison" aria-pressed="false">Fast comparison</button>
+        <button class="sort-filter" type="button" data-sort-filter="distribution" aria-pressed="false">Distribution</button>
+      </div>
+      <div class="sorting-table-wrap">
+        <table class="sorting-table">
+          <thead><tr><th>Algorithm</th><th>Typical time</th><th>Extra space</th><th>Stable</th><th>In-place</th><th>Strong fit</th></tr></thead>
+          <tbody>
+            <tr data-sort-family="quadratic"><th>Bubble</th><td>O(n²)</td><td>O(1)</td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td>Teaching; nearly sorted with early exit</td></tr>
+            <tr data-sort-family="quadratic"><th>Insertion</th><td>O(n²)</td><td>O(1)</td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td>Small arrays and lightweight moves</td></tr>
+            <tr data-sort-family="comparison"><th>Quick</th><td>O(n log n) avg.</td><td>O(log n)</td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td><td>General in-memory arrays</td></tr>
+            <tr data-sort-family="comparison"><th>Merge</th><td>O(n log n)</td><td>O(n)</td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td>Stable sorting and linked lists</td></tr>
+            <tr data-sort-family="comparison"><th>Heap</th><td>O(n log n)</td><td>O(1)</td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td><td>Predictable time with low memory</td></tr>
+            <tr data-sort-family="distribution"><th>Bucket</th><td>O(n + k) avg.</td><td>O(n + k)</td><td><span class="yes">Often</span></td><td><span class="no">No</span></td><td>Evenly distributed numeric data</td></tr>
+            <tr data-sort-family="distribution"><th>Counting</th><td>O(n + k)</td><td>O(k)</td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td>Large volume, small integer range</td></tr>
+            <tr data-sort-family="distribution"><th>Radix</th><td>O(d(n + k))</td><td>O(n + k)</td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td>Fixed-width keys or digits</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sorting-memory-strip"><b>Selection rule</b><span>Ask about data size, existing order, key range, stability, memory, and worst-case guarantees before choosing.</span><a href="https://www.hello-algo.com/en/chapter_sorting/" target="_blank" rel="noreferrer">Open the sorting chapter →</a></div>
+    </section>
+
     <section class="section chooser-section" id="chooser">
       <div class="section-heading">
-        <p class="eyebrow">04 · Algorithm choice graph</p>
+        <p class="eyebrow">07 · Algorithm choice graph</p>
         <h2>Start from the shape of the problem</h2>
         <p>Select the strongest clue in the prompt to reveal a practical first strategy.</p>
       </div>
@@ -200,9 +336,47 @@
       </div>
     </section>
 
+    <section class="section patterns-section" id="patterns">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">08 · Four problem-solving patterns</p>
+        <h2>Similar recursion trees, different promises</h2>
+        <p>All four strategies reduce the remaining problem. What changes is whether branches are independent, repeated, reversible, or safely decided one step at a time.</p>
+      </div>
+      <div class="pattern-grid">
+        <article class="pattern-card divide-card">
+          <header><span>Independent subproblems</span><h3>Divide &amp; conquer</h3></header>
+          <div class="pattern-flow"><i>Divide</i><b>→</b><i>Solve parts</i><b>→</b><i>Combine</i></div>
+          <p>Use when the smaller problems do not overlap and their answers can be merged.</p>
+          <dl><div><dt>Think of</dt><dd>Merge sort · binary search · tree construction</dd></div><div><dt>Proof question</dt><dd>Do solved parts reconstruct the whole?</dd></div></dl>
+          <a href="https://www.hello-algo.com/en/chapter_divide_and_conquer/" target="_blank" rel="noreferrer">Read chapter →</a>
+        </article>
+        <article class="pattern-card backtrack-card">
+          <header><span>Reversible choices</span><h3>Backtracking</h3></header>
+          <div class="pattern-flow"><i>Choose</i><b>→</b><i>Explore</i><b>→</b><i>Undo</i></div>
+          <p>Depth-first search through a choice space; constraints prune branches that cannot succeed.</p>
+          <dl><div><dt>Think of</dt><dd>Permutations · subset sum · N-Queens</dd></div><div><dt>Speed question</dt><dd>What fact proves this branch is impossible?</dd></div></dl>
+          <a href="https://www.hello-algo.com/en/chapter_backtracking/" target="_blank" rel="noreferrer">Read chapter →</a>
+        </article>
+        <article class="pattern-card dp-card">
+          <header><span>Overlapping subproblems</span><h3>Dynamic programming</h3></header>
+          <div class="pattern-flow"><i>State</i><b>→</b><i>Transition</i><b>→</b><i>Store</i></div>
+          <p>Memoization works top-down; tabulation fills states bottom-up. Both avoid solving the same state twice.</p>
+          <dl><div><dt>Think of</dt><dd>Knapsack · coin change · edit distance</dd></div><div><dt>Design question</dt><dd>What minimum state fully determines the future?</dd></div></dl>
+          <a href="https://www.hello-algo.com/en/chapter_dynamic_programming/" target="_blank" rel="noreferrer">Read chapter →</a>
+        </article>
+        <article class="pattern-card greedy-card">
+          <header><span>Irreversible local choice</span><h3>Greedy</h3></header>
+          <div class="pattern-flow"><i>Choose best now</i><b>→</b><i>Reduce</i><b>→</b><i>Prove</i></div>
+          <p>Fast and elegant only when a local choice can be proven to preserve a global optimum.</p>
+          <dl><div><dt>Think of</dt><dd>Fractional knapsack · interval choices</dd></div><div><dt>Proof question</dt><dd>Can an optimal solution exchange in this choice?</dd></div></dl>
+          <a href="https://www.hello-algo.com/en/chapter_greedy/" target="_blank" rel="noreferrer">Read chapter →</a>
+        </article>
+      </div>
+    </section>
+
     <section class="section chapter-section" id="chapters">
       <div class="section-heading centered-heading">
-        <p class="eyebrow">05 · Continue in the original book</p>
+        <p class="eyebrow">09 · Continue in the original book</p>
         <h2>Use the atlas, then go deeper</h2>
         <p>These visual routes point back to the detailed English explanations and runnable code in Hello Algo.</p>
       </div>
@@ -236,7 +410,7 @@
   </main>
 
   <footer>
-    <div><strong>Hello Algo Atlas</strong><span>A visual learning layer for the open-source Hello Algo book.</span></div>
+    <div><strong>Hello Algo Atlas</strong><span>A visual learning layer with paraphrased concepts and credited artwork from the open-source Hello Algo book.</span></div>
     <div class="footer-links"><a href="https://github.com/krahets/hello-algo" target="_blank" rel="noreferrer">Source repository ↗</a><a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">Read Hello Algo ↗</a></div>
   </footer>
 </body>
