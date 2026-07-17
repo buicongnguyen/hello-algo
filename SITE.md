@@ -18,8 +18,9 @@ The page includes:
 - the same learning graph, data-structure guide, traversal, complexity, binary-search, sorting, motion, and problem-choice sections as `/en/`;
 - Vietnamese static copy, controls, live status messages, chart labels, and interactive datasets;
 - stable interaction keys shared with English and generated section-for-section from the same source page;
-- six source-tracked Vietnamese pilot documents covering all of Chapter 1 and the beginning of Chapter 2;
+- 14 source-tracked Vietnamese pilot documents covering Chapters 0–2;
 - a responsive reader with chapter navigation, theme control, source attribution, and previous/next links;
+- a per-page English option that opens the exact corresponding upstream chapter;
 - links to the translation plan and upstream project.
 
 Translation governance lives under `vi/`: a versioned glossary, style guide, contribution workflow, and machine-readable status ledger. Pilot pages are explicitly labelled as self-reviewed and awaiting independent community review.

@@ -1,6 +1,6 @@
 # Thuật ngữ Hello Algo tiếng Việt
 
-Phiên bản: `v0.1-pilot`
+Phiên bản: `v0.2-pilot`
 
 Nguồn chuẩn: bản tiếng Anh tại commit upstream `4935d2d3877a6205008d89def8d2ba43f7e06275`
 
@@ -46,6 +46,9 @@ Từ điển này quy định cách gọi ưu tiên trong bản dịch. Khi mộ
 | divide and conquer | chia để trị | Giữ cách viết này trong toàn dự án |
 | recursion | đệ quy | base case → trường hợp cơ sở |
 | iteration | phép lặp | loop → vòng lặp |
+| tail recursion | đệ quy đuôi | Không ngụ ý mọi ngôn ngữ đều tối ưu tự động |
+| call stack | ngăn xếp lời gọi | stack frame → khung ngăn xếp |
+| recursion tree | cây đệ quy | recursion depth → độ sâu đệ quy |
 | backtracking | quay lui | pruning → cắt tỉa |
 | dynamic programming | quy hoạch động | Có thể dùng DP sau lần giải thích đầu |
 | greedy algorithm | thuật toán tham lam | local optimum → tối ưu cục bộ |
@@ -60,6 +63,7 @@ Từ điển này quy định cách gọi ưu tiên trong bản dịch. Khi mộ
 | space complexity | độ phức tạp không gian | space efficiency → hiệu quả không gian |
 | input size | kích thước đầu vào | Có thể dùng “quy mô dữ liệu đầu vào” khi tự nhiên hơn |
 | growth trend | xu hướng tăng trưởng | Không đổi thành một giá trị thời gian cụ thể |
+| asymptotic upper bound | cận trên tiệm cận | Big-O notation → ký hiệu Big O |
 | constant | hằng số | constant time → thời gian hằng số |
 | logarithmic | logarit | logarithmic time → thời gian logarit |
 | linear | tuyến tính | linear time → thời gian tuyến tính |

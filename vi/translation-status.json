@@ -12,6 +12,34 @@
   },
   "documents": [
     {
+      "source": "en/docs/chapter_preface/index.md",
+      "target": "vi/docs/chapter_preface/index.md",
+      "route": "vi/learn/loi-noi-dau.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_preface/about_the_book.md",
+      "target": "vi/docs/chapter_preface/about_the_book.md",
+      "route": "vi/learn/ve-cuon-sach.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_preface/suggestions.md",
+      "target": "vi/docs/chapter_preface/suggestions.md",
+      "route": "vi/learn/cach-su-dung-cuon-sach.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_preface/summary.md",
+      "target": "vi/docs/chapter_preface/summary.md",
+      "route": "vi/learn/tom-tat-chuong-0.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
       "source": "en/docs/chapter_introduction/index.md",
       "target": "vi/docs/chapter_introduction/index.md",
       "route": "vi/learn/",
@@ -51,6 +79,34 @@
       "target": "vi/docs/chapter_computational_complexity/performance_evaluation.md",
       "route": "vi/learn/danh-gia-hieu-qua.html",
       "wave": 1,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_computational_complexity/iteration_and_recursion.md",
+      "target": "vi/docs/chapter_computational_complexity/iteration_and_recursion.md",
+      "route": "vi/learn/vong-lap-va-de-quy.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_computational_complexity/time_complexity.md",
+      "target": "vi/docs/chapter_computational_complexity/time_complexity.md",
+      "route": "vi/learn/do-phuc-tap-thoi-gian.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_computational_complexity/space_complexity.md",
+      "target": "vi/docs/chapter_computational_complexity/space_complexity.md",
+      "route": "vi/learn/do-phuc-tap-khong-gian.html",
+      "wave": 2,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_computational_complexity/summary.md",
+      "target": "vi/docs/chapter_computational_complexity/summary.md",
+      "route": "vi/learn/tom-tat-chuong-2.html",
+      "wave": 2,
       "status": "pilot"
     }
   ]

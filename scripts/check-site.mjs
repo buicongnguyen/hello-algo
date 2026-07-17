@@ -153,8 +153,8 @@ if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-m
 if (translationStatus.sourceCommit !== "4935d2d3877a6205008d89def8d2ba43f7e06275") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
-if (translationStatus.documents.length !== 6 || translationStatus.documents.some((document) => document.status !== "pilot")) {
-  failures.push("Expected 6 transparently labelled Vietnamese pilot documents");
+if (translationStatus.documents.length !== 14 || translationStatus.documents.some((document) => document.status !== "pilot")) {
+  failures.push("Expected 14 transparently labelled Vietnamese pilot documents");
 }
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {

@@ -66,9 +66,10 @@ export async function checkBuiltSite(outputRoot) {
 
   const pilotDirectory = path.join(outputRoot, "vi", "learn");
   const pilotPages = (await readdir(pilotDirectory)).filter((file) => file.endsWith(".html"));
-  if (pilotPages.length !== 6) failures.push(`Expected 6 Vietnamese pilot pages, found ${pilotPages.length}`);
-
   const translationStatus = JSON.parse(await readFile(path.join(outputRoot, "vi", "translation-status.json"), "utf8"));
+  if (pilotPages.length !== translationStatus.documents.length) {
+    failures.push(`Expected ${translationStatus.documents.length} Vietnamese pilot pages, found ${pilotPages.length}`);
+  }
   const routes = translationStatus.documents.map((document) => document.route);
   if (new Set(routes).size !== routes.length) failures.push("Vietnamese translation status contains duplicate routes");
   for (const route of routes) {
@@ -80,10 +81,23 @@ export async function checkBuiltSite(outputRoot) {
   if (!pilotHome.includes("Bản thử · nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
     failures.push("Vietnamese pilot pages are missing source-lock or license disclosure");
   }
+  if (!pilotHome.includes("14 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 3) {
+    failures.push("Vietnamese reader progress or Chapters 0–2 navigation is incomplete");
+  }
   for (const pilotPage of pilotPages) {
     const html = await readFile(path.join(pilotDirectory, pilotPage), "utf8");
     if (/\$[^$<>]+\$/.test(html)) failures.push(`${pilotPage} contains unrendered inline math`);
-    if (!html.includes("Chuyển ngữ và biên tập bổ sung")) failures.push(`${pilotPage} does not disclose translation and editorial modification`);
+    if (html.includes("```") || html.includes("```src")) failures.push(`${pilotPage} contains an unrendered code fence`);
+    if (/\\(?:Omega|Theta|times|cdot|dots|le|ge|lfloor|rfloor)\b/.test(html)) failures.push(`${pilotPage} contains an unreadable raw math command`);
+    if (!html.includes("Chuyển ngữ, chọn lọc ví dụ và biên tập bổ sung") || !html.includes("krahets và cộng đồng đóng góp")) {
+      failures.push(`${pilotPage} does not disclose source authorship, translation, selection, and editorial modification`);
+    }
+    if (!html.includes("Đọc trang tương ứng bằng tiếng Anh")) failures.push(`${pilotPage} has no corresponding English-page option`);
+  }
+
+  const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");
+  if (!timeComplexityPage.includes('<pre><code class="language-python"') || !timeComplexityPage.includes('class="math-block"')) {
+    failures.push("Vietnamese time-complexity page is missing rendered code or display mathematics");
   }
 
   const englishAtlas = await readFile(path.join(outputRoot, "en", "index.html"), "utf8");

@@ -92,6 +92,9 @@ p, li { color: color-mix(in srgb, var(--text) 86%, var(--muted)); font-size: 1re
 strong { color: var(--text); }
 code { padding: .16rem .32rem; border: 1px solid var(--line); border-radius: .35rem; background: var(--surface-2); color: var(--violet); font: .88em ui-monospace, monospace; }
 .math { white-space: nowrap; color: var(--violet); font: .96em ui-monospace, SFMono-Regular, Consolas, monospace; }
+pre { margin: 1.5rem 0; padding: 1rem 1.1rem; overflow-x: auto; border: 1px solid var(--line); border-radius: .75rem; background: color-mix(in srgb, var(--surface-2) 88%, var(--bg)); }
+pre code { padding: 0; border: 0; background: transparent; color: color-mix(in srgb, var(--text) 90%, var(--blue)); font-size: .82rem; line-height: 1.65; white-space: pre; }
+.math-block { margin: 1.5rem 0; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); border-radius: .7rem; background: var(--surface-2); color: var(--violet); font: .9rem/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; text-align: center; white-space: nowrap; }
 article a { color: var(--blue-2); text-underline-offset: .18rem; }
 article ul, article ol { padding-left: 1.35rem; }
 article li { margin: .55rem 0; padding-left: .2rem; }

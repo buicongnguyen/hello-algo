@@ -69,7 +69,7 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 ## Trải nghiệm tiếng Việt trong fork này
 
 - [Atlas tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/) có cùng 11 phần nội dung và tương tác với [Atlas tiếng Anh](https://buicongnguyen.github.io/hello-algo/en/).
-- [Bản đọc thử tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm sáu tài liệu mở đầu đã tự kiểm tra và đang chờ phản biện độc lập.
+- [Bản đọc thử tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm 14 tài liệu thuộc Chương 0–2, đã tự kiểm tra và đang chờ phản biện độc lập. Mỗi trang có nút mở đúng nội dung tiếng Anh tương ứng.
 - [Kế hoạch Việt hóa](VIETNAMESE_TRANSLATION_PLAN.md) mô tả lộ trình, tiêu chuẩn chất lượng, quy trình duyệt và cách đồng bộ với upstream.
 - [Từ điển thuật ngữ](vi/glossary.md), [quy chuẩn văn phong](vi/style-guide.md) và [hướng dẫn đóng góp](vi/CONTRIBUTING.md) giúp bản dịch nhất quán và dễ kiểm tra.
 

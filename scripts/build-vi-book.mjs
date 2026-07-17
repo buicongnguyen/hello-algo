@@ -5,6 +5,42 @@ import path from "node:path";
 const sourceCommit = "4935d2d3877a6205008d89def8d2ba43f7e06275";
 const pages = [
   {
+    slug: "loi-noi-dau",
+    title: "Lời nói đầu",
+    shortTitle: "Lời nói đầu",
+    chapter: "Chương 0",
+    source: "en/docs/chapter_preface/index.md",
+    target: "vi/docs/chapter_preface/index.md",
+    description: "Lời mở đầu cho hành trình học cấu trúc dữ liệu và thuật toán."
+  },
+  {
+    slug: "ve-cuon-sach",
+    title: "Về cuốn sách",
+    shortTitle: "0.1 · Về cuốn sách",
+    chapter: "Chương 0",
+    source: "en/docs/chapter_preface/about_the_book.md",
+    target: "vi/docs/chapter_preface/about_the_book.md",
+    description: "Tìm hiểu đối tượng độc giả, cấu trúc nội dung và cộng đồng tạo nên Hello Algo."
+  },
+  {
+    slug: "cach-su-dung-cuon-sach",
+    title: "Cách sử dụng cuốn sách",
+    shortTitle: "0.2 · Cách sử dụng",
+    chapter: "Chương 0",
+    source: "en/docs/chapter_preface/suggestions.md",
+    target: "vi/docs/chapter_preface/suggestions.md",
+    description: "Học hiệu quả với hình động, mã nguồn, thảo luận và lộ trình luyện tập."
+  },
+  {
+    slug: "tom-tat-chuong-0",
+    title: "Tóm tắt Chương 0",
+    shortTitle: "0.3 · Tóm tắt",
+    chapter: "Chương 0",
+    source: "en/docs/chapter_preface/summary.md",
+    target: "vi/docs/chapter_preface/summary.md",
+    description: "Ôn lại cách sử dụng Hello Algo và phương pháp học bằng thực hành."
+  },
+  {
     slug: "index",
     title: "Gặp gỡ thuật toán",
     shortTitle: "Mở đầu",
@@ -57,6 +93,42 @@ const pages = [
     source: "en/docs/chapter_computational_complexity/performance_evaluation.md",
     target: "vi/docs/chapter_computational_complexity/performance_evaluation.md",
     description: "So sánh phép đo thực tế với phân tích độ phức tạp tiệm cận."
+  },
+  {
+    slug: "vong-lap-va-de-quy",
+    title: "Phép lặp và đệ quy",
+    shortTitle: "2.2 · Phép lặp và đệ quy",
+    chapter: "Chương 2",
+    source: "en/docs/chapter_computational_complexity/iteration_and_recursion.md",
+    target: "vi/docs/chapter_computational_complexity/iteration_and_recursion.md",
+    description: "So sánh phép lặp, đệ quy, ngăn xếp lời gọi và cây đệ quy."
+  },
+  {
+    slug: "do-phuc-tap-thoi-gian",
+    title: "Độ phức tạp thời gian",
+    shortTitle: "2.3 · Độ phức tạp thời gian",
+    chapter: "Chương 2",
+    source: "en/docs/chapter_computational_complexity/time_complexity.md",
+    target: "vi/docs/chapter_computational_complexity/time_complexity.md",
+    description: "Đo xu hướng tăng của thời gian chạy bằng ký hiệu tiệm cận."
+  },
+  {
+    slug: "do-phuc-tap-khong-gian",
+    title: "Độ phức tạp không gian",
+    shortTitle: "2.4 · Độ phức tạp không gian",
+    chapter: "Chương 2",
+    source: "en/docs/chapter_computational_complexity/space_complexity.md",
+    target: "vi/docs/chapter_computational_complexity/space_complexity.md",
+    description: "Phân tích bộ nhớ tạm, đầu ra, khung ngăn xếp và các dạng tăng trưởng."
+  },
+  {
+    slug: "tom-tat-chuong-2",
+    title: "Tóm tắt Chương 2",
+    shortTitle: "2.5 · Tóm tắt",
+    chapter: "Chương 2",
+    source: "en/docs/chapter_computational_complexity/summary.md",
+    target: "vi/docs/chapter_computational_complexity/summary.md",
+    description: "Ôn tập đánh giá hiệu quả, độ phức tạp thời gian và độ phức tạp không gian."
   }
 ];
 
@@ -65,6 +137,18 @@ const escapeHtml = (value) => value
   .replaceAll("<", "&lt;")
   .replaceAll(">", "&gt;")
   .replaceAll('"', "&quot;");
+
+const formatMath = (value) => value
+  .replaceAll("\\log", "log")
+  .replaceAll("\\Omega", "Ω")
+  .replaceAll("\\Theta", "Θ")
+  .replaceAll("\\times", "×")
+  .replaceAll("\\cdot", "·")
+  .replaceAll("\\dots", "…")
+  .replaceAll("\\le", "≤")
+  .replaceAll("\\ge", "≥")
+  .replaceAll("\\lfloor", "⌊")
+  .replaceAll("\\rfloor", "⌋");
 
 function renderInline(value) {
   const tokens = [];
@@ -77,8 +161,7 @@ function renderInline(value) {
   const protectedValue = value
     .replace(/`([^`]+)`/g, (_, code) => protect(`<code>${escapeHtml(code)}</code>`))
     .replace(/\$([^$]+)\$/g, (_, expression) => {
-      const readableExpression = expression.replaceAll("\\log", "log");
-      return protect(`<span class="math">${escapeHtml(readableExpression)}</span>`);
+      return protect(`<span class="math">${escapeHtml(formatMath(expression))}</span>`);
     })
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
       if (!safeUrl.test(url)) return escapeHtml(label);
@@ -116,6 +199,34 @@ function renderMarkdown(markdown, sourcePath) {
     const line = lines[index].trimEnd();
     if (!line.trim()) {
       index += 1;
+      continue;
+    }
+
+    const codeFence = line.match(/^```([^\s`]*)/);
+    if (codeFence) {
+      const language = codeFence[1].replace(/[^a-zA-Z0-9_-]/g, "");
+      const code = [];
+      index += 1;
+      while (index < lines.length && !lines[index].trimStart().startsWith("```")) {
+        code.push(lines[index]);
+        index += 1;
+      }
+      if (index >= lines.length) throw new Error(`Unclosed code fence in ${sourcePath}`);
+      index += 1;
+      output.push(`<pre><code${language ? ` class="language-${language}"` : ""}>${escapeHtml(code.join("\n"))}</code></pre>`);
+      continue;
+    }
+
+    if (line.trim() === "$$") {
+      const expression = [];
+      index += 1;
+      while (index < lines.length && lines[index].trim() !== "$$") {
+        expression.push(lines[index].trim());
+        index += 1;
+      }
+      if (index >= lines.length) throw new Error(`Unclosed display math in ${sourcePath}`);
+      index += 1;
+      output.push(`<div class="math-block" role="math">${escapeHtml(formatMath(expression.join(" ")))}</div>`);
       continue;
     }
 
@@ -175,7 +286,7 @@ function renderMarkdown(markdown, sourcePath) {
     index += 1;
     while (index < lines.length) {
       const next = lines[index].trimEnd();
-      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || /^\s*(\d+\.|[-*])\s+/.test(next)) break;
+      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || next.startsWith("```") || next.trim() === "$$" || /^\s*(\d+\.|[-*])\s+/.test(next)) break;
       if (next.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1])) break;
       paragraph.push(next.trim());
       index += 1;
@@ -187,7 +298,8 @@ function renderMarkdown(markdown, sourcePath) {
 }
 
 function navigation(currentSlug) {
-  return ["Chương 1", "Chương 2"].map((chapter) => `
+  const chapters = [...new Set(pages.map((page) => page.chapter))];
+  return chapters.map((chapter) => `
     <div class="book-nav-group">
       <span>${chapter}</span>
       ${pages.filter((page) => page.chapter === chapter).map((page) => `<a${page.slug === currentSlug ? ' class="active" aria-current="page"' : ""} href="${page.slug}.html">${page.shortTitle}</a>`).join("\n")}
@@ -199,6 +311,10 @@ function pageTemplate(page, body, pageIndex) {
   const next = pages[pageIndex + 1];
   const canonicalName = page.slug === "index" ? "" : `${page.slug}.html`;
   const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/${page.source}`;
+  const sourceParts = page.source.split("/");
+  const sourceFile = sourceParts.at(-1).replace(/\.md$/, "");
+  const sourceChapter = sourceParts.at(-2);
+  const englishUrl = `https://www.hello-algo.com/en/${sourceChapter}/${sourceFile === "index" ? "" : `${sourceFile}/`}`;
   return `<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -208,18 +324,18 @@ function pageTemplate(page, body, pageIndex) {
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/vi/learn/${canonicalName}">
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
-  <link rel="stylesheet" href="book.css?v=20260718c">
-  <script src="book.js?v=20260718c" defer></script>
+  <link rel="stylesheet" href="book.css?v=20260718e">
+  <script src="book.js?v=20260718e" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#article">Bỏ qua để đến bài đọc</a>
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="Mở mục lục" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>VI</b></strong></a>
-    <div class="reader-progress"><span>Đợt thử</span><strong>6 / 105 tài liệu</strong></div>
+    <div class="reader-progress"><span>Đợt thử</span><strong>${pages.length} / 105 tài liệu</strong></div>
     <nav aria-label="Ngôn ngữ và giao diện">
-      <a class="active" href="./" lang="vi" aria-current="page">VI</a>
-      <a href="../../en/" lang="en">EN</a>
+      <a class="active" href="${canonicalName || "./"}" lang="vi" hreflang="vi" aria-current="page">VI</a>
+      <a href="${englishUrl}" lang="en" hreflang="en" aria-label="Đọc trang tương ứng bằng tiếng Anh">EN</a>
       <button id="reader-theme" type="button" aria-label="Đổi giao diện sáng hoặc tối">◐</button>
     </nav>
   </header>
@@ -232,11 +348,11 @@ function pageTemplate(page, body, pageIndex) {
     <main class="reader-main">
       <article id="article">
         <div class="article-meta"><span>${page.chapter}</span><span>Bản thử · nguồn khóa tại ${sourceCommit.slice(0, 7)}</span></div>
-        <div class="pilot-notice"><strong>Trạng thái: bản thử đã tự kiểm tra</strong><p>Nội dung đã qua kiểm tra kỹ thuật, ngôn ngữ, liên kết và bản dựng trong fork này. Dự án vẫn cần phản biện độc lập trước khi nâng lên bản dịch ổn định.</p></div>
+        <div class="pilot-notice"><strong>Trạng thái: bản thử đã tự kiểm tra</strong><p>Nội dung đã qua kiểm tra kỹ thuật, ngôn ngữ, liên kết và bản dựng trong fork này. Ở bài có nhiều đoạn mã tương đương, bản tiếng Việt giữ ví dụ Python đại diện; nút EN mở bản đầy đủ. Dự án vẫn cần phản biện độc lập trước khi nâng lên bản dịch ổn định.</p></div>
         ${body}
         <footer class="article-attribution">
           <strong>Nguồn và giấy phép</strong>
-          <p>Chuyển ngữ và biên tập bổ sung từ <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo tiếng Anh</a>. Nội dung phái sinh được chia sẻ theo <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.vi" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>; đây là dự án cộng đồng, không ngụ ý được upstream bảo trợ chính thức.</p>
+          <p>Chuyển ngữ, chọn lọc ví dụ và biên tập bổ sung từ <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo của krahets và cộng đồng đóng góp</a>. Nội dung phái sinh được chia sẻ theo <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.vi" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>; đây là dự án cộng đồng phi thương mại, không ngụ ý được upstream bảo trợ chính thức.</p>
         </footer>
       </article>
       <nav class="page-nav" aria-label="Bài trước và bài sau">
@@ -257,18 +373,29 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
 
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_introduction.jpg", "chapter_complexity_analysis.jpg"]) {
+  for (const cover of ["chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg"]) {
     await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   }
 
-  const introAssets = path.join(bookOutput, "assets", "chapter_introduction");
-  await mkdir(introAssets, { recursive: true });
-  for (const directory of ["algorithms_are_everywhere.assets", "what_is_dsa.assets"]) {
-    await cp(
-      path.join(projectRoot, "en", "docs", "chapter_introduction", directory),
-      path.join(introAssets, directory),
-      { recursive: true }
-    );
+  const assetDirectories = [
+    ["chapter_preface", "about_the_book.assets"],
+    ["chapter_preface", "suggestions.assets"],
+    ["chapter_introduction", "algorithms_are_everywhere.assets"],
+    ["chapter_introduction", "what_is_dsa.assets"],
+    ["chapter_computational_complexity", "iteration_and_recursion.assets"],
+    ["chapter_computational_complexity", "time_complexity.assets"],
+    ["chapter_computational_complexity", "space_complexity.assets"]
+  ];
+  for (const [chapter, directory] of assetDirectories) {
+    const destination = path.join(bookOutput, "assets", chapter, directory);
+    await mkdir(path.dirname(destination), { recursive: true });
+    await cp(path.join(projectRoot, "en", "docs", chapter, directory), destination, { recursive: true });
+  }
+
+  const sharedAssetOutput = path.join(bookOutput, "assets", "index.assets");
+  await mkdir(sharedAssetOutput, { recursive: true });
+  for (const asset of ["animation.gif", "running_code.gif", "comment.gif"]) {
+    await cp(path.join(projectRoot, "en", "docs", "index.assets", asset), path.join(sharedAssetOutput, asset));
   }
 
   for (const [pageIndex, page] of pages.entries()) {
