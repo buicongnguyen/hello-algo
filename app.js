@@ -530,6 +530,61 @@ document.querySelector("#auto-play").addEventListener("click", () => {
 
 resetTraversal();
 
+const motionVideos = [...document.querySelectorAll(".motion-video")];
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function updateMotionControl(video) {
+  const button = video.parentElement.querySelector("[data-motion-toggle]");
+  const playing = !video.paused;
+  button.setAttribute("aria-pressed", String(playing));
+  button.querySelector("span").textContent = playing ? "Ⅱ" : "▶";
+  button.querySelector("b").textContent = playing ? "Pause animation" : "Play animation";
+}
+
+function playMotion(video, explicit = false) {
+  if (reducedMotion.matches && !explicit) {
+    video.pause();
+    updateMotionControl(video);
+    return;
+  }
+  video.play().then(() => updateMotionControl(video)).catch(() => {
+    video.pause();
+    updateMotionControl(video);
+  });
+}
+
+motionVideos.forEach((video) => {
+  video.dataset.userPaused = "false";
+  const button = video.parentElement.querySelector("[data-motion-toggle]");
+  button.addEventListener("click", () => {
+    if (video.paused) {
+      video.dataset.userPaused = "false";
+      playMotion(video, true);
+    } else {
+      video.dataset.userPaused = "true";
+      video.pause();
+      updateMotionControl(video);
+    }
+  });
+  video.addEventListener("play", () => updateMotionControl(video));
+  video.addEventListener("pause", () => updateMotionControl(video));
+  updateMotionControl(video);
+});
+
+if ("IntersectionObserver" in window) {
+  const motionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+      if (entry.isIntersecting && video.dataset.userPaused !== "true") playMotion(video);
+      else {
+        video.pause();
+        updateMotionControl(video);
+      }
+    });
+  }, { threshold: .35 });
+  motionVideos.forEach((video) => motionObserver.observe(video));
+}
+
 const complexityCanvas = document.querySelector("#complexity-canvas");
 const complexityContext = complexityCanvas.getContext("2d");
 const inputSlider = document.querySelector("#input-size");

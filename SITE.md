@@ -10,6 +10,7 @@ The atlas includes:
 - an interactive complexity chart;
 - a step-by-step binary-search interval lab;
 - an eight-algorithm sorting comparison;
+- three efficient motion demos reused from the original Hello Algo repository, with accessible playback controls;
 - a problem-clue decision graph;
 - visual comparisons of divide and conquer, backtracking, dynamic programming, and greedy reasoning;
 - direct routes into the original English Hello Algo chapters.

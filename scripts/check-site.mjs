@@ -45,6 +45,12 @@ for (const selector of [
   }
 }
 
+const motionSources = [...html.matchAll(/<source src="([^"]+\.mp4)"/g)].map((match) => match[1]);
+if (motionSources.length !== 3) failures.push(`Expected 3 motion demos, found ${motionSources.length}`);
+if (!js.includes("IntersectionObserver") || !js.includes("prefers-reduced-motion")) {
+  failures.push("Motion playback does not include visibility and reduced-motion handling");
+}
+
 if (!css.includes("@media (max-width: 760px)")) failures.push("Responsive layout breakpoint is missing");
 if (!html.includes("Skip to content")) failures.push("Skip link is missing");
 if (!html.includes("aria-live=")) failures.push("Live status region is missing");

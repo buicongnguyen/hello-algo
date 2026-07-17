@@ -25,6 +25,7 @@
       <a href="#roadmap">Learning graph</a>
       <a href="#structures">Structures</a>
       <a href="#traversal">Traversal lab</a>
+      <a href="#animations">Animations</a>
       <a href="#binary-search">Binary search</a>
       <a href="#sorting">Sorting</a>
       <a href="#chapters">Chapters</a>
@@ -46,7 +47,7 @@
         <ul class="hero-stats" aria-label="Page summary">
           <li><strong>13</strong><span>connected topics</span></li>
           <li><strong>4</strong><span>interactive learning labs</span></li>
-          <li><strong>8</strong><span>sorts compared</span></li>
+          <li><strong>3</strong><span>original motion demos</span></li>
         </ul>
       </div>
 
@@ -218,9 +219,68 @@
       </div>
     </section>
 
+    <section class="section motion-section" id="animations">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">04 · Original Hello Algo in motion</p>
+        <h2>Watch the learning loop happen</h2>
+        <p>These lightweight animations come from the original Hello Algo repository. They show how visual steps, runnable code, and discussion work together around the book.</p>
+      </div>
+      <div class="motion-grid">
+        <article class="motion-card motion-card-featured">
+          <div class="motion-media">
+            <video class="motion-video" muted loop playsinline preload="metadata" aria-label="Animated Hello Algo demonstration of graph operations" aria-describedby="motion-graph-copy">
+              <source src="en/docs/index.assets/animation.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false"><span aria-hidden="true">▶</span><b>Play animation</b></button>
+            <span class="motion-badge">Original demo</span>
+          </div>
+          <div class="motion-copy" id="motion-graph-copy">
+            <span>Graph representation</span>
+            <h3>See an operation and its data representation change together</h3>
+            <p>The demonstration connects graph edits with the adjacency structure underneath—the same idea the traversal lab uses interactively.</p>
+            <a href="https://www.hello-algo.com/en/chapter_graph/graph_operations/" target="_blank" rel="noreferrer">Study graph operations →</a>
+          </div>
+        </article>
+
+        <article class="motion-card">
+          <div class="motion-media">
+            <video class="motion-video" muted loop playsinline preload="metadata" aria-label="Animated demonstration of running Hello Algo example code" aria-describedby="motion-code-copy">
+              <source src="en/docs/index.assets/running_code.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false"><span aria-hidden="true">▶</span><b>Play animation</b></button>
+          </div>
+          <div class="motion-copy" id="motion-code-copy">
+            <span>From page to program</span>
+            <h3>Run the matching example</h3>
+            <p>The repository organizes runnable implementations by language and chapter, so a visual idea can immediately become executable code.</p>
+            <a href="https://github.com/krahets/hello-algo/tree/main/en/codes" target="_blank" rel="noreferrer">Browse English code →</a>
+          </div>
+        </article>
+
+        <article class="motion-card">
+          <div class="motion-media">
+            <video class="motion-video" muted loop playsinline preload="metadata" aria-label="Animated demonstration of the Hello Algo discussion area" aria-describedby="motion-community-copy">
+              <source src="en/docs/index.assets/comment.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false"><span aria-hidden="true">▶</span><b>Play animation</b></button>
+          </div>
+          <div class="motion-copy" id="motion-community-copy">
+            <span>Learn in public</span>
+            <h3>Ask where the idea is explained</h3>
+            <p>Chapter-level discussion keeps questions beside the concept that caused them, making the open book easier to improve together.</p>
+            <a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">Open the original book →</a>
+          </div>
+        </article>
+      </div>
+      <p class="motion-source">Animations © Hello Algo contributors and used from the forked repository under the project’s license. Some captured interface text remains in the original language.</p>
+    </section>
+
     <section class="section complexity-section" id="complexity">
       <div class="section-heading centered-heading">
-        <p class="eyebrow">04 · Complexity explorer</p>
+        <p class="eyebrow">05 · Complexity explorer</p>
         <h2>Growth matters more than milliseconds</h2>
         <p>Move the input size and watch the operation counts separate. The vertical scale is logarithmic so every curve stays visible.</p>
       </div>
@@ -240,7 +300,7 @@
 
     <section class="section binary-section" id="binary-search">
       <div class="section-heading">
-        <p class="eyebrow">05 · Binary-search lab</p>
+        <p class="eyebrow">06 · Binary-search lab</p>
         <h2>Throw away half, then repeat</h2>
         <p>Binary search works because sorted data tells you which half cannot contain the target. Follow the interval until the value is found—or the interval becomes empty.</p>
       </div>
@@ -286,7 +346,7 @@
 
     <section class="section sorting-section" id="sorting">
       <div class="section-heading centered-heading">
-        <p class="eyebrow">06 · Sorting fingerprints</p>
+        <p class="eyebrow">07 · Sorting fingerprints</p>
         <h2>No single sort wins every column</h2>
         <p>Efficiency, stability, extra memory, and input shape pull in different directions. Filter the table by the family of idea you want to compare.</p>
       </div>
@@ -316,7 +376,7 @@
 
     <section class="section chooser-section" id="chooser">
       <div class="section-heading">
-        <p class="eyebrow">07 · Algorithm choice graph</p>
+        <p class="eyebrow">08 · Algorithm choice graph</p>
         <h2>Start from the shape of the problem</h2>
         <p>Select the strongest clue in the prompt to reveal a practical first strategy.</p>
       </div>
@@ -338,7 +398,7 @@
 
     <section class="section patterns-section" id="patterns">
       <div class="section-heading centered-heading">
-        <p class="eyebrow">08 · Four problem-solving patterns</p>
+        <p class="eyebrow">09 · Four problem-solving patterns</p>
         <h2>Similar recursion trees, different promises</h2>
         <p>All four strategies reduce the remaining problem. What changes is whether branches are independent, repeated, reversible, or safely decided one step at a time.</p>
       </div>
@@ -376,7 +436,7 @@
 
     <section class="section chapter-section" id="chapters">
       <div class="section-heading centered-heading">
-        <p class="eyebrow">09 · Continue in the original book</p>
+        <p class="eyebrow">10 · Continue in the original book</p>
         <h2>Use the atlas, then go deeper</h2>
         <p>These visual routes point back to the detailed English explanations and runnable code in Hello Algo.</p>
       </div>

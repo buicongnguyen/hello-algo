@@ -14,6 +14,7 @@ const coverFiles = [
   "chapter_backtracking.jpg",
   "chapter_dynamic_programming.jpg"
 ];
+const motionFiles = ["animation.mp4", "running_code.mp4", "comment.mp4"];
 
 if (path.dirname(outputRoot) !== projectRoot || path.basename(outputRoot) !== "dist") {
   throw new Error("Refusing to rebuild outside the project dist directory");
@@ -35,4 +36,13 @@ for (const file of coverFiles) {
   );
 }
 
-console.log(`Built GitHub Pages artifact in ${path.relative(projectRoot, outputRoot)} (${rootFiles.length + coverFiles.length} files).`);
+const motionOutput = path.join(outputRoot, "en", "docs", "index.assets");
+await mkdir(motionOutput, { recursive: true });
+for (const file of motionFiles) {
+  await cp(
+    path.join(projectRoot, "en", "docs", "index.assets", file),
+    path.join(motionOutput, file)
+  );
+}
+
+console.log(`Built GitHub Pages artifact in ${path.relative(projectRoot, outputRoot)} (${rootFiles.length + coverFiles.length + motionFiles.length} files).`);

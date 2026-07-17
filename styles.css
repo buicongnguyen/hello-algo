@@ -516,6 +516,45 @@ h3 { font-size: 1.3rem; }
 .invariant-card > span { color: var(--cyan); }
 .invariant-card p { margin: .4rem 0 0; color: var(--muted); font-size: .78rem; }
 
+.motion-section { width: min(calc(100% - 2.4rem), 1280px); }
+.motion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
+.motion-card { overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); box-shadow: var(--shadow); }
+.motion-card-featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1.45fr .55fr; }
+.motion-media { position: relative; min-width: 0; overflow: hidden; border-bottom: 1px solid var(--line); background: #eef2f5; }
+.motion-card-featured .motion-media { border-right: 1px solid var(--line); border-bottom: 0; }
+.motion-video { width: 100%; height: 100%; aspect-ratio: 1280 / 865; display: block; object-fit: contain; background: #eef2f5; }
+.motion-toggle {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  min-height: 40px;
+  padding: .55rem .75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 999px;
+  background: rgba(7,17,31,.82);
+  color: #eef5ff;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-size: .7rem;
+}
+.motion-toggle:hover { background: rgba(7,17,31,.96); }
+.motion-toggle span { width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--blue); color: #07111f; font-size: .55rem; }
+.motion-toggle b { font-weight: 760; }
+.motion-badge { position: absolute; top: 1rem; right: 1rem; padding: .38rem .6rem; border-radius: 999px; background: rgba(7,17,31,.76); color: #eef5ff; font: 760 .62rem ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; backdrop-filter: blur(10px); }
+.motion-copy { flex: 1; padding: clamp(1.2rem, 3vw, 1.7rem); display: flex; flex-direction: column; }
+.motion-card-featured .motion-copy { justify-content: center; }
+.motion-copy > span { color: var(--amber); font: 760 .65rem ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.motion-copy h3 { margin: .65rem 0 .8rem; font-size: clamp(1.35rem, 2.8vw, 2rem); }
+.motion-card-featured .motion-copy h3 { font-size: clamp(1.8rem, 3.2vw, 2.7rem); }
+.motion-copy p { margin: 0 0 1.2rem; color: var(--muted); font-size: .82rem; }
+.motion-copy a { margin-top: auto; color: var(--blue-2); text-decoration: none; font-size: .76rem; font-weight: 760; }
+.motion-copy a:hover { text-decoration: underline; }
+.motion-source { margin: .8rem 0 0; color: var(--muted); font-size: .68rem; text-align: center; }
+
 .complexity-shell { display: grid; grid-template-columns: 1.45fr .55fr; overflow: hidden; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); box-shadow: var(--shadow); }
 .complexity-chart-wrap { min-height: 500px; padding: 1rem; border-right: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, var(--surface-2) 76%, transparent), var(--surface)); }
 #complexity-canvas { width: 100%; height: 100%; display: block; }
@@ -663,6 +702,8 @@ input:focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 55%, tra
   .structure-body, .binary-grid { grid-template-columns: 1fr; }
   .structure-stage, .binary-stage { border-right: 0; border-bottom: 1px solid var(--line); }
   .structure-copy { min-height: 390px; }
+  .motion-card-featured { grid-template-columns: 1fr; }
+  .motion-card-featured .motion-media { border-right: 0; border-bottom: 1px solid var(--line); }
 }
 
 @media (max-width: 760px) {
@@ -684,6 +725,8 @@ input:focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 55%, tra
   .binary-array { overflow-x: auto; grid-template-columns: repeat(12, minmax(52px, 1fr)); padding-bottom: 1.8rem; }
   .binary-scale { display: none; }
   .binary-takeaways { grid-template-columns: 1fr; }
+  .motion-grid { grid-template-columns: 1fr; }
+  .motion-card-featured { grid-column: auto; }
   .canvas-wrap { min-height: 430px; }
   .complexity-chart-wrap { min-height: 420px; }
   .choice-branches { grid-template-columns: repeat(2, 1fr); }
