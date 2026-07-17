@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual learning companion for Hello Algo with an interactive roadmap, BFS and DFS traversal lab, complexity explorer, and chapter guide.">
+  <meta name="theme-color" content="#07111f">
+  <title>Hello Algo Atlas</title>
+  <link rel="stylesheet" href="styles.css?v=20260717a">
+  <script src="app.js?v=20260717a" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Hello Algo Atlas home">
+      <span class="brand-mark" aria-hidden="true">A<span>→</span>G</span>
+      <span>Hello Algo <b>Atlas</b></span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#roadmap">Learning graph</a>
+      <a href="#traversal">Traversal lab</a>
+      <a href="#complexity">Complexity</a>
+      <a href="#chapters">Chapters</a>
+      <a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">Original book ↗</a>
+    </nav>
+    <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span aria-hidden="true">◐</span></button>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Visual data structures &amp; algorithms guide</p>
+        <h1>See the connections. <span>Then write the code.</span></h1>
+        <p class="hero-lead">A graph-first companion to the English Hello Algo book. Explore what to learn next, animate BFS and DFS, and compare algorithm growth without getting lost in notation.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#roadmap">Explore the learning graph</a>
+          <a class="button secondary" href="#traversal">Run a traversal →</a>
+        </div>
+        <ul class="hero-stats" aria-label="Page summary">
+          <li><strong>13</strong><span>connected topics</span></li>
+          <li><strong>2</strong><span>live graph traversals</span></li>
+          <li><strong>6</strong><span>complexity curves</span></li>
+        </ul>
+      </div>
+
+      <section class="hero-graph" aria-label="Preview of the algorithm learning graph">
+        <div class="graph-window-bar"><i></i><i></i><i></i><span>learning-path.graph</span></div>
+        <div class="hero-network" aria-hidden="true">
+          <div class="hero-edge edge-a"></div>
+          <div class="hero-edge edge-b"></div>
+          <div class="hero-edge edge-c"></div>
+          <div class="hero-edge edge-d"></div>
+          <span class="hero-node node-start">Start</span>
+          <span class="hero-node node-structure">Structure</span>
+          <span class="hero-node node-search">Search</span>
+          <span class="hero-node node-graph">Graph</span>
+          <span class="hero-node node-solve">Solve</span>
+        </div>
+        <p class="hero-caption"><span></span>Every edge answers: “What should I understand first?”</p>
+      </section>
+    </section>
+
+    <section class="section roadmap-section" id="roadmap">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">01 · Interactive learning graph</p>
+        <h2>Learn in dependency order</h2>
+        <p>Click any node. The graph explains why the topic matters, what unlocks it, and where to go next.</p>
+      </div>
+
+      <div class="roadmap-layout">
+        <div class="knowledge-graph" id="knowledge-graph">
+          <canvas id="roadmap-canvas" aria-hidden="true"></canvas>
+          <div class="roadmap-column column-foundation" aria-label="Foundation topics">
+            <span class="column-label">Foundation</span>
+            <button class="topic-node active" type="button" data-topic="foundations" aria-pressed="true"><small>01</small><strong>Foundations</strong></button>
+            <button class="topic-node" type="button" data-topic="complexity" aria-pressed="false"><small>02</small><strong>Complexity</strong></button>
+          </div>
+          <div class="roadmap-column column-structures" aria-label="Data structure topics">
+            <span class="column-label">Structures</span>
+            <button class="topic-node" type="button" data-topic="arrays" aria-pressed="false"><small>03</small><strong>Arrays &amp; lists</strong></button>
+            <button class="topic-node" type="button" data-topic="stacks" aria-pressed="false"><small>04</small><strong>Stacks &amp; queues</strong></button>
+            <button class="topic-node" type="button" data-topic="hashing" aria-pressed="false"><small>05</small><strong>Hashing</strong></button>
+            <button class="topic-node" type="button" data-topic="trees" aria-pressed="false"><small>06</small><strong>Trees</strong></button>
+            <button class="topic-node" type="button" data-topic="heaps" aria-pressed="false"><small>07</small><strong>Heaps</strong></button>
+            <button class="topic-node" type="button" data-topic="graphs" aria-pressed="false"><small>08</small><strong>Graphs</strong></button>
+          </div>
+          <div class="roadmap-column column-algorithms" aria-label="Algorithm topics">
+            <span class="column-label">Algorithms</span>
+            <button class="topic-node" type="button" data-topic="search" aria-pressed="false"><small>09</small><strong>Searching</strong></button>
+            <button class="topic-node" type="button" data-topic="sorting" aria-pressed="false"><small>10</small><strong>Sorting</strong></button>
+            <button class="topic-node" type="button" data-topic="divide" aria-pressed="false"><small>11</small><strong>Divide &amp; conquer</strong></button>
+            <button class="topic-node" type="button" data-topic="backtracking" aria-pressed="false"><small>12</small><strong>Backtracking</strong></button>
+            <button class="topic-node" type="button" data-topic="dynamic" aria-pressed="false"><small>13</small><strong>Dynamic programming</strong></button>
+          </div>
+        </div>
+
+        <aside class="topic-detail" aria-live="polite">
+          <div class="detail-topline"><span id="topic-number">Node 01</span><span id="topic-status">Best place to begin</span></div>
+          <h3 id="topic-title">Foundations</h3>
+          <p id="topic-summary">Build the vocabulary for inputs, outputs, correctness, data structures, and the algorithm that transforms one into the other.</p>
+          <dl class="topic-facts">
+            <div><dt>Understand first</dt><dd id="topic-before">Nothing — begin here</dd></div>
+            <div><dt>This unlocks</dt><dd id="topic-after">Complexity · Arrays &amp; lists</dd></div>
+            <div><dt>Memory hook</dt><dd id="topic-hook">Data is the shape; an algorithm is the journey.</dd></div>
+          </dl>
+          <a class="text-link" id="topic-link" href="https://www.hello-algo.com/en/chapter_introduction/" target="_blank" rel="noreferrer">Read this Hello Algo chapter →</a>
+          <div class="explored-meter">
+            <div><span>Nodes explored</span><b id="explored-count">1 / 13</b></div>
+            <div class="meter-track"><span id="explored-bar"></span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section traversal-section" id="traversal">
+      <div class="section-heading">
+        <p class="eyebrow">02 · BFS / DFS traversal lab</p>
+        <h2>Same graph. Different frontier.</h2>
+        <p>Breadth-first search uses a queue and spreads level by level. Depth-first search uses a stack and follows one branch before returning.</p>
+      </div>
+
+      <div class="lab-shell">
+        <div class="lab-toolbar">
+          <div class="mode-switch" role="group" aria-label="Traversal algorithm">
+            <button class="mode-button active" type="button" data-mode="bfs" aria-pressed="true">BFS · Queue</button>
+            <button class="mode-button" type="button" data-mode="dfs" aria-pressed="false">DFS · Stack</button>
+          </div>
+          <div class="lab-actions">
+            <button class="small-button primary" id="next-step" type="button">Next step</button>
+            <button class="small-button" id="auto-play" type="button">Auto play</button>
+            <button class="small-button" id="reset-traversal" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="lab-grid">
+          <div class="canvas-wrap">
+            <canvas id="traversal-canvas" role="img" aria-label="Graph with nodes A through H. Use the controls to animate breadth-first or depth-first traversal."></canvas>
+            <div class="canvas-legend" aria-hidden="true"><span><i class="current-dot"></i>Current</span><span><i class="frontier-dot"></i>Frontier</span><span><i class="visited-dot"></i>Visited</span></div>
+          </div>
+          <aside class="traversal-readout" aria-live="polite">
+            <div class="readout-step"><span id="step-label">Ready</span><strong id="current-node">Start at A</strong></div>
+            <p id="step-explanation">Choose BFS or DFS, then advance one step at a time.</p>
+            <div class="data-structure-view">
+              <span id="frontier-label">Queue · first in, first out</span>
+              <div class="frontier-items" id="frontier-items"><i>A</i></div>
+            </div>
+            <div class="visited-view">
+              <span>Visited order</span>
+              <div id="visited-items" class="visited-items"><em>Nothing visited yet</em></div>
+            </div>
+            <div class="invariant-card">
+              <span>What never changes</span>
+              <p id="invariant-text">The queue holds discovered nodes waiting for their turn. Its front is always processed next.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section complexity-section" id="complexity">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">03 · Complexity explorer</p>
+        <h2>Growth matters more than milliseconds</h2>
+        <p>Move the input size and watch the operation counts separate. The vertical scale is logarithmic so every curve stays visible.</p>
+      </div>
+
+      <div class="complexity-shell">
+        <div class="complexity-chart-wrap">
+          <canvas id="complexity-canvas" role="img" aria-label="Chart comparing common algorithm time complexities"></canvas>
+        </div>
+        <aside class="complexity-controls">
+          <label for="input-size"><span>Input size</span><strong>n = <b id="input-value">32</b></strong></label>
+          <input id="input-size" type="range" min="4" max="128" value="32" step="4">
+          <div class="complexity-pills" id="complexity-pills" aria-label="Complexity values"></div>
+          <div class="scale-note"><span>Rule of thumb</span><p id="scale-message">At n = 32, quadratic work is already 32× larger than linear work.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section chooser-section" id="chooser">
+      <div class="section-heading">
+        <p class="eyebrow">04 · Algorithm choice graph</p>
+        <h2>Start from the shape of the problem</h2>
+        <p>Select the strongest clue in the prompt to reveal a practical first strategy.</p>
+      </div>
+      <div class="choice-board">
+        <div class="choice-root"><span>Start</span><strong>What clue dominates?</strong></div>
+        <div class="choice-branches" role="group" aria-label="Problem clues">
+          <button class="choice-node active" type="button" data-choice="ordered" aria-pressed="true"><span>01</span>Sorted input</button>
+          <button class="choice-node" type="button" data-choice="shortest" aria-pressed="false"><span>02</span>Shortest hops</button>
+          <button class="choice-node" type="button" data-choice="all" aria-pressed="false"><span>03</span>All solutions</button>
+          <button class="choice-node" type="button" data-choice="overlap" aria-pressed="false"><span>04</span>Repeated subproblems</button>
+          <button class="choice-node" type="button" data-choice="best" aria-pressed="false"><span>05</span>Best local move</button>
+        </div>
+        <div class="choice-result" aria-live="polite">
+          <div><span>Try first</span><h3 id="choice-title">Binary search</h3><p id="choice-description">Discard half of the remaining search interval after every comparison.</p></div>
+          <div class="choice-proof"><span>Ask before coding</span><p id="choice-question">Is the predicate monotonic, so false values and true values form one boundary?</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section chapter-section" id="chapters">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">05 · Continue in the original book</p>
+        <h2>Use the atlas, then go deeper</h2>
+        <p>These visual routes point back to the detailed English explanations and runnable code in Hello Algo.</p>
+      </div>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="https://www.hello-algo.com/en/chapter_computational_complexity/" target="_blank" rel="noreferrer">
+          <img src="en/docs/assets/covers/chapter_complexity_analysis.jpg" alt="Abstract cover for computational complexity">
+          <div><span>Measure</span><h3>Complexity analysis</h3><p>Learn how time and space grow with input size.</p><b>Open chapter →</b></div>
+        </a>
+        <a class="chapter-card" href="https://www.hello-algo.com/en/chapter_tree/" target="_blank" rel="noreferrer">
+          <img src="en/docs/assets/covers/chapter_tree.jpg" alt="Abstract cover for tree data structures">
+          <div><span>Organize</span><h3>Trees &amp; heaps</h3><p>Model hierarchy and keep priorities within reach.</p><b>Open chapter →</b></div>
+        </a>
+        <a class="chapter-card" href="https://www.hello-algo.com/en/chapter_graph/" target="_blank" rel="noreferrer">
+          <img src="en/docs/assets/covers/chapter_graph.jpg" alt="Abstract cover for graph data structures">
+          <div><span>Connect</span><h3>Graphs</h3><p>Represent relationships, then traverse the network.</p><b>Open chapter →</b></div>
+        </a>
+        <a class="chapter-card" href="https://www.hello-algo.com/en/chapter_sorting/" target="_blank" rel="noreferrer">
+          <img src="en/docs/assets/covers/chapter_sorting.jpg" alt="Abstract cover for sorting algorithms">
+          <div><span>Arrange</span><h3>Sorting</h3><p>Compare simple, divide-and-conquer, and linear sorts.</p><b>Open chapter →</b></div>
+        </a>
+        <a class="chapter-card" href="https://www.hello-algo.com/en/chapter_backtracking/" target="_blank" rel="noreferrer">
+          <img src="en/docs/assets/covers/chapter_backtracking.jpg" alt="Abstract cover for backtracking algorithms">
+          <div><span>Explore</span><h3>Backtracking</h3><p>Build a choice tree and prune impossible branches.</p><b>Open chapter →</b></div>
+        </a>
+        <a class="chapter-card" href="https://www.hello-algo.com/en/chapter_dynamic_programming/" target="_blank" rel="noreferrer">
+          <img src="en/docs/assets/covers/chapter_dynamic_programming.jpg" alt="Abstract cover for dynamic programming">
+          <div><span>Reuse</span><h3>Dynamic programming</h3><p>Turn repeated subproblems into stored states.</p><b>Open chapter →</b></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div><strong>Hello Algo Atlas</strong><span>A visual learning layer for the open-source Hello Algo book.</span></div>
+    <div class="footer-links"><a href="https://github.com/krahets/hello-algo" target="_blank" rel="noreferrer">Source repository ↗</a><a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">Read Hello Algo ↗</a></div>
+  </footer>
+</body>
+</html>
