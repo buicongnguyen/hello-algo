@@ -16,7 +16,37 @@ const pages = [
   ["heap", "Heap", "8.1 · Heap", "Chapter 8", "en/docs/chapter_heap/heap.md", "Heap representation, push, pop, and sift operations."],
   ["build-heap", "Heap Construction Operation", "8.2 · Build Heap", "Chapter 8", "en/docs/chapter_heap/build_heap.md", "Build a heap bottom-up in linear time."],
   ["top-k", "Top-k Problem", "8.3 · Top-k", "Chapter 8", "en/docs/chapter_heap/top_k.md", "Use a bounded heap for large or streaming datasets."],
-  ["chapter-8-summary", "Chapter 8 Summary", "8.4 · Summary", "Chapter 8", "en/docs/chapter_heap/summary.md", "Review heaps, heap construction, and top-k."]
+  ["chapter-8-summary", "Chapter 8 Summary", "8.4 · Summary", "Chapter 8", "en/docs/chapter_heap/summary.md", "Review heaps, heap construction, and top-k."],
+  ["graphs", "Graph", "Graph introduction", "Chapter 9", "en/docs/chapter_graph/index.md", "An introduction to network relationships through vertices and edges."],
+  ["graph", "Graph", "9.1 · Graph", "Chapter 9", "en/docs/chapter_graph/graph.md", "Graph types, terminology, adjacency matrices, and adjacency lists."],
+  ["graph-operations", "Basic Operations on Graphs", "9.2 · Graph Operations", "Chapter 9", "en/docs/chapter_graph/graph_operations.md", "Add and remove vertices and edges in common representations."],
+  ["graph-traversal", "Graph Traversal", "9.3 · Graph Traversal", "Chapter 9", "en/docs/chapter_graph/graph_traversal.md", "Traverse graphs with breadth-first and depth-first search."],
+  ["chapter-9-summary", "Chapter 9 Summary", "9.4 · Summary", "Chapter 9", "en/docs/chapter_graph/summary.md", "Review graph representation, operations, and traversal."],
+  ["searching", "Searching", "Searching introduction", "Chapter 10", "en/docs/chapter_searching/index.md", "An introduction to search problems and strategies."],
+  ["binary-search", "Binary Search", "10.1 · Binary Search", "Chapter 10", "en/docs/chapter_searching/binary_search.md", "Discard half of a sorted search range after each comparison."],
+  ["binary-search-insertion", "Binary Search Insertion Point", "10.2 · Insertion Point", "Chapter 10", "en/docs/chapter_searching/binary_search_insertion.md", "Find insertion positions before or after duplicate values."],
+  ["binary-search-edge", "Binary Search Boundaries", "10.3 · Search Boundaries", "Chapter 10", "en/docs/chapter_searching/binary_search_edge.md", "Find the left and right boundary of duplicate targets."],
+  ["replace-linear-by-hashing", "Hash Optimization Strategy", "10.4 · Hash Optimization", "Chapter 10", "en/docs/chapter_searching/replace_linear_by_hashing.md", "Trade space for faster repeated lookup with hashing."],
+  ["searching-algorithms-revisited", "Searching Algorithms Revisited", "10.5 · Choosing Search", "Chapter 10", "en/docs/chapter_searching/searching_algorithm_revisited.md", "Compare linear, binary, hash-based, and tree search."],
+  ["chapter-10-summary", "Chapter 10 Summary", "10.6 · Summary", "Chapter 10", "en/docs/chapter_searching/summary.md", "Review binary search, boundaries, and search strategies."],
+  ["sorting", "Sorting", "Sorting introduction", "Chapter 11", "en/docs/chapter_sorting/index.md", "An introduction to sorting problems and algorithm families."],
+  ["sorting-algorithm", "Sorting Algorithm", "11.1 · Sorting Algorithm", "Chapter 11", "en/docs/chapter_sorting/sorting_algorithm.md", "Evaluate complexity, stability, memory use, and adaptability."],
+  ["selection-sort", "Selection Sort", "11.2 · Selection Sort", "Chapter 11", "en/docs/chapter_sorting/selection_sort.md", "Select the smallest remaining element each round."],
+  ["bubble-sort", "Bubble Sort", "11.3 · Bubble Sort", "Chapter 11", "en/docs/chapter_sorting/bubble_sort.md", "Order values through adjacent swaps."],
+  ["insertion-sort", "Insertion Sort", "11.4 · Insertion Sort", "Chapter 11", "en/docs/chapter_sorting/insertion_sort.md", "Insert each value into a sorted prefix."],
+  ["quick-sort", "Quick Sort", "11.5 · Quick Sort", "Chapter 11", "en/docs/chapter_sorting/quick_sort.md", "Partition around a pivot and recursively sort both sides."],
+  ["merge-sort", "Merge Sort", "11.6 · Merge Sort", "Chapter 11", "en/docs/chapter_sorting/merge_sort.md", "Sort two halves and merge their ordered results."],
+  ["heap-sort", "Heap Sort", "11.7 · Heap Sort", "Chapter 11", "en/docs/chapter_sorting/heap_sort.md", "Repeatedly extract the maximum from a heap."],
+  ["bucket-sort", "Bucket Sort", "11.8 · Bucket Sort", "Chapter 11", "en/docs/chapter_sorting/bucket_sort.md", "Distribute values among ordered ranges."],
+  ["counting-sort", "Counting Sort", "11.9 · Counting Sort", "Chapter 11", "en/docs/chapter_sorting/counting_sort.md", "Count finite-range integer keys."],
+  ["radix-sort", "Radix Sort", "11.10 · Radix Sort", "Chapter 11", "en/docs/chapter_sorting/radix_sort.md", "Stably sort one digit at a time."],
+  ["chapter-11-summary", "Chapter 11 Summary", "11.11 · Summary", "Chapter 11", "en/docs/chapter_sorting/summary.md", "Compare the major sorting algorithm families."],
+  ["divide-and-conquer", "Divide and Conquer", "Divide and conquer introduction", "Chapter 12", "en/docs/chapter_divide_and_conquer/index.md", "An introduction to divide, solve, and combine."],
+  ["divide-and-conquer-algorithms", "Divide and Conquer Algorithms", "12.1 · Divide and Conquer", "Chapter 12", "en/docs/chapter_divide_and_conquer/divide_and_conquer.md", "Design subproblems and combine their results."],
+  ["binary-search-recursive", "Divide and Conquer Search Strategy", "12.2 · Recursive Search", "Chapter 12", "en/docs/chapter_divide_and_conquer/binary_search_recur.md", "Express binary search recursively."],
+  ["build-binary-tree", "Building a Binary Tree Problem", "12.3 · Build a Tree", "Chapter 12", "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "Reconstruct a tree from preorder and inorder traversals."],
+  ["hanota", "Hanota Problem", "12.4 · Hanota", "Chapter 12", "en/docs/chapter_divide_and_conquer/hanota_problem.md", "Solve two matching subproblems around one central move."],
+  ["chapter-12-summary", "Chapter 12 Summary", "12.5 · Summary", "Chapter 12", "en/docs/chapter_divide_and_conquer/summary.md", "Review divide and conquer, tree construction, and Hanota."]
 ].map(([slug, title, shortTitle, chapter, source, description]) => ({ slug, title, shortTitle, chapter, source, description }));
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -93,7 +123,7 @@ function pageTemplate(page, body, index, sourceCommit, vietnameseDocument, korea
     <nav aria-label="Language and theme"><a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Read the corresponding Korean page">KO</a><a href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi" aria-label="Read the corresponding Vietnamese page">VI</a><a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
   </header>
   <div class="reader-shell">
-    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–8 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
+    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–12 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
     <main class="reader-main"><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>English source · ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>Original English source</strong><p>This local reading view is generated from the source-locked Hello Algo English document. KO and VI open the exact translated counterpart.</p></div>${body}<footer class="article-attribution"><strong>Source and license</strong><p>English content from <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo by krahets and its contributors</a>, presented locally under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>.</p></footer></article>
       <nav class="page-nav" aria-label="Previous and next article">${previous ? `<a href="${previous.slug}.html"><span>← Previous</span><strong>${previous.title}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug}.html"><span>Next →</span><strong>${next.title}</strong></a>` : "<i></i>"}</nav>
     </main>
@@ -110,10 +140,14 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
 
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
+  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   for (const [chapter, directory] of [
     ["chapter_tree", "binary_tree.assets"], ["chapter_tree", "binary_tree_traversal.assets"], ["chapter_tree", "array_representation_of_tree.assets"], ["chapter_tree", "binary_search_tree.assets"], ["chapter_tree", "avl_tree.assets"],
-    ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"]
+    ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"],
+    ["chapter_graph", "graph.assets"], ["chapter_graph", "graph_operations.assets"], ["chapter_graph", "graph_traversal.assets"],
+    ["chapter_searching", "binary_search.assets"], ["chapter_searching", "binary_search_insertion.assets"], ["chapter_searching", "binary_search_edge.assets"], ["chapter_searching", "replace_linear_by_hashing.assets"], ["chapter_searching", "searching_algorithm_revisited.assets"],
+    ["chapter_sorting", "sorting_algorithm.assets"], ["chapter_sorting", "selection_sort.assets"], ["chapter_sorting", "bubble_sort.assets"], ["chapter_sorting", "insertion_sort.assets"], ["chapter_sorting", "quick_sort.assets"], ["chapter_sorting", "merge_sort.assets"], ["chapter_sorting", "heap_sort.assets"], ["chapter_sorting", "bucket_sort.assets"], ["chapter_sorting", "counting_sort.assets"], ["chapter_sorting", "radix_sort.assets"], ["chapter_sorting", "summary.assets"],
+    ["chapter_divide_and_conquer", "divide_and_conquer.assets"], ["chapter_divide_and_conquer", "binary_search_recur.assets"], ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"], ["chapter_divide_and_conquer", "hanota_problem.assets"]
   ]) {
     const destination = path.join(bookOutput, "assets", chapter, directory);
     await mkdir(path.dirname(destination), { recursive: true });

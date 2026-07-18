@@ -12,7 +12,7 @@
 
 ## Trạng thái
 
-Trình đọc hiện gồm 48 tài liệu từ Chương 0 đến Chương 8. Hai mươi sáu tài liệu Chương 0–4 là bản thử đã tự kiểm tra; 22 tài liệu Chương 5–8 là bản nháp có hình, công thức và ví dụ Python đại diện nhưng còn cần đối chiếu nguồn và phản biện ngôn ngữ. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng; Chương 7–8 dùng bản tiếng Anh cục bộ.
+Trình đọc hiện gồm 78 tài liệu từ Chương 0 đến Chương 12. Hai mươi sáu tài liệu Chương 0–4 là bản thử đã tự kiểm tra; 52 tài liệu Chương 5–12 là bản nháp có hình, công thức và ví dụ Python đại diện nhưng còn cần đối chiếu nguồn và phản biện ngôn ngữ. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng; Chương 7–12 dùng bản tiếng Anh cục bộ.
 
 Nguồn tiếng Anh hiện được khóa tại commit upstream `4935d2d3877a6205008d89def8d2ba43f7e06275`.
 

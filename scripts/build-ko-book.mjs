@@ -52,7 +52,37 @@ const pages = [
   ["heap", "힙", "8.1 · 힙", "8장", "en/docs/chapter_heap/heap.md", "ko/docs/chapter_heap/heap.md", "힙의 배열 표현과 상향·하향 이동을 설명합니다."],
   ["build-heap", "힙 구성", "8.2 · 힙 구성", "8장", "en/docs/chapter_heap/build_heap.md", "ko/docs/chapter_heap/build_heap.md", "아래에서 위로 선형 시간에 힙을 구성합니다."],
   ["top-k", "Top-k 문제", "8.3 · Top-k", "8장", "en/docs/chapter_heap/top_k.md", "ko/docs/chapter_heap/top_k.md", "크기 k인 힙으로 대규모 또는 스트리밍 데이터를 처리합니다."],
-  ["chapter-8-summary", "8장 요약", "8.4 · 요약", "8장", "en/docs/chapter_heap/summary.md", "ko/docs/chapter_heap/summary.md", "힙, 힙 구성, top-k의 핵심을 복습합니다."]
+  ["chapter-8-summary", "8장 요약", "8.4 · 요약", "8장", "en/docs/chapter_heap/summary.md", "ko/docs/chapter_heap/summary.md", "힙, 힙 구성, top-k의 핵심을 복습합니다."],
+  ["graphs", "그래프", "그래프 시작", "9장", "en/docs/chapter_graph/index.md", "ko/docs/chapter_graph/index.md", "정점과 간선으로 네트워크 관계를 표현합니다."],
+  ["graph", "그래프", "9.1 · 그래프", "9장", "en/docs/chapter_graph/graph.md", "ko/docs/chapter_graph/graph.md", "그래프 종류, 용어, 인접 행렬과 인접 리스트를 설명합니다."],
+  ["graph-operations", "그래프의 기본 연산", "9.2 · 그래프 연산", "9장", "en/docs/chapter_graph/graph_operations.md", "ko/docs/chapter_graph/graph_operations.md", "두 표현에서 정점과 간선을 추가하고 삭제합니다."],
+  ["graph-traversal", "그래프 순회", "9.3 · 그래프 순회", "9장", "en/docs/chapter_graph/graph_traversal.md", "ko/docs/chapter_graph/graph_traversal.md", "BFS와 DFS로 그래프를 순회합니다."],
+  ["chapter-9-summary", "9장 요약", "9.4 · 요약", "9장", "en/docs/chapter_graph/summary.md", "ko/docs/chapter_graph/summary.md", "그래프 표현, 연산, 순회의 핵심을 복습합니다."],
+  ["searching", "탐색", "탐색 시작", "10장", "en/docs/chapter_searching/index.md", "ko/docs/chapter_searching/index.md", "탐색 문제와 대표 전략을 소개합니다."],
+  ["binary-search", "이진 탐색", "10.1 · 이진 탐색", "10장", "en/docs/chapter_searching/binary_search.md", "ko/docs/chapter_searching/binary_search.md", "비교할 때마다 탐색 범위를 절반으로 줄입니다."],
+  ["binary-search-insertion", "이진 탐색 삽입 위치", "10.2 · 삽입 위치", "10장", "en/docs/chapter_searching/binary_search_insertion.md", "ko/docs/chapter_searching/binary_search_insertion.md", "중복 값의 앞이나 뒤에 삽입할 위치를 찾습니다."],
+  ["binary-search-edge", "이진 탐색 경계", "10.3 · 탐색 경계", "10장", "en/docs/chapter_searching/binary_search_edge.md", "ko/docs/chapter_searching/binary_search_edge.md", "중복 목표의 왼쪽과 오른쪽 경계를 찾습니다."],
+  ["replace-linear-by-hashing", "해싱으로 선형 탐색 최적화", "10.4 · 해시 최적화", "10장", "en/docs/chapter_searching/replace_linear_by_hashing.md", "ko/docs/chapter_searching/replace_linear_by_hashing.md", "해시 테이블로 공간과 탐색 시간을 교환합니다."],
+  ["searching-algorithms-revisited", "탐색 알고리즘 다시 보기", "10.5 · 탐색 선택", "10장", "en/docs/chapter_searching/searching_algorithm_revisited.md", "ko/docs/chapter_searching/searching_algorithm_revisited.md", "선형, 이진, 해시, 트리 탐색을 비교합니다."],
+  ["chapter-10-summary", "10장 요약", "10.6 · 요약", "10장", "en/docs/chapter_searching/summary.md", "ko/docs/chapter_searching/summary.md", "이진 탐색, 경계, 탐색 전략을 복습합니다."],
+  ["sorting", "정렬", "정렬 시작", "11장", "en/docs/chapter_sorting/index.md", "ko/docs/chapter_sorting/index.md", "정렬 문제와 알고리즘 계열을 소개합니다."],
+  ["sorting-algorithm", "정렬 알고리즘", "11.1 · 정렬 알고리즘", "11장", "en/docs/chapter_sorting/sorting_algorithm.md", "ko/docs/chapter_sorting/sorting_algorithm.md", "복잡도, 안정성, 제자리 수행, 적응성을 평가합니다."],
+  ["selection-sort", "선택 정렬", "11.2 · 선택 정렬", "11장", "en/docs/chapter_sorting/selection_sort.md", "ko/docs/chapter_sorting/selection_sort.md", "각 라운드에서 최솟값을 선택합니다."],
+  ["bubble-sort", "버블 정렬", "11.3 · 버블 정렬", "11장", "en/docs/chapter_sorting/bubble_sort.md", "ko/docs/chapter_sorting/bubble_sort.md", "인접 원소를 교환해 정렬합니다."],
+  ["insertion-sort", "삽입 정렬", "11.4 · 삽입 정렬", "11장", "en/docs/chapter_sorting/insertion_sort.md", "ko/docs/chapter_sorting/insertion_sort.md", "새 원소를 정렬된 앞 구간에 삽입합니다."],
+  ["quick-sort", "퀵 정렬", "11.5 · 퀵 정렬", "11장", "en/docs/chapter_sorting/quick_sort.md", "ko/docs/chapter_sorting/quick_sort.md", "피벗으로 분할하고 두 부분을 재귀 정렬합니다."],
+  ["merge-sort", "병합 정렬", "11.6 · 병합 정렬", "11장", "en/docs/chapter_sorting/merge_sort.md", "ko/docs/chapter_sorting/merge_sort.md", "두 절반을 정렬한 뒤 병합합니다."],
+  ["heap-sort", "힙 정렬", "11.7 · 힙 정렬", "11장", "en/docs/chapter_sorting/heap_sort.md", "ko/docs/chapter_sorting/heap_sort.md", "최대 힙에서 원소를 반복 추출합니다."],
+  ["bucket-sort", "버킷 정렬", "11.8 · 버킷 정렬", "11장", "en/docs/chapter_sorting/bucket_sort.md", "ko/docs/chapter_sorting/bucket_sort.md", "값 구간에 따라 원소를 버킷으로 분배합니다."],
+  ["counting-sort", "계수 정렬", "11.9 · 계수 정렬", "11장", "en/docs/chapter_sorting/counting_sort.md", "ko/docs/chapter_sorting/counting_sort.md", "유한 키 범위의 출현 횟수를 셉니다."],
+  ["radix-sort", "기수 정렬", "11.10 · 기수 정렬", "11장", "en/docs/chapter_sorting/radix_sort.md", "ko/docs/chapter_sorting/radix_sort.md", "각 자릿수를 안정적으로 정렬합니다."],
+  ["chapter-11-summary", "11장 요약", "11.11 · 요약", "11장", "en/docs/chapter_sorting/summary.md", "ko/docs/chapter_sorting/summary.md", "정렬 알고리즘 계열과 선택 기준을 복습합니다."],
+  ["divide-and-conquer", "분할 정복", "분할 정복 시작", "12장", "en/docs/chapter_divide_and_conquer/index.md", "ko/docs/chapter_divide_and_conquer/index.md", "나누고 해결하고 결합하는 사고법을 소개합니다."],
+  ["divide-and-conquer-algorithms", "분할 정복 알고리즘", "12.1 · 분할 정복", "12장", "en/docs/chapter_divide_and_conquer/divide_and_conquer.md", "ko/docs/chapter_divide_and_conquer/divide_and_conquer.md", "하위 문제 설계와 결과 결합을 설명합니다."],
+  ["binary-search-recursive", "분할 정복 탐색 전략", "12.2 · 재귀 탐색", "12장", "en/docs/chapter_divide_and_conquer/binary_search_recur.md", "ko/docs/chapter_divide_and_conquer/binary_search_recur.md", "이진 탐색을 재귀로 표현합니다."],
+  ["build-binary-tree", "이진 트리 구성 문제", "12.3 · 트리 구성", "12장", "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "ko/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "전위와 중위 순회로 트리를 복원합니다."],
+  ["hanota", "하노이 탑 문제", "12.4 · 하노이 탑", "12장", "en/docs/chapter_divide_and_conquer/hanota_problem.md", "ko/docs/chapter_divide_and_conquer/hanota_problem.md", "중앙 이동 주위의 두 하위 문제를 해결합니다."],
+  ["chapter-12-summary", "12장 요약", "12.5 · 요약", "12장", "en/docs/chapter_divide_and_conquer/summary.md", "ko/docs/chapter_divide_and_conquer/summary.md", "분할 정복, 트리 구성, 하노이 탑을 복습합니다."]
 ].map(([slug, title, shortTitle, chapter, source, target, description]) => ({ slug, title, shortTitle, chapter, source, target, description }));
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -106,7 +136,7 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
     <nav aria-label="언어와 테마"><a class="active" href="${outputName || "./"}" lang="ko" hreflang="ko" aria-current="page">KO</a><a href="${viUrl}" lang="vi" hreflang="vi" aria-label="같은 문서를 베트남어로 읽기">VI</a><a href="${englishReaderHref(page.source)}" lang="en" hreflang="en" aria-label="같은 문서를 영어로 읽기">EN</a><button id="reader-theme" type="button" aria-label="밝은 테마와 어두운 테마 전환">◐</button></nav>
   </header>
   <div class="reader-shell">
-    <aside class="reader-sidebar" id="reader-sidebar" aria-label="한국어판 목차"><div class="sidebar-top"><strong>한국어 읽기</strong><small>0–8장 · ${statusCopy.sidebar}</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">학습 지도</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/KOREAN_TRANSLATION_PLAN.md">번역 계획</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/ko/glossary.md">용어집</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/ko/CONTRIBUTING.md">기여하기</a></div></aside>
+    <aside class="reader-sidebar" id="reader-sidebar" aria-label="한국어판 목차"><div class="sidebar-top"><strong>한국어 읽기</strong><small>0–12장 · ${statusCopy.sidebar}</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">학습 지도</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/KOREAN_TRANSLATION_PLAN.md">번역 계획</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/ko/glossary.md">용어집</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/ko/CONTRIBUTING.md">기여하기</a></div></aside>
     <main class="reader-main"><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>${statusCopy.label} · 원문 ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>${statusCopy.title}</strong><p>${statusCopy.description} VI와 EN 버튼은 같은 원문에 대응하는 문서를 엽니다.</p></div>${body}<footer class="article-attribution"><strong>출처와 라이선스</strong><p><a href="${sourceUrl}" target="_blank" rel="noreferrer">krahets와 기여 공동체의 Hello Algo 영어판</a>을 바탕으로 번역하고 예제를 선별하며 일부 내용을 편집했습니다. 파생 콘텐츠는 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>에 따라 제공합니다. 이 프로젝트는 비영리 커뮤니티 작업이며 원본 프로젝트의 공식 후원을 의미하지 않습니다.</p></footer></article>
       <nav class="page-nav" aria-label="이전 글과 다음 글">${previous ? `<a href="${previous.slug === "index" ? "./" : `${previous.slug}.html`}"><span>← 이전 글</span><strong>${previous.title}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug === "index" ? "./" : `${next.slug}.html`}"><span>다음 글 →</span><strong>${next.title}</strong></a>` : "<i></i>"}</nav>
     </main>
@@ -122,7 +152,7 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
   await cp(path.join(projectRoot, "vi", "book.js"), path.join(bookOutput, "book.js"));
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg", "chapter_data_structure.jpg", "chapter_array_and_linkedlist.jpg", "chapter_stack_and_queue.jpg", "chapter_hashing.jpg", "chapter_tree.jpg", "chapter_heap.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
+  for (const cover of ["chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg", "chapter_data_structure.jpg", "chapter_array_and_linkedlist.jpg", "chapter_stack_and_queue.jpg", "chapter_hashing.jpg", "chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   for (const [chapter, directory] of [
     ["chapter_preface", "about_the_book.assets"], ["chapter_introduction", "algorithms_are_everywhere.assets"],
     ["chapter_data_structure", "classification_of_data_structure.assets"], ["chapter_data_structure", "number_encoding.assets"], ["chapter_data_structure", "character_encoding.assets"],
@@ -130,7 +160,11 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
     ["chapter_stack_and_queue", "stack.assets"], ["chapter_stack_and_queue", "queue.assets"], ["chapter_stack_and_queue", "deque.assets"],
     ["chapter_hashing", "hash_map.assets"], ["chapter_hashing", "hash_collision.assets"], ["chapter_hashing", "hash_algorithm.assets"],
     ["chapter_tree", "binary_tree.assets"], ["chapter_tree", "binary_tree_traversal.assets"], ["chapter_tree", "array_representation_of_tree.assets"], ["chapter_tree", "binary_search_tree.assets"], ["chapter_tree", "avl_tree.assets"],
-    ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"]
+    ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"],
+    ["chapter_graph", "graph.assets"], ["chapter_graph", "graph_operations.assets"], ["chapter_graph", "graph_traversal.assets"],
+    ["chapter_searching", "binary_search.assets"], ["chapter_searching", "binary_search_insertion.assets"], ["chapter_searching", "binary_search_edge.assets"], ["chapter_searching", "replace_linear_by_hashing.assets"], ["chapter_searching", "searching_algorithm_revisited.assets"],
+    ["chapter_sorting", "sorting_algorithm.assets"], ["chapter_sorting", "selection_sort.assets"], ["chapter_sorting", "bubble_sort.assets"], ["chapter_sorting", "insertion_sort.assets"], ["chapter_sorting", "quick_sort.assets"], ["chapter_sorting", "merge_sort.assets"], ["chapter_sorting", "heap_sort.assets"], ["chapter_sorting", "bucket_sort.assets"], ["chapter_sorting", "counting_sort.assets"], ["chapter_sorting", "radix_sort.assets"], ["chapter_sorting", "summary.assets"],
+    ["chapter_divide_and_conquer", "divide_and_conquer.assets"], ["chapter_divide_and_conquer", "binary_search_recur.assets"], ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"], ["chapter_divide_and_conquer", "hanota_problem.assets"]
   ]) {
     const destination = path.join(bookOutput, "assets", chapter, directory);
     await mkdir(path.dirname(destination), { recursive: true });

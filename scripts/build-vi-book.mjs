@@ -259,7 +259,37 @@ const pages = [
   { slug: "cau-truc-heap", title: "Heap", shortTitle: "8.1 · Heap", chapter: "Chương 8", source: "en/docs/chapter_heap/heap.md", target: "vi/docs/chapter_heap/heap.md", description: "Biểu diễn, dịch lên, dịch xuống và thao tác heap." },
   { slug: "xay-dung-heap", title: "Xây dựng heap", shortTitle: "8.2 · Xây dựng heap", chapter: "Chương 8", source: "en/docs/chapter_heap/build_heap.md", target: "vi/docs/chapter_heap/build_heap.md", description: "Xây heap tại chỗ từ dưới lên trong thời gian tuyến tính." },
   { slug: "top-k", title: "Bài toán top-k", shortTitle: "8.3 · Top-k", chapter: "Chương 8", source: "en/docs/chapter_heap/top_k.md", target: "vi/docs/chapter_heap/top_k.md", description: "Duy trì heap kích thước k để xử lý dữ liệu lớn hoặc dạng luồng." },
-  { slug: "tom-tat-chuong-8", title: "Tóm tắt Chương 8", shortTitle: "8.4 · Tóm tắt", chapter: "Chương 8", source: "en/docs/chapter_heap/summary.md", target: "vi/docs/chapter_heap/summary.md", description: "Ôn tập heap, xây heap và top-k." }
+  { slug: "tom-tat-chuong-8", title: "Tóm tắt Chương 8", shortTitle: "8.4 · Tóm tắt", chapter: "Chương 8", source: "en/docs/chapter_heap/summary.md", target: "vi/docs/chapter_heap/summary.md", description: "Ôn tập heap, xây heap và top-k." },
+  { slug: "do-thi", title: "Đồ thị", shortTitle: "Mở đầu đồ thị", chapter: "Chương 9", source: "en/docs/chapter_graph/index.md", target: "vi/docs/chapter_graph/index.md", description: "Giới thiệu quan hệ mạng bằng đỉnh và cạnh." },
+  { slug: "cau-truc-do-thi", title: "Đồ thị", shortTitle: "9.1 · Đồ thị", chapter: "Chương 9", source: "en/docs/chapter_graph/graph.md", target: "vi/docs/chapter_graph/graph.md", description: "Loại đồ thị, thuật ngữ, ma trận kề và danh sách kề." },
+  { slug: "thao-tac-do-thi", title: "Thao tác cơ bản trên đồ thị", shortTitle: "9.2 · Thao tác đồ thị", chapter: "Chương 9", source: "en/docs/chapter_graph/graph_operations.md", target: "vi/docs/chapter_graph/graph_operations.md", description: "Thêm, xóa đỉnh và cạnh trong hai cách biểu diễn." },
+  { slug: "duyet-do-thi", title: "Duyệt đồ thị", shortTitle: "9.3 · Duyệt đồ thị", chapter: "Chương 9", source: "en/docs/chapter_graph/graph_traversal.md", target: "vi/docs/chapter_graph/graph_traversal.md", description: "Duyệt đồ thị bằng BFS và DFS." },
+  { slug: "tom-tat-chuong-9", title: "Tóm tắt Chương 9", shortTitle: "9.4 · Tóm tắt", chapter: "Chương 9", source: "en/docs/chapter_graph/summary.md", target: "vi/docs/chapter_graph/summary.md", description: "Ôn tập biểu diễn, thao tác và duyệt đồ thị." },
+  { slug: "tim-kiem", title: "Tìm kiếm", shortTitle: "Mở đầu tìm kiếm", chapter: "Chương 10", source: "en/docs/chapter_searching/index.md", target: "vi/docs/chapter_searching/index.md", description: "Giới thiệu các bài toán và chiến lược tìm kiếm." },
+  { slug: "tim-kiem-nhi-phan", title: "Tìm kiếm nhị phân", shortTitle: "10.1 · Tìm kiếm nhị phân", chapter: "Chương 10", source: "en/docs/chapter_searching/binary_search.md", target: "vi/docs/chapter_searching/binary_search.md", description: "Loại bỏ một nửa khoảng tìm kiếm sau mỗi phép so sánh." },
+  { slug: "diem-chen-tim-kiem-nhi-phan", title: "Điểm chèn bằng tìm kiếm nhị phân", shortTitle: "10.2 · Điểm chèn", chapter: "Chương 10", source: "en/docs/chapter_searching/binary_search_insertion.md", target: "vi/docs/chapter_searching/binary_search_insertion.md", description: "Tìm vị trí chèn trước hoặc sau các giá trị trùng." },
+  { slug: "bien-tim-kiem-nhi-phan", title: "Biên của tìm kiếm nhị phân", shortTitle: "10.3 · Biên tìm kiếm", chapter: "Chương 10", source: "en/docs/chapter_searching/binary_search_edge.md", target: "vi/docs/chapter_searching/binary_search_edge.md", description: "Tìm biên trái và phải của mục tiêu trùng lặp." },
+  { slug: "toi-uu-tim-kiem-bang-bam", title: "Tối ưu tìm kiếm tuyến tính bằng băm", shortTitle: "10.4 · Tối ưu bằng băm", chapter: "Chương 10", source: "en/docs/chapter_searching/replace_linear_by_hashing.md", target: "vi/docs/chapter_searching/replace_linear_by_hashing.md", description: "Dùng bảng băm để đánh đổi không gian lấy thời gian." },
+  { slug: "nhin-lai-thuat-toan-tim-kiem", title: "Nhìn lại các thuật toán tìm kiếm", shortTitle: "10.5 · Chọn cách tìm kiếm", chapter: "Chương 10", source: "en/docs/chapter_searching/searching_algorithm_revisited.md", target: "vi/docs/chapter_searching/searching_algorithm_revisited.md", description: "So sánh tuyến tính, nhị phân, băm và cây tìm kiếm." },
+  { slug: "tom-tat-chuong-10", title: "Tóm tắt Chương 10", shortTitle: "10.6 · Tóm tắt", chapter: "Chương 10", source: "en/docs/chapter_searching/summary.md", target: "vi/docs/chapter_searching/summary.md", description: "Ôn tập tìm kiếm nhị phân, biên và chiến lược tìm kiếm." },
+  { slug: "sap-xep", title: "Sắp xếp", shortTitle: "Mở đầu sắp xếp", chapter: "Chương 11", source: "en/docs/chapter_sorting/index.md", target: "vi/docs/chapter_sorting/index.md", description: "Giới thiệu bài toán và các họ thuật toán sắp xếp." },
+  { slug: "thuat-toan-sap-xep", title: "Thuật toán sắp xếp", shortTitle: "11.1 · Thuật toán sắp xếp", chapter: "Chương 11", source: "en/docs/chapter_sorting/sorting_algorithm.md", target: "vi/docs/chapter_sorting/sorting_algorithm.md", description: "Đánh giá độ phức tạp, ổn định, tại chỗ và thích nghi." },
+  { slug: "sap-xep-chon", title: "Sắp xếp chọn", shortTitle: "11.2 · Sắp xếp chọn", chapter: "Chương 11", source: "en/docs/chapter_sorting/selection_sort.md", target: "vi/docs/chapter_sorting/selection_sort.md", description: "Chọn phần tử nhỏ nhất sau mỗi vòng." },
+  { slug: "sap-xep-noi-bot", title: "Sắp xếp nổi bọt", shortTitle: "11.3 · Nổi bọt", chapter: "Chương 11", source: "en/docs/chapter_sorting/bubble_sort.md", target: "vi/docs/chapter_sorting/bubble_sort.md", description: "Đổi các cặp kề nhau cho tới khi có thứ tự." },
+  { slug: "sap-xep-chen", title: "Sắp xếp chèn", shortTitle: "11.4 · Sắp xếp chèn", chapter: "Chương 11", source: "en/docs/chapter_sorting/insertion_sort.md", target: "vi/docs/chapter_sorting/insertion_sort.md", description: "Chèn từng phần tử vào đoạn đầu đã sắp xếp." },
+  { slug: "sap-xep-nhanh", title: "Sắp xếp nhanh", shortTitle: "11.5 · Quicksort", chapter: "Chương 11", source: "en/docs/chapter_sorting/quick_sort.md", target: "vi/docs/chapter_sorting/quick_sort.md", description: "Phân hoạch theo chốt và đệ quy hai nửa." },
+  { slug: "sap-xep-tron", title: "Sắp xếp trộn", shortTitle: "11.6 · Merge sort", chapter: "Chương 11", source: "en/docs/chapter_sorting/merge_sort.md", target: "vi/docs/chapter_sorting/merge_sort.md", description: "Chia đôi rồi trộn các dãy đã có thứ tự." },
+  { slug: "sap-xep-vun-dong", title: "Sắp xếp vun đống", shortTitle: "11.7 · Heap sort", chapter: "Chương 11", source: "en/docs/chapter_sorting/heap_sort.md", target: "vi/docs/chapter_sorting/heap_sort.md", description: "Trích phần tử lớn nhất từ heap cực đại." },
+  { slug: "sap-xep-thung", title: "Sắp xếp thùng", shortTitle: "11.8 · Bucket sort", chapter: "Chương 11", source: "en/docs/chapter_sorting/bucket_sort.md", target: "vi/docs/chapter_sorting/bucket_sort.md", description: "Phân phối dữ liệu vào các khoảng giá trị." },
+  { slug: "sap-xep-dem", title: "Sắp xếp đếm", shortTitle: "11.9 · Counting sort", chapter: "Chương 11", source: "en/docs/chapter_sorting/counting_sort.md", target: "vi/docs/chapter_sorting/counting_sort.md", description: "Đếm tần suất khóa trong miền hữu hạn." },
+  { slug: "sap-xep-co-so", title: "Sắp xếp cơ số", shortTitle: "11.10 · Radix sort", chapter: "Chương 11", source: "en/docs/chapter_sorting/radix_sort.md", target: "vi/docs/chapter_sorting/radix_sort.md", description: "Sắp xếp ổn định theo từng chữ số." },
+  { slug: "tom-tat-chuong-11", title: "Tóm tắt Chương 11", shortTitle: "11.11 · Tóm tắt", chapter: "Chương 11", source: "en/docs/chapter_sorting/summary.md", target: "vi/docs/chapter_sorting/summary.md", description: "So sánh các họ thuật toán sắp xếp." },
+  { slug: "chia-de-tri", title: "Chia để trị", shortTitle: "Mở đầu chia để trị", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/index.md", target: "vi/docs/chapter_divide_and_conquer/index.md", description: "Giới thiệu tư tưởng chia, giải và kết hợp." },
+  { slug: "thuat-toan-chia-de-tri", title: "Thuật toán chia để trị", shortTitle: "12.1 · Chia để trị", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/divide_and_conquer.md", target: "vi/docs/chapter_divide_and_conquer/divide_and_conquer.md", description: "Thiết kế bài toán con và kết hợp kết quả." },
+  { slug: "tim-kiem-nhi-phan-de-quy", title: "Chiến lược tìm kiếm chia để trị", shortTitle: "12.2 · Tìm kiếm đệ quy", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/binary_search_recur.md", target: "vi/docs/chapter_divide_and_conquer/binary_search_recur.md", description: "Tìm kiếm nhị phân dưới dạng đệ quy." },
+  { slug: "dung-cay-nhi-phan", title: "Bài toán dựng cây nhị phân", shortTitle: "12.3 · Dựng cây", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", target: "vi/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", description: "Dựng cây từ thứ tự tiền thứ tự và trung thứ tự." },
+  { slug: "thap-ha-noi", title: "Bài toán Tháp Hà Nội", shortTitle: "12.4 · Tháp Hà Nội", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/hanota_problem.md", target: "vi/docs/chapter_divide_and_conquer/hanota_problem.md", description: "Mô hình hóa hai bài toán con quanh một bước trung tâm." },
+  { slug: "tom-tat-chuong-12", title: "Tóm tắt Chương 12", shortTitle: "12.5 · Tóm tắt", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/summary.md", target: "vi/docs/chapter_divide_and_conquer/summary.md", description: "Ôn tập chia để trị, dựng cây và Tháp Hà Nội." }
 ];
 
 const escapeHtml = (value) => value
@@ -477,7 +507,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   </header>
   <div class="reader-shell">
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="Mục lục bản tiếng Việt">
-      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–8 · ${statusCopy.sidebar}</small></div>
+      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–12 · ${statusCopy.sidebar}</small></div>
       ${navigation(page.slug)}
       <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
@@ -519,7 +549,11 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     "chapter_stack_and_queue.jpg",
     "chapter_hashing.jpg",
     "chapter_tree.jpg",
-    "chapter_heap.jpg"
+    "chapter_heap.jpg",
+    "chapter_graph.jpg",
+    "chapter_searching.jpg",
+    "chapter_sorting.jpg",
+    "chapter_divide_and_conquer.jpg"
   ]) {
     await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   }
@@ -551,7 +585,30 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     ["chapter_tree", "avl_tree.assets"],
     ["chapter_heap", "heap.assets"],
     ["chapter_heap", "build_heap.assets"],
-    ["chapter_heap", "top_k.assets"]
+    ["chapter_heap", "top_k.assets"],
+    ["chapter_graph", "graph.assets"],
+    ["chapter_graph", "graph_operations.assets"],
+    ["chapter_graph", "graph_traversal.assets"],
+    ["chapter_searching", "binary_search.assets"],
+    ["chapter_searching", "binary_search_insertion.assets"],
+    ["chapter_searching", "binary_search_edge.assets"],
+    ["chapter_searching", "replace_linear_by_hashing.assets"],
+    ["chapter_searching", "searching_algorithm_revisited.assets"],
+    ["chapter_sorting", "sorting_algorithm.assets"],
+    ["chapter_sorting", "selection_sort.assets"],
+    ["chapter_sorting", "bubble_sort.assets"],
+    ["chapter_sorting", "insertion_sort.assets"],
+    ["chapter_sorting", "quick_sort.assets"],
+    ["chapter_sorting", "merge_sort.assets"],
+    ["chapter_sorting", "heap_sort.assets"],
+    ["chapter_sorting", "bucket_sort.assets"],
+    ["chapter_sorting", "counting_sort.assets"],
+    ["chapter_sorting", "radix_sort.assets"],
+    ["chapter_sorting", "summary.assets"],
+    ["chapter_divide_and_conquer", "divide_and_conquer.assets"],
+    ["chapter_divide_and_conquer", "binary_search_recur.assets"],
+    ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"],
+    ["chapter_divide_and_conquer", "hanota_problem.assets"]
   ];
   for (const [chapter, directory] of assetDirectories) {
     const destination = path.join(bookOutput, "assets", chapter, directory);
