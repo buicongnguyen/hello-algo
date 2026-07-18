@@ -156,6 +156,9 @@ if ((viHtml.match(/href="learn\/"/g) || []).length < 2 || (koHtml.match(/href="l
 if (!viHtml.includes("Kế hoạch dịch ↗") || !viHtml.includes("window.HELLO_ALGO_LOCALE=")) {
   failures.push("Vietnamese Atlas supporting links or interactive locale payload is missing");
 }
+for (const awkwardPhrase of ["truy cập rẻ", "đưa ra phần tử mới nhất", "Gốc có ngay lập tức", "lần đến đầu tiên cho ít cạnh nhất"]) {
+  if (viHtml.includes(awkwardPhrase)) failures.push(`Vietnamese Atlas still contains the reviewed phrase: ${awkwardPhrase}`);
+}
 if (Object.keys(interactiveLocale.topicData).length !== 13 || Object.keys(interactiveLocale.structureData).length !== 6 || Object.keys(interactiveLocale.choiceData).length !== 5) {
   failures.push("Vietnamese interactive datasets are incomplete");
 }
@@ -204,6 +207,11 @@ for (const document of translationStatus.documents) {
     if ((targetMarkdown.match(/^\$\$$/gm) || []).length % 2 !== 0) {
       failures.push(`${document.target} contains an unbalanced display-math fence`);
     }
+    const narrative = targetMarkdown
+      .replace(/```[\s\S]*?```/g, "")
+      .replaceAll("chúng ta", "")
+      .replaceAll("Chúng ta", "");
+    if (/\bta\b/i.test(narrative)) failures.push(`${document.target} uses the disallowed standalone narrator “ta”`);
   } catch {
     // Missing targets are reported by the existence check above.
   }

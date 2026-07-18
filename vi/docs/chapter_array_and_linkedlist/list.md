@@ -15,7 +15,7 @@ Nhiều kiểu danh sách trong thư viện chuẩn được xây dựng bằng 
 
 ### Khởi tạo
 
-Ta có thể tạo danh sách rỗng hoặc khởi tạo từ các giá trị cho trước.
+Chúng ta có thể tạo danh sách rỗng hoặc khởi tạo từ các giá trị cho trước.
 
 ```python
 empty: list[int] = []
@@ -79,7 +79,7 @@ nums.sort()
 
 ## Tự triển khai danh sách động
 
-Các thư viện chuẩn có cách triển khai được tối ưu kỹ. Để hiểu cơ chế cốt lõi, ta xây dựng một phiên bản đơn giản với ba quyết định.
+Các thư viện chuẩn có cách triển khai được tối ưu kỹ. Để hiểu cơ chế cốt lõi, chúng ta xây dựng một phiên bản đơn giản với ba quyết định.
 
 - **Sức chứa ban đầu**: mảng nền bắt đầu với 10 ô.
 - **Theo dõi kích thước**: biến `size` lưu số phần tử thực tế, khác với sức chứa.

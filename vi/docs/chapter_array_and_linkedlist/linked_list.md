@@ -26,7 +26,7 @@ class ListNode:
 
 ### Khởi tạo danh sách liên kết
 
-Ta tạo từng nút rồi thiết lập quan hệ `next`. Danh sách gồm nhiều đối tượng độc lập, nhưng thường dùng nút đầu để đại diện cho toàn bộ danh sách.
+Chúng ta tạo từng nút rồi thiết lập quan hệ `next`. Danh sách gồm nhiều đối tượng độc lập, nhưng thường dùng nút đầu để đại diện cho toàn bộ danh sách.
 
 ```python
 class ListNode:
@@ -48,7 +48,7 @@ n3.next = n4
 
 ### Chèn nút
 
-Giả sử cần chèn nút `P` giữa hai nút kề nhau `n0` và `n1`. Khi đã có tham chiếu đến `n0`, ta chỉ cần đổi hai liên kết nên thao tác chèn tốn $O(1)$ thời gian.
+Giả sử cần chèn nút `P` giữa hai nút kề nhau `n0` và `n1`. Khi đã có tham chiếu đến `n0`, chúng ta chỉ cần đổi hai liên kết nên thao tác chèn tốn $O(1)$ thời gian.
 
 ![Ví dụ chèn một nút vào danh sách liên kết](linked_list.assets/linkedlist_insert_node.png)
 
@@ -66,7 +66,7 @@ def insert(n0: ListNode, node: ListNode) -> None:
 
 ### Xóa nút
 
-Muốn xóa nút ngay sau `n0`, ta cho `n0.next` bỏ qua nút đó và trỏ đến nút kế tiếp. Sau thao tác, nút bị xóa có thể vẫn giữ tham chiếu cũ, nhưng không còn được gặp khi duyệt từ nút đầu.
+Muốn xóa nút ngay sau `n0`, chúng ta cho `n0.next` bỏ qua nút đó và trỏ đến nút kế tiếp. Sau thao tác, nút bị xóa có thể vẫn giữ tham chiếu cũ, nhưng không còn được truy cập khi duyệt từ nút đầu.
 
 ![Xóa một nút khỏi danh sách liên kết](linked_list.assets/linkedlist_remove_node.png)
 
@@ -134,7 +134,7 @@ def find(head: ListNode | None, target: int) -> int:
 | Chèn sau vị trí đã biết | Thường $O(n)$ | $O(1)$ |
 | Xóa sau vị trí đã biết | Thường $O(n)$ | $O(1)$ |
 
-Độ phức tạp $O(1)$ của chèn và xóa danh sách liên kết giả định rằng ta đã có tham chiếu đến vị trí cần thao tác. Nếu phải tìm vị trí trước, toàn bộ quá trình vẫn có thể tốn $O(n)$.
+Độ phức tạp $O(1)$ của chèn và xóa danh sách liên kết giả định rằng chúng ta đã có tham chiếu đến vị trí cần thao tác. Nếu phải tìm vị trí trước, toàn bộ quá trình vẫn có thể tốn $O(n)$.
 
 ## Các loại danh sách liên kết
 

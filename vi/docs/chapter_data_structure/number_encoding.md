@@ -6,7 +6,7 @@
 
 Các kiểu số nguyên có thể biểu diễn nhiều hơn một số âm so với số dương. Ví dụ, miền giá trị của `byte` là $[-128, 127]$. Nguyên nhân nằm ở cách máy tính biểu diễn số có dấu.
 
-**Số nguyên trong máy tính thường được lưu dưới dạng bù hai.** Trước khi giải thích lý do, ta định nghĩa ba cách biểu diễn.
+**Số nguyên trong máy tính thường được lưu dưới dạng bù hai.** Trước khi giải thích lý do, chúng ta định nghĩa ba cách biểu diễn.
 
 - **Mã dấu–trị tuyệt đối**: bit cao nhất là bit dấu; $0$ biểu diễn số dương, $1$ biểu diễn số âm; các bit còn lại biểu diễn độ lớn.
 - **Bù một**: số dương giữ nguyên mã dấu–trị tuyệt đối; với số âm, đảo mọi bit giá trị và giữ bit dấu.
@@ -14,7 +14,7 @@ Các kiểu số nguyên có thể biểu diễn nhiều hơn một số âm so 
 
 ![Chuyển đổi giữa mã dấu–trị tuyệt đối, bù một và bù hai](number_encoding.assets/1s_2s_complement.png)
 
-Mã dấu–trị tuyệt đối trực quan nhưng không thuận tiện cho phép tính. Nếu cộng trực tiếp mã của $1$ và $-2$, ta nhận kết quả sai:
+Mã dấu–trị tuyệt đối trực quan nhưng không thuận tiện cho phép tính. Nếu cộng trực tiếp mã của $1$ và $-2$, chúng ta nhận kết quả sai:
 
 $$
 0000 0001 + 1000 0010 = 1000 0011 → -3

@@ -10,7 +10,7 @@ Dự án hướng tới một giáo trình nhập môn cấu trúc dữ liệu v
 
 Nếu bạn chưa từng học thuật toán, hoặc đã giải một số bài nhưng vẫn chưa hình dung rõ hệ thống kiến thức về cấu trúc dữ liệu và thuật toán, cuốn sách này được viết dành cho bạn.
 
-Nếu bạn đã có kinh nghiệm giải bài, cuốn sách có thể giúp hệ thống hóa kiến thức; mã nguồn trong repository cũng có thể dùng như một “bộ công cụ giải bài” hoặc “từ điển thuật toán”.
+Nếu bạn đã có kinh nghiệm giải bài, cuốn sách có thể giúp hệ thống hóa kiến thức; mã nguồn trong kho mã nguồn cũng có thể dùng như một “bộ công cụ giải bài” hoặc “từ điển thuật toán”.
 
 Nếu bạn đã thành thạo thuật toán, dự án rất mong nhận được góp ý và sự tham gia của bạn qua [hướng dẫn đóng góp](https://www.hello-algo.com/en/chapter_appendix/contribution/).
 

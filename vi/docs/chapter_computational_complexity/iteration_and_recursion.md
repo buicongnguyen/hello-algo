@@ -1,6 +1,6 @@
 # Phép lặp và đệ quy
 
-Trong thuật toán, việc thực hiện lặp lại một nhiệm vụ xuất hiện rất thường xuyên và liên quan chặt chẽ đến phân tích độ phức tạp. Trước khi học độ phức tạp thời gian và không gian, ta cần hiểu hai cấu trúc điều khiển cơ bản để lặp lại công việc: **phép lặp** và **đệ quy**.
+Trong thuật toán, việc thực hiện lặp lại một nhiệm vụ xuất hiện rất thường xuyên và liên quan chặt chẽ đến phân tích độ phức tạp. Trước khi học độ phức tạp thời gian và không gian, chúng ta cần hiểu hai cấu trúc điều khiển cơ bản để lặp lại công việc: **phép lặp** và **đệ quy**.
 
 ## Phép lặp
 
@@ -36,7 +36,7 @@ def while_loop(n: int) -> int:
     return res
 ```
 
-`while` linh hoạt hơn vì ta có thể tự thiết kế cách khởi tạo và cập nhật biến điều kiện. Chẳng hạn, một lượt có thể cập nhật biến nhiều lần:
+`while` linh hoạt hơn vì chúng ta có thể tự thiết kế cách khởi tạo và cập nhật biến điều kiện. Chẳng hạn, một lượt có thể cập nhật biến nhiều lần:
 
 ```python
 def while_loop_twice(n: int) -> int:
@@ -173,7 +173,7 @@ Tư duy “chia bài toán thành bài toán con” xuất hiện trực tiếp 
 
 Cơ chế đi lên của đệ quy tuân theo nguyên tắc “vào sau, ra trước” của ngăn xếp. Khi gọi hàm, hệ thống đẩy một khung mới vào ngăn xếp lời gọi; khi hàm trả về, khung tương ứng bị lấy ra.
 
-Vì vậy, ta có thể dùng một ngăn xếp tường minh để mô phỏng đệ quy:
+Vì vậy, chúng ta có thể dùng một ngăn xếp tường minh để mô phỏng đệ quy:
 
 ```python
 def for_loop_recur(n: int) -> int:

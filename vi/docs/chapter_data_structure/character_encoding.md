@@ -1,6 +1,6 @@
 # Mã hóa ký tự *
 
-Trong máy tính, ký tự cũng được lưu dưới dạng nhị phân. Để chuyển giữa ký tự và số, ta cần một **bộ ký tự** quy định mỗi ký tự tương ứng với một mã số duy nhất.
+Trong máy tính, ký tự cũng được lưu dưới dạng nhị phân. Để chuyển giữa ký tự và số, chúng ta cần một **bộ ký tự** quy định mỗi ký tự tương ứng với một mã số duy nhất.
 
 ## Bộ ký tự ASCII
 
@@ -20,7 +20,7 @@ GBK là một ví dụ cho thấy các bộ ký tự theo từng ngôn ngữ có
 
 Khi nhiều bộ ký tự cùng tồn tại, hai hệ thống dùng tiêu chuẩn khác nhau có thể hiển thị dữ liệu thành ký tự rác. Unicode ra đời để cung cấp một không gian mã thống nhất cho các ký tự và ký hiệu trên toàn thế giới.
 
-Unicode gán cho mỗi ký tự một **điểm mã** duy nhất trong phạm vi từ `U+0000` đến `U+10FFFF`. Tuy nhiên, Unicode xác định ký tự và điểm mã chứ không tự quy định một cách lưu byte duy nhất. Ta vẫn cần một dạng mã hóa như UTF-8, UTF-16 hoặc UTF-32.
+Unicode gán cho mỗi ký tự một **điểm mã** duy nhất trong phạm vi từ `U+0000` đến `U+10FFFF`. Tuy nhiên, Unicode xác định ký tự và điểm mã chứ không tự quy định một cách lưu byte duy nhất. Chúng ta vẫn cần một dạng mã hóa như UTF-8, UTF-16 hoặc UTF-32.
 
 Một cách đơn giản là cấp cùng số byte cho mọi ký tự. Ví dụ, nếu mỗi ký tự luôn chiếm 2 byte thì hệ thống dễ phân tách chuỗi, nhưng văn bản chỉ gồm ký tự ASCII sẽ tốn gấp đôi dung lượng cần thiết.
 

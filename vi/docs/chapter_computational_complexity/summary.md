@@ -20,8 +20,8 @@
 **Độ phức tạp không gian**
 
 - Độ phức tạp không gian đo xu hướng tăng của lượng bộ nhớ thuật toán sử dụng.
-- Bộ nhớ liên quan gồm không gian đầu vào, tạm thời và đầu ra. Khi phân tích, ta thường không tính đầu vào; không gian tạm thời gồm dữ liệu tạm, khung ngăn xếp và chỉ thị chương trình.
-- Thông thường ta quan tâm tới không gian trong trường hợp xấu nhất và tại đỉnh sử dụng bộ nhớ.
+- Bộ nhớ liên quan gồm không gian đầu vào, tạm thời và đầu ra. Khi phân tích, chúng ta thường không tính đầu vào; không gian tạm thời gồm dữ liệu tạm, khung ngăn xếp và lệnh chương trình.
+- Thông thường chúng ta quan tâm tới không gian trong trường hợp xấu nhất và tại đỉnh sử dụng bộ nhớ.
 - Các dạng không gian phổ biến là $O(1)$, $O(\log n)$, $O(n)$, $O(n^2)$ và $O(2^n)$.
 
 ### Hỏi và đáp

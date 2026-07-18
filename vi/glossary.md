@@ -14,7 +14,7 @@ Từ điển này quy định cách gọi ưu tiên trong bản dịch. Khi mộ
 | data | dữ liệu | datum hiếm khi cần dịch riêng |
 | data structure | cấu trúc dữ liệu | DSA → cấu trúc dữ liệu và thuật toán |
 | input / output | đầu vào / đầu ra | Giữ tên biến trong mã nguồn |
-| instruction | chỉ dẫn | operation → thao tác |
+| instruction | lệnh | operation → thao tác; instruction space → không gian lệnh |
 | correctness | tính đúng đắn | correct solution → lời giải đúng |
 | efficiency | hiệu quả | Phân biệt với correctness |
 | trade-off | sự đánh đổi | Có thể giải thích bằng “được mặt này, mất mặt kia” |
@@ -87,7 +87,7 @@ Từ điển này quy định cách gọi ưu tiên trong bản dịch. Khi mộ
 | English | Tiếng Việt ưu tiên | Ghi chú |
 | --- | --- | --- |
 | complexity analysis | phân tích độ phức tạp | asymptotic complexity analysis → phân tích độ phức tạp tiệm cận |
-| time complexity | độ phức tạp thời gian | Giữ ký hiệu Big-O nguyên dạng |
+| time complexity | độ phức tạp thời gian | Giữ ký hiệu Big O nguyên dạng |
 | space complexity | độ phức tạp không gian | space efficiency → hiệu quả không gian |
 | input size | kích thước đầu vào | Có thể dùng “quy mô dữ liệu đầu vào” khi tự nhiên hơn |
 | growth trend | xu hướng tăng trưởng | Không đổi thành một giá trị thời gian cụ thể |

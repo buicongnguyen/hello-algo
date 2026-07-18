@@ -6,4 +6,4 @@
 >
 > Nó dẫn chúng ta khảo sát hai chiều thời gian và bộ nhớ để tìm kiếm những lời giải thanh lịch hơn.
 
-Chương này xây dựng một “thước đo” độc lập với máy tính cụ thể. Thay vì chỉ hỏi chương trình chạy bao nhiêu mili giây trên một thiết bị, ta xem thời gian và bộ nhớ tăng nhanh đến đâu khi kích thước đầu vào lớn lên.
+Chương này xây dựng một “thước đo” độc lập với máy tính cụ thể. Thay vì chỉ hỏi chương trình chạy bao nhiêu mili giây trên một thiết bị, chúng ta xem thời gian và bộ nhớ tăng nhanh đến đâu khi kích thước đầu vào lớn lên.

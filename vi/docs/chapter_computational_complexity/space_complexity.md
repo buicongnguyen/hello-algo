@@ -16,7 +16,7 @@ Không gian tạm thời có thể chia tiếp thành:
 
 - **Dữ liệu tạm**: hằng, biến, đối tượng và cấu trúc trung gian.
 - **Khung ngăn xếp**: ngữ cảnh của lời gọi hàm. Mỗi lần gọi hàm tạo một khung mới và khung được giải phóng khi hàm trả về.
-- **Không gian chỉ thị**: mã máy hoặc bytecode của chương trình, thường được bỏ qua khi phân tích.
+- **Không gian lệnh**: mã máy hoặc bytecode của chương trình, thường được bỏ qua khi phân tích.
 
 ![Các loại không gian liên quan đến thuật toán](space_complexity.assets/space_types.png)
 
@@ -41,12 +41,12 @@ def algorithm(n: int) -> int:  # n thuộc không gian đầu vào
 
 Cách tính gần giống độ phức tạp thời gian, nhưng đại lượng cần theo dõi là lượng không gian thay vì số phép toán.
 
-**Ta thường chỉ quan tâm đến độ phức tạp không gian trong trường hợp xấu nhất**, vì bộ nhớ là yêu cầu cứng và chương trình phải đủ chỗ cho mọi đầu vào hợp lệ.
+**Chúng ta thường chỉ quan tâm đến độ phức tạp không gian trong trường hợp xấu nhất**, vì bộ nhớ là yêu cầu cứng và chương trình phải đủ chỗ cho mọi đầu vào hợp lệ.
 
 “Xấu nhất” có hai nghĩa.
 
 1. **Đầu vào xấu nhất**: Nếu $n \le 10$, hàm dưới dùng $O(1)$; nếu $n > 10$, mảng `nums` dùng $O(n)$. Vì vậy kết quả chung là $O(n)$.
-2. **Đỉnh sử dụng bộ nhớ**: Ta xét thời điểm chương trình chiếm nhiều bộ nhớ nhất, không cộng tuần tự bộ nhớ đã được giải phóng.
+2. **Đỉnh sử dụng bộ nhớ**: Chúng ta xét thời điểm chương trình chiếm nhiều bộ nhớ nhất, không cộng tuần tự bộ nhớ đã được giải phóng.
 
 ```python
 def algorithm(n: int):

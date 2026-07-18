@@ -1,6 +1,6 @@
 # Độ phức tạp thời gian
 
-Thời gian chạy phản ánh trực quan hiệu quả của thuật toán. Muốn ước lượng chính xác thời gian chạy của một đoạn mã, về lý thuyết ta phải xác định nền tảng thực thi, đo thời gian của từng phép toán, đếm toàn bộ phép toán rồi cộng chúng lại.
+Thời gian chạy phản ánh trực quan hiệu quả của thuật toán. Muốn ước lượng chính xác thời gian chạy của một đoạn mã, về lý thuyết chúng ta phải xác định nền tảng thực thi, đo thời gian của từng phép toán, đếm toàn bộ phép toán rồi cộng chúng lại.
 
 Ví dụ, giả sử phép cộng mất 1 ns, phép nhân mất 10 ns và lệnh in mất 5 ns:
 
@@ -65,11 +65,11 @@ def algorithm(n: int):
         print(0)
 ```
 
-Gọi số phép toán là $T(n)$, ta có $T(n) = 3 + 2n$. Đây là hàm tuyến tính, nên độ phức tạp thời gian là $O(n)$.
+Gọi số phép toán là $T(n)$, chúng ta có $T(n) = 3 + 2n$. Đây là hàm tuyến tính, nên độ phức tạp thời gian là $O(n)$.
 
 Ký hiệu Big $O$ biểu diễn **cận trên tiệm cận** của $T(n)$.
 
-> Nếu tồn tại các số dương $c$ và $n_0$ sao cho với mọi $n > n_0$, ta có $T(n) \le c \cdot f(n)$, thì $f(n)$ là một cận trên tiệm cận của $T(n)$ và viết $T(n) = O(f(n))$.
+> Nếu tồn tại các số dương $c$ và $n_0$ sao cho với mọi $n > n_0$, chúng ta có $T(n) \le c \cdot f(n)$, thì $f(n)$ là một cận trên tiệm cận của $T(n)$ và viết $T(n) = O(f(n))$.
 
 Khi $n$ tiến tới vô hạn, $T(n)$ và $f(n)$ có cùng mức tăng trưởng, chỉ khác nhau bởi một hệ số hằng.
 
@@ -77,7 +77,7 @@ Khi $n$ tiến tới vô hạn, $T(n)$ và $f(n)$ có cùng mức tăng trưởn
 
 ## Cách suy ra độ phức tạp
 
-Ta thực hiện hai bước: đếm số phép toán, sau đó giữ lại bậc tăng trưởng chi phối.
+Chúng ta thực hiện hai bước: đếm số phép toán, sau đó giữ lại bậc tăng trưởng chi phối.
 
 ### Bước 1: Đếm số phép toán
 
@@ -181,7 +181,7 @@ def exp_recur(n: int) -> int:
 
 ![Độ phức tạp thời gian bậc hàm mũ](time_complexity.assets/time_complexity_exponential.png)
 
-Bậc này tăng rất nhanh, thường gặp trong vét cạn và quay lui. Với dữ liệu lớn, ta thường cần quy hoạch động, tham lam hoặc kỹ thuật cắt tỉa.
+Bậc này tăng rất nhanh, thường gặp trong vét cạn và quay lui. Với dữ liệu lớn, chúng ta thường cần quy hoạch động, tham lam hoặc kỹ thuật cắt tỉa.
 
 ### Bậc logarit $O(\log n)$
 
@@ -256,6 +256,6 @@ def find_one(nums: list[int]) -> int:
 - Nếu `1` nằm đầu mảng, chỉ cần một bước: **trường hợp tốt nhất $\Omega(1)$**.
 - Nếu mọi vị trí có xác suất như nhau, số lượt trung bình xấp xỉ $n/2$: **trường hợp trung bình $\Theta(n)$**.
 
-Ta ít dùng trường hợp tốt nhất vì nó thường hiếm và dễ gây hiểu nhầm. Trường hợp xấu nhất hữu ích hơn vì cho một giới hạn an toàn. Trường hợp trung bình gần thực tế hơn nhưng có thể khó tính do phải biết phân bố dữ liệu và kỳ vọng toán học.
+Chúng ta ít dùng trường hợp tốt nhất vì nó thường hiếm và dễ gây hiểu nhầm. Trường hợp xấu nhất hữu ích hơn vì cho một giới hạn an toàn. Trường hợp trung bình gần thực tế hơn nhưng có thể khó tính do phải biết phân bố dữ liệu và kỳ vọng toán học.
 
 > Trong nhiều tài liệu, ký hiệu $O$ đôi khi được dùng không chặt chẽ cho trường hợp trung bình. Về mặt toán học, $\Theta$ mới biểu diễn cận tăng trưởng khít của trường hợp trung bình.

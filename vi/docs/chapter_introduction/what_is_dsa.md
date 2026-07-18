@@ -10,13 +10,13 @@
 
 ## Định nghĩa cấu trúc dữ liệu
 
-**Cấu trúc dữ liệu** là cách tổ chức và lưu trữ dữ liệu. Khái niệm này bao gồm bản thân dữ liệu, mối quan hệ giữa các phần tử và những phương thức dùng để thao tác với chúng. Khi thiết kế cấu trúc dữ liệu, ta thường hướng tới các mục tiêu:
+**Cấu trúc dữ liệu** là cách tổ chức và lưu trữ dữ liệu. Khái niệm này bao gồm bản thân dữ liệu, mối quan hệ giữa các phần tử và những phương thức dùng để thao tác với chúng. Khi thiết kế cấu trúc dữ liệu, chúng ta thường hướng tới các mục tiêu:
 
 - Chiếm ít không gian để tiết kiệm bộ nhớ máy tính.
 - Thực hiện nhanh các thao tác như truy cập, thêm, xóa và cập nhật.
 - Biểu diễn dữ liệu và quan hệ logic một cách gọn gàng để thuật toán vận hành hiệu quả.
 
-**Thiết kế cấu trúc dữ liệu luôn chứa những sự đánh đổi.** Muốn cải thiện một mặt, ta thường phải chấp nhận giảm hiệu quả ở mặt khác. Ví dụ:
+**Thiết kế cấu trúc dữ liệu luôn chứa những sự đánh đổi.** Muốn cải thiện một mặt, chúng ta thường phải chấp nhận giảm hiệu quả ở mặt khác. Ví dụ:
 
 - So với mảng, danh sách liên kết thuận tiện hơn khi thêm hoặc xóa dữ liệu, nhưng truy cập một phần tử theo vị trí chậm hơn.
 - So với danh sách liên kết, đồ thị biểu diễn được nhiều quan hệ phong phú hơn, nhưng thường cần nhiều bộ nhớ hơn.
@@ -31,7 +31,7 @@ Cấu trúc dữ liệu và thuật toán liên hệ chặt chẽ với nhau ở
 
 ![Mối quan hệ giữa cấu trúc dữ liệu và thuật toán](what_is_dsa.assets/relationship_between_data_structure_and_algorithm.png)
 
-Ta có thể hình dung cấu trúc dữ liệu và thuật toán giống như lắp ráp một mô hình từ các khối ghép. Một bộ khối ghép không chỉ có nhiều chi tiết mà còn đi kèm hướng dẫn lắp ráp. Làm theo từng bước trong hướng dẫn, ta tạo ra mô hình hoàn chỉnh.
+Chúng ta có thể hình dung cấu trúc dữ liệu và thuật toán giống như lắp ráp một mô hình từ các khối ghép. Một bộ khối ghép không chỉ có nhiều chi tiết mà còn đi kèm hướng dẫn lắp ráp. Làm theo từng bước trong hướng dẫn, chúng ta tạo ra mô hình hoàn chỉnh.
 
 ![Lắp ráp các khối ghép](what_is_dsa.assets/assembling_blocks.png)
 

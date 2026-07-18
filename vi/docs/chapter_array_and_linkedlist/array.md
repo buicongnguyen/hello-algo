@@ -8,7 +8,7 @@
 
 ### Khởi tạo mảng
 
-Ta có thể khởi tạo mảng có hoặc không có giá trị ban đầu. Khi không chỉ định giá trị, nhiều ngôn ngữ điền giá trị mặc định như $0$. Python dùng `list` làm mảng động, nhưng các ví dụ trong mục này coi danh sách có độ dài cố định để minh họa hành vi của mảng.
+Chúng ta có thể khởi tạo mảng có hoặc không có giá trị ban đầu. Khi không chỉ định giá trị, nhiều ngôn ngữ điền giá trị mặc định như $0$. Python dùng `list` làm mảng động, nhưng các ví dụ trong mục này coi danh sách có độ dài cố định để minh họa hành vi của mảng.
 
 ```python
 # Khởi tạo không có giá trị cụ thể
@@ -40,7 +40,7 @@ def random_access(nums: list[int]) -> int:
 
 ### Chèn phần tử
 
-Giữa các phần tử mảng không có chỗ trống. Muốn chèn một giá trị tại chỉ mục $i$, ta phải dịch các phần tử từ $i$ trở về sau sang phải một vị trí rồi ghi giá trị mới.
+Giữa các phần tử mảng không có chỗ trống. Muốn chèn một giá trị tại chỉ mục $i$, chúng ta phải dịch các phần tử từ $i$ trở về sau sang phải một vị trí rồi ghi giá trị mới.
 
 ![Ví dụ chèn phần tử vào mảng](array.assets/array_insert_element.png)
 
@@ -56,7 +56,7 @@ def insert(nums: list[int], num: int, index: int) -> None:
 
 ### Xóa phần tử
 
-Để xóa phần tử tại chỉ mục $i$, ta dịch mọi phần tử phía sau sang trái một vị trí. Giá trị cũ ở cuối mảng không còn thuộc phần dữ liệu hợp lệ nên không nhất thiết phải sửa riêng.
+Để xóa phần tử tại chỉ mục $i$, chúng ta dịch mọi phần tử phía sau sang trái một vị trí. Giá trị cũ ở cuối mảng không còn thuộc phần dữ liệu hợp lệ nên không nhất thiết phải sửa riêng.
 
 ![Ví dụ xóa phần tử khỏi mảng](array.assets/array_remove_element.png)
 
@@ -75,7 +75,7 @@ Chèn và xóa trong mảng có ba hạn chế chính.
 
 ### Duyệt mảng
 
-Ta có thể duyệt theo chỉ mục, duyệt trực tiếp từng giá trị hoặc lấy đồng thời chỉ mục và giá trị.
+Chúng ta có thể duyệt theo chỉ mục, duyệt trực tiếp từng giá trị hoặc lấy đồng thời chỉ mục và giá trị.
 
 ```python
 def traverse(nums: list[int]) -> int:
@@ -91,7 +91,7 @@ def traverse(nums: list[int]) -> int:
 
 ### Tìm phần tử
 
-Muốn tìm một giá trị trong mảng chưa sắp xếp, ta duyệt từ đầu và so sánh từng phần tử. Cách này gọi là **tìm kiếm tuyến tính** và có độ phức tạp $O(n)$.
+Muốn tìm một giá trị trong mảng chưa sắp xếp, chúng ta duyệt từ đầu và so sánh từng phần tử. Cách này gọi là **tìm kiếm tuyến tính** và có độ phức tạp $O(n)$.
 
 ```python
 def find(nums: list[int], target: int) -> int:
@@ -103,7 +103,7 @@ def find(nums: list[int], target: int) -> int:
 
 ### Mở rộng mảng
 
-Chương trình không thể giả định vùng nhớ ngay sau mảng còn trống, nên việc kéo dài trực tiếp một mảng là không an toàn. Muốn mở rộng, ta tạo mảng mới lớn hơn và sao chép toàn bộ phần tử. Đây là thao tác $O(n)$.
+Chương trình không thể giả định vùng nhớ ngay sau mảng còn trống, nên việc kéo dài trực tiếp một mảng là không an toàn. Muốn mở rộng, chúng ta tạo mảng mới lớn hơn và sao chép toàn bộ phần tử. Đây là thao tác $O(n)$.
 
 ```python
 def extend(nums: list[int], enlarge: int) -> list[int]:

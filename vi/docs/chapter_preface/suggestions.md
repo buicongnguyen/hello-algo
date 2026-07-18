@@ -36,7 +36,7 @@ Khi gặp hình minh họa động, hãy xem hình là nội dung chính, đọc
 
 ## Hiểu sâu hơn qua thực hành mã
 
-Mã nguồn đi kèm được lưu trong [repository Hello Algo](https://github.com/krahets/hello-algo), có ca kiểm thử và có thể chạy trực tiếp.
+Mã nguồn đi kèm được lưu trong [kho mã nguồn Hello Algo](https://github.com/krahets/hello-algo), có ca kiểm thử và có thể chạy trực tiếp.
 
 Nếu có thời gian, **bạn nên tự gõ lại mã**. Nếu thời gian học hạn chế, ít nhất hãy đọc và chạy toàn bộ ví dụ. Việc tự tay thực hành thường mang lại nhiều hiểu biết hơn so với chỉ đọc mã.
 
@@ -45,7 +45,7 @@ Nếu có thời gian, **bạn nên tự gõ lại mã**. Nếu thời gian họ
 Để chạy mã cục bộ, hãy thực hiện ba bước.
 
 1. **Cài môi trường lập trình** theo [hướng dẫn trong phụ lục](https://www.hello-algo.com/en/chapter_appendix/installation/). Nếu đã cài, bạn có thể bỏ qua bước này.
-2. **Clone hoặc tải repository**. Nếu đã cài [Git](https://git-scm.com/downloads), chạy:
+2. **Sao chép (clone) hoặc tải kho mã nguồn**. Nếu đã cài [Git](https://git-scm.com/downloads), chạy:
 
 ```shell
 git clone https://github.com/krahets/hello-algo.git
@@ -53,7 +53,7 @@ git clone https://github.com/krahets/hello-algo.git
 
 Bạn cũng có thể chọn “Download ZIP” trên GitHub rồi giải nén.
 
-![Clone repository hoặc tải mã](suggestions.assets/download_code.png)
+![Sao chép kho mã nguồn hoặc tải mã dưới dạng ZIP](suggestions.assets/download_code.png)
 
 3. **Chạy tệp mã nguồn tương ứng** trong thư mục `codes`. Tên tệp trên khối mã giúp bạn tìm đúng bản triển khai và tập trung vào kiến thức thay vì mất thời gian cấu hình lại ví dụ.
 

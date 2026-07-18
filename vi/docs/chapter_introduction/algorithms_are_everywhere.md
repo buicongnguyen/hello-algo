@@ -1,12 +1,12 @@
 # Thuật toán ở khắp nơi
 
-Khi nghe từ “thuật toán”, chúng ta thường nghĩ ngay đến toán học. Thực tế, nhiều thuật toán không dựa vào toán học phức tạp mà chủ yếu sử dụng logic cơ bản. Vì vậy, ta có thể bắt gặp chúng ở khắp nơi trong đời sống.
+Khi nghe từ “thuật toán”, chúng ta thường nghĩ ngay đến toán học. Thực tế, nhiều thuật toán không dựa vào toán học phức tạp mà chủ yếu sử dụng logic cơ bản. Vì vậy, chúng ta có thể bắt gặp chúng ở khắp nơi trong đời sống.
 
 Trước khi tìm hiểu thuật toán một cách chính thức, có một điều thú vị đáng nhắc tới: **bạn đã học nhiều thuật toán mà không nhận ra, và vẫn thường xuyên áp dụng chúng hằng ngày**. Ba ví dụ sau sẽ làm rõ điều đó.
 
 ## Ví dụ 1: Tra từ điển
 
-Trong từ điển tiếng Anh, các từ được sắp xếp theo thứ tự bảng chữ cái. Giả sử cần tìm một từ bắt đầu bằng chữ $r$, ta thường làm như sau:
+Trong từ điển tiếng Anh, các từ được sắp xếp theo thứ tự bảng chữ cái. Giả sử cần tìm một từ bắt đầu bằng chữ $r$, chúng ta thường làm như sau:
 
 1. Mở từ điển ở khoảng giữa và xem từ đầu tiên trên trang; giả sử từ đó bắt đầu bằng chữ $m$.
 2. Vì $r$ đứng sau $m$ trong bảng chữ cái, bỏ qua nửa đầu và thu hẹp phạm vi tìm kiếm xuống nửa sau.
@@ -44,10 +44,10 @@ Giả sử bạn mua hàng hết 69 đồng và đưa cho thu ngân 100 đồng.
 
 ![Quá trình chọn tiền để trả lại](algorithms_are_everywhere.assets/greedy_change.png)
 
-Ở mỗi bước, ta chọn phương án có vẻ tốt nhất tại thời điểm hiện tại—mệnh giá lớn nhất còn có thể dùng. Trong cấu trúc dữ liệu và thuật toán, cách tiếp cận này được gọi là **thuật toán tham lam**.
+Ở mỗi bước, chúng ta chọn phương án có vẻ tốt nhất tại thời điểm hiện tại—mệnh giá lớn nhất còn có thể dùng. Trong cấu trúc dữ liệu và thuật toán, cách tiếp cận này được gọi là **thuật toán tham lam**.
 
 > Ví dụ trả tiền chỉ minh họa tư tưởng tham lam. Với một số hệ mệnh giá, luôn chọn đồng tiền lớn nhất có thể không tạo ra phương án dùng ít đồng nhất. Một thuật toán tham lam cần được chứng minh đúng cho hệ quy tắc cụ thể.
 
-Từ nấu một bữa ăn đến du hành giữa các vì sao, gần như mọi quá trình giải quyết vấn đề đều có thuật toán. Máy tính cho phép chúng ta lưu cấu trúc dữ liệu trong bộ nhớ và viết mã để CPU hoặc GPU thực hiện thuật toán. Nhờ đó, ta có thể chuyển bài toán thực tế vào máy tính và xử lý những vấn đề phức tạp hiệu quả hơn.
+Từ nấu một bữa ăn đến du hành giữa các vì sao, gần như mọi quá trình giải quyết vấn đề đều có thuật toán. Máy tính cho phép chúng ta lưu cấu trúc dữ liệu trong bộ nhớ và viết mã để CPU hoặc GPU thực hiện thuật toán. Nhờ đó, chúng ta có thể chuyển bài toán thực tế vào máy tính và xử lý những vấn đề phức tạp hiệu quả hơn.
 
 > Nếu các khái niệm như cấu trúc dữ liệu, thuật toán, mảng hay tìm kiếm nhị phân vẫn còn mơ hồ, đừng lo. Cuốn sách sẽ dẫn bạn từng bước vào thế giới này.
