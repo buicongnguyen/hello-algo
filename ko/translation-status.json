@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "sourceLanguage": "en",
+  "targetLanguage": "ko",
+  "sourceCommit": "4935d2d3877a6205008d89def8d2ba43f7e06275",
+  "updated": "2026-07-18",
+  "statusDefinitions": {
+    "planned": "로드맵에 포함되었지만 초안이 없음",
+    "draft": "한국어 초안이 있으나 검토가 완료되지 않음",
+    "pilot": "기술·언어 자체 검토와 빌드 검사를 완료하고 독립 검토를 기다리는 상태",
+    "published": "독립적인 기술·한국어 검토를 완료한 안정 릴리스"
+  },
+  "documents": [
+    { "source": "en/docs/chapter_preface/index.md", "target": "ko/docs/chapter_preface/index.md", "route": "ko/learn/preface.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_preface/about_the_book.md", "target": "ko/docs/chapter_preface/about_the_book.md", "route": "ko/learn/about-the-book.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_preface/suggestions.md", "target": "ko/docs/chapter_preface/suggestions.md", "route": "ko/learn/how-to-use-the-book.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_preface/summary.md", "target": "ko/docs/chapter_preface/summary.md", "route": "ko/learn/chapter-0-summary.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_introduction/index.md", "target": "ko/docs/chapter_introduction/index.md", "route": "ko/learn/", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_introduction/algorithms_are_everywhere.md", "target": "ko/docs/chapter_introduction/algorithms_are_everywhere.md", "route": "ko/learn/algorithms-are-everywhere.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_introduction/what_is_dsa.md", "target": "ko/docs/chapter_introduction/what_is_dsa.md", "route": "ko/learn/what-is-dsa.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_introduction/summary.md", "target": "ko/docs/chapter_introduction/summary.md", "route": "ko/learn/chapter-1-summary.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_computational_complexity/index.md", "target": "ko/docs/chapter_computational_complexity/index.md", "route": "ko/learn/complexity-analysis.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_computational_complexity/performance_evaluation.md", "target": "ko/docs/chapter_computational_complexity/performance_evaluation.md", "route": "ko/learn/performance-evaluation.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_computational_complexity/iteration_and_recursion.md", "target": "ko/docs/chapter_computational_complexity/iteration_and_recursion.md", "route": "ko/learn/iteration-and-recursion.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_computational_complexity/time_complexity.md", "target": "ko/docs/chapter_computational_complexity/time_complexity.md", "route": "ko/learn/time-complexity.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_computational_complexity/space_complexity.md", "target": "ko/docs/chapter_computational_complexity/space_complexity.md", "route": "ko/learn/space-complexity.html", "wave": 1, "status": "pilot" },
+    { "source": "en/docs/chapter_computational_complexity/summary.md", "target": "ko/docs/chapter_computational_complexity/summary.md", "route": "ko/learn/chapter-2-summary.html", "wave": 1, "status": "pilot" }
+  ]
+}

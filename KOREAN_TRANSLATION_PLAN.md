@@ -1,6 +1,6 @@
 # Korean edition plan for Hello Algo
 
-Status: proposed implementation plan
+Status: Korean pilot `v0.1` implemented on 2026-07-18; independent Korean technical-language review remains pending
 
 Target release: Korean pilot `v0.1`
 

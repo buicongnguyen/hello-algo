@@ -301,6 +301,19 @@ export const htmlTranslations = {
 };
 
 export const interactiveLocale = {
+  ui: {
+    autoPlay: "Tự chạy", ready: "Sẵn sàng", startAtA: "Bắt đầu tại A", chooseTraversal: "Chọn BFS hoặc DFS, rồi tiến từng bước.",
+    queueLabel: "Hàng đợi · vào trước, ra trước", stackLabel: "Ngăn xếp · vào sau, ra trước", empty: "Rỗng", nothingVisited: "Chưa duyệt nút nào",
+    queueInvariant: "Hàng đợi giữ các nút đã phát hiện đang chờ xử lý. Nút ở đầu luôn được xử lý tiếp theo.", stackInvariant: "Ngăn xếp giữ các nhánh đã phát hiện. Phần tử trên cùng luôn được xử lý tiếp nên nhánh mới nhất được ưu tiên.",
+    complete: "Hoàn tất", order: "Thứ tự: {order}", reachableVisited: "Mọi nút có thể đi tới từ A đã được duyệt bằng {mode}.", step: "Bước {step}", visit: "Duyệt {node}",
+    discoverNodes: " Phát hiện {nodes} và thêm vào {destination}.", it: "", them: "", queueBack: "cuối hàng đợi", stackTop: "đỉnh ngăn xếp", neighborsDiscovered: " Mọi nút kề đều đã được phát hiện.",
+    removeFrontier: "Lấy {node} khỏi {position}.{addition}", queueFront: "đầu hàng đợi", stackTopShort: "đỉnh ngăn xếp", pause: "Tạm dừng", pauseAnimation: "Tạm dừng hình động", playAnimation: "Phát hình động",
+    complexityScale: "Khi n = {n}, lượng công việc bậc hai lớn gấp {ratio} lần tuyến tính. Lượng công việc hàm mũ đạt {exponential} bước.",
+    notPresent: "Không tồn tại", found: "Đã tìm thấy", compareMidpoint: "So sánh điểm giữa", compareMidpointFor: "So sánh điểm giữa khi tìm {target}", searchFor: "Tìm {target}",
+    fullArrayCandidate: "Toàn bộ mảng đã sắp xếp là khoảng ứng viên đầu tiên.", comparison: "Lần so sánh {step}", foundAt: "Tìm thấy {target} tại chỉ mục {index}", midpointMatches: "Giá trị giữa là {value}, đúng bằng mục tiêu. Quá trình tìm kiếm dừng lại.",
+    tooSmall: "{value} quá nhỏ", discardLow: "Loại các chỉ mục từ 0 đến {previous}. Thứ tự đã sắp xếp chứng minh không giá trị nào trong đó bằng {target}.", tooLarge: "{value} quá lớn",
+    discardHigh: "Loại các chỉ mục từ {previous} đến {last}. Thứ tự đã sắp xếp chứng minh không giá trị nào trong đó bằng {target}.", targetMissing: "{target} không tồn tại", emptyInterval: "Khoảng ứng viên đã rỗng nên mục tiêu không thể nằm trong mảng."
+  },
   topicData: {
     foundations: { number: "Nút 01", status: "Điểm bắt đầu phù hợp nhất", title: "Kiến thức nền", summary: "Xây dựng vốn từ về đầu vào, đầu ra, tính đúng đắn, cấu trúc dữ liệu và thuật toán biến đổi dữ liệu.", before: "Không cần — bắt đầu tại đây", after: "Độ phức tạp · Mảng và danh sách", hook: "Dữ liệu là hình dạng; thuật toán là hành trình." },
     complexity: { number: "Nút 02", status: "Đo trước khi tối ưu", title: "Độ phức tạp", summary: "Mô tả mức tài nguyên tăng khi đầu vào lớn lên. Big-O giúp so sánh ý tưởng mà không phụ thuộc vào một máy tính cụ thể.", before: "Kiến thức nền", after: "Tìm kiếm · Sắp xếp · mọi sự đánh đổi thiết kế", hook: "Đừng nhìn đồng hồ; hãy nhìn đường cong tăng trưởng." },

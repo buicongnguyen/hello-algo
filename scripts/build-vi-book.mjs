@@ -240,6 +240,16 @@ const pages = [
   }
 ];
 
+const koreanRoutes = new Map([
+  ["en/docs/chapter_preface/index.md", "preface.html"], ["en/docs/chapter_preface/about_the_book.md", "about-the-book.html"],
+  ["en/docs/chapter_preface/suggestions.md", "how-to-use-the-book.html"], ["en/docs/chapter_preface/summary.md", "chapter-0-summary.html"],
+  ["en/docs/chapter_introduction/index.md", ""], ["en/docs/chapter_introduction/algorithms_are_everywhere.md", "algorithms-are-everywhere.html"],
+  ["en/docs/chapter_introduction/what_is_dsa.md", "what-is-dsa.html"], ["en/docs/chapter_introduction/summary.md", "chapter-1-summary.html"],
+  ["en/docs/chapter_computational_complexity/index.md", "complexity-analysis.html"], ["en/docs/chapter_computational_complexity/performance_evaluation.md", "performance-evaluation.html"],
+  ["en/docs/chapter_computational_complexity/iteration_and_recursion.md", "iteration-and-recursion.html"], ["en/docs/chapter_computational_complexity/time_complexity.md", "time-complexity.html"],
+  ["en/docs/chapter_computational_complexity/space_complexity.md", "space-complexity.html"], ["en/docs/chapter_computational_complexity/summary.md", "chapter-2-summary.html"]
+]);
+
 const escapeHtml = (value) => value
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
@@ -287,7 +297,7 @@ function assetUrl(sourcePath, reference) {
     return `assets/covers/${path.basename(reference)}`;
   }
   const sourceDirectory = path.dirname(sourcePath.replaceAll("\\", "/"));
-  const relativeDirectory = sourceDirectory.replace(/^vi\/docs\//, "");
+  const relativeDirectory = sourceDirectory.replace(/^(?:vi|ko)\/docs\//, "");
   return `assets/${relativeDirectory}/${reference}`;
 }
 
@@ -299,7 +309,7 @@ function tableCells(line) {
   return line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
 }
 
-function renderMarkdown(markdown, sourcePath) {
+export function renderMarkdown(markdown, sourcePath) {
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const output = [];
 
@@ -423,6 +433,8 @@ function pageTemplate(page, body, pageIndex) {
   const sourceFile = sourceParts.at(-1).replace(/\.md$/, "");
   const sourceChapter = sourceParts.at(-2);
   const englishUrl = `https://www.hello-algo.com/en/${sourceChapter}/${sourceFile === "index" ? "" : `${sourceFile}/`}`;
+  const koreanRoute = koreanRoutes.get(page.source);
+  const koreanUrl = koreanRoute === undefined ? "../../ko/learn/" : `../../ko/learn/${koreanRoute}`;
   return `<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -442,6 +454,7 @@ function pageTemplate(page, body, pageIndex) {
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>VI</b></strong></a>
     <div class="reader-progress"><span>Đợt thử</span><strong>${pages.length} / 105 tài liệu</strong></div>
     <nav aria-label="Ngôn ngữ và giao diện">
+      <a href="${koreanUrl}" lang="ko" hreflang="ko" aria-label="${koreanRoute === undefined ? "Mở bản tiếng Hàn; trang tương ứng chưa có trong đợt thử" : "Đọc trang tương ứng bằng tiếng Hàn"}">KO</a>
       <a class="active" href="${canonicalName || "./"}" lang="vi" hreflang="vi" aria-current="page">VI</a>
       <a href="${englishUrl}" lang="en" hreflang="en" aria-label="Đọc trang tương ứng bằng tiếng Anh">EN</a>
       <button id="reader-theme" type="button" aria-label="Đổi giao diện sáng hoặc tối">◐</button>

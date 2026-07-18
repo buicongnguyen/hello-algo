@@ -33,6 +33,7 @@
 }
 
 * { box-sizing: border-box; }
+:lang(ko) { word-break: keep-all; overflow-wrap: anywhere; font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; color: var(--text); background: var(--bg); line-height: 1.72; }
 a { color: inherit; }

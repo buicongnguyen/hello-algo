@@ -34,7 +34,7 @@ export async function checkBuiltSite(outputRoot) {
   for (const htmlFile of htmlFiles) {
     const relativeHtml = path.relative(outputRoot, htmlFile).replaceAll("\\", "/");
     const html = await readFile(htmlFile, "utf8");
-    if (!/<html lang="(?:vi|en)">/.test(html)) failures.push(`${relativeHtml} has no supported document language`);
+    if (!/<html lang="(?:vi|en|ko)">/.test(html)) failures.push(`${relativeHtml} has no supported document language`);
 
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
     const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -94,7 +94,29 @@ export async function checkBuiltSite(outputRoot) {
       failures.push(`${pilotPage} does not disclose source authorship, translation, selection, and editorial modification`);
     }
     if (!html.includes("Đọc trang tương ứng bằng tiếng Anh")) failures.push(`${pilotPage} has no corresponding English-page option`);
+    if (!html.includes('hreflang="ko"')) failures.push(`${pilotPage} has no Korean option`);
   }
+
+  const koreanDirectory = path.join(outputRoot, "ko", "learn");
+  const koreanPages = (await readdir(koreanDirectory)).filter((file) => file.endsWith(".html"));
+  const koreanStatus = JSON.parse(await readFile(path.join(outputRoot, "ko", "translation-status.json"), "utf8"));
+  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 14) failures.push(`Expected 14 Korean pilot pages, found ${koreanPages.length}`);
+  const koreanRoutes = koreanStatus.documents.map((document) => document.route);
+  if (new Set(koreanRoutes).size !== koreanRoutes.length) failures.push("Korean translation status contains duplicate routes");
+  for (const route of koreanRoutes) {
+    const candidate = path.join(outputRoot, route, route.endsWith("/") ? "index.html" : "");
+    if (!await referenceExists(candidate)) failures.push(`Korean status route was not built: ${route}`);
+  }
+  const koreanHome = await readFile(path.join(koreanDirectory, "index.html"), "utf8");
+  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("14 / 105 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 3) failures.push("Korean reader metadata, progress, or Chapters 0–2 navigation is incomplete");
+  if (!koreanHome.includes("CC BY-NC-SA 4.0") || !koreanHome.includes("공식 후원을 의미하지 않습니다")) failures.push("Korean reader is missing source and license disclosure");
+  for (const koreanPage of koreanPages) {
+    const pageHtml = await readFile(path.join(koreanDirectory, koreanPage), "utf8");
+    if (!pageHtml.includes('hreflang="ko"') || !pageHtml.includes('hreflang="vi"') || !pageHtml.includes('hreflang="en"')) failures.push(`${koreanPage} does not expose KO / VI / EN options`);
+    if (pageHtml.includes("```") || /\$[^$<>]+\$/.test(pageHtml)) failures.push(`${koreanPage} contains unrendered Markdown`);
+  }
+  const koreanTime = await readFile(path.join(koreanDirectory, "time-complexity.html"), "utf8");
+  if (!koreanTime.includes('<pre><code class="language-python"') || !koreanTime.includes('class="math-block"')) failures.push("Korean time-complexity page is missing rendered Python or display mathematics");
 
   const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");
   if (!timeComplexityPage.includes('<pre><code class="language-python"') || !timeComplexityPage.includes('class="math-block"')) {
@@ -115,10 +137,12 @@ export async function checkBuiltSite(outputRoot) {
 
   const englishAtlas = await readFile(path.join(outputRoot, "en", "index.html"), "utf8");
   const vietnameseAtlas = await readFile(path.join(outputRoot, "vi", "index.html"), "utf8");
+  const koreanAtlas = await readFile(path.join(outputRoot, "ko", "index.html"), "utf8");
   const sectionIds = (document) => [...document.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);
   if (JSON.stringify(sectionIds(englishAtlas)) !== JSON.stringify(sectionIds(vietnameseAtlas))) {
     failures.push("Built Vietnamese Atlas does not match the English section structure");
   }
+  if (JSON.stringify(sectionIds(englishAtlas)) !== JSON.stringify(sectionIds(koreanAtlas)) || !koreanAtlas.includes("window.HELLO_ALGO_LOCALE=")) failures.push("Built Korean Atlas does not match the English structure or lacks its locale payload");
   if (!vietnameseAtlas.includes("window.HELLO_ALGO_LOCALE=") ||
       !vietnameseAtlas.includes('data-topic="hashing"') ||
       !vietnameseAtlas.includes('data-topic="heaps"')) {
@@ -129,5 +153,5 @@ export async function checkBuiltSite(outputRoot) {
     throw new Error("Built-site checks failed:\n" + failures.map((failure) => `- ${failure}`).join("\n"));
   }
 
-  console.log(`Built-site checks passed (${htmlFiles.length} HTML pages, ${pilotPages.length} Vietnamese pilot pages, no broken local references).`);
+  console.log(`Built-site checks passed (${htmlFiles.length} HTML pages, ${pilotPages.length} Vietnamese and ${koreanPages.length} Korean pilot pages, no broken local references).`);
 }

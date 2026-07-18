@@ -1,6 +1,6 @@
-# Hello Algo bilingual site
+# Hello Algo trilingual site
 
-This fork publishes a bilingual GitHub Pages experience for the Hello Algo translation project.
+This fork publishes a Korean, Vietnamese, and English GitHub Pages experience for the Hello Algo translation project.
 
 ## Published routes
 
@@ -8,8 +8,10 @@ This fork publishes a bilingual GitHub Pages experience for the Hello Algo trans
 - `/hello-algo/vi/` is the complete Vietnamese Hello Algo Atlas, with the same sections and interactions as English.
 - `/hello-algo/vi/learn/` is the Vietnamese pilot reader.
 - `/hello-algo/en/` preserves the complete interactive English Hello Algo Atlas.
+- `/hello-algo/ko/` is the complete Korean Hello Algo Atlas.
+- `/hello-algo/ko/learn/` is a 14-document Korean pilot reader covering Chapters 0–2.
 
-Both language pages include a visible VI/EN switch. The Atlas interface is fully localized; the longer book translation remains transparently labelled as an in-progress pilot.
+All Atlas and reader pages include a visible KO/VI/EN switch. The localized readers remain transparently labelled as pilots pending independent review.
 
 ## Vietnamese Atlas
 
@@ -27,9 +29,13 @@ Translation governance lives under `vi/`: a versioned glossary, style guide, con
 
 The complete working plan is in [VIETNAMESE_TRANSLATION_PLAN.md](VIETNAMESE_TRANSLATION_PLAN.md).
 
+## Korean pilot
+
+The Korean edition has section-for-section parity with the English and Vietnamese Atlas, localized interactions and accessibility labels, 14 source-locked Chapter 0–2 documents, representative Python examples, and exact Vietnamese and English counterpart links. Governance files live under `ko/`.
+
 ## Shared Atlas experience
 
-Both Atlas routes include:
+All three Atlas routes include:
 
 - a clickable learning-dependency graph;
 - an interactive data-structure field guide and operation-cost matrix;
@@ -44,6 +50,6 @@ Both Atlas routes include:
 
 Run `npm start` to validate, build, and preview the exact `dist` artifact. The default local port is `4173`; set `PORT` to use another one.
 
-Run `npm run check` for source validation or `npm run build` to recreate `dist`, render the Vietnamese Markdown pilot, and check every generated local reference.
+Run `npm run check` for source validation or `npm run build` to recreate `dist`, render both localized Markdown pilots, and check every generated local reference.
 
 The GitHub Pages workflow runs the same build whenever `main` is pushed. Original Hello Algo source and artwork remain under their upstream license; see `LICENSE` and the upstream project for details.

@@ -3,6 +3,8 @@ import { constants } from "node:fs";
 import path from "node:path";
 import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 import { htmlTranslations, interactiveLocale } from "../vi/atlas-locale.mjs";
+import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
+import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
@@ -22,7 +24,9 @@ const requiredFiles = [
   "scripts/check-dist.mjs",
   "scripts/localize-vi-atlas.mjs",
   "VIETNAMESE_TRANSLATION_PLAN.md",
-  "KOREAN_TRANSLATION_PLAN.md"
+  "KOREAN_TRANSLATION_PLAN.md",
+  "ko/atlas-locale.mjs", "ko/README.md", "ko/CONTRIBUTING.md", "ko/glossary.md", "ko/style-guide.md", "ko/translation-status.json",
+  "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -33,11 +37,13 @@ const html = await readFile(path.join(projectRoot, "index.html"), "utf8");
 const css = await readFile(path.join(projectRoot, "styles.css"), "utf8");
 const js = await readFile(path.join(projectRoot, "app.js"), "utf8");
 const viHtml = localizeVietnameseAtlas(html);
+const koHtml = localizeKoreanAtlas(html);
 const bookCss = await readFile(path.join(projectRoot, "vi", "book.css"), "utf8");
 const bookJs = await readFile(path.join(projectRoot, "vi", "book.js"), "utf8");
 const translationStatus = JSON.parse(await readFile(path.join(projectRoot, "vi", "translation-status.json"), "utf8"));
 const translationPlan = await readFile(path.join(projectRoot, "VIETNAMESE_TRANSLATION_PLAN.md"), "utf8");
 const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLAN.md"), "utf8");
+const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "translation-status.json"), "utf8"));
 
 const failures = [];
 function countMarkdownH1(markdown) {
@@ -61,7 +67,7 @@ for (const duplicate of [...ids].filter((id) => html.match(new RegExp(`id="${id}
 for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
   const reference = match[1].split("?")[0].split("#")[0];
   if (!reference || /^(https?:|mailto:|data:)/.test(reference)) continue;
-  if (reference === "../vi/") continue;
+  if (reference === "../vi/" || reference === "../ko/") continue;
   const localPath = path.join(projectRoot, decodeURIComponent(reference));
   try {
     await access(localPath, constants.R_OK);
@@ -117,11 +123,14 @@ if (!html.includes('class="language-switch"') || !html.includes('href="../vi/"')
 if (!viHtml.includes('<html lang="vi">') || !viHtml.includes('href="../en/"')) {
   failures.push("Vietnamese page or English language option is missing");
 }
+if (!koHtml.includes('<html lang="ko">') || !koHtml.includes('href="../vi/"') || !koHtml.includes('href="../en/"')) failures.push("Korean Atlas or its language options are missing");
 const englishSectionIds = [...html.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);
 const vietnameseSectionIds = [...viHtml.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);
+const koreanSectionIds = [...koHtml.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);
 if (JSON.stringify(englishSectionIds) !== JSON.stringify(vietnameseSectionIds)) {
   failures.push("Vietnamese Atlas does not have section-for-section parity with English");
 }
+if (JSON.stringify(englishSectionIds) !== JSON.stringify(koreanSectionIds)) failures.push("Korean Atlas does not have section-for-section parity with English");
 const translations = Object.entries(htmlTranslations).sort(([a], [b]) => b.length - a.length);
 const translateStatic = (value) => translations.reduce((result, [english, vietnamese]) => result.replaceAll(english, vietnamese), value);
 const intentionalSharedLabels = new Set([
@@ -143,12 +152,15 @@ for (const attribute of ["data-topic", "data-structure", "data-mode", "data-sort
 if (!viHtml.includes('href="learn/"') || !viHtml.includes("Bản đồ học tập tương tác")) {
   failures.push("Vietnamese Atlas or pilot reading entry is missing");
 }
+if ((viHtml.match(/href="learn\/"/g) || []).length < 2 || (koHtml.match(/href="learn\/"/g) || []).length < 2) failures.push("Localized Atlas header and footer must both link to their reader");
 if (!viHtml.includes("Kế hoạch dịch ↗") || !viHtml.includes("window.HELLO_ALGO_LOCALE=")) {
   failures.push("Vietnamese Atlas supporting links or interactive locale payload is missing");
 }
 if (Object.keys(interactiveLocale.topicData).length !== 13 || Object.keys(interactiveLocale.structureData).length !== 6 || Object.keys(interactiveLocale.choiceData).length !== 5) {
   failures.push("Vietnamese interactive datasets are incomplete");
 }
+if (Object.keys(koreanInteractiveLocale.topicData).length !== 13 || Object.keys(koreanInteractiveLocale.structureData).length !== 6 || Object.keys(koreanInteractiveLocale.choiceData).length !== 5 || !koreanInteractiveLocale.ui) failures.push("Korean interactive datasets are incomplete");
+if (koHtml.includes("See the connections.") || koHtml.includes("Learn in dependency order") || !koHtml.includes("window.HELLO_ALGO_LOCALE=")) failures.push("Korean Atlas still contains primary English copy or lacks its locale payload");
 for (const [attribute, dataset] of [
   ["data-topic", interactiveLocale.topicData],
   ["data-structure", interactiveLocale.structureData],
@@ -196,6 +208,20 @@ for (const document of translationStatus.documents) {
     // Missing targets are reported by the existence check above.
   }
 }
+if (koreanStatus.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 14 || koreanStatus.documents.some((document) => document.status !== "pilot")) failures.push("Expected 14 Korean pilot documents locked to the shared English revision");
+if (new Set(koreanStatus.documents.map((document) => document.route)).size !== koreanStatus.documents.length) failures.push("Korean translation status contains duplicate routes");
+for (const document of koreanStatus.documents) {
+  for (const relativePath of [document.source, document.target]) {
+    try { await access(path.join(projectRoot, relativePath), constants.R_OK); } catch { failures.push(`Korean status references a missing file: ${relativePath}`); }
+  }
+  try {
+    const markdown = await readFile(path.join(projectRoot, document.target), "utf8");
+    if (countMarkdownH1(markdown) !== 1) failures.push(`${document.target} must contain exactly one H1`);
+    if ((markdown.match(/^```/gm) || []).length % 2 !== 0) failures.push(`${document.target} contains an unbalanced code fence`);
+    if ((markdown.match(/^\$\$$/gm) || []).length % 2 !== 0) failures.push(`${document.target} contains an unbalanced display-math fence`);
+    if (/\b(?:TODO|TBD|FIXME)\b/.test(markdown)) failures.push(`${document.target} contains an unresolved marker`);
+  } catch { /* Missing files are reported above. */ }
+}
 if (translationPlan.length < 15000 || !translationPlan.includes("Sáu giai đoạn phát triển")) {
   failures.push("Vietnamese translation plan is not sufficiently detailed");
 }
@@ -208,4 +234,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Hello Algo bilingual site passed static checks (${ids.size} English IDs, ${viIds.size} Vietnamese IDs, ${requiredFiles.length} core files).`);
+console.log(`Hello Algo trilingual site passed static checks (${ids.size} English IDs, ${viIds.size} Vietnamese IDs, ${koreanSectionIds.length} Korean sections, ${requiredFiles.length} core files).`);
