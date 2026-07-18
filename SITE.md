@@ -6,12 +6,13 @@ This fork publishes a Korean, Vietnamese, and English GitHub Pages experience fo
 
 - `/hello-algo/` redirects to Vietnamese.
 - `/hello-algo/vi/` is the complete Vietnamese Hello Algo Atlas, with the same sections and interactions as English.
-- `/hello-algo/vi/learn/` is the Vietnamese pilot reader.
+- `/hello-algo/vi/learn/` is a 48-document Vietnamese reader covering Chapters 0–8; Chapters 0–4 are pilot content and Chapters 5–8 are drafts.
 - `/hello-algo/en/` preserves the complete interactive English Hello Algo Atlas.
 - `/hello-algo/ko/` is the complete Korean Hello Algo Atlas.
-- `/hello-algo/ko/learn/` is a 14-document Korean pilot reader covering Chapters 0–2.
+- `/hello-algo/ko/learn/` is a 48-document Korean draft reader covering Chapters 0–8.
+- `/hello-algo/en/learn/` contains 12 local English source pages for Chapters 7–8 with exact Vietnamese and Korean counterparts.
 
-All Atlas and reader pages include a visible KO/VI/EN switch. The localized readers remain transparently labelled as pilots pending independent review.
+All Atlas and reader pages include a visible KO/VI/EN switch. Vietnamese documents are labelled as pilots; Korean reader documents remain drafts until their structure and content are expanded to match the locked English source and pass review.
 
 ## Vietnamese Atlas
 
@@ -20,7 +21,7 @@ The page includes:
 - the same learning graph, data-structure guide, traversal, complexity, binary-search, sorting, motion, and problem-choice sections as `/en/`;
 - Vietnamese static copy, controls, live status messages, chart labels, and interactive datasets;
 - stable interaction keys shared with English and generated section-for-section from the same source page;
-- 26 source-tracked Vietnamese pilot documents covering Chapters 0–4;
+- 48 source-tracked Vietnamese documents covering Chapters 0–8, with per-document draft or pilot status;
 - a responsive reader with chapter navigation, theme control, source attribution, and previous/next links;
 - a per-page English option that opens the exact corresponding upstream chapter;
 - links to the translation plan and upstream project.
@@ -29,9 +30,9 @@ Translation governance lives under `vi/`: a versioned glossary, style guide, con
 
 The complete working plan is in [VIETNAMESE_TRANSLATION_PLAN.md](VIETNAMESE_TRANSLATION_PLAN.md).
 
-## Korean pilot
+## Korean draft
 
-The Korean edition has section-for-section parity with the English and Vietnamese Atlas, localized interactions and accessibility labels, 14 source-locked Chapter 0–2 documents, representative Python examples, and exact Vietnamese and English counterpart links. Governance files live under `ko/`.
+The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains 48 source-locked Chapter 0–8 drafts with exact Vietnamese and English counterpart links. Chapters 3–8 include Korean explanations, diagrams, formulas, tables, and Python examples. Condensed documents remain drafts until content-parity and review gates pass. Governance files live under `ko/`.
 
 ## Shared Atlas experience
 
@@ -50,6 +51,6 @@ All three Atlas routes include:
 
 Run `npm start` to validate, build, and preview the exact `dist` artifact. The default local port is `4173`; set `PORT` to use another one.
 
-Run `npm run check` for source validation or `npm run build` to recreate `dist`, render both localized Markdown pilots, and check every generated local reference.
+Run `npm run check` for source validation or `npm run build` to recreate `dist`, render the localized Markdown readers, and check every generated local reference and counterpart route.
 
 The GitHub Pages workflow runs the same build whenever `main` is pushed. Original Hello Algo source and artwork remain under their upstream license; see `LICENSE` and the upstream project for details.

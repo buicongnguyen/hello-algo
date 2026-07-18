@@ -71,10 +71,11 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 ## Trải nghiệm tiếng Việt trong fork này
 
 - [Atlas tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/) có cùng 11 phần nội dung và tương tác với [Atlas tiếng Anh](https://buicongnguyen.github.io/hello-algo/en/).
-- [Bản đọc thử tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm 26 tài liệu thuộc Chương 0–4, đã tự kiểm tra và đang chờ phản biện độc lập. Mỗi trang có nút mở đúng nội dung tiếng Anh tương ứng.
+- [Trình đọc tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm 48 tài liệu thuộc Chương 0–8. Chương 0–4 là bản thử; Chương 5–8 là bản nháp đang chờ đối chiếu và phản biện. Mỗi trang mở đúng nội dung tiếng Anh và tiếng Hàn tương ứng; Chương 7–8 có bản đọc tiếng Anh cục bộ.
 - [Kế hoạch Việt hóa](VIETNAMESE_TRANSLATION_PLAN.md) mô tả lộ trình, tiêu chuẩn chất lượng, quy trình duyệt và cách đồng bộ với upstream.
 - [Kế hoạch bản tiếng Hàn](KOREAN_TRANSLATION_PLAN.md) xác định kiến trúc ba ngôn ngữ, phạm vi bản thử và các cổng kiểm tra trước khi triển khai.
-- [Atlas tiếng Hàn](https://buicongnguyen.github.io/hello-algo/ko/) và [bản đọc thử 14 tài liệu Chương 0–2](https://buicongnguyen.github.io/hello-algo/ko/learn/) hiện đã có để cộng đồng phản biện.
+- [Atlas tiếng Hàn](https://buicongnguyen.github.io/hello-algo/ko/) và [trình đọc 48 tài liệu Chương 0–8](https://buicongnguyen.github.io/hello-algo/ko/learn/) hiện đã có dưới trạng thái bản nháp để cộng đồng phản biện.
+- [Trình đọc tiếng Anh Chương 7–8](https://buicongnguyen.github.io/hello-algo/en/learn/trees.html) tạo 12 trang từ nguồn tiếng Anh đã khóa và liên kết trực tiếp với bản Việt/Hàn tương ứng.
 - [Từ điển thuật ngữ](vi/glossary.md), [quy chuẩn văn phong](vi/style-guide.md) và [hướng dẫn đóng góp](vi/CONTRIBUTING.md) giúp bản dịch nhất quán và dễ kiểm tra.
 
 ## Lời giới thiệu

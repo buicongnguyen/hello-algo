@@ -17,12 +17,13 @@ Cập nhật ngày 2026-07-18:
 - [x] Khóa nguồn đợt thử tại upstream commit `4935d2d3877a6205008d89def8d2ba43f7e06275`.
 - [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
-- [x] Hai mươi sáu tài liệu thử: toàn bộ Chương 0 đến Chương 4.
+- [x] Bốn mươi tám tài liệu: Chương 0–4 ở trạng thái `pilot`, Chương 5–8 ở trạng thái `draft`; Chương 7–8 có bản đọc tiếng Anh cục bộ tương ứng.
+- [x] Chương 5–6 có liên kết VI/KO/EN tương ứng, tài nguyên gốc và kiểm tra bản dựng tự động.
 - [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
 - [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.
 - [ ] Phản biện kỹ thuật độc lập cho đợt thử.
 - [ ] Biên tập tiếng Việt độc lập cho đợt thử.
-- [ ] Nâng 26 tài liệu từ `pilot` lên `published` sau khi xử lý phản biện.
+- [ ] Hoàn thiện 10 bản nháp Chương 5–6 và nâng qua các cổng `pilot`, rồi tiếp tục xử lý phản biện cho toàn bộ trình đọc.
 
 Vì chưa có hai lượt phản biện độc lập, website gọi nội dung hiện tại là **bản thử đã tự kiểm tra**, không gọi là bản dịch ổn định. Đây là trạng thái minh bạch đúng với các cổng chất lượng trong kế hoạch.
 

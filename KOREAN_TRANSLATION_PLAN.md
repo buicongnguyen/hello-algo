@@ -1,19 +1,19 @@
 # Korean edition plan for Hello Algo
 
-Status: Korean pilot `v0.1` implemented on 2026-07-18; independent Korean technical-language review remains pending
+Status: Korean Atlas and 48 Chapter 0–8 reader drafts implemented on 2026-07-18; content-parity work and review remain in progress
 
-Target release: Korean pilot `v0.1`
+Target release: Korean draft `v0.3`, followed by pilot promotion after review gates pass
 
-Target scope: Korean Atlas plus 14 reader documents covering Chapters 0–2
+Target scope: Korean Atlas plus 48 reader documents covering Chapters 0–8
 
 Source revision: `4935d2d3877a6205008d89def8d2ba43f7e06275`
 
 ## 1. Objective
 
-Korean pilot `v0.1` should reproduce the proven 14-document Vietnamese baseline for Chapters 0–2, while the newer Vietnamese reader continues expanding independently:
+Korean draft `v0.4` extends the original Korean pilot `v0.1` architecture to a 48-document Vietnamese and Korean reader baseline for Chapters 0–8:
 
 - a complete Korean interactive Atlas at `/hello-algo/ko/`;
-- a 14-document Korean reader covering Chapters 0–2 at `/hello-algo/ko/learn/`;
+- a 48-document Korean reader covering Chapters 0–8 at `/hello-algo/ko/learn/`;
 - a visible `KO / VI / EN` language switch;
 - the same diagrams, animations, code, mathematics, navigation, licensing, and source tracking;
 - exact links from Korean reader pages to their Vietnamese and official English counterparts;
@@ -21,14 +21,14 @@ Korean pilot `v0.1` should reproduce the proven 14-document Vietnamese baseline 
 
 Vietnamese should remain the default homepage for this release. Changing the default language is a separate product decision and is outside this plan.
 
-This release deliberately keeps Korean `v0.1` at 14 pages so the new three-language architecture and Korean review process can be proven with a controlled scope. Korean `v0.2` should add Chapters 3–4 and reach 26 pages, matching the expanded Vietnamese reader.
+Korean `v0.1` established 14 routes for Chapters 0–2, `v0.2` added 12 Chapter 3–4 routes, and `v0.3` added 10 Chapter 5–6 routes. Korean `v0.4` adds 12 Chapter 7–8 routes for trees and heaps, bringing both localized readers to 48 pages and adding a 12-page local English source reader. Every translated document remains individually status-tracked so drafts are not mistaken for reviewed translations.
 
 ## 2. Release definition
 
 | Surface | Korean target |
 | --- | --- |
 | Interactive Atlas | Same sections and interactions as English and Vietnamese |
-| Reading content | 14 Korean documents covering Chapters 0–2 |
+| Reading content | 48 Korean documents covering Chapters 0–8 |
 | Language switch | `KO / VI / EN` on Atlas and reader pages |
 | Code | Representative Python examples, matching the Vietnamese policy |
 | Images | Reuse upstream images; translate alt text and captions |
@@ -253,7 +253,7 @@ Acceptance criteria:
 
 - English and Vietnamese output remains unchanged;
 - all existing Vietnamese routes remain valid;
-- all 14 Vietnamese reader pages still build;
+- all 36 Vietnamese reader pages still build;
 - all English and Vietnamese interactions still work;
 - the build can register a third locale without duplicating a builder.
 
@@ -271,7 +271,7 @@ ko/atlas-locale.mjs
 ko/reader-config.mjs
 ```
 
-The Korean status file should begin with the same 14 English source documents as the Vietnamese status file. All should start as `planned` and move through the defined review gates.
+The Korean status file began with the same 14 English source documents as the original Vietnamese baseline. Version `v0.2` extends that registry with the 12 Chapter 3–4 documents; every added document starts as `draft` and moves through the defined review gates.
 
 ### Phase 3 — Localize the Korean Atlas
 
@@ -388,7 +388,7 @@ Do not make Korean the repository’s default README or website landing language
 
 Run the complete automated and manual review matrix, publish the pilot through the existing GitHub Pages workflow, and verify public production routes.
 
-Korean documents remain `pilot` until an independent Korean reviewer approves both technical meaning and language quality.
+Korean documents remain `draft` until structural parity and self-review gates pass, then remain `pilot` until an independent Korean reviewer approves both technical meaning and language quality.
 
 ## 8. Automated validation
 
@@ -398,7 +398,7 @@ Korean documents remain `pilot` until an independent Korean reviewer approves bo
 
 - all Korean foundation files exist;
 - Korean and Vietnamese use the same locked English source commit;
-- exactly 14 Korean documents are registered;
+- exactly 36 Korean documents are registered;
 - every source and target file exists;
 - document routes are unique;
 - each Markdown document has exactly one H1;
@@ -414,11 +414,11 @@ Korean documents remain `pilot` until an independent Korean reviewer approves bo
 
 `npm run build` should verify:
 
-- total generated HTML rises from 17 to 32 pages;
-- all 14 Korean reader routes exist;
+- total generated HTML reaches 76 pages;
+- all 36 Korean reader routes exist;
 - Korean pages use `<html lang="ko">`;
-- Korean navigation contains three chapter groups;
-- Korean reader progress displays `14 / 105`;
+- Korean navigation contains seven chapter groups;
+- Korean reader progress displays `36 / 105`;
 - `KO / VI / EN` options are present and point to correct counterparts;
 - all local images, scripts, styles, and fragments resolve;
 - no raw Markdown code fence remains;
@@ -656,7 +656,7 @@ Mitigation: keep the pilot locked to `4935d2d`; collect upstream changes separat
 ### Content
 
 - [ ] Korean Atlas copy is complete.
-- [ ] All 14 Korean Markdown documents exist.
+- [x] All 36 Korean Markdown documents exist.
 - [ ] The Korean glossary is approved for the pilot.
 - [ ] Korean alt text and captions are complete.
 - [ ] Formulas match the locked English source.
@@ -673,13 +673,13 @@ Mitigation: keep the pilot locked to `4935d2d`; collect upstream changes separat
 
 ### Technical validation
 
-- [ ] `npm run check` passes.
-- [ ] `npm run build` passes.
-- [ ] English and Vietnamese regression checks pass.
-- [ ] Exactly 14 Korean reader pages are generated.
-- [ ] All local references resolve.
-- [ ] All counterpart language links are correct.
-- [ ] Code, math, images, and animation references render.
+- [x] `npm run check` passes.
+- [x] `npm run build` passes.
+- [x] English and Vietnamese regression checks pass.
+- [x] Exactly 36 Korean reader pages are generated.
+- [x] All local references resolve.
+- [x] All counterpart language links are correct.
+- [x] Code, math, images, and animation references render.
 - [ ] Korean pages use correct language metadata.
 - [ ] Mobile and desktop presentation is acceptable.
 - [ ] Keyboard and reduced-motion behavior works.
@@ -690,7 +690,7 @@ Mitigation: keep the pilot locked to `4935d2d`; collect upstream changes separat
 - [ ] `/en/`, `/vi/`, and `/ko/` load successfully.
 - [ ] `/vi/learn/` and `/ko/learn/` load successfully.
 - [ ] GitHub Pages deployment succeeds.
-- [ ] All 14 production Korean routes return successfully.
+- [ ] All 36 production Korean routes return successfully.
 - [ ] Production assets and language links pass smoke testing.
 - [ ] Release notes identify the Korean edition as a pilot.
 
@@ -699,7 +699,7 @@ Mitigation: keep the pilot locked to `4935d2d`; collect upstream changes separat
 The Korean pilot is complete only when:
 
 1. `/ko/` has section-for-section parity with `/en/` and `/vi/`.
-2. `/ko/learn/` contains all 14 Chapter 0–2 documents.
+2. `/ko/learn/` contains all 36 Chapter 0–6 documents.
 3. Every Korean page has working Korean, Vietnamese, and English options.
 4. Korean terminology matches the approved glossary.
 5. Images, captions, formulas, and code are verified.
@@ -707,17 +707,18 @@ The Korean pilot is complete only when:
 7. English and Vietnamese pass regression testing.
 8. The GitHub Pages deployment succeeds.
 9. Production routes and assets pass smoke testing.
-10. Documents remain marked `pilot` until independent Korean review is complete.
+10. Documents remain `draft` until self-review gates pass and remain `pilot` until independent Korean review is complete.
 
 ## 17. Follow-up roadmap
 
-After Korean pilot `v0.1`, expand the reader in controlled waves:
+After the original Korean `v0.1` architecture, expand the reader in controlled waves:
 
-1. Korean `v0.2`: Chapters 3–4, covering data structures, arrays, linked lists, dynamic lists, RAM, and cache.
-2. Chapter 5 onward: stack, queue, hashing, tree, heap, and graph chapters.
-3. Searching and sorting chapters.
-4. Divide and conquer, backtracking, dynamic programming, and greedy algorithms.
-5. Code annotations and language-specific examples.
-6. Appendices, references, final consistency review, and stable Korean release.
+1. Korean `v0.2` (implemented as drafts): Chapters 3–4, covering data structures, arrays, linked lists, dynamic lists, RAM, and cache.
+2. Korean `v0.3` (implemented as drafts): Chapters 5–6, covering stacks, queues, deques, hash tables, collisions, and hash algorithms.
+3. Chapter 7 onward: tree, heap, and graph chapters.
+4. Searching and sorting chapters.
+5. Divide and conquer, backtracking, dynamic programming, and greedy algorithms.
+6. Code annotations and language-specific examples.
+7. Appendices, references, final consistency review, and stable Korean release.
 
-Each wave should reuse the same source lock, status tracking, review gates, automated checks, and attribution rules established by the 14-page pilot.
+Each wave should reuse the same source lock, status tracking, review gates, automated checks, and attribution rules established by the reader architecture.

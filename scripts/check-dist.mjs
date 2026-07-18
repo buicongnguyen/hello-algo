@@ -1,6 +1,7 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
+import { createTranslationRegistry, englishReaderHref, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
 
 async function collectHtml(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -67,6 +68,8 @@ export async function checkBuiltSite(outputRoot) {
   const pilotDirectory = path.join(outputRoot, "vi", "learn");
   const pilotPages = (await readdir(pilotDirectory)).filter((file) => file.endsWith(".html"));
   const translationStatus = JSON.parse(await readFile(path.join(outputRoot, "vi", "translation-status.json"), "utf8"));
+  const koreanStatus = JSON.parse(await readFile(path.join(outputRoot, "ko", "translation-status.json"), "utf8"));
+  const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
   if (pilotPages.length !== translationStatus.documents.length) {
     failures.push(`Expected ${translationStatus.documents.length} Vietnamese pilot pages, found ${pilotPages.length}`);
   }
@@ -81,11 +84,13 @@ export async function checkBuiltSite(outputRoot) {
   if (!pilotHome.includes("Bản thử · nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
     failures.push("Vietnamese pilot pages are missing source-lock or license disclosure");
   }
-  if (!pilotHome.includes("26 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 5) {
-    failures.push("Vietnamese reader progress or Chapters 0–4 navigation is incomplete");
+  if (!pilotHome.includes("48 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 9) {
+    failures.push("Vietnamese reader progress or Chapters 0–8 navigation is incomplete");
   }
-  for (const pilotPage of pilotPages) {
+  for (const document of translationStatus.documents) {
+    const pilotPage = routeFileName(document.route);
     const html = await readFile(path.join(pilotDirectory, pilotPage), "utf8");
+    if (!html.includes(`data-translation-status="${document.status}"`)) failures.push(`${pilotPage} does not display its manifest translation status`);
     if (/\$[^$<>]+\$/.test(html)) failures.push(`${pilotPage} contains unrendered inline math`);
     if (html.includes("```") || html.includes("```src")) failures.push(`${pilotPage} contains an unrendered code fence`);
     if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(html)) failures.push(`${pilotPage} contains unrendered MkDocs-only syntax`);
@@ -93,14 +98,20 @@ export async function checkBuiltSite(outputRoot) {
     if (!html.includes("Chuyển ngữ, chọn lọc ví dụ và biên tập bổ sung") || !html.includes("krahets và cộng đồng đóng góp")) {
       failures.push(`${pilotPage} does not disclose source authorship, translation, selection, and editorial modification`);
     }
-    if (!html.includes("Đọc trang tương ứng bằng tiếng Anh")) failures.push(`${pilotPage} has no corresponding English-page option`);
-    if (!html.includes('hreflang="ko"')) failures.push(`${pilotPage} has no Korean option`);
+    const expectedEnglishAlternate = `href="${englishReaderHref(document.source)}" lang="en" hreflang="en"`;
+    if (!html.includes("Đọc trang tương ứng bằng tiếng Anh") || !html.includes(expectedEnglishAlternate)) failures.push(`${pilotPage} has no exact corresponding English-page option`);
+    const koreanDocument = translationRegistry.byLanguage.ko.get(document.source);
+    if (koreanDocument) {
+      const expectedKoreanAlternate = `href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko"`;
+      if (!html.includes(expectedKoreanAlternate)) failures.push(`${pilotPage} does not link to its exact Korean counterpart`);
+    } else if (html.includes('hreflang="ko"') || !html.includes('href="../../ko/learn/" lang="ko" data-language-home="ko"')) {
+      failures.push(`${pilotPage} must expose Korean home without claiming an equivalent translation`);
+    }
   }
 
   const koreanDirectory = path.join(outputRoot, "ko", "learn");
   const koreanPages = (await readdir(koreanDirectory)).filter((file) => file.endsWith(".html"));
-  const koreanStatus = JSON.parse(await readFile(path.join(outputRoot, "ko", "translation-status.json"), "utf8"));
-  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 14) failures.push(`Expected 14 Korean pilot pages, found ${koreanPages.length}`);
+  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 48) failures.push(`Expected 48 Korean draft pages, found ${koreanPages.length}`);
   const koreanRoutes = koreanStatus.documents.map((document) => document.route);
   if (new Set(koreanRoutes).size !== koreanRoutes.length) failures.push("Korean translation status contains duplicate routes");
   for (const route of koreanRoutes) {
@@ -108,15 +119,52 @@ export async function checkBuiltSite(outputRoot) {
     if (!await referenceExists(candidate)) failures.push(`Korean status route was not built: ${route}`);
   }
   const koreanHome = await readFile(path.join(koreanDirectory, "index.html"), "utf8");
-  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("14 / 105 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 3) failures.push("Korean reader metadata, progress, or Chapters 0–2 navigation is incomplete");
+  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("48 / 105 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 9) failures.push("Korean reader metadata, progress, or Chapters 0–8 navigation is incomplete");
   if (!koreanHome.includes("CC BY-NC-SA 4.0") || !koreanHome.includes("공식 후원을 의미하지 않습니다")) failures.push("Korean reader is missing source and license disclosure");
-  for (const koreanPage of koreanPages) {
+  for (const document of koreanStatus.documents) {
+    const koreanPage = routeFileName(document.route);
     const pageHtml = await readFile(path.join(koreanDirectory, koreanPage), "utf8");
-    if (!pageHtml.includes('hreflang="ko"') || !pageHtml.includes('hreflang="vi"') || !pageHtml.includes('hreflang="en"')) failures.push(`${koreanPage} does not expose KO / VI / EN options`);
+    const vietnameseDocument = translationRegistry.byLanguage.vi.get(document.source);
+    const expectedVietnameseAlternate = vietnameseDocument && `href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi"`;
+    const expectedEnglishAlternate = `href="${englishReaderHref(document.source)}" lang="en" hreflang="en"`;
+    if (!pageHtml.includes(`data-translation-status="${document.status}"`)) failures.push(`${koreanPage} does not display its manifest translation status`);
+    if (!pageHtml.includes('hreflang="ko"') || !expectedVietnameseAlternate || !pageHtml.includes(expectedVietnameseAlternate) || !pageHtml.includes(expectedEnglishAlternate)) failures.push(`${koreanPage} does not expose exact KO / VI / EN counterparts`);
     if (pageHtml.includes("```") || /\$[^$<>]+\$/.test(pageHtml)) failures.push(`${koreanPage} contains unrendered Markdown`);
   }
   const koreanTime = await readFile(path.join(koreanDirectory, "time-complexity.html"), "utf8");
   if (!koreanTime.includes('<pre><code class="language-python"') || !koreanTime.includes('class="math-block"')) failures.push("Korean time-complexity page is missing rendered Python or display mathematics");
+  const koreanNumberEncoding = await readFile(path.join(koreanDirectory, "number-encoding.html"), "utf8");
+  const koreanArray = await readFile(path.join(koreanDirectory, "arrays.html"), "utf8");
+  const koreanLinkedList = await readFile(path.join(koreanDirectory, "linked-lists.html"), "utf8");
+  if (!koreanNumberEncoding.includes("ieee_754_float.png") || !koreanNumberEncoding.includes('class="math-block"')) failures.push("Korean Chapter 3 is missing its IEEE 754 diagram or rendered mathematics");
+  if (!koreanArray.includes("array_definition.png") || !koreanArray.includes('<pre><code class="language-python"') || !koreanLinkedList.includes("linkedlist_definition.png") || !koreanLinkedList.includes('<pre><code class="language-python"')) failures.push("Korean Chapter 4 is missing representative diagrams or Python examples");
+  const vietnameseStack = await readFile(path.join(pilotDirectory, "ngan-xep.html"), "utf8");
+  const koreanStack = await readFile(path.join(koreanDirectory, "stack.html"), "utf8");
+  const vietnameseHash = await readFile(path.join(pilotDirectory, "bang-bam.html"), "utf8");
+  const koreanHash = await readFile(path.join(koreanDirectory, "hash-table.html"), "utf8");
+  if (!vietnameseStack.includes("stack_operations.png") || !koreanStack.includes("stack_operations.png") || !vietnameseStack.includes('<pre><code class="language-python"') || !koreanStack.includes('<pre><code class="language-python"')) failures.push("Chapter 5 stack pages are missing diagrams or Python examples");
+  if (!vietnameseHash.includes("hash_table_lookup.png") || !koreanHash.includes("hash_table_lookup.png") || !vietnameseHash.includes('class="math-block"') || !koreanHash.includes('class="math-block"')) failures.push("Chapter 6 hash-table pages are missing diagrams or rendered mathematics");
+
+  const vietnameseTree = await readFile(path.join(pilotDirectory, "cay-nhi-phan.html"), "utf8");
+  const koreanTree = await readFile(path.join(koreanDirectory, "binary-tree.html"), "utf8");
+  const vietnameseHeap = await readFile(path.join(pilotDirectory, "cau-truc-heap.html"), "utf8");
+  const koreanHeap = await readFile(path.join(koreanDirectory, "heap.html"), "utf8");
+  if (!vietnameseTree.includes("binary_tree_definition.png") || !koreanTree.includes("binary_tree_definition.png") || !vietnameseTree.includes('<pre><code class="language-python"') || !koreanTree.includes('<pre><code class="language-python"')) failures.push("Chapter 7 binary-tree pages are missing diagrams or Python examples");
+  if (!vietnameseHeap.includes("min_heap_and_max_heap.png") || !koreanHeap.includes("min_heap_and_max_heap.png") || !vietnameseHeap.includes('<pre><code class="language-python"') || !koreanHeap.includes('<pre><code class="language-python"')) failures.push("Chapter 8 heap pages are missing diagrams or Python examples");
+
+  const englishDirectory = path.join(outputRoot, "en", "learn");
+  const englishPages = (await readdir(englishDirectory)).filter((file) => file.endsWith(".html"));
+  if (englishPages.length !== englishReaderRoutes.size || englishPages.length !== 12) failures.push(`Expected 12 local English Chapter 7–8 pages, found ${englishPages.length}`);
+  for (const [source, route] of englishReaderRoutes) {
+    const englishPage = await readFile(path.join(outputRoot, route), "utf8");
+    const vietnameseDocument = translationRegistry.byLanguage.vi.get(source);
+    const koreanDocument = translationRegistry.byLanguage.ko.get(source);
+    if (!englishPage.includes(`href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi"`) || !englishPage.includes(`href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko"`)) failures.push(`${route} does not expose exact VI and KO counterparts`);
+    if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(englishPage) || englishPage.includes("&lt;u&gt;")) failures.push(`${route} contains unrendered MkDocs-only syntax`);
+  }
+  const englishTree = await readFile(path.join(englishDirectory, "binary-tree.html"), "utf8");
+  const englishHeap = await readFile(path.join(englishDirectory, "heap.html"), "utf8");
+  if (!englishTree.includes("binary_tree_definition.png") || !englishHeap.includes("min_heap_and_max_heap.png") || !englishTree.includes("Original English source")) failures.push("Local English Chapter 7–8 pages are missing source content or attribution");
 
   const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");
   if (!timeComplexityPage.includes('<pre><code class="language-python"') || !timeComplexityPage.includes('class="math-block"')) {
@@ -153,5 +201,5 @@ export async function checkBuiltSite(outputRoot) {
     throw new Error("Built-site checks failed:\n" + failures.map((failure) => `- ${failure}`).join("\n"));
   }
 
-  console.log(`Built-site checks passed (${htmlFiles.length} HTML pages, ${pilotPages.length} Vietnamese and ${koreanPages.length} Korean pilot pages, no broken local references).`);
+  console.log(`Built-site checks passed (${htmlFiles.length} HTML pages, ${pilotPages.length} Vietnamese and ${koreanPages.length} Korean reader pages, no broken local references).`);
 }

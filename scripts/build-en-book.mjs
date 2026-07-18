@@ -1,0 +1,136 @@
+import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import path from "node:path";
+import { renderMarkdown } from "./build-vi-book.mjs";
+import { englishReaderRoutes, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
+
+const pages = [
+  ["trees", "Tree", "Tree introduction", "Chapter 7", "en/docs/chapter_tree/index.md", "A guided introduction to hierarchical tree structures."],
+  ["binary-tree", "Binary Tree", "7.1 · Binary Tree", "Chapter 7", "en/docs/chapter_tree/binary_tree.md", "Binary-tree nodes, terminology, forms, and operations."],
+  ["binary-tree-traversal", "Binary Tree Traversal", "7.2 · Tree Traversal", "Chapter 7", "en/docs/chapter_tree/binary_tree_traversal.md", "Breadth-first and depth-first traversal patterns."],
+  ["array-representation-of-binary-trees", "Array Representation of Binary Trees", "7.3 · Array Representation", "Chapter 7", "en/docs/chapter_tree/array_representation_of_tree.md", "Mapping complete binary trees to array indexes."],
+  ["binary-search-tree", "Binary Search Tree", "7.4 · Binary Search Tree", "Chapter 7", "en/docs/chapter_tree/binary_search_tree.md", "Search, insertion, deletion, and BST performance."],
+  ["avl-tree", "AVL Tree", "7.5 · AVL Tree *", "Chapter 7", "en/docs/chapter_tree/avl_tree.md", "Keeping a search tree balanced with rotations."],
+  ["chapter-7-summary", "Chapter 7 Summary", "7.6 · Summary", "Chapter 7", "en/docs/chapter_tree/summary.md", "Review binary trees, BSTs, and AVL trees."],
+  ["heaps", "Heap", "Heap introduction", "Chapter 8", "en/docs/chapter_heap/index.md", "An introduction to complete-tree priority structures."],
+  ["heap", "Heap", "8.1 · Heap", "Chapter 8", "en/docs/chapter_heap/heap.md", "Heap representation, push, pop, and sift operations."],
+  ["build-heap", "Heap Construction Operation", "8.2 · Build Heap", "Chapter 8", "en/docs/chapter_heap/build_heap.md", "Build a heap bottom-up in linear time."],
+  ["top-k", "Top-k Problem", "8.3 · Top-k", "Chapter 8", "en/docs/chapter_heap/top_k.md", "Use a bounded heap for large or streaming datasets."],
+  ["chapter-8-summary", "Chapter 8 Summary", "8.4 · Summary", "Chapter 8", "en/docs/chapter_heap/summary.md", "Review heaps, heap construction, and top-k."]
+].map(([slug, title, shortTitle, chapter, source, description]) => ({ slug, title, shortTitle, chapter, source, description }));
+
+const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+
+function prepareEnglishMarkdown(markdown) {
+  const lines = markdown.replaceAll("\r\n", "\n").split("\n");
+  const output = [];
+  for (let index = 0; index < lines.length;) {
+    const tab = lines[index].match(/^===\s+"([^"]+)"/);
+    if (tab) {
+      const label = tab[1];
+      const content = [];
+      index += 1;
+      while (index < lines.length && (lines[index] === "" || /^\s{4}/.test(lines[index]))) {
+        content.push(lines[index].replace(/^\s{4}/, ""));
+        index += 1;
+      }
+      if (label === "Python") {
+        output.push("### Python example", ...content);
+      } else if (/^<\d+>$/.test(label)) {
+        output.push(...content);
+      }
+      continue;
+    }
+
+    const admonition = lines[index].match(/^(?:!!!|\?\?\?)\s+(\w+)(?:\s+"([^"]+)")?/);
+    if (admonition) {
+      const content = [];
+      index += 1;
+      while (index < lines.length && (lines[index] === "" || /^\s{4}/.test(lines[index]))) {
+        const stripped = lines[index].replace(/^\s{4}/, "").replaceAll("<u>", "").replaceAll("</u>", "");
+        if (stripped) content.push(stripped);
+        index += 1;
+      }
+      const label = admonition[2] || admonition[1][0].toUpperCase() + admonition[1].slice(1);
+      output.push(`> **${label}.** ${content.join(" ")}`);
+      continue;
+    }
+
+    output.push(lines[index]
+      .replaceAll("<u>", "")
+      .replaceAll("</u>", "")
+      .replace(/^<p align="center">.*<\/p>$/, "")
+      .replace(/\{[^}]*\}/g, ""));
+    index += 1;
+  }
+  return output.join("\n");
+}
+
+function navigation(currentSlug) {
+  const chapters = [...new Set(pages.map((page) => page.chapter))];
+  return chapters.map((chapter) => `<div class="book-nav-group"><span>${chapter}</span>${pages.filter((page) => page.chapter === chapter).map((page) => `<a${page.slug === currentSlug ? ' class="active" aria-current="page"' : ""} href="${page.slug}.html">${page.shortTitle}</a>`).join("\n")}</div>`).join("\n");
+}
+
+function pageTemplate(page, body, index, sourceCommit, vietnameseDocument, koreanDocument) {
+  const previous = pages[index - 1];
+  const next = pages[index + 1];
+  const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/${page.source}`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="${escapeHtml(page.description)}">
+  <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/en/learn/${page.slug}.html">
+  <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo English</title>
+  <link rel="stylesheet" href="book.css?v=20260718g"><script src="book.js?v=20260718g" defer></script>
+</head>
+<body data-translation-status="source">
+  <a class="skip-link" href="#article">Skip to the article</a>
+  <header class="reader-header">
+    <button class="reader-menu" id="reader-menu" type="button" aria-label="Open table of contents" aria-expanded="false">☰</button>
+    <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>EN</b></strong></a>
+    <div class="reader-progress"><span>Source</span><strong>${pages.length} / 105 documents</strong></div>
+    <nav aria-label="Language and theme"><a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Read the corresponding Korean page">KO</a><a href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi" aria-label="Read the corresponding Vietnamese page">VI</a><a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
+  </header>
+  <div class="reader-shell">
+    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–8 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
+    <main class="reader-main"><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>English source · ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>Original English source</strong><p>This local reading view is generated from the source-locked Hello Algo English document. KO and VI open the exact translated counterpart.</p></div>${body}<footer class="article-attribution"><strong>Source and license</strong><p>English content from <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo by krahets and its contributors</a>, presented locally under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>.</p></footer></article>
+      <nav class="page-nav" aria-label="Previous and next article">${previous ? `<a href="${previous.slug}.html"><span>← Previous</span><strong>${previous.title}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug}.html"><span>Next →</span><strong>${next.title}</strong></a>` : "<i></i>"}</nav>
+    </main>
+  </div>
+</body></html>`;
+}
+
+export async function buildEnglishBook({ projectRoot, outputRoot }) {
+  const registry = await loadTranslationRegistry(projectRoot);
+  const bookOutput = path.join(outputRoot, "en", "learn");
+  await mkdir(bookOutput, { recursive: true });
+  await cp(path.join(projectRoot, "vi", "book.css"), path.join(bookOutput, "book.css"));
+  await cp(path.join(projectRoot, "vi", "book.js"), path.join(bookOutput, "book.js"));
+
+  const coverOutput = path.join(bookOutput, "assets", "covers");
+  await mkdir(coverOutput, { recursive: true });
+  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
+  for (const [chapter, directory] of [
+    ["chapter_tree", "binary_tree.assets"], ["chapter_tree", "binary_tree_traversal.assets"], ["chapter_tree", "array_representation_of_tree.assets"], ["chapter_tree", "binary_search_tree.assets"], ["chapter_tree", "avl_tree.assets"],
+    ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"]
+  ]) {
+    const destination = path.join(bookOutput, "assets", chapter, directory);
+    await mkdir(path.dirname(destination), { recursive: true });
+    await cp(path.join(projectRoot, "en", "docs", chapter, directory), destination, { recursive: true });
+  }
+
+  for (const [index, page] of pages.entries()) {
+    const vietnameseDocument = registry.byLanguage.vi.get(page.source);
+    const koreanDocument = registry.byLanguage.ko.get(page.source);
+    if (!vietnameseDocument || !koreanDocument) throw new Error(`English reader page has no localized counterparts: ${page.source}`);
+    const route = englishReaderRoutes.get(page.source);
+    if (route !== `en/learn/${page.slug}.html`) throw new Error(`English route registry mismatch: ${page.source}`);
+    const markdown = await readFile(path.join(projectRoot, page.source), "utf8");
+    const renderPath = page.source.replace(/^en\/docs\//, "vi/docs/");
+    const body = renderMarkdown(prepareEnglishMarkdown(markdown), renderPath);
+    await writeFile(path.join(bookOutput, `${page.slug}.html`), pageTemplate(page, body, index, registry.sourceCommit, vietnameseDocument, koreanDocument));
+    await access(path.join(bookOutput, `${page.slug}.html`), constants.R_OK);
+  }
+  return { pageCount: pages.length, sourceCommit: registry.sourceCommit };
+}

@@ -1,8 +1,8 @@
 import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
+import { englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
-const sourceCommit = "4935d2d3877a6205008d89def8d2ba43f7e06275";
 const pages = [
   {
     slug: "loi-noi-dau",
@@ -237,18 +237,30 @@ const pages = [
     source: "en/docs/chapter_array_and_linkedlist/summary.md",
     target: "vi/docs/chapter_array_and_linkedlist/summary.md",
     description: "Ôn tập mảng, danh sách liên kết, danh sách động và hiệu quả bộ nhớ đệm."
-  }
+  },
+  { slug: "ngan-xep-va-hang-doi", title: "Ngăn xếp và hàng đợi", shortTitle: "Mở đầu ngăn xếp và hàng đợi", chapter: "Chương 5", source: "en/docs/chapter_stack_and_queue/index.md", target: "vi/docs/chapter_stack_and_queue/index.md", description: "Giới thiệu LIFO, FIFO và thao tác ở hai đầu." },
+  { slug: "ngan-xep", title: "Ngăn xếp", shortTitle: "5.1 · Ngăn xếp", chapter: "Chương 5", source: "en/docs/chapter_stack_and_queue/stack.md", target: "vi/docs/chapter_stack_and_queue/stack.md", description: "Tìm hiểu thao tác, cách triển khai và ứng dụng của ngăn xếp." },
+  { slug: "hang-doi", title: "Hàng đợi", shortTitle: "5.2 · Hàng đợi", chapter: "Chương 5", source: "en/docs/chapter_stack_and_queue/queue.md", target: "vi/docs/chapter_stack_and_queue/queue.md", description: "Tìm hiểu FIFO, mảng vòng và các ứng dụng hàng chờ." },
+  { slug: "hang-doi-hai-dau", title: "Hàng đợi hai đầu", shortTitle: "5.3 · Hàng đợi hai đầu", chapter: "Chương 5", source: "en/docs/chapter_stack_and_queue/deque.md", target: "vi/docs/chapter_stack_and_queue/deque.md", description: "Thao tác hai đầu bằng mảng vòng hoặc danh sách liên kết đôi." },
+  { slug: "tom-tat-chuong-5", title: "Tóm tắt Chương 5", shortTitle: "5.4 · Tóm tắt", chapter: "Chương 5", source: "en/docs/chapter_stack_and_queue/summary.md", target: "vi/docs/chapter_stack_and_queue/summary.md", description: "Ôn tập ngăn xếp, hàng đợi, deque và ứng dụng." },
+  { slug: "bam", title: "Băm", shortTitle: "Mở đầu băm", chapter: "Chương 6", source: "en/docs/chapter_hashing/index.md", target: "vi/docs/chapter_hashing/index.md", description: "Giới thiệu ánh xạ khóa, bucket và xung đột." },
+  { slug: "bang-bam", title: "Bảng băm", shortTitle: "6.1 · Bảng băm", chapter: "Chương 6", source: "en/docs/chapter_hashing/hash_map.md", target: "vi/docs/chapter_hashing/hash_map.md", description: "Cài đặt bảng băm, hệ số tải và cơ chế mở rộng." },
+  { slug: "xung-dot-bam", title: "Xung đột băm", shortTitle: "6.2 · Xung đột băm", chapter: "Chương 6", source: "en/docs/chapter_hashing/hash_collision.md", target: "vi/docs/chapter_hashing/hash_collision.md", description: "So sánh nối chuỗi, dò tuyến tính, dò bậc hai và băm nhiều lần." },
+  { slug: "thuat-toan-bam", title: "Thuật toán băm", shortTitle: "6.3 · Thuật toán băm", chapter: "Chương 6", source: "en/docs/chapter_hashing/hash_algorithm.md", target: "vi/docs/chapter_hashing/hash_algorithm.md", description: "Thiết kế, thuộc tính và lựa chọn thuật toán băm." },
+  { slug: "tom-tat-chuong-6", title: "Tóm tắt Chương 6", shortTitle: "6.4 · Tóm tắt", chapter: "Chương 6", source: "en/docs/chapter_hashing/summary.md", target: "vi/docs/chapter_hashing/summary.md", description: "Ôn tập bảng băm, xung đột và hàm băm." },
+  { slug: "cay", title: "Cây", shortTitle: "Mở đầu cây", chapter: "Chương 7", source: "en/docs/chapter_tree/index.md", target: "vi/docs/chapter_tree/index.md", description: "Giới thiệu cấu trúc cây và quan hệ phân cấp." },
+  { slug: "cay-nhi-phan", title: "Cây nhị phân", shortTitle: "7.1 · Cây nhị phân", chapter: "Chương 7", source: "en/docs/chapter_tree/binary_tree.md", target: "vi/docs/chapter_tree/binary_tree.md", description: "Nút, thuật ngữ, loại cây và thao tác trên cây nhị phân." },
+  { slug: "duyet-cay-nhi-phan", title: "Duyệt cây nhị phân", shortTitle: "7.2 · Duyệt cây", chapter: "Chương 7", source: "en/docs/chapter_tree/binary_tree_traversal.md", target: "vi/docs/chapter_tree/binary_tree_traversal.md", description: "So sánh duyệt theo mức và duyệt theo chiều sâu." },
+  { slug: "bieu-dien-cay-bang-mang", title: "Biểu diễn cây nhị phân bằng mảng", shortTitle: "7.3 · Biểu diễn bằng mảng", chapter: "Chương 7", source: "en/docs/chapter_tree/array_representation_of_tree.md", target: "vi/docs/chapter_tree/array_representation_of_tree.md", description: "Ánh xạ quan hệ cha con của cây hoàn chỉnh vào chỉ số mảng." },
+  { slug: "cay-tim-kiem-nhi-phan", title: "Cây tìm kiếm nhị phân", shortTitle: "7.4 · Cây tìm kiếm", chapter: "Chương 7", source: "en/docs/chapter_tree/binary_search_tree.md", target: "vi/docs/chapter_tree/binary_search_tree.md", description: "Tìm kiếm, chèn và xóa trong cây tìm kiếm nhị phân." },
+  { slug: "cay-avl", title: "Cây AVL", shortTitle: "7.5 · Cây AVL *", chapter: "Chương 7", source: "en/docs/chapter_tree/avl_tree.md", target: "vi/docs/chapter_tree/avl_tree.md", description: "Giữ BST cân bằng bằng bốn trường hợp xoay." },
+  { slug: "tom-tat-chuong-7", title: "Tóm tắt Chương 7", shortTitle: "7.6 · Tóm tắt", chapter: "Chương 7", source: "en/docs/chapter_tree/summary.md", target: "vi/docs/chapter_tree/summary.md", description: "Ôn tập cây nhị phân, BST và AVL." },
+  { slug: "heap", title: "Heap", shortTitle: "Mở đầu heap", chapter: "Chương 8", source: "en/docs/chapter_heap/index.md", target: "vi/docs/chapter_heap/index.md", description: "Giới thiệu cây ưu tiên hoàn chỉnh và các ứng dụng." },
+  { slug: "cau-truc-heap", title: "Heap", shortTitle: "8.1 · Heap", chapter: "Chương 8", source: "en/docs/chapter_heap/heap.md", target: "vi/docs/chapter_heap/heap.md", description: "Biểu diễn, dịch lên, dịch xuống và thao tác heap." },
+  { slug: "xay-dung-heap", title: "Xây dựng heap", shortTitle: "8.2 · Xây dựng heap", chapter: "Chương 8", source: "en/docs/chapter_heap/build_heap.md", target: "vi/docs/chapter_heap/build_heap.md", description: "Xây heap tại chỗ từ dưới lên trong thời gian tuyến tính." },
+  { slug: "top-k", title: "Bài toán top-k", shortTitle: "8.3 · Top-k", chapter: "Chương 8", source: "en/docs/chapter_heap/top_k.md", target: "vi/docs/chapter_heap/top_k.md", description: "Duy trì heap kích thước k để xử lý dữ liệu lớn hoặc dạng luồng." },
+  { slug: "tom-tat-chuong-8", title: "Tóm tắt Chương 8", shortTitle: "8.4 · Tóm tắt", chapter: "Chương 8", source: "en/docs/chapter_heap/summary.md", target: "vi/docs/chapter_heap/summary.md", description: "Ôn tập heap, xây heap và top-k." }
 ];
-
-const koreanRoutes = new Map([
-  ["en/docs/chapter_preface/index.md", "preface.html"], ["en/docs/chapter_preface/about_the_book.md", "about-the-book.html"],
-  ["en/docs/chapter_preface/suggestions.md", "how-to-use-the-book.html"], ["en/docs/chapter_preface/summary.md", "chapter-0-summary.html"],
-  ["en/docs/chapter_introduction/index.md", ""], ["en/docs/chapter_introduction/algorithms_are_everywhere.md", "algorithms-are-everywhere.html"],
-  ["en/docs/chapter_introduction/what_is_dsa.md", "what-is-dsa.html"], ["en/docs/chapter_introduction/summary.md", "chapter-1-summary.html"],
-  ["en/docs/chapter_computational_complexity/index.md", "complexity-analysis.html"], ["en/docs/chapter_computational_complexity/performance_evaluation.md", "performance-evaluation.html"],
-  ["en/docs/chapter_computational_complexity/iteration_and_recursion.md", "iteration-and-recursion.html"], ["en/docs/chapter_computational_complexity/time_complexity.md", "time-complexity.html"],
-  ["en/docs/chapter_computational_complexity/space_complexity.md", "space-complexity.html"], ["en/docs/chapter_computational_complexity/summary.md", "chapter-2-summary.html"]
-]);
 
 const escapeHtml = (value) => value
   .replaceAll("&", "&amp;")
@@ -424,17 +436,20 @@ function navigation(currentSlug) {
     </div>`).join("\n");
 }
 
-function pageTemplate(page, body, pageIndex) {
+function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, koreanDocument) {
   const previous = pages[pageIndex - 1];
   const next = pages[pageIndex + 1];
   const canonicalName = page.slug === "index" ? "" : `${page.slug}.html`;
   const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/${page.source}`;
-  const sourceParts = page.source.split("/");
-  const sourceFile = sourceParts.at(-1).replace(/\.md$/, "");
-  const sourceChapter = sourceParts.at(-2);
-  const englishUrl = `https://www.hello-algo.com/en/${sourceChapter}/${sourceFile === "index" ? "" : `${sourceFile}/`}`;
-  const koreanRoute = koreanRoutes.get(page.source);
-  const koreanUrl = koreanRoute === undefined ? "../../ko/learn/" : `../../ko/learn/${koreanRoute}`;
+  const englishUrl = englishReaderHref(page.source);
+  const koreanOption = koreanDocument
+    ? `<a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Đọc trang tương ứng bằng tiếng Hàn">KO</a>`
+    : '<a href="../../ko/learn/" lang="ko" data-language-home="ko" aria-label="Mở trang chủ bản tiếng Hàn; tài liệu tương ứng chưa có">KO</a>';
+  const statusCopy = {
+    draft: { label: "Bản nháp", sidebar: "đang mở rộng và biên tập", title: "Trạng thái: bản nháp đang được rà soát", description: "Liên kết, tài nguyên và bản dựng đã được kiểm tra, nhưng nội dung vẫn cần đối chiếu đầy đủ với nguồn tiếng Anh và phản biện ngôn ngữ trước khi nâng thành bản thử." },
+    pilot: { label: "Bản thử", sidebar: "chờ phản biện độc lập", title: "Trạng thái: bản thử đã tự kiểm tra", description: "Nội dung đã qua kiểm tra kỹ thuật, ngôn ngữ, liên kết và bản dựng trong fork này. Bản dịch vẫn cần phản biện độc lập trước khi nâng lên bản ổn định." },
+    published: { label: "Ổn định", sidebar: "đã hoàn tất phản biện", title: "Trạng thái: bản dịch ổn định", description: "Nội dung đã hoàn tất đối chiếu nguồn, kiểm tra kỹ thuật và phản biện ngôn ngữ độc lập." }
+  }[vietnameseDocument.status];
   return `<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -444,17 +459,17 @@ function pageTemplate(page, body, pageIndex) {
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/vi/learn/${canonicalName}">
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
-  <link rel="stylesheet" href="book.css?v=20260718e">
-  <script src="book.js?v=20260718e" defer></script>
+  <link rel="stylesheet" href="book.css?v=20260718g">
+  <script src="book.js?v=20260718g" defer></script>
 </head>
-<body>
+<body data-translation-status="${vietnameseDocument.status}">
   <a class="skip-link" href="#article">Bỏ qua để đến bài đọc</a>
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="Mở mục lục" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>VI</b></strong></a>
-    <div class="reader-progress"><span>Đợt thử</span><strong>${pages.length} / 105 tài liệu</strong></div>
+    <div class="reader-progress"><span>${statusCopy.label}</span><strong>${pages.length} / 105 tài liệu</strong></div>
     <nav aria-label="Ngôn ngữ và giao diện">
-      <a href="${koreanUrl}" lang="ko" hreflang="ko" aria-label="${koreanRoute === undefined ? "Mở bản tiếng Hàn; trang tương ứng chưa có trong đợt thử" : "Đọc trang tương ứng bằng tiếng Hàn"}">KO</a>
+      ${koreanOption}
       <a class="active" href="${canonicalName || "./"}" lang="vi" hreflang="vi" aria-current="page">VI</a>
       <a href="${englishUrl}" lang="en" hreflang="en" aria-label="Đọc trang tương ứng bằng tiếng Anh">EN</a>
       <button id="reader-theme" type="button" aria-label="Đổi giao diện sáng hoặc tối">◐</button>
@@ -462,14 +477,14 @@ function pageTemplate(page, body, pageIndex) {
   </header>
   <div class="reader-shell">
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="Mục lục bản tiếng Việt">
-      <div class="sidebar-top"><strong>Bản đọc thử</strong><small>Giai đoạn 2 · chờ phản biện độc lập</small></div>
+      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–8 · ${statusCopy.sidebar}</small></div>
       ${navigation(page.slug)}
       <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
     <main class="reader-main">
       <article id="article">
-        <div class="article-meta"><span>${page.chapter}</span><span>Bản thử · nguồn khóa tại ${sourceCommit.slice(0, 7)}</span></div>
-        <div class="pilot-notice"><strong>Trạng thái: bản thử đã tự kiểm tra</strong><p>Nội dung đã qua kiểm tra kỹ thuật, ngôn ngữ, liên kết và bản dựng trong fork này. Ở bài có nhiều đoạn mã tương đương, bản tiếng Việt giữ ví dụ Python đại diện; nút EN mở bản đầy đủ. Dự án vẫn cần phản biện độc lập trước khi nâng lên bản dịch ổn định.</p></div>
+        <div class="article-meta"><span>${page.chapter}</span><span>${statusCopy.label} · nguồn khóa tại ${sourceCommit.slice(0, 7)}</span></div>
+        <div class="pilot-notice"><strong>${statusCopy.title}</strong><p>${statusCopy.description} Nút EN mở đúng tài liệu nguồn tương ứng.</p></div>
         ${body}
         <footer class="article-attribution">
           <strong>Nguồn và giấy phép</strong>
@@ -487,6 +502,7 @@ function pageTemplate(page, body, pageIndex) {
 }
 
 export async function buildVietnameseBook({ projectRoot, outputRoot }) {
+  const registry = await loadTranslationRegistry(projectRoot);
   const bookOutput = path.join(outputRoot, "vi", "learn");
   await mkdir(bookOutput, { recursive: true });
   await cp(path.join(projectRoot, "vi", "book.css"), path.join(bookOutput, "book.css"));
@@ -499,7 +515,11 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     "chapter_introduction.jpg",
     "chapter_complexity_analysis.jpg",
     "chapter_data_structure.jpg",
-    "chapter_array_and_linkedlist.jpg"
+    "chapter_array_and_linkedlist.jpg",
+    "chapter_stack_and_queue.jpg",
+    "chapter_hashing.jpg",
+    "chapter_tree.jpg",
+    "chapter_heap.jpg"
   ]) {
     await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   }
@@ -517,7 +537,21 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     ["chapter_data_structure", "character_encoding.assets"],
     ["chapter_array_and_linkedlist", "array.assets"],
     ["chapter_array_and_linkedlist", "linked_list.assets"],
-    ["chapter_array_and_linkedlist", "ram_and_cache.assets"]
+    ["chapter_array_and_linkedlist", "ram_and_cache.assets"],
+    ["chapter_stack_and_queue", "stack.assets"],
+    ["chapter_stack_and_queue", "queue.assets"],
+    ["chapter_stack_and_queue", "deque.assets"],
+    ["chapter_hashing", "hash_map.assets"],
+    ["chapter_hashing", "hash_collision.assets"],
+    ["chapter_hashing", "hash_algorithm.assets"],
+    ["chapter_tree", "binary_tree.assets"],
+    ["chapter_tree", "binary_tree_traversal.assets"],
+    ["chapter_tree", "array_representation_of_tree.assets"],
+    ["chapter_tree", "binary_search_tree.assets"],
+    ["chapter_tree", "avl_tree.assets"],
+    ["chapter_heap", "heap.assets"],
+    ["chapter_heap", "build_heap.assets"],
+    ["chapter_heap", "top_k.assets"]
   ];
   for (const [chapter, directory] of assetDirectories) {
     const destination = path.join(bookOutput, "assets", chapter, directory);
@@ -532,9 +566,15 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
   }
 
   for (const [pageIndex, page] of pages.entries()) {
-    const markdown = await readFile(path.join(projectRoot, page.target), "utf8");
-    const html = pageTemplate(page, renderMarkdown(markdown, page.target), pageIndex);
+    const vietnameseDocument = registry.byLanguage.vi.get(page.source);
+    if (!vietnameseDocument) throw new Error(`Vietnamese reader page is missing from the translation registry: ${page.source}`);
     const outputName = page.slug === "index" ? "index.html" : `${page.slug}.html`;
+    const expectedRoute = `vi/learn/${outputName === "index.html" ? "" : outputName}`;
+    if (vietnameseDocument.target !== page.target || vietnameseDocument.route !== expectedRoute) {
+      throw new Error(`Vietnamese registry identity does not match reader page ${page.source}`);
+    }
+    const markdown = await readFile(path.join(projectRoot, page.target), "utf8");
+    const html = pageTemplate(page, renderMarkdown(markdown, page.target), pageIndex, registry.sourceCommit, vietnameseDocument, registry.byLanguage.ko.get(page.source));
     await writeFile(path.join(bookOutput, outputName), html);
   }
 
@@ -543,5 +583,5 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     await access(path.join(bookOutput, outputName), constants.R_OK);
   }
 
-  return { pageCount: pages.length, sourceCommit };
+  return { pageCount: pages.length, sourceCommit: registry.sourceCommit };
 }

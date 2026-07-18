@@ -5,6 +5,7 @@ import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 import { htmlTranslations, interactiveLocale } from "../vi/atlas-locale.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
+import { createTranslationRegistry, translationReadinessFailures } from "./translation-registry.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
@@ -26,7 +27,7 @@ const requiredFiles = [
   "VIETNAMESE_TRANSLATION_PLAN.md",
   "KOREAN_TRANSLATION_PLAN.md",
   "ko/atlas-locale.mjs", "ko/README.md", "ko/CONTRIBUTING.md", "ko/glossary.md", "ko/style-guide.md", "ko/translation-status.json",
-  "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs"
+  "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -44,6 +45,7 @@ const translationStatus = JSON.parse(await readFile(path.join(projectRoot, "vi",
 const translationPlan = await readFile(path.join(projectRoot, "VIETNAMESE_TRANSLATION_PLAN.md"), "utf8");
 const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLAN.md"), "utf8");
 const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "translation-status.json"), "utf8"));
+const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
 
 const failures = [];
 function countMarkdownH1(markdown) {
@@ -183,8 +185,8 @@ if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-m
 if (translationStatus.sourceCommit !== "4935d2d3877a6205008d89def8d2ba43f7e06275") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
-if (translationStatus.documents.length !== 26 || translationStatus.documents.some((document) => document.status !== "pilot")) {
-  failures.push("Expected 26 transparently labelled Vietnamese pilot documents");
+if (translationStatus.documents.length !== 48 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
+  failures.push("Expected 48 source-locked Vietnamese reader documents at draft or later status");
 }
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
@@ -216,18 +218,22 @@ for (const document of translationStatus.documents) {
     // Missing targets are reported by the existence check above.
   }
 }
-if (koreanStatus.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 14 || koreanStatus.documents.some((document) => document.status !== "pilot")) failures.push("Expected 14 Korean pilot documents locked to the shared English revision");
-if (new Set(koreanStatus.documents.map((document) => document.route)).size !== koreanStatus.documents.length) failures.push("Korean translation status contains duplicate routes");
+if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 48 || koreanStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) failures.push("Expected 48 source-locked Korean reader documents at draft or later status");
 for (const document of koreanStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
     try { await access(path.join(projectRoot, relativePath), constants.R_OK); } catch { failures.push(`Korean status references a missing file: ${relativePath}`); }
   }
   try {
+    const sourceMarkdown = await readFile(path.join(projectRoot, document.source), "utf8");
     const markdown = await readFile(path.join(projectRoot, document.target), "utf8");
     if (countMarkdownH1(markdown) !== 1) failures.push(`${document.target} must contain exactly one H1`);
     if ((markdown.match(/^```/gm) || []).length % 2 !== 0) failures.push(`${document.target} contains an unbalanced code fence`);
     if ((markdown.match(/^\$\$$/gm) || []).length % 2 !== 0) failures.push(`${document.target} contains an unbalanced display-math fence`);
     if (/\b(?:TODO|TBD|FIXME)\b/.test(markdown)) failures.push(`${document.target} contains an unresolved marker`);
+    if (["pilot", "published"].includes(document.status)) {
+      const readinessFailures = translationReadinessFailures(sourceMarkdown, markdown);
+      if (readinessFailures.length) failures.push(`${document.target} cannot be promoted to ${document.status}: ${readinessFailures.join(", ")}`);
+    }
   } catch { /* Missing files are reported above. */ }
 }
 if (translationPlan.length < 15000 || !translationPlan.includes("Sáu giai đoạn phát triển")) {
