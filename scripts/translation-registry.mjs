@@ -46,7 +46,21 @@ export const englishReaderRoutes = new Map([
   ["en/docs/chapter_divide_and_conquer/binary_search_recur.md", "en/learn/binary-search-recursive.html"],
   ["en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "en/learn/build-binary-tree.html"],
   ["en/docs/chapter_divide_and_conquer/hanota_problem.md", "en/learn/hanota.html"],
-  ["en/docs/chapter_divide_and_conquer/summary.md", "en/learn/chapter-12-summary.html"]
+  ["en/docs/chapter_divide_and_conquer/summary.md", "en/learn/chapter-12-summary.html"],
+  ["en/docs/chapter_backtracking/index.md", "en/learn/backtracking.html"],
+  ["en/docs/chapter_backtracking/backtracking_algorithm.md", "en/learn/backtracking-algorithm.html"],
+  ["en/docs/chapter_backtracking/n_queens_problem.md", "en/learn/n-queens.html"],
+  ["en/docs/chapter_backtracking/permutations_problem.md", "en/learn/permutations.html"],
+  ["en/docs/chapter_backtracking/subset_sum_problem.md", "en/learn/subset-sum.html"],
+  ["en/docs/chapter_backtracking/summary.md", "en/learn/chapter-13-summary.html"],
+  ["en/docs/chapter_dynamic_programming/index.md", "en/learn/dynamic-programming.html"],
+  ["en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "en/learn/intro-to-dynamic-programming.html"],
+  ["en/docs/chapter_dynamic_programming/dp_problem_features.md", "en/learn/dynamic-programming-characteristics.html"],
+  ["en/docs/chapter_dynamic_programming/dp_solution_pipeline.md", "en/learn/dynamic-programming-approach.html"],
+  ["en/docs/chapter_dynamic_programming/knapsack_problem.md", "en/learn/zero-one-knapsack.html"],
+  ["en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "en/learn/unbounded-knapsack.html"],
+  ["en/docs/chapter_dynamic_programming/edit_distance_problem.md", "en/learn/edit-distance.html"],
+  ["en/docs/chapter_dynamic_programming/summary.md", "en/learn/chapter-14-summary.html"]
 ]);
 
 export function createTranslationRegistry(manifests) {

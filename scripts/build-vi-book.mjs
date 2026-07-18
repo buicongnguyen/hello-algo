@@ -289,7 +289,21 @@ const pages = [
   { slug: "tim-kiem-nhi-phan-de-quy", title: "Chiến lược tìm kiếm chia để trị", shortTitle: "12.2 · Tìm kiếm đệ quy", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/binary_search_recur.md", target: "vi/docs/chapter_divide_and_conquer/binary_search_recur.md", description: "Tìm kiếm nhị phân dưới dạng đệ quy." },
   { slug: "dung-cay-nhi-phan", title: "Bài toán dựng cây nhị phân", shortTitle: "12.3 · Dựng cây", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", target: "vi/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", description: "Dựng cây từ thứ tự tiền thứ tự và trung thứ tự." },
   { slug: "thap-ha-noi", title: "Bài toán Tháp Hà Nội", shortTitle: "12.4 · Tháp Hà Nội", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/hanota_problem.md", target: "vi/docs/chapter_divide_and_conquer/hanota_problem.md", description: "Mô hình hóa hai bài toán con quanh một bước trung tâm." },
-  { slug: "tom-tat-chuong-12", title: "Tóm tắt Chương 12", shortTitle: "12.5 · Tóm tắt", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/summary.md", target: "vi/docs/chapter_divide_and_conquer/summary.md", description: "Ôn tập chia để trị, dựng cây và Tháp Hà Nội." }
+  { slug: "tom-tat-chuong-12", title: "Tóm tắt Chương 12", shortTitle: "12.5 · Tóm tắt", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/summary.md", target: "vi/docs/chapter_divide_and_conquer/summary.md", description: "Ôn tập chia để trị, dựng cây và Tháp Hà Nội." },
+  { slug: "quay-lui", title: "Quay lui", shortTitle: "Mở đầu quay lui", chapter: "Chương 13", source: "en/docs/chapter_backtracking/index.md", target: "vi/docs/chapter_backtracking/index.md", description: "Giới thiệu thử, cắt tỉa và hoàn tác trong không gian nghiệm." },
+  { slug: "thuat-toan-quay-lui", title: "Thuật toán quay lui", shortTitle: "13.1 · Thuật toán quay lui", chapter: "Chương 13", source: "en/docs/chapter_backtracking/backtracking_algorithm.md", target: "vi/docs/chapter_backtracking/backtracking_algorithm.md", description: "Xây dựng khuôn mẫu thử, cắt tỉa và quay lui." },
+  { slug: "bai-toan-n-hau", title: "Bài toán N quân hậu", shortTitle: "13.2 · N quân hậu", chapter: "Chương 13", source: "en/docs/chapter_backtracking/n_queens_problem.md", target: "vi/docs/chapter_backtracking/n_queens_problem.md", description: "Đặt quân hậu bằng cắt tỉa cột và đường chéo." },
+  { slug: "bai-toan-hoan-vi", title: "Bài toán hoán vị", shortTitle: "13.3 · Hoán vị", chapter: "Chương 13", source: "en/docs/chapter_backtracking/permutations_problem.md", target: "vi/docs/chapter_backtracking/permutations_problem.md", description: "Sinh hoán vị phân biệt và xử lý phần tử trùng." },
+  { slug: "bai-toan-tong-tap-con", title: "Bài toán tổng tập con", shortTitle: "13.4 · Tổng tập con", chapter: "Chương 13", source: "en/docs/chapter_backtracking/subset_sum_problem.md", target: "vi/docs/chapter_backtracking/subset_sum_problem.md", description: "Tìm tổ hợp và cắt các nhánh trùng hoặc không thể đạt đích." },
+  { slug: "tom-tat-chuong-13", title: "Tóm tắt Chương 13", shortTitle: "13.5 · Tóm tắt", chapter: "Chương 13", source: "en/docs/chapter_backtracking/summary.md", target: "vi/docs/chapter_backtracking/summary.md", description: "Ôn tập trạng thái, ràng buộc và cắt tỉa trong quay lui." },
+  { slug: "quy-hoach-dong", title: "Quy hoạch động", shortTitle: "Mở đầu quy hoạch động", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/index.md", target: "vi/docs/chapter_dynamic_programming/index.md", description: "Tái sử dụng kết quả bài toán con để xây dựng nghiệm lớn." },
+  { slug: "gioi-thieu-quy-hoach-dong", title: "Giới thiệu quy hoạch động", shortTitle: "14.1 · Giới thiệu", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", target: "vi/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", description: "Đi từ đệ quy vét cạn đến ghi nhớ và lập bảng." },
+  { slug: "dac-trung-bai-toan-quy-hoach-dong", title: "Đặc trưng của bài toán quy hoạch động", shortTitle: "14.2 · Đặc trưng", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/dp_problem_features.md", target: "vi/docs/chapter_dynamic_programming/dp_problem_features.md", description: "Nhận diện bài toán con chồng lặp, cấu trúc con tối ưu và không hậu hiệu." },
+  { slug: "quy-trinh-giai-quy-hoach-dong", title: "Quy trình giải bài toán quy hoạch động", shortTitle: "14.3 · Quy trình giải", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/dp_solution_pipeline.md", target: "vi/docs/chapter_dynamic_programming/dp_solution_pipeline.md", description: "Định nghĩa trạng thái, chuyển trạng thái, biên và thứ tự tính." },
+  { slug: "ba-lo-khong-mot", title: "Bài toán ba lô 0-1", shortTitle: "14.4 · Ba lô 0-1", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/knapsack_problem.md", target: "vi/docs/chapter_dynamic_programming/knapsack_problem.md", description: "Chọn mỗi vật tối đa một lần trong giới hạn sức chứa." },
+  { slug: "ba-lo-vo-han", title: "Bài toán ba lô vô hạn", shortTitle: "14.5 · Ba lô vô hạn", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", target: "vi/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", description: "Tái sử dụng loại vật và giải các biến thể đổi tiền." },
+  { slug: "khoang-cach-chinh-sua", title: "Bài toán khoảng cách chỉnh sửa", shortTitle: "14.6 · Khoảng cách chỉnh sửa", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/edit_distance_problem.md", target: "vi/docs/chapter_dynamic_programming/edit_distance_problem.md", description: "Đo độ giống chuỗi bằng chèn, xóa và thay thế." },
+  { slug: "tom-tat-chuong-14", title: "Tóm tắt Chương 14", shortTitle: "14.7 · Tóm tắt", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/summary.md", target: "vi/docs/chapter_dynamic_programming/summary.md", description: "Ôn tập thiết kế quy hoạch động và các ứng dụng kinh điển." }
 ];
 
 const escapeHtml = (value) => value
@@ -507,7 +521,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   </header>
   <div class="reader-shell">
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="Mục lục bản tiếng Việt">
-      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–12 · ${statusCopy.sidebar}</small></div>
+      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–14 · ${statusCopy.sidebar}</small></div>
       ${navigation(page.slug)}
       <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
@@ -553,7 +567,9 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     "chapter_graph.jpg",
     "chapter_searching.jpg",
     "chapter_sorting.jpg",
-    "chapter_divide_and_conquer.jpg"
+    "chapter_divide_and_conquer.jpg",
+    "chapter_backtracking.jpg",
+    "chapter_dynamic_programming.jpg"
   ]) {
     await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   }
@@ -608,7 +624,17 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     ["chapter_divide_and_conquer", "divide_and_conquer.assets"],
     ["chapter_divide_and_conquer", "binary_search_recur.assets"],
     ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"],
-    ["chapter_divide_and_conquer", "hanota_problem.assets"]
+    ["chapter_divide_and_conquer", "hanota_problem.assets"],
+    ["chapter_backtracking", "backtracking_algorithm.assets"],
+    ["chapter_backtracking", "n_queens_problem.assets"],
+    ["chapter_backtracking", "permutations_problem.assets"],
+    ["chapter_backtracking", "subset_sum_problem.assets"],
+    ["chapter_dynamic_programming", "intro_to_dynamic_programming.assets"],
+    ["chapter_dynamic_programming", "dp_problem_features.assets"],
+    ["chapter_dynamic_programming", "dp_solution_pipeline.assets"],
+    ["chapter_dynamic_programming", "knapsack_problem.assets"],
+    ["chapter_dynamic_programming", "unbounded_knapsack_problem.assets"],
+    ["chapter_dynamic_programming", "edit_distance_problem.assets"]
   ];
   for (const [chapter, directory] of assetDirectories) {
     const destination = path.join(bookOutput, "assets", chapter, directory);

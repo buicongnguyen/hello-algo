@@ -244,6 +244,20 @@
     { "source": "en/docs/chapter_divide_and_conquer/binary_search_recur.md", "target": "vi/docs/chapter_divide_and_conquer/binary_search_recur.md", "route": "vi/learn/tim-kiem-nhi-phan-de-quy.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "target": "vi/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "route": "vi/learn/dung-cay-nhi-phan.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/hanota_problem.md", "target": "vi/docs/chapter_divide_and_conquer/hanota_problem.md", "route": "vi/learn/thap-ha-noi.html", "wave": 12, "status": "draft" },
-    { "source": "en/docs/chapter_divide_and_conquer/summary.md", "target": "vi/docs/chapter_divide_and_conquer/summary.md", "route": "vi/learn/tom-tat-chuong-12.html", "wave": 12, "status": "draft" }
+    { "source": "en/docs/chapter_divide_and_conquer/summary.md", "target": "vi/docs/chapter_divide_and_conquer/summary.md", "route": "vi/learn/tom-tat-chuong-12.html", "wave": 12, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/index.md", "target": "vi/docs/chapter_backtracking/index.md", "route": "vi/learn/quay-lui.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/backtracking_algorithm.md", "target": "vi/docs/chapter_backtracking/backtracking_algorithm.md", "route": "vi/learn/thuat-toan-quay-lui.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/n_queens_problem.md", "target": "vi/docs/chapter_backtracking/n_queens_problem.md", "route": "vi/learn/bai-toan-n-hau.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/permutations_problem.md", "target": "vi/docs/chapter_backtracking/permutations_problem.md", "route": "vi/learn/bai-toan-hoan-vi.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/subset_sum_problem.md", "target": "vi/docs/chapter_backtracking/subset_sum_problem.md", "route": "vi/learn/bai-toan-tong-tap-con.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/summary.md", "target": "vi/docs/chapter_backtracking/summary.md", "route": "vi/learn/tom-tat-chuong-13.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/index.md", "target": "vi/docs/chapter_dynamic_programming/index.md", "route": "vi/learn/quy-hoach-dong.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "target": "vi/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "route": "vi/learn/gioi-thieu-quy-hoach-dong.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/dp_problem_features.md", "target": "vi/docs/chapter_dynamic_programming/dp_problem_features.md", "route": "vi/learn/dac-trung-bai-toan-quy-hoach-dong.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/dp_solution_pipeline.md", "target": "vi/docs/chapter_dynamic_programming/dp_solution_pipeline.md", "route": "vi/learn/quy-trinh-giai-quy-hoach-dong.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/knapsack_problem.md", "target": "vi/docs/chapter_dynamic_programming/knapsack_problem.md", "route": "vi/learn/ba-lo-khong-mot.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "target": "vi/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "route": "vi/learn/ba-lo-vo-han.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "target": "vi/docs/chapter_dynamic_programming/edit_distance_problem.md", "route": "vi/learn/khoang-cach-chinh-sua.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/summary.md", "target": "vi/docs/chapter_dynamic_programming/summary.md", "route": "vi/learn/tom-tat-chuong-14.html", "wave": 14, "status": "draft" }
   ]
 }

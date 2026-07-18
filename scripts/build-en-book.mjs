@@ -46,7 +46,21 @@ const pages = [
   ["binary-search-recursive", "Divide and Conquer Search Strategy", "12.2 · Recursive Search", "Chapter 12", "en/docs/chapter_divide_and_conquer/binary_search_recur.md", "Express binary search recursively."],
   ["build-binary-tree", "Building a Binary Tree Problem", "12.3 · Build a Tree", "Chapter 12", "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "Reconstruct a tree from preorder and inorder traversals."],
   ["hanota", "Hanota Problem", "12.4 · Hanota", "Chapter 12", "en/docs/chapter_divide_and_conquer/hanota_problem.md", "Solve two matching subproblems around one central move."],
-  ["chapter-12-summary", "Chapter 12 Summary", "12.5 · Summary", "Chapter 12", "en/docs/chapter_divide_and_conquer/summary.md", "Review divide and conquer, tree construction, and Hanota."]
+  ["chapter-12-summary", "Chapter 12 Summary", "12.5 · Summary", "Chapter 12", "en/docs/chapter_divide_and_conquer/summary.md", "Review divide and conquer, tree construction, and Hanota."],
+  ["backtracking", "Backtracking", "Backtracking introduction", "Chapter 13", "en/docs/chapter_backtracking/index.md", "Explore a solution space through choices, pruning, and undo operations."],
+  ["backtracking-algorithm", "Backtracking Algorithm", "13.1 · Backtracking Algorithm", "Chapter 13", "en/docs/chapter_backtracking/backtracking_algorithm.md", "Build a reusable attempt, prune, and backtrack framework."],
+  ["n-queens", "N-Queens Problem", "13.2 · N-Queens", "Chapter 13", "en/docs/chapter_backtracking/n_queens_problem.md", "Place queens with column and diagonal pruning."],
+  ["permutations", "Permutations Problem", "13.3 · Permutations", "Chapter 13", "en/docs/chapter_backtracking/permutations_problem.md", "Generate distinct and duplicate-aware permutations."],
+  ["subset-sum", "Subset-Sum Problem", "13.4 · Subset Sum", "Chapter 13", "en/docs/chapter_backtracking/subset_sum_problem.md", "Search combinations while pruning duplicate and impossible branches."],
+  ["chapter-13-summary", "Chapter 13 Summary", "13.5 · Summary", "Chapter 13", "en/docs/chapter_backtracking/summary.md", "Review backtracking states, constraints, pruning, and representative problems."],
+  ["dynamic-programming", "Dynamic Programming", "Dynamic programming introduction", "Chapter 14", "en/docs/chapter_dynamic_programming/index.md", "Reuse overlapping subproblem results to construct larger solutions."],
+  ["intro-to-dynamic-programming", "Introduction to Dynamic Programming", "14.1 · Introduction", "Chapter 14", "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "Move from brute-force recursion to memoization and tabulation."],
+  ["dynamic-programming-characteristics", "Characteristics of Dynamic Programming Problems", "14.2 · Problem Characteristics", "Chapter 14", "en/docs/chapter_dynamic_programming/dp_problem_features.md", "Identify overlapping subproblems, optimal substructure, and no aftereffects."],
+  ["dynamic-programming-approach", "Dynamic Programming Problem-Solving Approach", "14.3 · Solution Approach", "Chapter 14", "en/docs/chapter_dynamic_programming/dp_solution_pipeline.md", "Define states, transitions, boundaries, and evaluation order."],
+  ["zero-one-knapsack", "0-1 Knapsack Problem", "14.4 · 0-1 Knapsack", "Chapter 14", "en/docs/chapter_dynamic_programming/knapsack_problem.md", "Choose each item at most once within a capacity."],
+  ["unbounded-knapsack", "Unbounded Knapsack Problem", "14.5 · Unbounded Knapsack", "Chapter 14", "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "Reuse item types and solve coin-change variants."],
+  ["edit-distance", "Edit Distance Problem", "14.6 · Edit Distance", "Chapter 14", "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "Measure string similarity with insert, delete, and replace operations."],
+  ["chapter-14-summary", "Chapter 14 Summary", "14.7 · Summary", "Chapter 14", "en/docs/chapter_dynamic_programming/summary.md", "Review dynamic programming design and classic applications."]
 ].map(([slug, title, shortTitle, chapter, source, description]) => ({ slug, title, shortTitle, chapter, source, description }));
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -123,7 +137,7 @@ function pageTemplate(page, body, index, sourceCommit, vietnameseDocument, korea
     <nav aria-label="Language and theme"><a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Read the corresponding Korean page">KO</a><a href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi" aria-label="Read the corresponding Vietnamese page">VI</a><a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
   </header>
   <div class="reader-shell">
-    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–12 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
+    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–14 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
     <main class="reader-main"><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>English source · ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>Original English source</strong><p>This local reading view is generated from the source-locked Hello Algo English document. KO and VI open the exact translated counterpart.</p></div>${body}<footer class="article-attribution"><strong>Source and license</strong><p>English content from <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo by krahets and its contributors</a>, presented locally under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>.</p></footer></article>
       <nav class="page-nav" aria-label="Previous and next article">${previous ? `<a href="${previous.slug}.html"><span>← Previous</span><strong>${previous.title}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug}.html"><span>Next →</span><strong>${next.title}</strong></a>` : "<i></i>"}</nav>
     </main>
@@ -140,14 +154,16 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
 
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
+  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg", "chapter_backtracking.jpg", "chapter_dynamic_programming.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   for (const [chapter, directory] of [
     ["chapter_tree", "binary_tree.assets"], ["chapter_tree", "binary_tree_traversal.assets"], ["chapter_tree", "array_representation_of_tree.assets"], ["chapter_tree", "binary_search_tree.assets"], ["chapter_tree", "avl_tree.assets"],
     ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"],
     ["chapter_graph", "graph.assets"], ["chapter_graph", "graph_operations.assets"], ["chapter_graph", "graph_traversal.assets"],
     ["chapter_searching", "binary_search.assets"], ["chapter_searching", "binary_search_insertion.assets"], ["chapter_searching", "binary_search_edge.assets"], ["chapter_searching", "replace_linear_by_hashing.assets"], ["chapter_searching", "searching_algorithm_revisited.assets"],
     ["chapter_sorting", "sorting_algorithm.assets"], ["chapter_sorting", "selection_sort.assets"], ["chapter_sorting", "bubble_sort.assets"], ["chapter_sorting", "insertion_sort.assets"], ["chapter_sorting", "quick_sort.assets"], ["chapter_sorting", "merge_sort.assets"], ["chapter_sorting", "heap_sort.assets"], ["chapter_sorting", "bucket_sort.assets"], ["chapter_sorting", "counting_sort.assets"], ["chapter_sorting", "radix_sort.assets"], ["chapter_sorting", "summary.assets"],
-    ["chapter_divide_and_conquer", "divide_and_conquer.assets"], ["chapter_divide_and_conquer", "binary_search_recur.assets"], ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"], ["chapter_divide_and_conquer", "hanota_problem.assets"]
+    ["chapter_divide_and_conquer", "divide_and_conquer.assets"], ["chapter_divide_and_conquer", "binary_search_recur.assets"], ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"], ["chapter_divide_and_conquer", "hanota_problem.assets"],
+    ["chapter_backtracking", "backtracking_algorithm.assets"], ["chapter_backtracking", "n_queens_problem.assets"], ["chapter_backtracking", "permutations_problem.assets"], ["chapter_backtracking", "subset_sum_problem.assets"],
+    ["chapter_dynamic_programming", "intro_to_dynamic_programming.assets"], ["chapter_dynamic_programming", "dp_problem_features.assets"], ["chapter_dynamic_programming", "dp_solution_pipeline.assets"], ["chapter_dynamic_programming", "knapsack_problem.assets"], ["chapter_dynamic_programming", "unbounded_knapsack_problem.assets"], ["chapter_dynamic_programming", "edit_distance_problem.assets"]
   ]) {
     const destination = path.join(bookOutput, "assets", chapter, directory);
     await mkdir(path.dirname(destination), { recursive: true });

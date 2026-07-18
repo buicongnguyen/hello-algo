@@ -84,8 +84,8 @@ export async function checkBuiltSite(outputRoot) {
   if (!pilotHome.includes("Bản thử · nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
     failures.push("Vietnamese pilot pages are missing source-lock or license disclosure");
   }
-  if (!pilotHome.includes("78 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 13) {
-    failures.push("Vietnamese reader progress or Chapters 0–12 navigation is incomplete");
+  if (!pilotHome.includes("92 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 15) {
+    failures.push("Vietnamese reader progress or Chapters 0–14 navigation is incomplete");
   }
   for (const document of translationStatus.documents) {
     const pilotPage = routeFileName(document.route);
@@ -111,7 +111,7 @@ export async function checkBuiltSite(outputRoot) {
 
   const koreanDirectory = path.join(outputRoot, "ko", "learn");
   const koreanPages = (await readdir(koreanDirectory)).filter((file) => file.endsWith(".html"));
-  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 78) failures.push(`Expected 78 Korean draft pages, found ${koreanPages.length}`);
+  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 92) failures.push(`Expected 92 Korean draft pages, found ${koreanPages.length}`);
   const koreanRoutes = koreanStatus.documents.map((document) => document.route);
   if (new Set(koreanRoutes).size !== koreanRoutes.length) failures.push("Korean translation status contains duplicate routes");
   for (const route of koreanRoutes) {
@@ -119,7 +119,7 @@ export async function checkBuiltSite(outputRoot) {
     if (!await referenceExists(candidate)) failures.push(`Korean status route was not built: ${route}`);
   }
   const koreanHome = await readFile(path.join(koreanDirectory, "index.html"), "utf8");
-  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("78 / 105 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 13) failures.push("Korean reader metadata, progress, or Chapters 0–12 navigation is incomplete");
+  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("92 / 105 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 15) failures.push("Korean reader metadata, progress, or Chapters 0–14 navigation is incomplete");
   if (!koreanHome.includes("CC BY-NC-SA 4.0") || !koreanHome.includes("공식 후원을 의미하지 않습니다")) failures.push("Korean reader is missing source and license disclosure");
   for (const document of koreanStatus.documents) {
     const koreanPage = routeFileName(document.route);
@@ -166,9 +166,16 @@ export async function checkBuiltSite(outputRoot) {
   if (!vietnameseSort.includes("quick_sort_overview.png") || !koreanSort.includes("quick_sort_overview.png") || !vietnameseSort.includes('<pre><code class="language-python"') || !koreanSort.includes('<pre><code class="language-python"')) failures.push("Chapter 11 quick-sort pages are missing diagrams or Python examples");
   if (!vietnameseDivide.includes("hanota_example.png") || !koreanDivide.includes("hanota_example.png") || !vietnameseDivide.includes('<pre><code class="language-python"') || !koreanDivide.includes('<pre><code class="language-python"')) failures.push("Chapter 12 Hanota pages are missing diagrams or Python examples");
 
+  const vietnameseBacktracking = await readFile(path.join(pilotDirectory, "bai-toan-n-hau.html"), "utf8");
+  const koreanBacktracking = await readFile(path.join(koreanDirectory, "n-queens.html"), "utf8");
+  const vietnameseDynamicProgramming = await readFile(path.join(pilotDirectory, "khoang-cach-chinh-sua.html"), "utf8");
+  const koreanDynamicProgramming = await readFile(path.join(koreanDirectory, "edit-distance.html"), "utf8");
+  if (!vietnameseBacktracking.includes("solution_4_queens.png") || !koreanBacktracking.includes("solution_4_queens.png") || !vietnameseBacktracking.includes('<pre><code class="language-python"') || !koreanBacktracking.includes('<pre><code class="language-python"')) failures.push("Chapter 13 N-Queens pages are missing diagrams or Python examples");
+  if (!vietnameseDynamicProgramming.includes("edit_distance_example.png") || !koreanDynamicProgramming.includes("edit_distance_example.png") || !vietnameseDynamicProgramming.includes('<pre><code class="language-python"') || !koreanDynamicProgramming.includes('<pre><code class="language-python"')) failures.push("Chapter 14 edit-distance pages are missing diagrams or Python examples");
+
   const englishDirectory = path.join(outputRoot, "en", "learn");
   const englishPages = (await readdir(englishDirectory)).filter((file) => file.endsWith(".html"));
-  if (englishPages.length !== englishReaderRoutes.size || englishPages.length !== 42) failures.push(`Expected 42 local English Chapter 7–12 pages, found ${englishPages.length}`);
+  if (englishPages.length !== englishReaderRoutes.size || englishPages.length !== 56) failures.push(`Expected 56 local English Chapter 7–14 pages, found ${englishPages.length}`);
   for (const [source, route] of englishReaderRoutes) {
     const englishPage = await readFile(path.join(outputRoot, route), "utf8");
     const vietnameseDocument = translationRegistry.byLanguage.vi.get(source);
@@ -182,7 +189,9 @@ export async function checkBuiltSite(outputRoot) {
   const englishSearch = await readFile(path.join(englishDirectory, "binary-search.html"), "utf8");
   const englishSort = await readFile(path.join(englishDirectory, "quick-sort.html"), "utf8");
   const englishDivide = await readFile(path.join(englishDirectory, "hanota.html"), "utf8");
-  if (!englishTree.includes("binary_tree_definition.png") || !englishHeap.includes("min_heap_and_max_heap.png") || !englishGraph.includes("graph_bfs.png") || !englishSearch.includes("binary_search_example.png") || !englishSort.includes("quick_sort_overview.png") || !englishDivide.includes("hanota_example.png") || !englishTree.includes("Original English source")) failures.push("Local English Chapter 7–12 pages are missing source content or attribution");
+  const englishBacktracking = await readFile(path.join(englishDirectory, "n-queens.html"), "utf8");
+  const englishDynamicProgramming = await readFile(path.join(englishDirectory, "edit-distance.html"), "utf8");
+  if (!englishTree.includes("binary_tree_definition.png") || !englishHeap.includes("min_heap_and_max_heap.png") || !englishGraph.includes("graph_bfs.png") || !englishSearch.includes("binary_search_example.png") || !englishSort.includes("quick_sort_overview.png") || !englishDivide.includes("hanota_example.png") || !englishBacktracking.includes("solution_4_queens.png") || !englishDynamicProgramming.includes("edit_distance_example.png") || !englishTree.includes("Original English source")) failures.push("Local English Chapter 7–14 pages are missing source content or attribution");
 
   const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");
   if (!timeComplexityPage.includes('<pre><code class="language-python"') || !timeComplexityPage.includes('class="math-block"')) {

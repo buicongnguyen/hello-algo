@@ -88,6 +88,20 @@
     { "source": "en/docs/chapter_divide_and_conquer/binary_search_recur.md", "target": "ko/docs/chapter_divide_and_conquer/binary_search_recur.md", "route": "ko/learn/binary-search-recursive.html", "wave": 6, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "target": "ko/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "route": "ko/learn/build-binary-tree.html", "wave": 6, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/hanota_problem.md", "target": "ko/docs/chapter_divide_and_conquer/hanota_problem.md", "route": "ko/learn/hanota.html", "wave": 6, "status": "draft" },
-    { "source": "en/docs/chapter_divide_and_conquer/summary.md", "target": "ko/docs/chapter_divide_and_conquer/summary.md", "route": "ko/learn/chapter-12-summary.html", "wave": 6, "status": "draft" }
+    { "source": "en/docs/chapter_divide_and_conquer/summary.md", "target": "ko/docs/chapter_divide_and_conquer/summary.md", "route": "ko/learn/chapter-12-summary.html", "wave": 6, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/index.md", "target": "ko/docs/chapter_backtracking/index.md", "route": "ko/learn/backtracking.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/backtracking_algorithm.md", "target": "ko/docs/chapter_backtracking/backtracking_algorithm.md", "route": "ko/learn/backtracking-algorithm.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/n_queens_problem.md", "target": "ko/docs/chapter_backtracking/n_queens_problem.md", "route": "ko/learn/n-queens.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/permutations_problem.md", "target": "ko/docs/chapter_backtracking/permutations_problem.md", "route": "ko/learn/permutations.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/subset_sum_problem.md", "target": "ko/docs/chapter_backtracking/subset_sum_problem.md", "route": "ko/learn/subset-sum.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/summary.md", "target": "ko/docs/chapter_backtracking/summary.md", "route": "ko/learn/chapter-13-summary.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/index.md", "target": "ko/docs/chapter_dynamic_programming/index.md", "route": "ko/learn/dynamic-programming.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "target": "ko/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "route": "ko/learn/intro-to-dynamic-programming.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/dp_problem_features.md", "target": "ko/docs/chapter_dynamic_programming/dp_problem_features.md", "route": "ko/learn/dynamic-programming-characteristics.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/dp_solution_pipeline.md", "target": "ko/docs/chapter_dynamic_programming/dp_solution_pipeline.md", "route": "ko/learn/dynamic-programming-approach.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/knapsack_problem.md", "target": "ko/docs/chapter_dynamic_programming/knapsack_problem.md", "route": "ko/learn/zero-one-knapsack.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "target": "ko/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "route": "ko/learn/unbounded-knapsack.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "target": "ko/docs/chapter_dynamic_programming/edit_distance_problem.md", "route": "ko/learn/edit-distance.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_dynamic_programming/summary.md", "target": "ko/docs/chapter_dynamic_programming/summary.md", "route": "ko/learn/chapter-14-summary.html", "wave": 7, "status": "draft" }
   ]
 }

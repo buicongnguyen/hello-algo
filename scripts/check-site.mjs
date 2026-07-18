@@ -185,8 +185,8 @@ if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-m
 if (translationStatus.sourceCommit !== "4935d2d3877a6205008d89def8d2ba43f7e06275") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
-if (translationStatus.documents.length !== 78 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
-  failures.push("Expected 78 source-locked Vietnamese reader documents at draft or later status");
+if (translationStatus.documents.length !== 92 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
+  failures.push("Expected 92 source-locked Vietnamese reader documents at draft or later status");
 }
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
@@ -218,7 +218,7 @@ for (const document of translationStatus.documents) {
     // Missing targets are reported by the existence check above.
   }
 }
-if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 78 || koreanStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) failures.push("Expected 78 source-locked Korean reader documents at draft or later status");
+if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 92 || koreanStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) failures.push("Expected 92 source-locked Korean reader documents at draft or later status");
 for (const document of koreanStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
     try { await access(path.join(projectRoot, relativePath), constants.R_OK); } catch { failures.push(`Korean status references a missing file: ${relativePath}`); }
