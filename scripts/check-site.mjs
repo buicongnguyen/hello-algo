@@ -21,7 +21,8 @@ const requiredFiles = [
   "scripts/build-vi-book.mjs",
   "scripts/check-dist.mjs",
   "scripts/localize-vi-atlas.mjs",
-  "VIETNAMESE_TRANSLATION_PLAN.md"
+  "VIETNAMESE_TRANSLATION_PLAN.md",
+  "KOREAN_TRANSLATION_PLAN.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -36,8 +37,22 @@ const bookCss = await readFile(path.join(projectRoot, "vi", "book.css"), "utf8")
 const bookJs = await readFile(path.join(projectRoot, "vi", "book.js"), "utf8");
 const translationStatus = JSON.parse(await readFile(path.join(projectRoot, "vi", "translation-status.json"), "utf8"));
 const translationPlan = await readFile(path.join(projectRoot, "VIETNAMESE_TRANSLATION_PLAN.md"), "utf8");
+const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLAN.md"), "utf8");
 
 const failures = [];
+function countMarkdownH1(markdown) {
+  let inCodeFence = false;
+  let count = 0;
+  for (const line of markdown.replaceAll("\r\n", "\n").split("\n")) {
+    if (line.startsWith("```")) {
+      inCodeFence = !inCodeFence;
+      continue;
+    }
+    if (!inCodeFence && line.startsWith("# ")) count += 1;
+  }
+  return count;
+}
+
 const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]));
 for (const duplicate of [...ids].filter((id) => html.match(new RegExp(`id="${id}"`, "g"))?.length > 1)) {
   failures.push(`Duplicate HTML id: ${duplicate}`);
@@ -153,8 +168,8 @@ if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-m
 if (translationStatus.sourceCommit !== "4935d2d3877a6205008d89def8d2ba43f7e06275") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
-if (translationStatus.documents.length !== 14 || translationStatus.documents.some((document) => document.status !== "pilot")) {
-  failures.push("Expected 14 transparently labelled Vietnamese pilot documents");
+if (translationStatus.documents.length !== 26 || translationStatus.documents.some((document) => document.status !== "pilot")) {
+  failures.push("Expected 26 transparently labelled Vietnamese pilot documents");
 }
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
@@ -164,9 +179,28 @@ for (const document of translationStatus.documents) {
       failures.push(`Translation status references a missing file: ${relativePath}`);
     }
   }
+  try {
+    const targetMarkdown = await readFile(path.join(projectRoot, document.target), "utf8");
+    const h1Count = countMarkdownH1(targetMarkdown);
+    if (h1Count !== 1) failures.push(`${document.target} must contain exactly one H1`);
+    if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(targetMarkdown)) {
+      failures.push(`${document.target} contains unsupported MkDocs-only syntax`);
+    }
+    if ((targetMarkdown.match(/^```/gm) || []).length % 2 !== 0) {
+      failures.push(`${document.target} contains an unbalanced code fence`);
+    }
+    if ((targetMarkdown.match(/^\$\$$/gm) || []).length % 2 !== 0) {
+      failures.push(`${document.target} contains an unbalanced display-math fence`);
+    }
+  } catch {
+    // Missing targets are reported by the existence check above.
+  }
 }
 if (translationPlan.length < 15000 || !translationPlan.includes("Sáu giai đoạn phát triển")) {
   failures.push("Vietnamese translation plan is not sufficiently detailed");
+}
+if (koreanPlan.length < 20000 || !koreanPlan.includes("Korean pilot `v0.1`")) {
+  failures.push("Korean translation plan is not sufficiently detailed");
 }
 
 if (failures.length) {

@@ -1,6 +1,6 @@
 # Thuật ngữ Hello Algo tiếng Việt
 
-Phiên bản: `v0.2-pilot`
+Phiên bản: `v0.3-pilot`
 
 Nguồn chuẩn: bản tiếng Anh tại commit upstream `4935d2d3877a6205008d89def8d2ba43f7e06275`
 
@@ -35,6 +35,34 @@ Từ điển này quy định cách gọi ưu tiên trong bản dịch. Khi mộ
 | graph | đồ thị | vertex → đỉnh; edge → cạnh |
 | adjacency | kề | adjacency list → danh sách kề |
 | traversal | phép duyệt | Dùng “duyệt” như động từ |
+| logical structure | cấu trúc logic | physical structure → cấu trúc vật lý |
+| contiguous storage | lưu trữ liên tục | dispersed storage → lưu trữ phân tán |
+| basic data type | kiểu dữ liệu cơ bản | Phân biệt loại nội dung với cách tổ chức |
+| index | chỉ mục | offset → độ lệch |
+| dynamic array | mảng động | list → danh sách động khi nói về cách triển khai |
+| capacity | sức chứa | size → kích thước hoặc số phần tử thực tế |
+| singly linked list | danh sách liên kết đơn | head / tail → nút đầu / nút đuôi |
+| circular linked list | danh sách liên kết vòng | tail trỏ lại head |
+| doubly linked list | danh sách liên kết đôi | predecessor / successor → nút trước / nút sau |
+
+## Biểu diễn dữ liệu và bộ nhớ
+
+| English | Tiếng Việt ưu tiên | Ghi chú |
+| --- | --- | --- |
+| sign-magnitude | mã dấu–trị tuyệt đối | sign bit → bit dấu |
+| one's complement | bù một | Giữ cách gọi nhất quán với bù hai |
+| two's complement | bù hai | Cách biểu diễn số nguyên có dấu phổ biến |
+| floating-point number | số thực dấu phẩy động | exponent / fraction → số mũ / phần trị |
+| character set | bộ ký tự | code point → điểm mã |
+| character encoding | mã hóa ký tự | encoding form → dạng mã hóa |
+| surrogate pair | cặp đại diện | Dùng khi giải thích UTF-16 |
+| random-access memory | bộ nhớ truy cập ngẫu nhiên | Có thể dùng RAM sau lần giải thích đầu |
+| cache | bộ nhớ đệm | cache line → dòng bộ nhớ đệm |
+| cache hit | trúng bộ nhớ đệm | cache miss → lỗi trượt bộ nhớ đệm |
+| cache hit rate | tỷ lệ trúng bộ nhớ đệm | Chỉ số hiệu quả bộ nhớ đệm |
+| spatial locality | tính cục bộ không gian | temporal locality → tính cục bộ thời gian |
+| prefetching | nạp trước | Mô tả cơ chế dự đoán truy cập |
+| memory fragmentation | phân mảnh bộ nhớ | Phân biệt với không gian trống đơn thuần |
 
 ## Thuật toán và kỹ thuật
 

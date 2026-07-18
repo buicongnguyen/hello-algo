@@ -81,13 +81,14 @@ export async function checkBuiltSite(outputRoot) {
   if (!pilotHome.includes("Bản thử · nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
     failures.push("Vietnamese pilot pages are missing source-lock or license disclosure");
   }
-  if (!pilotHome.includes("14 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 3) {
-    failures.push("Vietnamese reader progress or Chapters 0–2 navigation is incomplete");
+  if (!pilotHome.includes("26 / 105 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 5) {
+    failures.push("Vietnamese reader progress or Chapters 0–4 navigation is incomplete");
   }
   for (const pilotPage of pilotPages) {
     const html = await readFile(path.join(pilotDirectory, pilotPage), "utf8");
     if (/\$[^$<>]+\$/.test(html)) failures.push(`${pilotPage} contains unrendered inline math`);
     if (html.includes("```") || html.includes("```src")) failures.push(`${pilotPage} contains an unrendered code fence`);
+    if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(html)) failures.push(`${pilotPage} contains unrendered MkDocs-only syntax`);
     if (/\\(?:Omega|Theta|times|cdot|dots|le|ge|lfloor|rfloor)\b/.test(html)) failures.push(`${pilotPage} contains an unreadable raw math command`);
     if (!html.includes("Chuyển ngữ, chọn lọc ví dụ và biên tập bổ sung") || !html.includes("krahets và cộng đồng đóng góp")) {
       failures.push(`${pilotPage} does not disclose source authorship, translation, selection, and editorial modification`);
@@ -98,6 +99,18 @@ export async function checkBuiltSite(outputRoot) {
   const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");
   if (!timeComplexityPage.includes('<pre><code class="language-python"') || !timeComplexityPage.includes('class="math-block"')) {
     failures.push("Vietnamese time-complexity page is missing rendered code or display mathematics");
+  }
+
+  const numberEncodingPage = await readFile(path.join(pilotDirectory, "ma-hoa-so.html"), "utf8");
+  if (!numberEncodingPage.includes('class="math-block"') || !numberEncodingPage.includes("ieee_754_float.png")) {
+    failures.push("Vietnamese number-encoding page is missing rendered mathematics or its IEEE 754 diagram");
+  }
+
+  const arrayPage = await readFile(path.join(pilotDirectory, "mang.html"), "utf8");
+  const linkedListPage = await readFile(path.join(pilotDirectory, "danh-sach-lien-ket.html"), "utf8");
+  if (!arrayPage.includes('<pre><code class="language-python"') || !arrayPage.includes("array_definition.png") ||
+      !linkedListPage.includes('<pre><code class="language-python"') || !linkedListPage.includes("linkedlist_definition.png")) {
+    failures.push("Vietnamese Chapter 4 pages are missing representative Python code or core diagrams");
   }
 
   const englishAtlas = await readFile(path.join(outputRoot, "en", "index.html"), "utf8");

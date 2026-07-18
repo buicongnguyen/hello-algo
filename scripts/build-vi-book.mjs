@@ -129,6 +129,114 @@ const pages = [
     source: "en/docs/chapter_computational_complexity/summary.md",
     target: "vi/docs/chapter_computational_complexity/summary.md",
     description: "Ôn tập đánh giá hiệu quả, độ phức tạp thời gian và độ phức tạp không gian."
+  },
+  {
+    slug: "cau-truc-du-lieu",
+    title: "Cấu trúc dữ liệu",
+    shortTitle: "Mở đầu cấu trúc dữ liệu",
+    chapter: "Chương 3",
+    source: "en/docs/chapter_data_structure/index.md",
+    target: "vi/docs/chapter_data_structure/index.md",
+    description: "Giới thiệu cách tổ chức dữ liệu làm nền tảng cho thuật toán."
+  },
+  {
+    slug: "phan-loai-cau-truc-du-lieu",
+    title: "Phân loại cấu trúc dữ liệu",
+    shortTitle: "3.1 · Phân loại",
+    chapter: "Chương 3",
+    source: "en/docs/chapter_data_structure/classification_of_data_structure.md",
+    target: "vi/docs/chapter_data_structure/classification_of_data_structure.md",
+    description: "Phân biệt cấu trúc logic tuyến tính, phi tuyến và cách lưu trữ vật lý."
+  },
+  {
+    slug: "kieu-du-lieu-co-ban",
+    title: "Kiểu dữ liệu cơ bản",
+    shortTitle: "3.2 · Kiểu dữ liệu cơ bản",
+    chapter: "Chương 3",
+    source: "en/docs/chapter_data_structure/basic_data_types.md",
+    target: "vi/docs/chapter_data_structure/basic_data_types.md",
+    description: "Tìm hiểu số nguyên, số thực, ký tự, Boolean và quan hệ với cấu trúc dữ liệu."
+  },
+  {
+    slug: "ma-hoa-so",
+    title: "Mã hóa số",
+    shortTitle: "3.3 · Mã hóa số *",
+    chapter: "Chương 3",
+    source: "en/docs/chapter_data_structure/number_encoding.md",
+    target: "vi/docs/chapter_data_structure/number_encoding.md",
+    description: "Giải thích bù hai và biểu diễn số thực IEEE 754."
+  },
+  {
+    slug: "ma-hoa-ky-tu",
+    title: "Mã hóa ký tự",
+    shortTitle: "3.4 · Mã hóa ký tự *",
+    chapter: "Chương 3",
+    source: "en/docs/chapter_data_structure/character_encoding.md",
+    target: "vi/docs/chapter_data_structure/character_encoding.md",
+    description: "So sánh ASCII, Unicode, UTF-8, UTF-16 và cách ngôn ngữ lưu chuỗi."
+  },
+  {
+    slug: "tom-tat-chuong-3",
+    title: "Tóm tắt Chương 3",
+    shortTitle: "3.5 · Tóm tắt",
+    chapter: "Chương 3",
+    source: "en/docs/chapter_data_structure/summary.md",
+    target: "vi/docs/chapter_data_structure/summary.md",
+    description: "Ôn tập phân loại cấu trúc dữ liệu, kiểu cơ bản và mã hóa dữ liệu."
+  },
+  {
+    slug: "mang-va-danh-sach-lien-ket",
+    title: "Mảng và danh sách liên kết",
+    shortTitle: "Mở đầu mảng và liên kết",
+    chapter: "Chương 4",
+    source: "en/docs/chapter_array_and_linkedlist/index.md",
+    target: "vi/docs/chapter_array_and_linkedlist/index.md",
+    description: "Giới thiệu hai cách lưu trữ liên tục và phân tán trong bộ nhớ."
+  },
+  {
+    slug: "mang",
+    title: "Mảng",
+    shortTitle: "4.1 · Mảng",
+    chapter: "Chương 4",
+    source: "en/docs/chapter_array_and_linkedlist/array.md",
+    target: "vi/docs/chapter_array_and_linkedlist/array.md",
+    description: "Khám phá truy cập, chèn, xóa, duyệt, tìm kiếm và mở rộng mảng."
+  },
+  {
+    slug: "danh-sach-lien-ket",
+    title: "Danh sách liên kết",
+    shortTitle: "4.2 · Danh sách liên kết",
+    chapter: "Chương 4",
+    source: "en/docs/chapter_array_and_linkedlist/linked_list.md",
+    target: "vi/docs/chapter_array_and_linkedlist/linked_list.md",
+    description: "Tìm hiểu nút, liên kết, các thao tác và ứng dụng của danh sách liên kết."
+  },
+  {
+    slug: "danh-sach-dong",
+    title: "Danh sách động",
+    shortTitle: "4.3 · Danh sách động",
+    chapter: "Chương 4",
+    source: "en/docs/chapter_array_and_linkedlist/list.md",
+    target: "vi/docs/chapter_array_and_linkedlist/list.md",
+    description: "Xây dựng danh sách động từ mảng với cơ chế theo dõi và mở rộng sức chứa."
+  },
+  {
+    slug: "ram-va-bo-nho-dem",
+    title: "Bộ nhớ truy cập ngẫu nhiên và bộ nhớ đệm",
+    shortTitle: "4.4 · RAM và bộ nhớ đệm *",
+    chapter: "Chương 4",
+    source: "en/docs/chapter_array_and_linkedlist/ram_and_cache.md",
+    target: "vi/docs/chapter_array_and_linkedlist/ram_and_cache.md",
+    description: "Liên hệ bố cục dữ liệu với RAM, bộ nhớ đệm và hiệu năng thực tế."
+  },
+  {
+    slug: "tom-tat-chuong-4",
+    title: "Tóm tắt Chương 4",
+    shortTitle: "4.5 · Tóm tắt",
+    chapter: "Chương 4",
+    source: "en/docs/chapter_array_and_linkedlist/summary.md",
+    target: "vi/docs/chapter_array_and_linkedlist/summary.md",
+    description: "Ôn tập mảng, danh sách liên kết, danh sách động và hiệu quả bộ nhớ đệm."
   }
 ];
 
@@ -373,7 +481,13 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
 
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg"]) {
+  for (const cover of [
+    "chapter_preface.jpg",
+    "chapter_introduction.jpg",
+    "chapter_complexity_analysis.jpg",
+    "chapter_data_structure.jpg",
+    "chapter_array_and_linkedlist.jpg"
+  ]) {
     await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   }
 
@@ -384,7 +498,13 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     ["chapter_introduction", "what_is_dsa.assets"],
     ["chapter_computational_complexity", "iteration_and_recursion.assets"],
     ["chapter_computational_complexity", "time_complexity.assets"],
-    ["chapter_computational_complexity", "space_complexity.assets"]
+    ["chapter_computational_complexity", "space_complexity.assets"],
+    ["chapter_data_structure", "classification_of_data_structure.assets"],
+    ["chapter_data_structure", "number_encoding.assets"],
+    ["chapter_data_structure", "character_encoding.assets"],
+    ["chapter_array_and_linkedlist", "array.assets"],
+    ["chapter_array_and_linkedlist", "linked_list.assets"],
+    ["chapter_array_and_linkedlist", "ram_and_cache.assets"]
   ];
   for (const [chapter, directory] of assetDirectories) {
     const destination = path.join(bookOutput, "assets", chapter, directory);

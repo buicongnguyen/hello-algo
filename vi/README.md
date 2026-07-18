@@ -12,7 +12,7 @@
 
 ## Trạng thái
 
-Đợt thử hiện gồm 14 tài liệu: toàn bộ Chương 0, Chương 1 và Chương 2. Nội dung đã được tự kiểm tra về kỹ thuật, ngôn ngữ, liên kết và bản dựng; dự án vẫn hoan nghênh phản biện độc lập từ cộng đồng trước khi coi đây là bản dịch ổn định. Ở những bài mà upstream lặp cùng ví dụ qua nhiều ngôn ngữ, trình đọc tiếng Việt giữ ví dụ Python đại diện và cung cấp nút mở bản tiếng Anh đầy đủ.
+Đợt thử hiện gồm 26 tài liệu: toàn bộ Chương 0 đến Chương 4. Nội dung đã được tự kiểm tra về kỹ thuật, ngôn ngữ, liên kết và bản dựng; dự án vẫn hoan nghênh phản biện độc lập từ cộng đồng trước khi coi đây là bản dịch ổn định. Ở những bài mà upstream lặp cùng ví dụ qua nhiều ngôn ngữ, trình đọc tiếng Việt giữ ví dụ Python đại diện và cung cấp nút mở bản tiếng Anh đầy đủ.
 
 Nguồn tiếng Anh hiện được khóa tại commit upstream `4935d2d3877a6205008d89def8d2ba43f7e06275`.
 

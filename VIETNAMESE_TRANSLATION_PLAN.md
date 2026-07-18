@@ -15,14 +15,14 @@ Cập nhật ngày 2026-07-18:
 - [x] Giai đoạn 1: đường dẫn `/vi/`, `/en/`, chuyển ngôn ngữ và GitHub Pages song ngữ.
 - [x] Atlas `/vi/` có cùng cấu trúc, nội dung trực quan và tương tác như `/en/`, với toàn bộ giao diện được Việt hóa.
 - [x] Khóa nguồn đợt thử tại upstream commit `4935d2d3877a6205008d89def8d2ba43f7e06275`.
-- [x] Từ điển `v0.2-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
+- [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
-- [x] Mười bốn tài liệu thử: toàn bộ Chương 0, Chương 1 và Chương 2.
+- [x] Hai mươi sáu tài liệu thử: toàn bộ Chương 0 đến Chương 4.
 - [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
 - [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.
 - [ ] Phản biện kỹ thuật độc lập cho đợt thử.
 - [ ] Biên tập tiếng Việt độc lập cho đợt thử.
-- [ ] Nâng 14 tài liệu từ `pilot` lên `published` sau khi xử lý phản biện.
+- [ ] Nâng 26 tài liệu từ `pilot` lên `published` sau khi xử lý phản biện.
 
 Vì chưa có hai lượt phản biện độc lập, website gọi nội dung hiện tại là **bản thử đã tự kiểm tra**, không gọi là bản dịch ổn định. Đây là trạng thái minh bạch đúng với các cổng chất lượng trong kế hoạch.
 
@@ -337,7 +337,7 @@ Sản phẩm bàn giao:
 - `vi/style-guide.md`;
 - `vi/CONTRIBUTING.md`;
 - cấu hình `vi/mkdocs.yml`;
-- 14 tài liệu thử thuộc Chương 0–2 đã tự kiểm tra; phản biện kỹ thuật và ngôn ngữ độc lập được theo dõi như điều kiện nâng trạng thái;
+- 26 tài liệu thử thuộc Chương 0–4 đã tự kiểm tra; phản biện kỹ thuật và ngôn ngữ độc lập được theo dõi như điều kiện nâng trạng thái;
 - checklist và mẫu PR.
 
 Điều kiện hoàn thành:
@@ -433,7 +433,7 @@ Mỗi phát hành nên có:
 | --- | --- | --- |
 | 1 | Hạ tầng Pages | VI mặc định, EN riêng, nút đổi ngôn ngữ |
 | 2 | Quản trị | glossary v0, style guide, mẫu PR |
-| 3–4 | Bản thử nhập môn | 14 tài liệu Chương 0–2 và vòng phản biện độc lập |
+| 3–4 | Bản thử nhập môn | 26 tài liệu Chương 0–4 và vòng phản biện độc lập |
 | 5 | Rút kinh nghiệm | sửa quy trình và glossary v1 |
 | 6–7 | Mảng, danh sách, stack, queue | đợt cấu trúc tuyến tính |
 | 8 | Bảng băm | chương và ví dụ chính |
@@ -625,7 +625,8 @@ Theo thứ tự:
 5. [x] Tạo trình dựng tiếng Việt không thêm dependency, phù hợp workflow Pages hiện tại.
 6. [x] Tự kiểm tra kỹ thuật, ngôn ngữ, liên kết và bản dựng cho bản thử.
 7. [ ] Thu thập phản biện độc lập, đo thời gian review và sửa quy trình.
-8. [ ] Nâng tài liệu đạt yêu cầu lên `published`, sau đó mở đợt cấu trúc dữ liệu.
+8. [x] Mở đợt cấu trúc dữ liệu, dịch thêm 12 tài liệu Chương 3–4 và nâng tổng số lên 26.
+9. [ ] Thu thập phản biện độc lập và nâng tài liệu đạt yêu cầu lên `published`.
 
 ## 21. Quan hệ với dự án Hello Algo gốc
 

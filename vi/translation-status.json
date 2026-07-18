@@ -108,6 +108,90 @@
       "route": "vi/learn/tom-tat-chuong-2.html",
       "wave": 2,
       "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_data_structure/index.md",
+      "target": "vi/docs/chapter_data_structure/index.md",
+      "route": "vi/learn/cau-truc-du-lieu.html",
+      "wave": 3,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_data_structure/classification_of_data_structure.md",
+      "target": "vi/docs/chapter_data_structure/classification_of_data_structure.md",
+      "route": "vi/learn/phan-loai-cau-truc-du-lieu.html",
+      "wave": 3,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_data_structure/basic_data_types.md",
+      "target": "vi/docs/chapter_data_structure/basic_data_types.md",
+      "route": "vi/learn/kieu-du-lieu-co-ban.html",
+      "wave": 3,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_data_structure/number_encoding.md",
+      "target": "vi/docs/chapter_data_structure/number_encoding.md",
+      "route": "vi/learn/ma-hoa-so.html",
+      "wave": 3,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_data_structure/character_encoding.md",
+      "target": "vi/docs/chapter_data_structure/character_encoding.md",
+      "route": "vi/learn/ma-hoa-ky-tu.html",
+      "wave": 3,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_data_structure/summary.md",
+      "target": "vi/docs/chapter_data_structure/summary.md",
+      "route": "vi/learn/tom-tat-chuong-3.html",
+      "wave": 3,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_array_and_linkedlist/index.md",
+      "target": "vi/docs/chapter_array_and_linkedlist/index.md",
+      "route": "vi/learn/mang-va-danh-sach-lien-ket.html",
+      "wave": 4,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_array_and_linkedlist/array.md",
+      "target": "vi/docs/chapter_array_and_linkedlist/array.md",
+      "route": "vi/learn/mang.html",
+      "wave": 4,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_array_and_linkedlist/linked_list.md",
+      "target": "vi/docs/chapter_array_and_linkedlist/linked_list.md",
+      "route": "vi/learn/danh-sach-lien-ket.html",
+      "wave": 4,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_array_and_linkedlist/list.md",
+      "target": "vi/docs/chapter_array_and_linkedlist/list.md",
+      "route": "vi/learn/danh-sach-dong.html",
+      "wave": 4,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_array_and_linkedlist/ram_and_cache.md",
+      "target": "vi/docs/chapter_array_and_linkedlist/ram_and_cache.md",
+      "route": "vi/learn/ram-va-bo-nho-dem.html",
+      "wave": 4,
+      "status": "pilot"
+    },
+    {
+      "source": "en/docs/chapter_array_and_linkedlist/summary.md",
+      "target": "vi/docs/chapter_array_and_linkedlist/summary.md",
+      "route": "vi/learn/tom-tat-chuong-4.html",
+      "wave": 4,
+      "status": "pilot"
     }
   ]
 }
