@@ -1,19 +1,19 @@
 # Korean edition plan for Hello Algo
 
-Status: Korean Atlas and 102 Chapter 0–16 reader drafts implemented on 2026-07-19; content-parity work and review remain in progress
+Status: Korean Atlas and 104-of-119 Chapter 0–16 reader drafts implemented on 2026-07-19; content-parity work and review remain in progress
 
-Target release: Korean draft `v0.3`, followed by pilot promotion after review gates pass
+Target release: Korean draft `v0.9`, followed by pilot promotion after review gates pass
 
-Target scope: Korean Atlas plus 102 reader documents covering Chapters 0–16
+Target scope: Korean Atlas plus 104 reader documents covering Chapters 0–16
 
-Source revision: `4935d2d3877a6205008d89def8d2ba43f7e06275`
+Source revision: `a3166c201853739213d5a3a31b1e4a237aaf1076`
 
 ## 1. Objective
 
-Korean draft `v0.8` extends the original Korean pilot `v0.1` architecture to a 102-document Vietnamese and Korean reader baseline for Chapters 0–16:
+Korean draft `v0.9` extends the original Korean pilot `v0.1` architecture to a 104-document Vietnamese and Korean reader baseline for Chapters 0–16:
 
 - a complete Korean interactive Atlas at `/hello-algo/ko/`;
-- a 102-document Korean reader covering Chapters 0–16 at `/hello-algo/ko/learn/`;
+- a 104-document Korean reader covering Chapters 0–16 at `/hello-algo/ko/learn/`;
 - a visible `KO / VI / EN` language switch;
 - the same diagrams, animations, code, mathematics, navigation, licensing, and source tracking;
 - exact links from Korean reader pages to their Vietnamese and official English counterparts;
@@ -21,18 +21,18 @@ Korean draft `v0.8` extends the original Korean pilot `v0.1` architecture to a 1
 
 Vietnamese should remain the default homepage for this release. Changing the default language is a separate product decision and is outside this plan.
 
-Korean `v0.1` established 14 routes for Chapters 0–2, `v0.2` added 12 Chapter 3–4 routes, `v0.3` added 10 Chapter 5–6 routes, `v0.4` added 12 Chapter 7–8 routes, `v0.5` added 12 Chapter 9–10 routes, `v0.6` added 18 Chapter 11–12 routes, and `v0.7` added 14 Chapter 13–14 routes. Korean `v0.8` adds 10 Chapter 15–16 routes for greedy algorithms and the appendix, bringing both localized readers to 102 pages and the local English source reader to 66 pages. Every translated document remains individually status-tracked so drafts are not mistaken for reviewed translations.
+Korean `v0.1` established 14 routes for Chapters 0–2, `v0.2` added 12 Chapter 3–4 routes, `v0.3` added 10 Chapter 5–6 routes, `v0.4` added 12 Chapter 7–8 routes, `v0.5` added 12 Chapter 9–10 routes, `v0.6` added 18 Chapter 11–12 routes, and `v0.7` added 14 Chapter 13–14 routes. Korean `v0.8` added 10 Chapter 15–16 routes. Korean `v0.9` adds the upstream exercise pages for Chapters 14 and 15, bringing both localized readers to 104/119 pages and the local English source reader to 68 pages. Every translated document remains individually status-tracked so drafts are not mistaken for reviewed translations.
 
 ## 2. Release definition
 
 | Surface | Korean target |
 | --- | --- |
 | Interactive Atlas | Same sections and interactions as English and Vietnamese |
-| Reading content | 102 Korean documents covering Chapters 0–16 |
+| Reading content | 104 Korean documents covering Chapters 0–16 |
 | Language switch | `KO / VI / EN` on Atlas and reader pages |
 | Code | Representative Python examples, matching the Vietnamese policy |
 | Images | Reuse upstream images; translate alt text and captions |
-| Source tracking | Lock every document to upstream commit `4935d2d` |
+| Source tracking | Lock every document to upstream commit `a3166c2` |
 | License | CC BY-NC-SA 4.0 attribution in Korean |
 | Default route | Keep `/hello-algo/` redirecting to Vietnamese |
 | Release status | `pilot`, pending independent Korean review |
@@ -209,7 +209,7 @@ The English source remains authoritative:
 
 ```text
 Source language: English
-Source commit: 4935d2d3877a6205008d89def8d2ba43f7e06275
+Source commit: a3166c201853739213d5a3a31b1e4a237aaf1076
 Secondary reference: Vietnamese pilot
 Target language: Korean
 ```
@@ -484,7 +484,7 @@ Every Korean document passes six gates.
 ### Gate 1 — Lock the source
 
 - Confirm the English source path.
-- Confirm upstream commit `4935d2d3877a6205008d89def8d2ba43f7e06275`.
+- Confirm upstream commit `a3166c201853739213d5a3a31b1e4a237aaf1076`.
 - Record the route and translation wave.
 
 ### Gate 2 — Create the Korean draft
@@ -649,7 +649,7 @@ Mitigation: display an unofficial community-project disclosure on the Atlas, rea
 
 ### Upstream changes during the project
 
-Mitigation: keep the pilot locked to `4935d2d`; collect upstream changes separately and merge them only after the pilot release.
+Mitigation: keep the pilot locked to `a3166c2`; collect later upstream changes separately and merge them only after the pilot release.
 
 ## 15. Release checklist
 

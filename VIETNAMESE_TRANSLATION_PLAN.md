@@ -10,14 +10,14 @@
 
 ## Trạng thái thực thi
 
-Cập nhật ngày 2026-07-18:
+Cập nhật ngày 2026-07-19:
 
 - [x] Giai đoạn 1: đường dẫn `/vi/`, `/en/`, chuyển ngôn ngữ và GitHub Pages song ngữ.
 - [x] Atlas `/vi/` có cùng cấu trúc, nội dung trực quan và tương tác như `/en/`, với toàn bộ giao diện được Việt hóa.
-- [x] Khóa nguồn đợt thử tại upstream commit `4935d2d3877a6205008d89def8d2ba43f7e06275`.
+- [x] Khóa nguồn hiện tại tại upstream commit `a3166c201853739213d5a3a31b1e4a237aaf1076`.
 - [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
-- [x] Một trăm lẻ hai tài liệu: Chương 0–4 ở trạng thái `pilot`, Chương 5–16 ở trạng thái `draft`; Chương 7–16 có bản đọc tiếng Anh cục bộ tương ứng.
+- [x] Một trăm lẻ bốn trên 119 tài liệu: Chương 0–4 ở trạng thái `pilot`, Chương 5–16 ở trạng thái `draft`, có thêm bài tập Chương 14–15; Chương 7–16 có bản đọc tiếng Anh cục bộ tương ứng.
 - [x] Chương 5–6 có liên kết VI/KO/EN tương ứng, tài nguyên gốc và kiểm tra bản dựng tự động.
 - [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
 - [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.
@@ -83,7 +83,7 @@ Kế hoạch, từ điển, quy chuẩn văn phong và quy trình duyệt vẫn 
 Ảnh chụp repository ngày 2026-07-18:
 
 - `en/` có khoảng 1.820 tệp.
-- `en/docs/` có 617 tệp, trong đó có 105 tệp Markdown.
+- Snapshot nguồn hiện tại có 119 tài liệu Markdown sau khi upstream bổ sung bài tập cho Chương 2–15; bản địa hóa đã phủ 104 tài liệu.
 - `en/codes/` có khoảng 1.200 tệp mã và tài nguyên liên quan.
 - Nội dung bao gồm công thức, hình tĩnh, video, liên kết chéo, cấu hình MkDocs và ví dụ bằng nhiều ngôn ngữ lập trình.
 

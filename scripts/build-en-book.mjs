@@ -61,12 +61,14 @@ const pages = [
   ["unbounded-knapsack", "Unbounded Knapsack Problem", "14.5 · Unbounded Knapsack", "Chapter 14", "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "Reuse item types and solve coin-change variants."],
   ["edit-distance", "Edit Distance Problem", "14.6 · Edit Distance", "Chapter 14", "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "Measure string similarity with insert, delete, and replace operations."],
   ["chapter-14-summary", "Chapter 14 Summary", "14.7 · Summary", "Chapter 14", "en/docs/chapter_dynamic_programming/summary.md", "Review dynamic programming design and classic applications."],
+  ["dynamic-programming-exercises", "Dynamic Programming Exercises", "14.8 · Exercises", "Chapter 14", "en/docs/chapter_dynamic_programming/exercises.md", "Check dynamic programming concepts and practice classic implementations."],
   ["greedy", "Greedy", "Greedy introduction", "Chapter 15", "en/docs/chapter_greedy/index.md", "Make locally optimal choices under provable conditions."],
   ["greedy-algorithm", "Greedy Algorithm", "15.1 · Greedy Algorithm", "Chapter 15", "en/docs/chapter_greedy/greedy_algorithm.md", "Understand greedy-choice property, optimal substructure, and limitations."],
   ["fractional-knapsack", "Fractional Knapsack Problem", "15.2 · Fractional Knapsack", "Chapter 15", "en/docs/chapter_greedy/fractional_knapsack_problem.md", "Choose items by descending value density."],
   ["max-capacity", "Max Capacity Problem", "15.3 · Max Capacity", "Chapter 15", "en/docs/chapter_greedy/max_capacity_problem.md", "Use two pointers to maximize the bounded area."],
   ["max-product-cutting", "Maximum Product Cutting Problem", "15.4 · Maximum Product Cutting", "Chapter 15", "en/docs/chapter_greedy/max_product_cutting_problem.md", "Split an integer into factors with maximum product."],
   ["chapter-15-summary", "Chapter 15 Summary", "15.5 · Summary", "Chapter 15", "en/docs/chapter_greedy/summary.md", "Review greedy design, proofs, and representative applications."],
+  ["greedy-exercises", "Greedy Exercises", "15.6 · Exercises", "Chapter 15", "en/docs/chapter_greedy/exercises.md", "Test greedy reasoning with counterexamples, two pointers, and fractional knapsack."],
   ["appendix", "Appendix", "Appendix introduction", "Chapter 16", "en/docs/chapter_appendix/index.md", "Practical setup, contribution, and terminology resources."],
   ["programming-environment", "Programming Environment Installation", "16.1 · Environment Installation", "Chapter 16", "en/docs/chapter_appendix/installation.md", "Install an editor and language toolchains for running examples."],
   ["contributing", "Contributing Together", "16.2 · Contributing", "Chapter 16", "en/docs/chapter_appendix/contribution.md", "Improve content through a focused GitHub contribution workflow."],
@@ -145,7 +147,7 @@ function pageTemplate(page, body, index, sourceCommit, vietnameseDocument, korea
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="Open table of contents" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>EN</b></strong></a>
-    <div class="reader-progress"><span>Source</span><strong>${pages.length} / 105 documents</strong></div>
+    <div class="reader-progress"><span>Source</span><strong>${pages.length} / 119 documents</strong></div>
     <nav aria-label="Language and theme"><a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Read the corresponding Korean page">KO</a><a href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi" aria-label="Read the corresponding Vietnamese page">VI</a><a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
   </header>
   <div class="reader-shell">

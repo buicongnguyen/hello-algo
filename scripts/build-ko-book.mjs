@@ -97,12 +97,14 @@ const pages = [
   ["unbounded-knapsack", "무한 배낭 문제", "14.5 · 무한 배낭", "14장", "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "ko/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "물건 종류를 재사용하고 동전 교환 변형을 풉니다."],
   ["edit-distance", "편집 거리 문제", "14.6 · 편집 거리", "14장", "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "ko/docs/chapter_dynamic_programming/edit_distance_problem.md", "삽입, 삭제, 치환으로 문자열 유사도를 측정합니다."],
   ["chapter-14-summary", "14장 요약", "14.7 · 요약", "14장", "en/docs/chapter_dynamic_programming/summary.md", "ko/docs/chapter_dynamic_programming/summary.md", "동적 계획법 설계와 고전 응용을 복습합니다."],
+  ["dynamic-programming-exercises", "동적 계획법 연습문제", "14.8 · 연습문제", "14장", "en/docs/chapter_dynamic_programming/exercises.md", "ko/docs/chapter_dynamic_programming/exercises.md", "동적 계획법 개념을 확인하고 고전 구현을 연습합니다."],
   ["greedy", "그리디", "그리디 시작", "15장", "en/docs/chapter_greedy/index.md", "ko/docs/chapter_greedy/index.md", "증명 가능한 조건에서 지역 최적 선택을 합니다."],
   ["greedy-algorithm", "그리디 알고리즘", "15.1 · 그리디 알고리즘", "15장", "en/docs/chapter_greedy/greedy_algorithm.md", "ko/docs/chapter_greedy/greedy_algorithm.md", "그리디 선택 속성, 최적 부분 구조와 한계를 이해합니다."],
   ["fractional-knapsack", "분할 배낭 문제", "15.2 · 분할 배낭", "15장", "en/docs/chapter_greedy/fractional_knapsack_problem.md", "ko/docs/chapter_greedy/fractional_knapsack_problem.md", "가치 밀도가 높은 순서로 물건을 선택합니다."],
   ["max-capacity", "최대 용량 문제", "15.3 · 최대 용량", "15장", "en/docs/chapter_greedy/max_capacity_problem.md", "ko/docs/chapter_greedy/max_capacity_problem.md", "두 포인터로 제한된 면적을 최대화합니다."],
   ["max-product-cutting", "최대 곱 분할 문제", "15.4 · 최대 곱 분할", "15장", "en/docs/chapter_greedy/max_product_cutting_problem.md", "ko/docs/chapter_greedy/max_product_cutting_problem.md", "정수를 곱이 최대가 되는 인수로 나눕니다."],
   ["chapter-15-summary", "15장 요약", "15.5 · 요약", "15장", "en/docs/chapter_greedy/summary.md", "ko/docs/chapter_greedy/summary.md", "그리디 설계, 증명과 대표 응용을 복습합니다."],
+  ["greedy-exercises", "그리디 연습문제", "15.6 · 연습문제", "15장", "en/docs/chapter_greedy/exercises.md", "ko/docs/chapter_greedy/exercises.md", "그리디 반례, 두 포인터와 분할 배낭을 연습합니다."],
   ["appendix", "부록", "부록 시작", "16장", "en/docs/chapter_appendix/index.md", "ko/docs/chapter_appendix/index.md", "설치, 기여와 용어에 관한 실용 자료를 제공합니다."],
   ["programming-environment", "프로그래밍 환경 설치", "16.1 · 환경 설치", "16장", "en/docs/chapter_appendix/installation.md", "ko/docs/chapter_appendix/installation.md", "예제 실행을 위한 편집기와 언어 도구를 설치합니다."],
   ["contributing", "함께 기여하기", "16.2 · 기여하기", "16장", "en/docs/chapter_appendix/contribution.md", "ko/docs/chapter_appendix/contribution.md", "집중된 GitHub 기여 절차로 콘텐츠를 개선합니다."],
@@ -156,7 +158,7 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="목차 열기" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>KO</b></strong></a>
-    <div class="reader-progress"><span>${statusCopy.label}</span><strong>${pages.length} / 105 문서</strong></div>
+    <div class="reader-progress"><span>${statusCopy.label}</span><strong>${pages.length} / 119 문서</strong></div>
     <nav aria-label="언어와 테마"><a class="active" href="${outputName || "./"}" lang="ko" hreflang="ko" aria-current="page">KO</a><a href="${viUrl}" lang="vi" hreflang="vi" aria-label="같은 문서를 베트남어로 읽기">VI</a><a href="${englishReaderHref(page.source)}" lang="en" hreflang="en" aria-label="같은 문서를 영어로 읽기">EN</a><button id="reader-theme" type="button" aria-label="밝은 테마와 어두운 테마 전환">◐</button></nav>
   </header>
   <div class="reader-shell">

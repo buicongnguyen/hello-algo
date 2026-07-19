@@ -101,6 +101,9 @@ article ul, article ol { padding-left: 1.35rem; }
 article li { margin: .55rem 0; padding-left: .2rem; }
 blockquote { margin: 2rem 0; padding: 1rem 1.2rem; border-left: 3px solid var(--amber); background: color-mix(in srgb, var(--amber) 6%, var(--surface)); }
 blockquote p { margin: .35rem 0; color: var(--muted); }
+.admonition { margin: 1.5rem 0; padding: 1rem 1.2rem; border: 1px solid color-mix(in srgb, var(--blue-2) 35%, var(--line)); border-left: 3px solid var(--blue-2); border-radius: .7rem; background: color-mix(in srgb, var(--blue-2) 6%, var(--surface)); }
+.admonition > strong { display: block; margin-bottom: .65rem; color: var(--blue-2); }
+.admonition > :last-child { margin-bottom: 0; }
 figure { margin: 2.2rem 0; overflow: hidden; border: 1px solid var(--line); border-radius: .85rem; background: #eef2f5; }
 figure img { width: 100%; display: block; object-fit: contain; }
 figcaption { padding: .65rem 1rem; border-top: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: .72rem; text-align: center; }

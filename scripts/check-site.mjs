@@ -182,11 +182,11 @@ if (viHtml.includes("See the connections.") || viHtml.includes("Choose the shape
 if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-menu")) {
   failures.push("Vietnamese reader responsive navigation is incomplete");
 }
-if (translationStatus.sourceCommit !== "4935d2d3877a6205008d89def8d2ba43f7e06275") {
+if (translationStatus.sourceCommit !== "a3166c201853739213d5a3a31b1e4a237aaf1076") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
-if (translationStatus.documents.length !== 102 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
-  failures.push("Expected 102 source-locked Vietnamese reader documents at draft or later status");
+if (translationStatus.documents.length !== 104 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
+  failures.push("Expected 104 source-locked Vietnamese reader documents at draft or later status");
 }
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
@@ -200,7 +200,7 @@ for (const document of translationStatus.documents) {
     const targetMarkdown = await readFile(path.join(projectRoot, document.target), "utf8");
     const h1Count = countMarkdownH1(targetMarkdown);
     if (h1Count !== 1) failures.push(`${document.target} must contain exactly one H1`);
-    if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(targetMarkdown)) {
+    if (/^(?:===|--8<--)/m.test(targetMarkdown)) {
       failures.push(`${document.target} contains unsupported MkDocs-only syntax`);
     }
     if ((targetMarkdown.match(/^```/gm) || []).length % 2 !== 0) {
@@ -218,7 +218,7 @@ for (const document of translationStatus.documents) {
     // Missing targets are reported by the existence check above.
   }
 }
-if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 102 || koreanStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) failures.push("Expected 102 source-locked Korean reader documents at draft or later status");
+if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 104 || koreanStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) failures.push("Expected 104 source-locked Korean reader documents at draft or later status");
 for (const document of koreanStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
     try { await access(path.join(projectRoot, relativePath), constants.R_OK); } catch { failures.push(`Korean status references a missing file: ${relativePath}`); }

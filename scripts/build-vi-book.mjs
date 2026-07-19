@@ -304,12 +304,14 @@ const pages = [
   { slug: "ba-lo-vo-han", title: "Bài toán ba lô vô hạn", shortTitle: "14.5 · Ba lô vô hạn", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", target: "vi/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", description: "Tái sử dụng loại vật và giải các biến thể đổi tiền." },
   { slug: "khoang-cach-chinh-sua", title: "Bài toán khoảng cách chỉnh sửa", shortTitle: "14.6 · Khoảng cách chỉnh sửa", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/edit_distance_problem.md", target: "vi/docs/chapter_dynamic_programming/edit_distance_problem.md", description: "Đo độ giống chuỗi bằng chèn, xóa và thay thế." },
   { slug: "tom-tat-chuong-14", title: "Tóm tắt Chương 14", shortTitle: "14.7 · Tóm tắt", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/summary.md", target: "vi/docs/chapter_dynamic_programming/summary.md", description: "Ôn tập thiết kế quy hoạch động và các ứng dụng kinh điển." },
+  { slug: "bai-tap-quy-hoach-dong", title: "Bài tập quy hoạch động", shortTitle: "14.8 · Bài tập", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/exercises.md", target: "vi/docs/chapter_dynamic_programming/exercises.md", description: "Kiểm tra khái niệm quy hoạch động và luyện các cài đặt kinh điển." },
   { slug: "tham-lam", title: "Tham lam", shortTitle: "Mở đầu tham lam", chapter: "Chương 15", source: "en/docs/chapter_greedy/index.md", target: "vi/docs/chapter_greedy/index.md", description: "Đưa ra lựa chọn tối ưu cục bộ dưới các điều kiện có thể chứng minh." },
   { slug: "thuat-toan-tham-lam", title: "Thuật toán tham lam", shortTitle: "15.1 · Thuật toán tham lam", chapter: "Chương 15", source: "en/docs/chapter_greedy/greedy_algorithm.md", target: "vi/docs/chapter_greedy/greedy_algorithm.md", description: "Tìm hiểu tính lựa chọn tham lam, cấu trúc con tối ưu và giới hạn." },
   { slug: "ba-lo-phan-so", title: "Bài toán ba lô phân số", shortTitle: "15.2 · Ba lô phân số", chapter: "Chương 15", source: "en/docs/chapter_greedy/fractional_knapsack_problem.md", target: "vi/docs/chapter_greedy/fractional_knapsack_problem.md", description: "Chọn vật theo mật độ giá trị giảm dần." },
   { slug: "suc-chua-lon-nhat", title: "Bài toán sức chứa lớn nhất", shortTitle: "15.3 · Sức chứa lớn nhất", chapter: "Chương 15", source: "en/docs/chapter_greedy/max_capacity_problem.md", target: "vi/docs/chapter_greedy/max_capacity_problem.md", description: "Dùng hai con trỏ để tối đa hóa diện tích bị giới hạn." },
   { slug: "tich-cat-lon-nhat", title: "Bài toán tích cắt lớn nhất", shortTitle: "15.4 · Tích cắt lớn nhất", chapter: "Chương 15", source: "en/docs/chapter_greedy/max_product_cutting_problem.md", target: "vi/docs/chapter_greedy/max_product_cutting_problem.md", description: "Chia số nguyên thành các thừa số có tích lớn nhất." },
   { slug: "tom-tat-chuong-15", title: "Tóm tắt Chương 15", shortTitle: "15.5 · Tóm tắt", chapter: "Chương 15", source: "en/docs/chapter_greedy/summary.md", target: "vi/docs/chapter_greedy/summary.md", description: "Ôn tập thiết kế tham lam, chứng minh và các ứng dụng đại diện." },
+  { slug: "bai-tap-tham-lam", title: "Bài tập tham lam", shortTitle: "15.6 · Bài tập", chapter: "Chương 15", source: "en/docs/chapter_greedy/exercises.md", target: "vi/docs/chapter_greedy/exercises.md", description: "Luyện phản ví dụ tham lam, hai con trỏ và ba lô phân số." },
   { slug: "phu-luc", title: "Phụ lục", shortTitle: "Mở đầu phụ lục", chapter: "Chương 16", source: "en/docs/chapter_appendix/index.md", target: "vi/docs/chapter_appendix/index.md", description: "Tài nguyên thực hành về cài đặt, đóng góp và thuật ngữ." },
   { slug: "cai-dat-moi-truong-lap-trinh", title: "Cài đặt môi trường lập trình", shortTitle: "16.1 · Cài đặt môi trường", chapter: "Chương 16", source: "en/docs/chapter_appendix/installation.md", target: "vi/docs/chapter_appendix/installation.md", description: "Cài trình soạn thảo và công cụ ngôn ngữ để chạy ví dụ." },
   { slug: "cung-dong-gop", title: "Cùng đóng góp", shortTitle: "16.2 · Đóng góp", chapter: "Chương 16", source: "en/docs/chapter_appendix/contribution.md", target: "vi/docs/chapter_appendix/contribution.md", description: "Cải thiện nội dung theo quy trình đóng góp GitHub có trọng tâm." },
@@ -341,7 +343,7 @@ function renderInline(value) {
     tokens.push(html);
     return token;
   };
-  const safeUrl = /^(https?:|mailto:|#|\.{0,2}\/|[a-zA-Z0-9_./-]+(?:#[a-zA-Z0-9_-]+)?)$/;
+  const safeUrl = /^(?:https?:\/\/[^\s"'<>]+|mailto:[^\s"'<>]+|#[a-zA-Z0-9_-]+|\.{0,2}\/[a-zA-Z0-9_./#-]*|[a-zA-Z0-9_./-]+(?:#[a-zA-Z0-9_-]+)?)$/;
   const protectedValue = value
     .replace(/`([^`]+)`/g, (_, code) => protect(`<code>${escapeHtml(code)}</code>`))
     .replace(/\$([^$]+)\$/g, (_, expression) => {
@@ -384,6 +386,26 @@ export function renderMarkdown(markdown, sourcePath) {
     const line = lines[index].trimEnd();
     if (!line.trim()) {
       index += 1;
+      continue;
+    }
+
+    if (line.trimStart().startsWith("<!--")) {
+      while (index < lines.length && !lines[index].includes("-->")) index += 1;
+      index += 1;
+      continue;
+    }
+
+    const admonition = line.trimStart().match(/^(?:!!!|\?\?\?)\s+(\w+)(?:\s+"([^"]+)")?/);
+    if (admonition) {
+      const content = [];
+      index += 1;
+      while (index < lines.length && (!lines[index].trim() || /^\s{4}/.test(lines[index]))) {
+        content.push(lines[index].replace(/^\s{4}/, ""));
+        index += 1;
+      }
+      const kind = admonition[1].replace(/[^a-zA-Z0-9_-]/g, "");
+      const label = admonition[2] || admonition[1][0].toUpperCase() + admonition[1].slice(1);
+      output.push(`<aside class="admonition admonition-${kind}"><strong>${escapeHtml(label)}</strong>${renderMarkdown(content.join("\n"), sourcePath)}</aside>`);
       continue;
     }
 
@@ -444,6 +466,7 @@ export function renderMarkdown(markdown, sourcePath) {
     if (listMatch) {
       const ordered = /\d+\./.test(listMatch[1]);
       const tag = ordered ? "ol" : "ul";
+      const start = ordered ? Number.parseInt(listMatch[1], 10) : 1;
       const items = [];
       while (index < lines.length) {
         const match = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
@@ -451,7 +474,7 @@ export function renderMarkdown(markdown, sourcePath) {
         items.push(`<li>${renderInline(match[2])}</li>`);
         index += 1;
       }
-      output.push(`<${tag}>${items.join("")}</${tag}>`);
+      output.push(`<${tag}${ordered && start !== 1 ? ` start="${start}"` : ""}>${items.join("")}</${tag}>`);
       continue;
     }
 
@@ -522,7 +545,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="Mở mục lục" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>VI</b></strong></a>
-    <div class="reader-progress"><span>${statusCopy.label}</span><strong>${pages.length} / 105 tài liệu</strong></div>
+    <div class="reader-progress"><span>${statusCopy.label}</span><strong>${pages.length} / 119 tài liệu</strong></div>
     <nav aria-label="Ngôn ngữ và giao diện">
       ${koreanOption}
       <a class="active" href="${canonicalName || "./"}" lang="vi" hreflang="vi" aria-current="page">VI</a>
