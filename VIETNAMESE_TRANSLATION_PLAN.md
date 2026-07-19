@@ -17,7 +17,7 @@ Cập nhật ngày 2026-07-18:
 - [x] Khóa nguồn đợt thử tại upstream commit `4935d2d3877a6205008d89def8d2ba43f7e06275`.
 - [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
-- [x] Chín mươi hai tài liệu: Chương 0–4 ở trạng thái `pilot`, Chương 5–14 ở trạng thái `draft`; Chương 7–14 có bản đọc tiếng Anh cục bộ tương ứng.
+- [x] Một trăm lẻ hai tài liệu: Chương 0–4 ở trạng thái `pilot`, Chương 5–16 ở trạng thái `draft`; Chương 7–16 có bản đọc tiếng Anh cục bộ tương ứng.
 - [x] Chương 5–6 có liên kết VI/KO/EN tương ứng, tài nguyên gốc và kiểm tra bản dựng tự động.
 - [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
 - [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.

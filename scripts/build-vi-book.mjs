@@ -303,7 +303,17 @@ const pages = [
   { slug: "ba-lo-khong-mot", title: "Bài toán ba lô 0-1", shortTitle: "14.4 · Ba lô 0-1", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/knapsack_problem.md", target: "vi/docs/chapter_dynamic_programming/knapsack_problem.md", description: "Chọn mỗi vật tối đa một lần trong giới hạn sức chứa." },
   { slug: "ba-lo-vo-han", title: "Bài toán ba lô vô hạn", shortTitle: "14.5 · Ba lô vô hạn", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", target: "vi/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", description: "Tái sử dụng loại vật và giải các biến thể đổi tiền." },
   { slug: "khoang-cach-chinh-sua", title: "Bài toán khoảng cách chỉnh sửa", shortTitle: "14.6 · Khoảng cách chỉnh sửa", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/edit_distance_problem.md", target: "vi/docs/chapter_dynamic_programming/edit_distance_problem.md", description: "Đo độ giống chuỗi bằng chèn, xóa và thay thế." },
-  { slug: "tom-tat-chuong-14", title: "Tóm tắt Chương 14", shortTitle: "14.7 · Tóm tắt", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/summary.md", target: "vi/docs/chapter_dynamic_programming/summary.md", description: "Ôn tập thiết kế quy hoạch động và các ứng dụng kinh điển." }
+  { slug: "tom-tat-chuong-14", title: "Tóm tắt Chương 14", shortTitle: "14.7 · Tóm tắt", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/summary.md", target: "vi/docs/chapter_dynamic_programming/summary.md", description: "Ôn tập thiết kế quy hoạch động và các ứng dụng kinh điển." },
+  { slug: "tham-lam", title: "Tham lam", shortTitle: "Mở đầu tham lam", chapter: "Chương 15", source: "en/docs/chapter_greedy/index.md", target: "vi/docs/chapter_greedy/index.md", description: "Đưa ra lựa chọn tối ưu cục bộ dưới các điều kiện có thể chứng minh." },
+  { slug: "thuat-toan-tham-lam", title: "Thuật toán tham lam", shortTitle: "15.1 · Thuật toán tham lam", chapter: "Chương 15", source: "en/docs/chapter_greedy/greedy_algorithm.md", target: "vi/docs/chapter_greedy/greedy_algorithm.md", description: "Tìm hiểu tính lựa chọn tham lam, cấu trúc con tối ưu và giới hạn." },
+  { slug: "ba-lo-phan-so", title: "Bài toán ba lô phân số", shortTitle: "15.2 · Ba lô phân số", chapter: "Chương 15", source: "en/docs/chapter_greedy/fractional_knapsack_problem.md", target: "vi/docs/chapter_greedy/fractional_knapsack_problem.md", description: "Chọn vật theo mật độ giá trị giảm dần." },
+  { slug: "suc-chua-lon-nhat", title: "Bài toán sức chứa lớn nhất", shortTitle: "15.3 · Sức chứa lớn nhất", chapter: "Chương 15", source: "en/docs/chapter_greedy/max_capacity_problem.md", target: "vi/docs/chapter_greedy/max_capacity_problem.md", description: "Dùng hai con trỏ để tối đa hóa diện tích bị giới hạn." },
+  { slug: "tich-cat-lon-nhat", title: "Bài toán tích cắt lớn nhất", shortTitle: "15.4 · Tích cắt lớn nhất", chapter: "Chương 15", source: "en/docs/chapter_greedy/max_product_cutting_problem.md", target: "vi/docs/chapter_greedy/max_product_cutting_problem.md", description: "Chia số nguyên thành các thừa số có tích lớn nhất." },
+  { slug: "tom-tat-chuong-15", title: "Tóm tắt Chương 15", shortTitle: "15.5 · Tóm tắt", chapter: "Chương 15", source: "en/docs/chapter_greedy/summary.md", target: "vi/docs/chapter_greedy/summary.md", description: "Ôn tập thiết kế tham lam, chứng minh và các ứng dụng đại diện." },
+  { slug: "phu-luc", title: "Phụ lục", shortTitle: "Mở đầu phụ lục", chapter: "Chương 16", source: "en/docs/chapter_appendix/index.md", target: "vi/docs/chapter_appendix/index.md", description: "Tài nguyên thực hành về cài đặt, đóng góp và thuật ngữ." },
+  { slug: "cai-dat-moi-truong-lap-trinh", title: "Cài đặt môi trường lập trình", shortTitle: "16.1 · Cài đặt môi trường", chapter: "Chương 16", source: "en/docs/chapter_appendix/installation.md", target: "vi/docs/chapter_appendix/installation.md", description: "Cài trình soạn thảo và công cụ ngôn ngữ để chạy ví dụ." },
+  { slug: "cung-dong-gop", title: "Cùng đóng góp", shortTitle: "16.2 · Đóng góp", chapter: "Chương 16", source: "en/docs/chapter_appendix/contribution.md", target: "vi/docs/chapter_appendix/contribution.md", description: "Cải thiện nội dung theo quy trình đóng góp GitHub có trọng tâm." },
+  { slug: "bang-thuat-ngu", title: "Bảng thuật ngữ", shortTitle: "16.3 · Thuật ngữ", chapter: "Chương 16", source: "en/docs/chapter_appendix/terminology.md", target: "vi/docs/chapter_appendix/terminology.md", description: "Tra cứu thuật ngữ cấu trúc dữ liệu và thuật toán cốt lõi." }
 ];
 
 const escapeHtml = (value) => value
@@ -358,7 +368,8 @@ function assetUrl(sourcePath, reference) {
 }
 
 function isTableDivider(line) {
-  return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+  const cells = line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
+  return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
 }
 
 function tableCells(line) {
@@ -521,7 +532,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   </header>
   <div class="reader-shell">
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="Mục lục bản tiếng Việt">
-      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–14 · ${statusCopy.sidebar}</small></div>
+      <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–16 · ${statusCopy.sidebar}</small></div>
       ${navigation(page.slug)}
       <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
@@ -569,7 +580,9 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     "chapter_sorting.jpg",
     "chapter_divide_and_conquer.jpg",
     "chapter_backtracking.jpg",
-    "chapter_dynamic_programming.jpg"
+    "chapter_dynamic_programming.jpg",
+    "chapter_greedy.jpg",
+    "chapter_appendix.jpg"
   ]) {
     await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   }
@@ -634,7 +647,13 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     ["chapter_dynamic_programming", "dp_solution_pipeline.assets"],
     ["chapter_dynamic_programming", "knapsack_problem.assets"],
     ["chapter_dynamic_programming", "unbounded_knapsack_problem.assets"],
-    ["chapter_dynamic_programming", "edit_distance_problem.assets"]
+    ["chapter_dynamic_programming", "edit_distance_problem.assets"],
+    ["chapter_greedy", "greedy_algorithm.assets"],
+    ["chapter_greedy", "fractional_knapsack_problem.assets"],
+    ["chapter_greedy", "max_capacity_problem.assets"],
+    ["chapter_greedy", "max_product_cutting_problem.assets"],
+    ["chapter_appendix", "installation.assets"],
+    ["chapter_appendix", "contribution.assets"]
   ];
   for (const [chapter, directory] of assetDirectories) {
     const destination = path.join(bookOutput, "assets", chapter, directory);

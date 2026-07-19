@@ -102,6 +102,16 @@
     { "source": "en/docs/chapter_dynamic_programming/knapsack_problem.md", "target": "ko/docs/chapter_dynamic_programming/knapsack_problem.md", "route": "ko/learn/zero-one-knapsack.html", "wave": 7, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "target": "ko/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "route": "ko/learn/unbounded-knapsack.html", "wave": 7, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "target": "ko/docs/chapter_dynamic_programming/edit_distance_problem.md", "route": "ko/learn/edit-distance.html", "wave": 7, "status": "draft" },
-    { "source": "en/docs/chapter_dynamic_programming/summary.md", "target": "ko/docs/chapter_dynamic_programming/summary.md", "route": "ko/learn/chapter-14-summary.html", "wave": 7, "status": "draft" }
+    { "source": "en/docs/chapter_dynamic_programming/summary.md", "target": "ko/docs/chapter_dynamic_programming/summary.md", "route": "ko/learn/chapter-14-summary.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/index.md", "target": "ko/docs/chapter_greedy/index.md", "route": "ko/learn/greedy.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/greedy_algorithm.md", "target": "ko/docs/chapter_greedy/greedy_algorithm.md", "route": "ko/learn/greedy-algorithm.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/fractional_knapsack_problem.md", "target": "ko/docs/chapter_greedy/fractional_knapsack_problem.md", "route": "ko/learn/fractional-knapsack.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/max_capacity_problem.md", "target": "ko/docs/chapter_greedy/max_capacity_problem.md", "route": "ko/learn/max-capacity.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/max_product_cutting_problem.md", "target": "ko/docs/chapter_greedy/max_product_cutting_problem.md", "route": "ko/learn/max-product-cutting.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/summary.md", "target": "ko/docs/chapter_greedy/summary.md", "route": "ko/learn/chapter-15-summary.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/index.md", "target": "ko/docs/chapter_appendix/index.md", "route": "ko/learn/appendix.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/installation.md", "target": "ko/docs/chapter_appendix/installation.md", "route": "ko/learn/programming-environment.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/contribution.md", "target": "ko/docs/chapter_appendix/contribution.md", "route": "ko/learn/contributing.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/terminology.md", "target": "ko/docs/chapter_appendix/terminology.md", "route": "ko/learn/glossary.html", "wave": 8, "status": "draft" }
   ]
 }

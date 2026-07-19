@@ -60,7 +60,17 @@ export const englishReaderRoutes = new Map([
   ["en/docs/chapter_dynamic_programming/knapsack_problem.md", "en/learn/zero-one-knapsack.html"],
   ["en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "en/learn/unbounded-knapsack.html"],
   ["en/docs/chapter_dynamic_programming/edit_distance_problem.md", "en/learn/edit-distance.html"],
-  ["en/docs/chapter_dynamic_programming/summary.md", "en/learn/chapter-14-summary.html"]
+  ["en/docs/chapter_dynamic_programming/summary.md", "en/learn/chapter-14-summary.html"],
+  ["en/docs/chapter_greedy/index.md", "en/learn/greedy.html"],
+  ["en/docs/chapter_greedy/greedy_algorithm.md", "en/learn/greedy-algorithm.html"],
+  ["en/docs/chapter_greedy/fractional_knapsack_problem.md", "en/learn/fractional-knapsack.html"],
+  ["en/docs/chapter_greedy/max_capacity_problem.md", "en/learn/max-capacity.html"],
+  ["en/docs/chapter_greedy/max_product_cutting_problem.md", "en/learn/max-product-cutting.html"],
+  ["en/docs/chapter_greedy/summary.md", "en/learn/chapter-15-summary.html"],
+  ["en/docs/chapter_appendix/index.md", "en/learn/appendix.html"],
+  ["en/docs/chapter_appendix/installation.md", "en/learn/programming-environment.html"],
+  ["en/docs/chapter_appendix/contribution.md", "en/learn/contributing.html"],
+  ["en/docs/chapter_appendix/terminology.md", "en/learn/glossary.html"]
 ]);
 
 export function createTranslationRegistry(manifests) {

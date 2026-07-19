@@ -258,6 +258,16 @@
     { "source": "en/docs/chapter_dynamic_programming/knapsack_problem.md", "target": "vi/docs/chapter_dynamic_programming/knapsack_problem.md", "route": "vi/learn/ba-lo-khong-mot.html", "wave": 14, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "target": "vi/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "route": "vi/learn/ba-lo-vo-han.html", "wave": 14, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "target": "vi/docs/chapter_dynamic_programming/edit_distance_problem.md", "route": "vi/learn/khoang-cach-chinh-sua.html", "wave": 14, "status": "draft" },
-    { "source": "en/docs/chapter_dynamic_programming/summary.md", "target": "vi/docs/chapter_dynamic_programming/summary.md", "route": "vi/learn/tom-tat-chuong-14.html", "wave": 14, "status": "draft" }
+    { "source": "en/docs/chapter_dynamic_programming/summary.md", "target": "vi/docs/chapter_dynamic_programming/summary.md", "route": "vi/learn/tom-tat-chuong-14.html", "wave": 14, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/index.md", "target": "vi/docs/chapter_greedy/index.md", "route": "vi/learn/tham-lam.html", "wave": 15, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/greedy_algorithm.md", "target": "vi/docs/chapter_greedy/greedy_algorithm.md", "route": "vi/learn/thuat-toan-tham-lam.html", "wave": 15, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/fractional_knapsack_problem.md", "target": "vi/docs/chapter_greedy/fractional_knapsack_problem.md", "route": "vi/learn/ba-lo-phan-so.html", "wave": 15, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/max_capacity_problem.md", "target": "vi/docs/chapter_greedy/max_capacity_problem.md", "route": "vi/learn/suc-chua-lon-nhat.html", "wave": 15, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/max_product_cutting_problem.md", "target": "vi/docs/chapter_greedy/max_product_cutting_problem.md", "route": "vi/learn/tich-cat-lon-nhat.html", "wave": 15, "status": "draft" },
+    { "source": "en/docs/chapter_greedy/summary.md", "target": "vi/docs/chapter_greedy/summary.md", "route": "vi/learn/tom-tat-chuong-15.html", "wave": 15, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/index.md", "target": "vi/docs/chapter_appendix/index.md", "route": "vi/learn/phu-luc.html", "wave": 16, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/installation.md", "target": "vi/docs/chapter_appendix/installation.md", "route": "vi/learn/cai-dat-moi-truong-lap-trinh.html", "wave": 16, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/contribution.md", "target": "vi/docs/chapter_appendix/contribution.md", "route": "vi/learn/cung-dong-gop.html", "wave": 16, "status": "draft" },
+    { "source": "en/docs/chapter_appendix/terminology.md", "target": "vi/docs/chapter_appendix/terminology.md", "route": "vi/learn/bang-thuat-ngu.html", "wave": 16, "status": "draft" }
   ]
 }

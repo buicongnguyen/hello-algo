@@ -60,7 +60,17 @@ const pages = [
   ["zero-one-knapsack", "0-1 Knapsack Problem", "14.4 · 0-1 Knapsack", "Chapter 14", "en/docs/chapter_dynamic_programming/knapsack_problem.md", "Choose each item at most once within a capacity."],
   ["unbounded-knapsack", "Unbounded Knapsack Problem", "14.5 · Unbounded Knapsack", "Chapter 14", "en/docs/chapter_dynamic_programming/unbounded_knapsack_problem.md", "Reuse item types and solve coin-change variants."],
   ["edit-distance", "Edit Distance Problem", "14.6 · Edit Distance", "Chapter 14", "en/docs/chapter_dynamic_programming/edit_distance_problem.md", "Measure string similarity with insert, delete, and replace operations."],
-  ["chapter-14-summary", "Chapter 14 Summary", "14.7 · Summary", "Chapter 14", "en/docs/chapter_dynamic_programming/summary.md", "Review dynamic programming design and classic applications."]
+  ["chapter-14-summary", "Chapter 14 Summary", "14.7 · Summary", "Chapter 14", "en/docs/chapter_dynamic_programming/summary.md", "Review dynamic programming design and classic applications."],
+  ["greedy", "Greedy", "Greedy introduction", "Chapter 15", "en/docs/chapter_greedy/index.md", "Make locally optimal choices under provable conditions."],
+  ["greedy-algorithm", "Greedy Algorithm", "15.1 · Greedy Algorithm", "Chapter 15", "en/docs/chapter_greedy/greedy_algorithm.md", "Understand greedy-choice property, optimal substructure, and limitations."],
+  ["fractional-knapsack", "Fractional Knapsack Problem", "15.2 · Fractional Knapsack", "Chapter 15", "en/docs/chapter_greedy/fractional_knapsack_problem.md", "Choose items by descending value density."],
+  ["max-capacity", "Max Capacity Problem", "15.3 · Max Capacity", "Chapter 15", "en/docs/chapter_greedy/max_capacity_problem.md", "Use two pointers to maximize the bounded area."],
+  ["max-product-cutting", "Maximum Product Cutting Problem", "15.4 · Maximum Product Cutting", "Chapter 15", "en/docs/chapter_greedy/max_product_cutting_problem.md", "Split an integer into factors with maximum product."],
+  ["chapter-15-summary", "Chapter 15 Summary", "15.5 · Summary", "Chapter 15", "en/docs/chapter_greedy/summary.md", "Review greedy design, proofs, and representative applications."],
+  ["appendix", "Appendix", "Appendix introduction", "Chapter 16", "en/docs/chapter_appendix/index.md", "Practical setup, contribution, and terminology resources."],
+  ["programming-environment", "Programming Environment Installation", "16.1 · Environment Installation", "Chapter 16", "en/docs/chapter_appendix/installation.md", "Install an editor and language toolchains for running examples."],
+  ["contributing", "Contributing Together", "16.2 · Contributing", "Chapter 16", "en/docs/chapter_appendix/contribution.md", "Improve content through a focused GitHub contribution workflow."],
+  ["glossary", "Glossary", "16.3 · Glossary", "Chapter 16", "en/docs/chapter_appendix/terminology.md", "Reference the core data-structure and algorithm terminology."]
 ].map(([slug, title, shortTitle, chapter, source, description]) => ({ slug, title, shortTitle, chapter, source, description }));
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -80,6 +90,8 @@ function prepareEnglishMarkdown(markdown) {
       }
       if (label === "Python") {
         output.push("### Python example", ...content);
+      } else if (label === "English") {
+        output.push(...content);
       } else if (/^<\d+>$/.test(label)) {
         output.push(...content);
       }
@@ -137,7 +149,7 @@ function pageTemplate(page, body, index, sourceCommit, vietnameseDocument, korea
     <nav aria-label="Language and theme"><a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Read the corresponding Korean page">KO</a><a href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi" aria-label="Read the corresponding Vietnamese page">VI</a><a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
   </header>
   <div class="reader-shell">
-    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–14 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
+    <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>English reading</strong><small>Chapters 7–16 · locked source</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">Learning map</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a></div></aside>
     <main class="reader-main"><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>English source · ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>Original English source</strong><p>This local reading view is generated from the source-locked Hello Algo English document. KO and VI open the exact translated counterpart.</p></div>${body}<footer class="article-attribution"><strong>Source and license</strong><p>English content from <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo by krahets and its contributors</a>, presented locally under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>.</p></footer></article>
       <nav class="page-nav" aria-label="Previous and next article">${previous ? `<a href="${previous.slug}.html"><span>← Previous</span><strong>${previous.title}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug}.html"><span>Next →</span><strong>${next.title}</strong></a>` : "<i></i>"}</nav>
     </main>
@@ -154,7 +166,7 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
 
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg", "chapter_backtracking.jpg", "chapter_dynamic_programming.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
+  for (const cover of ["chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg", "chapter_backtracking.jpg", "chapter_dynamic_programming.jpg", "chapter_greedy.jpg", "chapter_appendix.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   for (const [chapter, directory] of [
     ["chapter_tree", "binary_tree.assets"], ["chapter_tree", "binary_tree_traversal.assets"], ["chapter_tree", "array_representation_of_tree.assets"], ["chapter_tree", "binary_search_tree.assets"], ["chapter_tree", "avl_tree.assets"],
     ["chapter_heap", "heap.assets"], ["chapter_heap", "build_heap.assets"], ["chapter_heap", "top_k.assets"],
@@ -163,7 +175,9 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
     ["chapter_sorting", "sorting_algorithm.assets"], ["chapter_sorting", "selection_sort.assets"], ["chapter_sorting", "bubble_sort.assets"], ["chapter_sorting", "insertion_sort.assets"], ["chapter_sorting", "quick_sort.assets"], ["chapter_sorting", "merge_sort.assets"], ["chapter_sorting", "heap_sort.assets"], ["chapter_sorting", "bucket_sort.assets"], ["chapter_sorting", "counting_sort.assets"], ["chapter_sorting", "radix_sort.assets"], ["chapter_sorting", "summary.assets"],
     ["chapter_divide_and_conquer", "divide_and_conquer.assets"], ["chapter_divide_and_conquer", "binary_search_recur.assets"], ["chapter_divide_and_conquer", "build_binary_tree_problem.assets"], ["chapter_divide_and_conquer", "hanota_problem.assets"],
     ["chapter_backtracking", "backtracking_algorithm.assets"], ["chapter_backtracking", "n_queens_problem.assets"], ["chapter_backtracking", "permutations_problem.assets"], ["chapter_backtracking", "subset_sum_problem.assets"],
-    ["chapter_dynamic_programming", "intro_to_dynamic_programming.assets"], ["chapter_dynamic_programming", "dp_problem_features.assets"], ["chapter_dynamic_programming", "dp_solution_pipeline.assets"], ["chapter_dynamic_programming", "knapsack_problem.assets"], ["chapter_dynamic_programming", "unbounded_knapsack_problem.assets"], ["chapter_dynamic_programming", "edit_distance_problem.assets"]
+    ["chapter_dynamic_programming", "intro_to_dynamic_programming.assets"], ["chapter_dynamic_programming", "dp_problem_features.assets"], ["chapter_dynamic_programming", "dp_solution_pipeline.assets"], ["chapter_dynamic_programming", "knapsack_problem.assets"], ["chapter_dynamic_programming", "unbounded_knapsack_problem.assets"], ["chapter_dynamic_programming", "edit_distance_problem.assets"],
+    ["chapter_greedy", "greedy_algorithm.assets"], ["chapter_greedy", "fractional_knapsack_problem.assets"], ["chapter_greedy", "max_capacity_problem.assets"], ["chapter_greedy", "max_product_cutting_problem.assets"],
+    ["chapter_appendix", "installation.assets"], ["chapter_appendix", "contribution.assets"]
   ]) {
     const destination = path.join(bookOutput, "assets", chapter, directory);
     await mkdir(path.dirname(destination), { recursive: true });
