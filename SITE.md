@@ -6,13 +6,13 @@ This fork publishes a Korean, Vietnamese, and English GitHub Pages experience fo
 
 - `/hello-algo/` redirects to Vietnamese.
 - `/hello-algo/vi/` is the complete Vietnamese Hello Algo Atlas, with the same sections and interactions as English.
-- `/hello-algo/vi/learn/` is a 104-of-119-document Vietnamese reader covering Chapters 0–16; Chapters 0–4 are pilot content and Chapters 5–16 are drafts.
+- `/hello-algo/vi/learn/` is a 104-of-119-document Vietnamese reader covering Chapters 0–16; 13 structurally verified pages are pilots and the remaining 91 are drafts.
 - `/hello-algo/en/` preserves the complete interactive English Hello Algo Atlas.
 - `/hello-algo/ko/` is the complete Korean Hello Algo Atlas.
 - `/hello-algo/ko/learn/` is a 104-of-119-document Korean draft reader covering Chapters 0–16.
-- `/hello-algo/en/learn/` contains 68 local English source pages for Chapters 7–16 with exact Vietnamese and Korean counterparts.
+- `/hello-algo/en/learn/` starts a 119-document local reader generated from the locked official English source, covering the source home, Before Starting, Chapters 0–16, and References. Existing localized counterparts are linked exactly; untranslated counterparts are visibly marked pending.
 
-All Atlas and reader pages include a visible KO/VI/EN switch. Vietnamese documents are labelled as pilots; Korean reader documents remain drafts until their structure and content are expanded to match the locked English source and pass review.
+All Atlas and reader pages include a visible KO/VI/EN switch or a disabled pending state when that document has no translation. Vietnamese documents are labelled as pilots or drafts; Korean reader documents remain drafts until their structure and content are expanded to match the locked English source and pass review.
 
 ## Vietnamese Atlas
 

@@ -49,19 +49,19 @@ và giá trị nhận được tỷ lệ thuận với trọng lượng:
 ### Tiếp theo nên di chuyển con trỏ nào?
 
 Các chiều cao vách ngăn là `[1, 8, 6, 2, 5]`. Dùng hai con trỏ ở hai đầu để tìm sức chứa lớn nhất.
-Sức chứa bằng “chiều cao của vách thấp hơn × khoảng cách giữa chỉ số của hai vách”.
+Sức chứa bằng “chiều cao của vách thấp hơn × khoảng cách giữa chỉ mục của hai vách”.
 
 <!-- numbered-subquestions -->
 
-1. Ban đầu con trỏ trái ở chỉ số 0 và con trỏ phải ở chỉ số 4. Sức chứa hiện tại là bao nhiêu? Nên di chuyển con trỏ nào?
-2. Sau bước di chuyển ở câu 1, hai con trỏ ở chỉ số nào? Sức chứa lúc này là bao nhiêu? Tiếp theo nên di chuyển con trỏ nào?
+1. Ban đầu con trỏ trái ở chỉ mục 0 và con trỏ phải ở chỉ mục 4. Sức chứa hiện tại là bao nhiêu? Nên di chuyển con trỏ nào?
+2. Sau bước di chuyển ở câu 1, hai con trỏ ở chỉ mục nào? Sức chứa lúc này là bao nhiêu? Tiếp theo nên di chuyển con trỏ nào?
 3. Với cặp vách hiện tại, có thể di chuyển con trỏ ở vách thấp hơn hoặc cao hơn. Cách nào còn có khả năng tạo sức chứa lớn hơn, và vì sao?
 
 ??? success "Đáp án"
 
     1. Sức chứa hiện tại là `min(1, 5) × (4 - 0) = 4`. Vách trái thấp hơn nên di chuyển con trỏ trái.
 
-    2. Sau khi con trỏ trái di chuyển, hai con trỏ ở chỉ số 1 và 4. Sức chứa hiện tại là
+    2. Sau khi con trỏ trái di chuyển, hai con trỏ ở chỉ mục 1 và 4. Sức chứa hiện tại là
         `min(8, 5) × (4 - 1) = 15`. Vách phải thấp hơn nên tiếp theo di chuyển con trỏ phải.
 
     3. Chỉ việc di chuyển con trỏ ở vách thấp hơn mới còn khả năng tạo sức chứa lớn hơn. Nếu di chuyển con trỏ ở vách cao hơn,

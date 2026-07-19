@@ -4,7 +4,7 @@ import path from "node:path";
 const supportedLanguages = ["vi", "ko"];
 const supportedStatuses = new Set(["planned", "draft", "pilot", "published"]);
 
-export const englishReaderRoutes = new Map([
+const stableEnglishReaderRoutes = new Map([
   ["en/docs/chapter_tree/index.md", "en/learn/trees.html"],
   ["en/docs/chapter_tree/binary_tree.md", "en/learn/binary-tree.html"],
   ["en/docs/chapter_tree/binary_tree_traversal.md", "en/learn/binary-tree-traversal.html"],
@@ -75,6 +75,70 @@ export const englishReaderRoutes = new Map([
   ["en/docs/chapter_appendix/terminology.md", "en/learn/glossary.html"]
 ]);
 
+const registryRoot = path.resolve(import.meta.dirname, "..");
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function generatedEnglishRoute(source, chapter) {
+  const stableRoute = stableEnglishReaderRoutes.get(source);
+  if (stableRoute) return stableRoute;
+  if (source === "en/docs/index.md") return "en/learn/index.html";
+  if (source === "en/docs/chapter_hello_algo/index.md") return "en/learn/before-starting.html";
+  if (source === "en/docs/chapter_reference/index.md") return "en/learn/references.html";
+
+  const file = path.posix.basename(source, ".md");
+  const chapterNumber = chapter.match(/^Chapter (\d+)\./)?.[1];
+  let slug;
+  if (file === "index") slug = slugify(chapter.replace(/^Chapter \d+\.\s*/, ""));
+  else if (file === "summary" && chapterNumber) slug = `chapter-${chapterNumber}-summary`;
+  else if (file === "exercises" && chapterNumber) slug = `chapter-${chapterNumber}-exercises`;
+  else slug = file.replaceAll("_", "-");
+  return `en/learn/${slug}.html`;
+}
+
+async function loadEnglishReaderCatalog() {
+  const mkdocs = await readFile(path.join(registryRoot, "en", "mkdocs.yml"), "utf8");
+  const catalog = [{
+    source: "en/docs/index.md",
+    chapter: "Home",
+    shortTitle: "Official English home",
+    route: "en/learn/index.html"
+  }];
+  let chapter = "";
+
+  for (const line of mkdocs.replaceAll("\r\n", "\n").split("\n")) {
+    const chapterMatch = line.match(/^  - (.+):\s*$/);
+    if (chapterMatch) {
+      chapter = chapterMatch[1];
+      continue;
+    }
+    const pageMatch = line.match(/^    - (?:(.+?):\s+)?([a-zA-Z0-9_./-]+\.md)\s*$/);
+    if (!chapter || !pageMatch) continue;
+    const source = `en/docs/${pageMatch[2]}`;
+    catalog.push({
+      source,
+      chapter,
+      shortTitle: pageMatch[1] || chapter,
+      route: generatedEnglishRoute(source, chapter)
+    });
+  }
+
+  const sources = new Set(catalog.map((page) => page.source));
+  const routes = new Set(catalog.map((page) => page.route));
+  if (catalog.length !== 119 || sources.size !== catalog.length || routes.size !== catalog.length) {
+    throw new Error(`Expected 119 unique official English documents, found ${catalog.length}`);
+  }
+  return catalog;
+}
+
+export const englishReaderCatalog = await loadEnglishReaderCatalog();
+export const englishReaderRoutes = new Map(englishReaderCatalog.map((page) => [page.source, page.route]));
+
 export function createTranslationRegistry(manifests) {
   const byLanguage = {};
   let sourceCommit;
@@ -128,6 +192,7 @@ export function routeFileName(route) {
 }
 
 export function officialEnglishUrl(source) {
+  if (source === "en/docs/index.md") return "https://www.hello-algo.com/en/";
   const parts = source.split("/");
   const file = parts.at(-1).replace(/\.md$/, "");
   return `https://www.hello-algo.com/en/${parts.at(-2)}/${file === "index" ? "" : `${file}/`}`;

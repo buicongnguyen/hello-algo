@@ -15,7 +15,8 @@ export function localizeAtlas(sourceEnglish, config) {
     .replace('content="https://buicongnguyen.github.io/hello-algo/en/"', `content="https://buicongnguyen.github.io/hello-algo/${config.code}/"`)
     .replace('<title>Hello Algo Atlas</title>', `<title>${config.title}</title>`)
     .replace('href="styles.css', 'href="../styles.css')
-    .replaceAll('src="en/docs/', 'src="../en/docs/');
+    .replaceAll('src="en/docs/', 'src="../en/docs/')
+    .replaceAll('<a href="learn/">English reader</a>', `<a href="learn/">${config.readerLabel}</a>`);
 
   const translations = Object.entries(config.htmlTranslations).sort(([a], [b]) => b.length - a.length);
   const translate = config.exactOnly
@@ -28,10 +29,6 @@ export function localizeAtlas(sourceEnglish, config) {
   html = html.replace(
     '<script src="app.js?v=20260717a" defer></script>',
     `<script>window.HELLO_ALGO_LOCALE=${localeJson};</script>\n  <script src="../app.js?v=20260718e" defer></script>`
-  );
-  html = html.replace(
-    `<a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">${config.originalBookLabel}</a>`,
-    `<a href="learn/">${config.readerLabel}</a>\n      <a href="https://www.hello-algo.com/en/" target="_blank" rel="noreferrer">${config.originalBookLabel}</a>`
   );
   html = html.replace(
     /<div class="footer-links">.*?<\/div>/,

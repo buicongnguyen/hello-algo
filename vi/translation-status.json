@@ -30,7 +30,7 @@
       "target": "vi/docs/chapter_preface/suggestions.md",
       "route": "vi/learn/cach-su-dung-cuon-sach.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_preface/summary.md",
@@ -51,7 +51,7 @@
       "target": "vi/docs/chapter_introduction/algorithms_are_everywhere.md",
       "route": "vi/learn/thuat-toan-o-khap-noi.html",
       "wave": 1,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_introduction/what_is_dsa.md",
@@ -79,7 +79,7 @@
       "target": "vi/docs/chapter_computational_complexity/performance_evaluation.md",
       "route": "vi/learn/danh-gia-hieu-qua.html",
       "wave": 1,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_computational_complexity/iteration_and_recursion.md",
@@ -93,14 +93,14 @@
       "target": "vi/docs/chapter_computational_complexity/time_complexity.md",
       "route": "vi/learn/do-phuc-tap-thoi-gian.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_computational_complexity/space_complexity.md",
       "target": "vi/docs/chapter_computational_complexity/space_complexity.md",
       "route": "vi/learn/do-phuc-tap-khong-gian.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_computational_complexity/summary.md",
@@ -128,28 +128,28 @@
       "target": "vi/docs/chapter_data_structure/basic_data_types.md",
       "route": "vi/learn/kieu-du-lieu-co-ban.html",
       "wave": 3,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_data_structure/number_encoding.md",
       "target": "vi/docs/chapter_data_structure/number_encoding.md",
       "route": "vi/learn/ma-hoa-so.html",
       "wave": 3,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_data_structure/character_encoding.md",
       "target": "vi/docs/chapter_data_structure/character_encoding.md",
       "route": "vi/learn/ma-hoa-ky-tu.html",
       "wave": 3,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_data_structure/summary.md",
       "target": "vi/docs/chapter_data_structure/summary.md",
       "route": "vi/learn/tom-tat-chuong-3.html",
       "wave": 3,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_array_and_linkedlist/index.md",
@@ -163,21 +163,21 @@
       "target": "vi/docs/chapter_array_and_linkedlist/array.md",
       "route": "vi/learn/mang.html",
       "wave": 4,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_array_and_linkedlist/linked_list.md",
       "target": "vi/docs/chapter_array_and_linkedlist/linked_list.md",
       "route": "vi/learn/danh-sach-lien-ket.html",
       "wave": 4,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_array_and_linkedlist/list.md",
       "target": "vi/docs/chapter_array_and_linkedlist/list.md",
       "route": "vi/learn/danh-sach-dong.html",
       "wave": 4,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_array_and_linkedlist/ram_and_cache.md",
@@ -191,7 +191,7 @@
       "target": "vi/docs/chapter_array_and_linkedlist/summary.md",
       "route": "vi/learn/tom-tat-chuong-4.html",
       "wave": 4,
-      "status": "pilot"
+      "status": "draft"
     },
     { "source": "en/docs/chapter_stack_and_queue/index.md", "target": "vi/docs/chapter_stack_and_queue/index.md", "route": "vi/learn/ngan-xep-va-hang-doi.html", "wave": 5, "status": "draft" },
     { "source": "en/docs/chapter_stack_and_queue/stack.md", "target": "vi/docs/chapter_stack_and_queue/stack.md", "route": "vi/learn/ngan-xep.html", "wave": 5, "status": "draft" },

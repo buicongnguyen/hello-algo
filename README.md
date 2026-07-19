@@ -71,11 +71,12 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 ## Trải nghiệm tiếng Việt trong fork này
 
 - [Atlas tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/) có cùng 11 phần nội dung và tương tác với [Atlas tiếng Anh](https://buicongnguyen.github.io/hello-algo/en/).
-- [Trình đọc tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm 104/119 tài liệu thuộc Chương 0–16, bao gồm bài tập mới của Chương 14–15. Chương 0–4 là bản thử; Chương 5–16 là bản nháp đang chờ đối chiếu và phản biện. Mỗi trang mở đúng nội dung tiếng Anh và tiếng Hàn tương ứng; Chương 7–16 có bản đọc tiếng Anh cục bộ.
+- [Trình đọc tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm 104/119 tài liệu thuộc Chương 0–16, bao gồm bài tập mới của Chương 14–15. Mười ba trang đã đạt cổng cấu trúc ở trạng thái bản thử; 91 trang còn lại là bản nháp đang chờ hoàn thiện và phản biện. Mỗi trang mở đúng nội dung tiếng Anh và tiếng Hàn tương ứng.
 - [Kế hoạch Việt hóa](VIETNAMESE_TRANSLATION_PLAN.md) mô tả lộ trình, tiêu chuẩn chất lượng, quy trình duyệt và cách đồng bộ với upstream.
 - [Kế hoạch bản tiếng Hàn](KOREAN_TRANSLATION_PLAN.md) xác định kiến trúc ba ngôn ngữ, phạm vi bản thử và các cổng kiểm tra trước khi triển khai.
 - [Atlas tiếng Hàn](https://buicongnguyen.github.io/hello-algo/ko/) và [trình đọc 104/119 tài liệu Chương 0–16](https://buicongnguyen.github.io/hello-algo/ko/learn/) hiện đã có dưới trạng thái bản nháp để cộng đồng phản biện.
-- [Trình đọc tiếng Anh Chương 7–16](https://buicongnguyen.github.io/hello-algo/en/learn/trees.html) tạo 68 trang từ nguồn tiếng Anh đã khóa và liên kết trực tiếp với bản Việt/Hàn tương ứng.
+- [Trình đọc tiếng Anh đầy đủ](https://buicongnguyen.github.io/hello-algo/en/learn/) tạo toàn bộ 119 trang từ nguồn chính thức đã khóa: trang chủ, phần *Before Starting*, Chương 0–16 và tài liệu tham khảo. Trang có bản Việt/Hàn sẽ liên kết trực tiếp; tài liệu chưa dịch được đánh dấu rõ là đang chờ.
+- [Báo cáo rà soát nội dung tiếng Anh](ENGLISH_CONTENT_REVIEW.md) ghi lại phạm vi từng chương, nguồn và các khoảng trống dịch còn lại.
 - [Từ điển thuật ngữ](vi/glossary.md), [quy chuẩn văn phong](vi/style-guide.md) và [hướng dẫn đóng góp](vi/CONTRIBUTING.md) giúp bản dịch nhất quán và dễ kiểm tra.
 
 ## Lời giới thiệu

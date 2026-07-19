@@ -251,7 +251,7 @@ const pages = [
   { slug: "cay", title: "Cây", shortTitle: "Mở đầu cây", chapter: "Chương 7", source: "en/docs/chapter_tree/index.md", target: "vi/docs/chapter_tree/index.md", description: "Giới thiệu cấu trúc cây và quan hệ phân cấp." },
   { slug: "cay-nhi-phan", title: "Cây nhị phân", shortTitle: "7.1 · Cây nhị phân", chapter: "Chương 7", source: "en/docs/chapter_tree/binary_tree.md", target: "vi/docs/chapter_tree/binary_tree.md", description: "Nút, thuật ngữ, loại cây và thao tác trên cây nhị phân." },
   { slug: "duyet-cay-nhi-phan", title: "Duyệt cây nhị phân", shortTitle: "7.2 · Duyệt cây", chapter: "Chương 7", source: "en/docs/chapter_tree/binary_tree_traversal.md", target: "vi/docs/chapter_tree/binary_tree_traversal.md", description: "So sánh duyệt theo mức và duyệt theo chiều sâu." },
-  { slug: "bieu-dien-cay-bang-mang", title: "Biểu diễn cây nhị phân bằng mảng", shortTitle: "7.3 · Biểu diễn bằng mảng", chapter: "Chương 7", source: "en/docs/chapter_tree/array_representation_of_tree.md", target: "vi/docs/chapter_tree/array_representation_of_tree.md", description: "Ánh xạ quan hệ cha con của cây hoàn chỉnh vào chỉ số mảng." },
+  { slug: "bieu-dien-cay-bang-mang", title: "Biểu diễn cây nhị phân bằng mảng", shortTitle: "7.3 · Biểu diễn bằng mảng", chapter: "Chương 7", source: "en/docs/chapter_tree/array_representation_of_tree.md", target: "vi/docs/chapter_tree/array_representation_of_tree.md", description: "Ánh xạ quan hệ cha con của cây hoàn chỉnh vào chỉ mục mảng." },
   { slug: "cay-tim-kiem-nhi-phan", title: "Cây tìm kiếm nhị phân", shortTitle: "7.4 · Cây tìm kiếm", chapter: "Chương 7", source: "en/docs/chapter_tree/binary_search_tree.md", target: "vi/docs/chapter_tree/binary_search_tree.md", description: "Tìm kiếm, chèn và xóa trong cây tìm kiếm nhị phân." },
   { slug: "cay-avl", title: "Cây AVL", shortTitle: "7.5 · Cây AVL *", chapter: "Chương 7", source: "en/docs/chapter_tree/avl_tree.md", target: "vi/docs/chapter_tree/avl_tree.md", description: "Giữ BST cân bằng bằng bốn trường hợp xoay." },
   { slug: "tom-tat-chuong-7", title: "Tóm tắt Chương 7", shortTitle: "7.6 · Tóm tắt", chapter: "Chương 7", source: "en/docs/chapter_tree/summary.md", target: "vi/docs/chapter_tree/summary.md", description: "Ôn tập cây nhị phân, BST và AVL." },
@@ -365,7 +365,7 @@ function assetUrl(sourcePath, reference) {
     return `assets/covers/${path.basename(reference)}`;
   }
   const sourceDirectory = path.dirname(sourcePath.replaceAll("\\", "/"));
-  const relativeDirectory = sourceDirectory.replace(/^(?:vi|ko)\/docs\//, "");
+  const relativeDirectory = sourceDirectory.replace(/^(?:en|vi|ko)\/docs\//, "");
   return `assets/${relativeDirectory}/${reference}`;
 }
 
@@ -405,7 +405,15 @@ export function renderMarkdown(markdown, sourcePath) {
       }
       const kind = admonition[1].replace(/[^a-zA-Z0-9_-]/g, "");
       const label = admonition[2] || admonition[1][0].toUpperCase() + admonition[1].slice(1);
-      output.push(`<aside class="admonition admonition-${kind}"><strong>${escapeHtml(label)}</strong>${renderMarkdown(content.join("\n"), sourcePath)}</aside>`);
+      const admonitionContent = content.join("\n");
+      const visualizationUrl = kind === "pythontutor" && admonitionContent.trim().match(/^https:\/\/pythontutor\.com\/\S+$/)?.[0];
+      const visualizationLabel = sourcePath.startsWith("vi/")
+        ? "Mở trực quan hóa mã tương tác ↗"
+        : sourcePath.startsWith("ko/") ? "대화형 코드 시각화 열기 ↗" : "Open interactive code visualization ↗";
+      const renderedContent = visualizationUrl
+        ? `<p><a class="visualization-link" href="${escapeHtml(visualizationUrl)}" target="_blank" rel="noreferrer">${visualizationLabel}</a></p>`
+        : renderMarkdown(admonitionContent, sourcePath);
+      output.push(`<aside class="admonition admonition-${kind}"><strong>${escapeHtml(label)}</strong>${renderedContent}</aside>`);
       continue;
     }
 

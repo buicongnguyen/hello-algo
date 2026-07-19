@@ -21,7 +21,7 @@ Korean draft `v0.9` extends the original Korean pilot `v0.1` architecture to a 1
 
 Vietnamese should remain the default homepage for this release. Changing the default language is a separate product decision and is outside this plan.
 
-Korean `v0.1` established 14 routes for Chapters 0–2, `v0.2` added 12 Chapter 3–4 routes, `v0.3` added 10 Chapter 5–6 routes, `v0.4` added 12 Chapter 7–8 routes, `v0.5` added 12 Chapter 9–10 routes, `v0.6` added 18 Chapter 11–12 routes, and `v0.7` added 14 Chapter 13–14 routes. Korean `v0.8` added 10 Chapter 15–16 routes. Korean `v0.9` adds the upstream exercise pages for Chapters 14 and 15, bringing both localized readers to 104/119 pages and the local English source reader to 68 pages. Every translated document remains individually status-tracked so drafts are not mistaken for reviewed translations.
+Korean `v0.1` established 14 routes for Chapters 0–2, `v0.2` added 12 Chapter 3–4 routes, `v0.3` added 10 Chapter 5–6 routes, `v0.4` added 12 Chapter 7–8 routes, `v0.5` added 12 Chapter 9–10 routes, `v0.6` added 18 Chapter 11–12 routes, and `v0.7` added 14 Chapter 13–14 routes. Korean `v0.8` added 10 Chapter 15–16 routes. Korean `v0.9` added the upstream exercise pages for Chapters 14 and 15, bringing both localized readers to 104/119 pages. The local English source reader now contains all 119 official documents, while missing Korean and Vietnamese counterparts are explicitly marked pending. Every translated document remains individually status-tracked so drafts are not mistaken for reviewed translations.
 
 ## 2. Release definition
 

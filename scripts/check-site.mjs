@@ -44,6 +44,8 @@ const bookJs = await readFile(path.join(projectRoot, "vi", "book.js"), "utf8");
 const translationStatus = JSON.parse(await readFile(path.join(projectRoot, "vi", "translation-status.json"), "utf8"));
 const translationPlan = await readFile(path.join(projectRoot, "VIETNAMESE_TRANSLATION_PLAN.md"), "utf8");
 const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLAN.md"), "utf8");
+const vietnameseGlossary = await readFile(path.join(projectRoot, "vi", "glossary.md"), "utf8");
+const koreanContributing = await readFile(path.join(projectRoot, "ko", "CONTRIBUTING.md"), "utf8");
 const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "translation-status.json"), "utf8"));
 const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
 
@@ -69,7 +71,7 @@ for (const duplicate of [...ids].filter((id) => html.match(new RegExp(`id="${id}
 for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
   const reference = match[1].split("?")[0].split("#")[0];
   if (!reference || /^(https?:|mailto:|data:)/.test(reference)) continue;
-  if (reference === "../vi/" || reference === "../ko/") continue;
+  if (reference === "../vi/" || reference === "../ko/" || reference === "learn/") continue;
   const localPath = path.join(projectRoot, decodeURIComponent(reference));
   try {
     await access(localPath, constants.R_OK);
@@ -137,7 +139,7 @@ const translations = Object.entries(htmlTranslations).sort(([a], [b]) => b.lengt
 const translateStatic = (value) => translations.reduce((result, [english, vietnamese]) => result.replaceAll(english, vietnamese), value);
 const intentionalSharedLabels = new Set([
   "Hello Algo Atlas", "Hello Algo", "Atlas", "learning-path.graph",
-  "O(log n)", "O(n log n)", "low", "mid", "high"
+  "English reader", "O(log n)", "O(n log n)", "low", "mid", "high"
 ]);
 const untranslatedText = [...html.replace(/<script[\s\S]*?<\/script>/g, "").matchAll(/>([^<]+)</g)]
   .map((match) => match[1].trim())
@@ -154,7 +156,7 @@ for (const attribute of ["data-topic", "data-structure", "data-mode", "data-sort
 if (!viHtml.includes('href="learn/"') || !viHtml.includes("Bản đồ học tập tương tác")) {
   failures.push("Vietnamese Atlas or pilot reading entry is missing");
 }
-if ((viHtml.match(/href="learn\/"/g) || []).length < 2 || (koHtml.match(/href="learn\/"/g) || []).length < 2) failures.push("Localized Atlas header and footer must both link to their reader");
+if ((html.match(/href="learn\/"/g) || []).length < 2 || (viHtml.match(/href="learn\/"/g) || []).length < 2 || (koHtml.match(/href="learn\/"/g) || []).length < 2) failures.push("Every Atlas header and footer must link to its reader");
 if (!viHtml.includes("Kế hoạch dịch ↗") || !viHtml.includes("window.HELLO_ALGO_LOCALE=")) {
   failures.push("Vietnamese Atlas supporting links or interactive locale payload is missing");
 }
@@ -188,6 +190,9 @@ if (translationStatus.sourceCommit !== "a3166c201853739213d5a3a31b1e4a237aaf1076
 if (translationStatus.documents.length !== 104 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
   failures.push("Expected 104 source-locked Vietnamese reader documents at draft or later status");
 }
+if (translationStatus.documents.filter((document) => document.status === "pilot").length !== 13 || translationStatus.documents.filter((document) => document.status === "draft").length !== 91) {
+  failures.push("Vietnamese status ledger must contain 13 structurally verified pilots and 91 drafts");
+}
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
     try {
@@ -197,6 +202,7 @@ for (const document of translationStatus.documents) {
     }
   }
   try {
+    const sourceMarkdown = await readFile(path.join(projectRoot, document.source), "utf8");
     const targetMarkdown = await readFile(path.join(projectRoot, document.target), "utf8");
     const h1Count = countMarkdownH1(targetMarkdown);
     if (h1Count !== 1) failures.push(`${document.target} must contain exactly one H1`);
@@ -214,11 +220,15 @@ for (const document of translationStatus.documents) {
       .replaceAll("chúng ta", "")
       .replaceAll("Chúng ta", "");
     if (/\bta\b/i.test(narrative)) failures.push(`${document.target} uses the disallowed standalone narrator “ta”`);
+    if (["pilot", "published"].includes(document.status)) {
+      const readinessFailures = translationReadinessFailures(sourceMarkdown, targetMarkdown);
+      if (readinessFailures.length) failures.push(`${document.target} cannot be promoted to ${document.status}: ${readinessFailures.join(", ")}`);
+    }
   } catch {
     // Missing targets are reported by the existence check above.
   }
 }
-if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 104 || koreanStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) failures.push("Expected 104 source-locked Korean reader documents at draft or later status");
+if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 104 || koreanStatus.documents.some((document) => document.status !== "draft")) failures.push("Expected 104 source-locked Korean reader documents at draft status");
 for (const document of koreanStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
     try { await access(path.join(projectRoot, relativePath), constants.R_OK); } catch { failures.push(`Korean status references a missing file: ${relativePath}`); }
@@ -241,6 +251,9 @@ if (translationPlan.length < 15000 || !translationPlan.includes("Sáu giai đo�
 }
 if (koreanPlan.length < 20000 || !koreanPlan.includes("Korean pilot `v0.1`")) {
   failures.push("Korean translation plan is not sufficiently detailed");
+}
+if (vietnameseGlossary.includes("4935d2d") || koreanContributing.includes("4935d2d") || !vietnameseGlossary.includes(translationStatus.sourceCommit) || !koreanContributing.includes(koreanStatus.sourceCommit)) {
+  failures.push("Translation governance files do not use the current locked upstream revision");
 }
 
 if (failures.length) {

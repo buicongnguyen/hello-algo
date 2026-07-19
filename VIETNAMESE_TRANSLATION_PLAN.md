@@ -17,7 +17,7 @@ Cập nhật ngày 2026-07-19:
 - [x] Khóa nguồn hiện tại tại upstream commit `a3166c201853739213d5a3a31b1e4a237aaf1076`.
 - [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
-- [x] Một trăm lẻ bốn trên 119 tài liệu: Chương 0–4 ở trạng thái `pilot`, Chương 5–16 ở trạng thái `draft`, có thêm bài tập Chương 14–15; Chương 7–16 có bản đọc tiếng Anh cục bộ tương ứng.
+- [x] Một trăm lẻ bốn trên 119 tài liệu: 13 trang đạt cổng tương đương cấu trúc ở trạng thái `pilot`, 91 trang còn lại ở trạng thái `draft`, có thêm bài tập Chương 14–15; trình đọc tiếng Anh cục bộ có đủ 119 tài liệu chính thức.
 - [x] Chương 5–6 có liên kết VI/KO/EN tương ứng, tài nguyên gốc và kiểm tra bản dựng tự động.
 - [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
 - [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.
@@ -338,7 +338,7 @@ Sản phẩm bàn giao:
 - `vi/style-guide.md`;
 - `vi/CONTRIBUTING.md`;
 - cấu hình `vi/mkdocs.yml`;
-- 26 tài liệu thử thuộc Chương 0–4 đã tự kiểm tra; phản biện kỹ thuật và ngôn ngữ độc lập được theo dõi như điều kiện nâng trạng thái;
+- 26 tài liệu Chương 0–4 đã có bản dịch; 13 trang đạt cổng cấu trúc ở trạng thái `pilot`, các trang còn lại giữ trạng thái `draft`; phản biện kỹ thuật và ngôn ngữ độc lập là điều kiện nâng trạng thái;
 - checklist và mẫu PR.
 
 Điều kiện hoàn thành:
@@ -434,7 +434,7 @@ Mỗi phát hành nên có:
 | --- | --- | --- |
 | 1 | Hạ tầng Pages | VI mặc định, EN riêng, nút đổi ngôn ngữ |
 | 2 | Quản trị | glossary v0, style guide, mẫu PR |
-| 3–4 | Bản thử nhập môn | 26 tài liệu Chương 0–4 và vòng phản biện độc lập |
+| 3–4 | Bản thử nhập môn | Hoàn thiện cổng cấu trúc cho 26 tài liệu Chương 0–4 và tổ chức vòng phản biện độc lập |
 | 5 | Rút kinh nghiệm | sửa quy trình và glossary v1 |
 | 6–7 | Mảng, danh sách, stack, queue | đợt cấu trúc tuyến tính |
 | 8 | Bảng băm | chương và ví dụ chính |

@@ -188,15 +188,33 @@ export async function checkBuiltSite(outputRoot) {
 
   const englishDirectory = path.join(outputRoot, "en", "learn");
   const englishPages = (await readdir(englishDirectory)).filter((file) => file.endsWith(".html"));
-  if (englishPages.length !== englishReaderRoutes.size || englishPages.length !== 68) failures.push(`Expected 68 local English Chapter 7–16 pages, found ${englishPages.length}`);
+  if (englishPages.length !== englishReaderRoutes.size || englishPages.length !== 119) failures.push(`Expected all 119 official English documents, found ${englishPages.length}`);
   for (const [source, route] of englishReaderRoutes) {
     const englishPage = await readFile(path.join(outputRoot, route), "utf8");
     const vietnameseDocument = translationRegistry.byLanguage.vi.get(source);
     const koreanDocument = translationRegistry.byLanguage.ko.get(source);
-    if (!englishPage.includes(`href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi"`) || !englishPage.includes(`href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko"`)) failures.push(`${route} does not expose exact VI and KO counterparts`);
+    if (vietnameseDocument) {
+      if (!englishPage.includes(`href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi"`)) failures.push(`${route} does not expose its exact VI counterpart`);
+    } else if (!englishPage.includes('class="language-pending" lang="vi" aria-disabled="true"')) {
+      failures.push(`${route} does not mark the pending VI counterpart`);
+    }
+    if (koreanDocument) {
+      if (!englishPage.includes(`href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko"`)) failures.push(`${route} does not expose its exact KO counterpart`);
+    } else if (!englishPage.includes('class="language-pending" lang="ko" aria-disabled="true"')) {
+      failures.push(`${route} does not mark the pending KO counterpart`);
+    }
     if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(englishPage) || englishPage.includes("&lt;u&gt;")) failures.push(`${route} contains unrendered MkDocs-only syntax`);
   }
+  const englishOfficialHome = await readFile(path.join(englishDirectory, "index.html"), "utf8");
+  const englishBeforeStarting = await readFile(path.join(englishDirectory, "before-starting.html"), "utf8");
+  const englishPreface = await readFile(path.join(englishDirectory, "preface.html"), "utf8");
+  const englishChapterTwoExercises = await readFile(path.join(englishDirectory, "chapter-2-exercises.html"), "utf8");
+  const englishReferences = await readFile(path.join(englishDirectory, "references.html"), "utf8");
+  if (!englishOfficialHome.includes("Hello Algo") || !englishBeforeStarting.includes("Before Starting") || !englishPreface.includes("Preface") || !englishReferences.includes("References")) failures.push("English special pages are missing official source content");
+  if (!englishChapterTwoExercises.includes('class="admonition') || !englishChapterTwoExercises.includes('class="language-pending" lang="vi"') || !englishChapterTwoExercises.includes('class="language-pending" lang="ko"')) failures.push("English Chapter 2 exercises do not render answers or pending translation states");
+  if (!englishOfficialHome.includes("119 / 119 documents") || (englishOfficialHome.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("English reader progress or full Home / Chapters 0–16 / References navigation is incomplete");
   const englishTree = await readFile(path.join(englishDirectory, "binary-tree.html"), "utf8");
+  const englishBookCss = await readFile(path.join(englishDirectory, "book.css"), "utf8");
   const englishHeap = await readFile(path.join(englishDirectory, "heap.html"), "utf8");
   const englishGraph = await readFile(path.join(englishDirectory, "graph-traversal.html"), "utf8");
   const englishSearch = await readFile(path.join(englishDirectory, "binary-search.html"), "utf8");
@@ -209,7 +227,10 @@ export async function checkBuiltSite(outputRoot) {
   const englishGlossary = await readFile(path.join(englishDirectory, "glossary.html"), "utf8");
   const englishDynamicExercises = await readFile(path.join(englishDirectory, "dynamic-programming-exercises.html"), "utf8");
   const englishGreedyExercises = await readFile(path.join(englishDirectory, "greedy-exercises.html"), "utf8");
-  if (!englishTree.includes("binary_tree_definition.png") || !englishHeap.includes("min_heap_and_max_heap.png") || !englishGraph.includes("graph_bfs.png") || !englishSearch.includes("binary_search_example.png") || !englishSort.includes("quick_sort_overview.png") || !englishDivide.includes("hanota_example.png") || !englishBacktracking.includes("solution_4_queens.png") || !englishDynamicProgramming.includes("edit_distance_example.png") || !englishGreedy.includes("fractional_knapsack_example.png") || !englishAppendix.includes("vscode_installation.png") || !englishGlossary.includes("<table>") || !englishGlossary.includes("greedy algorithm") || !englishTree.includes("Original English source")) failures.push("Local English Chapter 7–16 pages are missing source content or attribution");
+  if (!englishTree.includes("binary_tree_definition.png") || !englishHeap.includes("min_heap_and_max_heap.png") || !englishGraph.includes("graph_bfs.png") || !englishSearch.includes("binary_search_example.png") || !englishSort.includes("quick_sort_overview.png") || !englishDivide.includes("hanota_example.png") || !englishBacktracking.includes("solution_4_queens.png") || !englishDynamicProgramming.includes("edit_distance_example.png") || !englishGreedy.includes("fractional_knapsack_example.png") || !englishAppendix.includes("vscode_installation.png") || !englishGlossary.includes("<table>") || !englishGlossary.includes("greedy algorithm") || !englishTree.includes("Source-faithful English edition")) failures.push("Local English pages are missing official source content or attribution");
+  if (!englishTree.includes("language-cpp") || !englishTree.includes("language-java") || !englishTree.includes("language-python")) failures.push("Local English code examples do not preserve the official programming-language tabs");
+  if (!englishTree.includes('class="visualization-link"') || !englishTree.includes("Open interactive code visualization")) failures.push("Local English Python Tutor examples are not exposed as usable visualization links");
+  if (!englishBookCss.includes("overflow-wrap: anywhere")) failures.push("Reader CSS does not contain long official visualization URLs");
   if (!englishDynamicExercises.includes("When Is Dynamic Programming Appropriate?") || !englishDynamicExercises.includes("leetcode.com/problems/climbing-stairs") || !englishGreedyExercises.includes("Is Choosing the Largest Coin Always Best?") || !englishGreedyExercises.includes("10 + 1 + 1 + 1 + 1")) failures.push("Local English Chapter 14–15 exercise pages are incomplete");
 
   const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");

@@ -12,7 +12,7 @@
 
 ## Trạng thái
 
-Trình đọc hiện gồm 104/119 tài liệu từ Chương 0 đến Chương 16, bao gồm bài tập Chương 14–15. Hai mươi sáu tài liệu Chương 0–4 là bản thử đã tự kiểm tra; 78 tài liệu Chương 5–16 là bản nháp có hình, công thức, bài tập và ví dụ Python đại diện nhưng còn cần đối chiếu nguồn và phản biện ngôn ngữ. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng; Chương 7–16 dùng bản tiếng Anh cục bộ.
+Trình đọc hiện gồm 104/119 tài liệu từ Chương 0 đến Chương 16, bao gồm bài tập Chương 14–15. Mười ba tài liệu đã vượt qua cổng tương đương cấu trúc và được ghi là `pilot`; 91 tài liệu còn lại giữ trạng thái `draft` vì vẫn thiếu một phần tiêu đề, hình, mã, công thức hoặc độ phủ nội dung so với nguồn. Tất cả vẫn cần phản biện kỹ thuật và ngôn ngữ độc lập. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng. Trình đọc tiếng Anh cục bộ có đủ 119 tài liệu chính thức; 15 tài liệu chưa có bản Việt/Hàn được đánh dấu là đang chờ dịch.
 
 Nguồn tiếng Anh hiện được khóa tại commit upstream `a3166c201853739213d5a3a31b1e4a237aaf1076`.
 

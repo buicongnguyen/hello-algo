@@ -6,7 +6,7 @@ Heap cực đại yêu cầu mỗi nút cha không nhỏ hơn các nút con; hea
 
 ## Biểu diễn và thao tác
 
-Heap thường được lưu trong mảng. Với chỉ số $i$, hai nút con nằm tại $2i + 1$ và $2i + 2$.
+Heap thường được lưu trong mảng. Với chỉ mục $i$, hai nút con nằm tại $2i + 1$ và $2i + 2$.
 
 ```python
 import heapq
