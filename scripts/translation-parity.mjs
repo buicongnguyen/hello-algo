@@ -7,6 +7,11 @@ const contentRatios = {
   vi: 0.6,
   ko: 0.5
 };
+const reviewRanks = {
+  pending: 0,
+  "self-reviewed": 1,
+  "independently-reviewed": 2
+};
 
 export async function createTranslationParityReport({ projectRoot, manifest }) {
   const minimumContentRatio = contentRatios[manifest.targetLanguage] ?? 0.6;
@@ -29,7 +34,8 @@ export async function createTranslationParityReport({ projectRoot, manifest }) {
     const target = markdownStructure(effectiveTargetMarkdown);
     const failures = translationReadinessFailures(sourceMarkdown, effectiveTargetMarkdown, minimumContentRatio);
     const reviews = document.reviews || manifest.qualityPolicy.defaultReviewState;
-    const reviewReady = reviews.technical === "self-reviewed" && reviews.language === "self-reviewed";
+    const reviewReady = reviewRanks[reviews.technical] >= reviewRanks["self-reviewed"] &&
+      reviewRanks[reviews.language] >= reviewRanks["self-reviewed"];
     documents.push({
       source: document.source,
       target: document.target,

@@ -27,8 +27,8 @@ export function localizeAtlas(sourceEnglish, config) {
 
   const localeJson = JSON.stringify(config.interactiveLocale).replaceAll("<", "\\u003c");
   html = html.replace(
-    '<script src="app.js?v=20260725a" defer></script>',
-    `<script>window.HELLO_ALGO_LOCALE=${localeJson};</script>\n  <script src="../app.js?v=20260725a" defer></script>`
+    '<script src="app.js?v=20260727b" defer></script>',
+    `<script>window.HELLO_ALGO_LOCALE=${localeJson};</script>\n  <script src="../app.js?v=20260727b" defer></script>`
   );
   html = html.replace(
     /<div class="footer-links">.*?<\/div>/,

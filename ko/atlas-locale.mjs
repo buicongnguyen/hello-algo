@@ -13,6 +13,7 @@ export const htmlTranslations = {
   "Chapters": "장별 학습",
   "Original book ↗": "원본 도서 ↗",
   "Switch color theme": "색상 테마 전환",
+  "Light theme": "밝은 테마",
   "Visual data structures &amp; algorithms guide": "자료구조와 알고리즘을 위한 시각적 안내서",
   "See the connections. ": "연결을 이해하고, ",
   "Then write the code.": "직접 코드를 작성하세요.",

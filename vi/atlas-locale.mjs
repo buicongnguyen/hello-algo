@@ -4,6 +4,7 @@ export const htmlTranslations = {
   "Primary navigation": "Điều hướng chính",
   "Choose language": "Chọn ngôn ngữ",
   "Switch color theme": "Đổi giao diện sáng hoặc tối",
+  "Light theme": "Giao diện sáng",
   "Learning graph": "Bản đồ học tập",
   "Structures": "Cấu trúc",
   "Traversal lab": "Thực hành duyệt",

@@ -31,13 +31,19 @@ root.dataset.theme = ["light", "dark"].includes(savedTheme) ? savedTheme : (pref
 
 const cssColor = (name) => getComputedStyle(root).getPropertyValue(name).trim();
 
+function syncThemeToggle() {
+  themeToggle.setAttribute("aria-pressed", String(root.dataset.theme === "light"));
+}
+
 themeToggle.addEventListener("click", () => {
   root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
   writeStorage("hello-algo-atlas-theme", root.dataset.theme);
+  syncThemeToggle();
   drawRoadmap();
   drawTraversal();
   drawComplexity();
 });
+syncThemeToggle();
 
 const topicData = {
   foundations: {

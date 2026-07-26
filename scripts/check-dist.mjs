@@ -108,11 +108,21 @@ export async function checkBuiltSite(outputRoot) {
     const relativeHtml = path.relative(outputRoot, htmlFile).replaceAll("\\", "/");
     const html = await readFile(htmlFile, "utf8");
     if (!/<html lang="(?:vi|en|ko)">/.test(html)) failures.push(`${relativeHtml} has no supported document language`);
-    if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml) && !html.includes("app.js?v=20260725a")) {
+    if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml) && !html.includes("app.js?v=20260727b")) {
       failures.push(`${relativeHtml} does not use the current Atlas script cache key`);
     }
+    if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml)) {
+      const themeLabel = relativeHtml.startsWith("vi/")
+        ? "Giao diện sáng"
+        : relativeHtml.startsWith("ko/")
+          ? "밝은 테마"
+          : "Light theme";
+      if (!html.includes(`id="theme-toggle" type="button" aria-label="${themeLabel}" title="${themeLabel}" aria-pressed="false"`)) {
+        failures.push(`${relativeHtml} does not expose the stable localized Atlas theme state`);
+      }
+    }
     const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
-    if (readerPage && (!html.includes("book.js?v=20260727a") || !html.includes("book.css?v=20260727a"))) {
+    if (readerPage && (!html.includes("book.js?v=20260727b") || !html.includes("book.css?v=20260727a"))) {
       failures.push(`${relativeHtml} does not use the current reader asset cache keys`);
     }
     if (readerPage) {
@@ -278,6 +288,17 @@ export async function checkBuiltSite(outputRoot) {
       typeof entry.title !== "string" || typeof entry.url !== "string" || !Array.isArray(entry.headings)
     )) {
       failures.push(`${language} reader search index is incomplete or malformed`);
+    }
+    for (const entry of searchIndex) {
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*\.html$/.test(entry.url)) {
+        failures.push(`${language} reader search index contains an unsafe page URL: ${entry.url}`);
+        continue;
+      }
+      const pageHtml = await readFile(path.join(outputRoot, language, "learn", entry.url), "utf8");
+      const renderedHeadingCount = (pageHtml.match(/<h[1-4] id="/g) || []).length;
+      if (entry.headings.length !== renderedHeadingCount) {
+        failures.push(`${language}/learn/${entry.url} indexes ${entry.headings.length} headings but renders ${renderedHeadingCount}`);
+      }
     }
   }
   if (pilotPages.length !== translationStatus.documents.length) {

@@ -168,14 +168,166 @@ export function articleOutline(body, label) {
 }
 
 export function markdownHeadings(markdown) {
-  return [...markdown.matchAll(/^#{1,4}\s+(.+)$/gm)].map((match) =>
-    match[1]
+  const headings = [];
+  let fence = null;
+  let inComment = false;
+  for (const rawLine of markdown.replaceAll("\r\n", "\n").split("\n")) {
+    if (fence !== null) {
+      const fenceMarker = rawLine.match(/^\s*(`{3,}|~{3,})/)?.[1];
+      if (fenceMarker?.[0] === fence.marker && fenceMarker.length >= fence.length) fence = null;
+      continue;
+    }
+
+    let line = rawLine;
+    if (inComment) {
+      const commentEnd = line.indexOf("-->");
+      if (commentEnd < 0) continue;
+      line = line.slice(commentEnd + 3);
+      inComment = false;
+    }
+
+    while (line.includes("<!--")) {
+      const commentStart = line.indexOf("<!--");
+      const commentEnd = line.indexOf("-->", commentStart + 4);
+      if (commentEnd < 0) {
+        line = line.slice(0, commentStart);
+        inComment = true;
+        break;
+      }
+      line = line.slice(0, commentStart) + line.slice(commentEnd + 3);
+    }
+
+    const fenceMarker = line.match(/^\s*(```+|~~~+)/)?.[1];
+    if (fenceMarker) {
+      fence = { marker: fenceMarker[0], length: fenceMarker.length };
+      continue;
+    }
+
+    const match = line.match(/^#{1,4}\s+(.+)$/);
+    if (!match) continue;
+    headings.push(match[1]
       .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
       .replace(/[*_`~]/g, "")
       .replace(/<[^>]+>/g, "")
-      .trim()
-  );
+      .trim());
+  }
+  return headings;
+}
+
+function listItemDescriptor(line) {
+  const match = line.match(/^(\s*)(\d+\.|[-*+])\s+(.+)$/);
+  if (!match) return null;
+  return {
+    indent: match[1].replaceAll("\t", "    ").length,
+    ordered: /^\d+\.$/.test(match[2]),
+    start: Number.parseInt(match[2], 10) || 1,
+    content: match[3].trim()
+  };
+}
+
+function startsBlock(line, lines, index) {
+  const trimmed = line.trimStart();
+  return /^(?:#{1,4}\s+|===\s+|!\[|>|```|~~~|\$\$\s*$|!!!\s+|\?\?\?\s+)/.test(trimmed) ||
+    (line.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1]));
+}
+
+function lineIndent(line) {
+  return line.match(/^\s*/)[0].replaceAll("\t", "    ").length;
+}
+
+function renderList(lines, start, sourcePath, tabState) {
+  const first = listItemDescriptor(lines[start]);
+  const baseIndent = first.indent;
+  const ordered = first.ordered;
+  const tag = ordered ? "ol" : "ul";
+  const items = [];
+  let index = start;
+
+  const renderChildBlock = (blockStart) => {
+    let blockEnd = blockStart;
+    while (blockEnd < lines.length) {
+      if (!lines[blockEnd].trim()) {
+        blockEnd += 1;
+        continue;
+      }
+      const descriptor = listItemDescriptor(lines[blockEnd]);
+      if (lineIndent(lines[blockEnd]) <= baseIndent ||
+          (descriptor?.indent === baseIndent && descriptor.ordered === ordered)) break;
+      blockEnd += 1;
+    }
+    const childIndent = baseIndent + 4;
+    const markdown = lines.slice(blockStart, blockEnd)
+      .map((line) => line.startsWith(" ".repeat(childIndent)) ? line.slice(childIndent) : line.trimStart())
+      .join("\n")
+      .trimEnd();
+    return {
+      html: renderMarkdown(markdown, sourcePath, tabState),
+      index: blockEnd
+    };
+  };
+
+  while (index < lines.length) {
+    const current = listItemDescriptor(lines[index]);
+    if (!current || current.indent !== baseIndent || current.ordered !== ordered) break;
+    const segments = [];
+    let text = [current.content];
+    const flushText = () => {
+      if (!text.length) return;
+      segments.push(renderInline(text.join(" ")));
+      text = [];
+    };
+    index += 1;
+
+    while (index < lines.length) {
+      if (!lines[index].trim()) {
+        let lookahead = index;
+        while (lookahead < lines.length && !lines[lookahead].trim()) lookahead += 1;
+        const next = listItemDescriptor(lines[lookahead] || "");
+        if (next?.indent === baseIndent && next.ordered === ordered) {
+          index = lookahead;
+          break;
+        }
+        if (lookahead < lines.length && lineIndent(lines[lookahead]) > baseIndent) {
+          index = lookahead;
+          flushText();
+          const child = renderChildBlock(index);
+          segments.push(child.html);
+          index = child.index;
+          continue;
+        }
+        break;
+      }
+
+      const next = listItemDescriptor(lines[index]);
+      if (next) {
+        if (next.indent <= baseIndent) break;
+        flushText();
+        const child = renderChildBlock(index);
+        segments.push(child.html);
+        index = child.index;
+        continue;
+      }
+      if (lineIndent(lines[index]) > baseIndent && startsBlock(lines[index], lines, index)) {
+        flushText();
+        const child = renderChildBlock(index);
+        segments.push(child.html);
+        index = child.index;
+        continue;
+      }
+      if (startsBlock(lines[index], lines, index)) break;
+      text.push(lines[index].trim());
+      index += 1;
+    }
+
+    flushText();
+    items.push(`<li>${segments.join("")}</li>`);
+  }
+
+  return {
+    html: `<${tag}${ordered && first.start !== 1 ? ` start="${first.start}"` : ""}>${items.join("")}</${tag}>`,
+    index
+  };
 }
 
 export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, headingCounts: new Map() }) {
@@ -200,7 +352,7 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, head
       const content = [];
       index += 1;
       while (index < lines.length && (!lines[index].trim() || /^\s{4}/.test(lines[index]))) {
-        content.push(lines[index].replace(/^\s{4}(?:\s{4})?/, ""));
+        content.push(lines[index].replace(/^\s{4}/, ""));
         index += 1;
       }
       const kind = admonition[1].replace(/[^a-zA-Z0-9_-]/g, "");
@@ -305,35 +457,10 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, head
       continue;
     }
 
-    const listMatch = line.match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-    if (listMatch) {
-      const ordered = /\d+\./.test(listMatch[1]);
-      const tag = ordered ? "ol" : "ul";
-      const start = ordered ? Number.parseInt(listMatch[1], 10) : 1;
-      const items = [];
-      while (index < lines.length) {
-        const match = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-        if (!match || /\d+\./.test(match[1]) !== ordered) break;
-        const item = [match[2].trim()];
-        index += 1;
-        while (index < lines.length) {
-          if (!lines[index].trim()) {
-            let nextIndex = index;
-            while (nextIndex < lines.length && !lines[nextIndex].trim()) nextIndex += 1;
-            const nextItem = lines[nextIndex]?.match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-            if (nextItem && /\d+\./.test(nextItem[1]) === ordered) {
-              index = nextIndex;
-            }
-            break;
-          }
-          const nextItem = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-          if (nextItem && /\d+\./.test(nextItem[1]) === ordered) break;
-          item.push(lines[index].trim());
-          index += 1;
-        }
-        items.push(`<li>${renderInline(item.join(" "))}</li>`);
-      }
-      output.push(`<${tag}${ordered && start !== 1 ? ` start="${start}"` : ""}>${items.join("")}</${tag}>`);
+    if (listItemDescriptor(line)) {
+      const list = renderList(lines, index, sourcePath, tabState);
+      output.push(list.html);
+      index = list.index;
       continue;
     }
 
@@ -353,7 +480,7 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, head
     index += 1;
     while (index < lines.length) {
       const next = lines[index].trimEnd();
-      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^===\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || next.startsWith("```") || next.trim() === "$$" || /^\s*(\d+\.|[-*])\s+/.test(next)) break;
+      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^===\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || next.startsWith("```") || next.startsWith("~~~") || next.trim() === "$$" || listItemDescriptor(next)) break;
       if (next.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1])) break;
       paragraph.push(next.trim());
       index += 1;

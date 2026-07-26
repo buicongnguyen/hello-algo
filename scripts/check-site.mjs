@@ -6,8 +6,9 @@ import { htmlTranslations, interactiveLocale } from "../vi/atlas-locale.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
 import { createTranslationRegistry, markdownStructure, translationReadinessFailures } from "./translation-registry.mjs";
-import { resolveSiteRequest } from "./server-path.mjs";
-import { renderMarkdown } from "./markdown-renderer.mjs";
+import { createTranslationParityReport } from "./translation-parity.mjs";
+import { resolveByteRange, resolveSiteRequest } from "./server-path.mjs";
+import { markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
 import {
   extractSourceSnippet,
   localizeSourceExamples,
@@ -22,6 +23,9 @@ const requiredFiles = [
   "styles.css",
   "app.js",
   ".nojekyll",
+  ".dockerignore",
+  "Dockerfile",
+  "docker-compose.yml",
   "vi/atlas-locale.mjs",
   "reader/book.css",
   "reader/book.js",
@@ -42,6 +46,7 @@ const requiredFiles = [
   "scripts/check-full-book.mjs",
   "scripts/markdown-renderer.mjs",
   "scripts/server-path.mjs",
+  "scripts/serve-site.mjs",
   ".github/workflows/ci.yml",
   ".github/ISSUE_TEMPLATE/ko-translation.yml",
   ".github/PULL_REQUEST_TEMPLATE/ko-translation.md",
@@ -83,6 +88,8 @@ const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLA
 const vietnameseGlossary = await readFile(path.join(projectRoot, "vi", "glossary.md"), "utf8");
 const koreanContributing = await readFile(path.join(projectRoot, "ko", "CONTRIBUTING.md"), "utf8");
 const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "translation-status.json"), "utf8"));
+const dockerfile = await readFile(path.join(projectRoot, "Dockerfile"), "utf8");
+const dockerCompose = await readFile(path.join(projectRoot, "docker-compose.yml"), "utf8");
 const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
 
 const failures = [];
@@ -148,6 +155,35 @@ const illustrationTabs = renderMarkdown(`=== "<1>"
     Second step`, "vi/docs/test.md");
 if (!illustrationTabs.includes('aria-label="Các bước minh họa"') || illustrationTabs.includes('data-tab-sync="language"')) {
   failures.push("Shared Markdown renderer does not keep illustration tabs independent");
+}
+
+const nestedListFixture = renderMarkdown(`??? success "Answer"
+
+    1. First:
+
+        - A
+        - B
+
+    2. Second`, "en/docs/test.md");
+if (!nestedListFixture.includes("<ol><li>First:<ul><li>A</li><li>B</li></ul></li><li>Second</li></ol>")) {
+  failures.push("Shared Markdown renderer does not preserve nested list hierarchy inside admonitions");
+}
+
+const searchableHeadings = markdownHeadings(`# Real heading
+
+\`\`\`python
+# Not a heading
+\`\`\`
+
+~~~text
+## Also not a heading
+~~~
+
+<!-- # Hidden heading -->
+
+## Also real <!-- editorial note -->`);
+if (JSON.stringify(searchableHeadings) !== JSON.stringify(["Real heading", "Also real"])) {
+  failures.push("Reader search headings include fenced-code or HTML-comment content");
 }
 
 const sourceCodeTabsFixture = await sourceDirectiveTabs({
@@ -245,6 +281,23 @@ if (!validServerPath.candidate?.endsWith(path.join("dist", "en", "index.html")) 
     malformedServerPath.error !== 400 || traversalServerPath.error !== 403) {
   failures.push("Local server path resolution does not safely handle valid, malformed, and traversal URLs");
 }
+const normalRange = resolveByteRange("bytes=10-19", 100);
+const openRange = resolveByteRange("bytes=90-", 100);
+const suffixRange = resolveByteRange("bytes=-10", 100);
+if (JSON.stringify(normalRange) !== JSON.stringify({ start: 10, end: 19, length: 10 }) ||
+    JSON.stringify(openRange) !== JSON.stringify({ start: 90, end: 99, length: 10 }) ||
+    JSON.stringify(suffixRange) !== JSON.stringify({ start: 90, end: 99, length: 10 }) ||
+    resolveByteRange("bytes=100-", 100)?.error !== 416 ||
+    resolveByteRange("bytes=0-1,4-5", 100)?.error !== 416) {
+  failures.push("Local media server does not resolve normal, open, suffix, and invalid byte ranges safely");
+}
+if (!dockerfile.includes("FROM node:24-alpine AS build") ||
+    !dockerfile.includes("RUN npm run build") ||
+    !dockerfile.includes("ENV HELLO_ALGO_HOST=0.0.0.0") ||
+    /COPY (?:docs|overrides|zh-hant|ja|ru)\b/.test(dockerfile) ||
+    /^\s*version:/m.test(dockerCompose)) {
+  failures.push("Docker workflow is not aligned with the current Node-built trilingual site");
+}
 
 const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]));
 for (const duplicate of [...ids].filter((id) => html.match(new RegExp(`id="${id}"`, "g"))?.length > 1)) {
@@ -302,6 +355,13 @@ if (!js.includes("IntersectionObserver") || !js.includes("prefers-reduced-motion
 }
 if (!js.includes('["light", "dark"].includes(savedTheme)') || !js.includes("Array.isArray(storedTopics)") || !js.includes("Object.hasOwn(topicData, topic)")) {
   failures.push("Atlas persisted theme and learning-progress state is not validated");
+}
+if (!html.includes('id="theme-toggle" type="button" aria-label="Light theme" title="Light theme" aria-pressed="false"') ||
+    !viHtml.includes('aria-label="Giao diện sáng" title="Giao diện sáng" aria-pressed="false"') ||
+    !koHtml.includes('aria-label="밝은 테마" title="밝은 테마" aria-pressed="false"') ||
+    !js.includes("syncThemeToggle") ||
+    !js.includes('setAttribute("aria-pressed"')) {
+  failures.push("Atlas theme control does not expose a synchronized localized pressed state");
 }
 if (!js.includes("traversedEdges.has(traversalEdgeKey(a, b))") || !js.includes("traversedEdges.add(traversalEdgeKey(current, node))")) {
   failures.push("Traversal visualization does not track the actual BFS/DFS discovery edges");
@@ -386,6 +446,11 @@ if (!bookJs.includes("syncThemeButton") || !bookJs.includes('setAttribute("aria-
     !bookJs.includes('"밝은 테마"')) {
   failures.push("Reader theme control does not expose its current state in all three languages");
 }
+if (!bookJs.includes("positionActiveNavigation") ||
+    !bookJs.includes('querySelector(\'a[aria-current="page"]\')') ||
+    !bookJs.includes("sidebar.scrollTop")) {
+  failures.push("Reader sidebar does not position the active document in view");
+}
 if (!bookCss.includes(".content-tablist") || !bookCss.includes(".content-tabpanel[hidden]") ||
     !bookJs.includes("hello-algo-code-language") || !bookJs.includes("aria-selected") ||
     !bookJs.includes("ArrowLeft") || !bookJs.includes("ArrowRight")) {
@@ -451,6 +516,21 @@ for (const document of translationStatus.documents) {
   }
 }
 if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 119 || koreanStatus.documents.some((document) => document.status !== "draft")) failures.push("Expected 119 source-locked Korean reader documents at draft status");
+const independentReviewManifest = structuredClone(translationStatus);
+independentReviewManifest.documents = [independentReviewManifest.documents[0]];
+independentReviewManifest.documents[0].reviews = {
+  technical: "independently-reviewed",
+  language: "independently-reviewed"
+};
+const independentReviewReport = await createTranslationParityReport({
+  projectRoot,
+  manifest: independentReviewManifest
+});
+if (!independentReviewReport.documents[0].structuralParity ||
+    !independentReviewReport.documents[0].eligibleForPilot ||
+    independentReviewReport.summary.pilotEligible !== 1) {
+  failures.push("Independent review is not recognized as satisfying the pilot review gate");
+}
 const vietnameseSources = [...translationRegistry.byLanguage.vi.keys()].sort();
 const koreanSources = [...translationRegistry.byLanguage.ko.keys()].sort();
 if (JSON.stringify(vietnameseSources) !== JSON.stringify(koreanSources)) failures.push("Vietnamese and Korean reader manifests do not cover the same English documents");

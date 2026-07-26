@@ -76,6 +76,18 @@ document.addEventListener("keydown", (event) => {
 mobileReader.addEventListener("change", syncMenu);
 syncMenu();
 
+function positionActiveNavigation() {
+  const activeLink = sidebar?.querySelector('a[aria-current="page"]');
+  if (!sidebar || !activeLink || sidebar.scrollHeight <= sidebar.clientHeight) return;
+  const sidebarRect = sidebar.getBoundingClientRect();
+  const activeRect = activeLink.getBoundingClientRect();
+  const activeTop = activeRect.top - sidebarRect.top + sidebar.scrollTop;
+  const centeredTop = activeTop - (sidebar.clientHeight - activeRect.height) / 2;
+  sidebar.scrollTop = Math.max(0, Math.min(centeredTop, sidebar.scrollHeight - sidebar.clientHeight));
+}
+
+requestAnimationFrame(positionActiveNavigation);
+
 function decodeMath(value) {
   try {
     const bytes = Uint8Array.from(atob(value), (character) => character.charCodeAt(0));

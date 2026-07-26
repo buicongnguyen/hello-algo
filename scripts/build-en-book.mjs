@@ -121,7 +121,7 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
   <link rel="stylesheet" href="book.css?v=20260727a">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
-  <script src="book.js?v=20260727a" defer></script>
+  <script src="book.js?v=20260727b" defer></script>
 </head>
 <body data-translation-status="source">
   <a class="skip-link" href="#article">Skip to the article</a>
