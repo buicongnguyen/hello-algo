@@ -1,26 +1,101 @@
 # 최대 용량 문제
 
-높이 배열에서 두 벽을 골라 담을 수 있는 물의 면적을 최대화합니다. 면적은 두 벽의 거리와 더 낮은 벽 높이의 곱입니다.
+!!! question
 
-![최대 용량 문제 예시](max_capacity_problem.assets/max_capacity_example.png)
+    배열 $ht$가 주어지며, 각 원소는 수직 칸막이의 높이를 나타냅니다. 배열에서 임의의 두 칸막이와 그 사이의 공간은 하나의 용기를 만들 수 있습니다.
+
+    용기의 용량은 높이와 너비의 곱, 즉 넓이입니다. 높이는 더 짧은 칸막이가 결정하고, 너비는 두 칸막이의 배열 인덱스 차이입니다.
+
+    만들어지는 용기의 용량이 최대가 되도록 배열에서 두 칸막이를 선택하고, 그 최대 용량을 반환합니다. 아래 그림은 예시를 보여 줍니다.
+
+![최대 용량 문제의 예시 데이터](max_capacity_problem.assets/max_capacity_example.png)
+
+용기는 임의의 두 칸막이로 만들어지므로 **이 문제의 상태는 두 칸막이의 인덱스이며 $[i, j]$로 나타냅니다.**
+
+문제의 정의에 따르면 용량은 높이와 너비의 곱입니다. 높이는 더 짧은 칸막이가 결정하고 너비는 두 칸막이의 배열 인덱스 차이입니다. 용량을 $cap[i, j]$라고 하면 다음 공식을 얻습니다.
 
 $$
-capacity(i,j) = (j-i) \times \min(height[i], height[j])
+cap[i, j] = \min(ht[i], ht[j]) \times (j - i)
 $$
 
-```python
-def max_capacity(heights):
-    left, right = 0, len(heights) - 1
-    best = 0
-    while left < right:
-        best = max(best, (right - left) * min(heights[left], heights[right]))
-        if heights[left] <= heights[right]:
-            left += 1
-        else:
-            right -= 1
-    return best
-```
+배열의 길이를 $n$이라고 합시다. 두 칸막이를 선택하는 방법의 수, 즉 전체 상태 수는 $C_n^2 = \frac{n(n - 1)}{2}$입니다. 가장 직접적인 방법은 **모든 상태를 완전 탐색**해 최대 용량을 찾는 것이며, 시간 복잡도는 $O(n^2)$입니다.
+
+### 그리디 전략 결정
+
+이 문제에는 더 효율적인 풀이가 있습니다. 아래 그림처럼 $i < j$이고 $ht[i] < ht[j]$인 상태 $[i, j]$를 생각해 봅시다. 이때 $i$는 더 짧은 칸막이이고 $j$는 더 긴 칸막이입니다.
 
 ![초기 상태](max_capacity_problem.assets/max_capacity_initial_state.png)
 
-매 단계에서 더 낮은 벽을 안쪽으로 옮깁니다. 높은 벽을 옮기면 너비만 줄고 높이 제한은 커지지 않으므로 건너뛴 상태는 현재보다 나을 수 없습니다. 시간 복잡도는 $O(n)$입니다.
+아래 그림처럼 **이제 더 긴 칸막이 $j$를 더 짧은 칸막이 $i$ 쪽으로 안쪽 이동하면 용량은 반드시 줄어듭니다.**
+
+더 긴 칸막이 $j$를 이동하면 너비 $j-i$가 반드시 줄기 때문입니다. 높이는 더 짧은 칸막이가 결정하므로, 높이는 그대로이거나($i$가 계속 더 짧은 칸막이) 감소할 수밖에 없습니다(이동한 뒤 $j$가 더 짧은 칸막이가 되는 경우).
+
+![긴 칸막이를 안쪽으로 이동한 뒤의 상태](max_capacity_problem.assets/max_capacity_moving_long_board.png)
+
+반대로 **더 짧은 칸막이 $i$를 안쪽으로 이동할 때만 용량이 커질 가능성이 있습니다.** 너비는 반드시 줄지만 **높이는 커질 수 있기 때문입니다**(이동한 위치의 $i$ 칸막이가 더 높을 수 있습니다). 예를 들어 아래 그림에서는 더 짧은 칸막이를 이동한 뒤 넓이가 커집니다.
+
+![짧은 칸막이를 안쪽으로 이동한 뒤의 상태](max_capacity_problem.assets/max_capacity_moving_short_board.png)
+
+이로부터 다음 그리디 전략을 도출할 수 있습니다. 두 포인터를 양 끝에서 시작하고, 두 포인터가 만날 때까지 매 라운드 더 짧은 칸막이에 해당하는 포인터를 안쪽으로 이동합니다.
+
+이 전략은 단순히 더 높은 칸막이를 찾는 휴리스틱이 아닙니다. 현재 구간에서 더 긴 쪽을 움직여 얻는 모든 후보는 너비가 줄면서 높이의 상한도 현재의 짧은 쪽을 넘지 못합니다. 반면 짧은 쪽을 움직이면 너비는 줄어도 높이의 상한이 커질 가능성이 남습니다. 따라서 한 번의 선택으로 최적해가 될 수 없는 상태 묶음을 안전하게 제거합니다.
+
+아래 그림은 그리디 전략의 실행 과정을 보여 줍니다.
+
+1. 초기 상태에서 포인터 $i$와 $j$는 배열의 양 끝에 있습니다.
+2. 현재 상태의 용량 $cap[i, j]$를 계산하고 최대 용량을 갱신합니다.
+3. 칸막이 $i$와 $j$의 높이를 비교하고, 더 짧은 칸막이에 해당하는 포인터를 한 칸 안쪽으로 이동합니다.
+4. $i$와 $j$가 만날 때까지 `2.`와 `3.` 단계를 반복합니다.
+
+=== "<1>"
+    ![최대 용량 문제의 그리디 과정](max_capacity_problem.assets/max_capacity_greedy_step1.png)
+
+=== "<2>"
+    ![최대 용량 그리디 2단계](max_capacity_problem.assets/max_capacity_greedy_step2.png)
+
+=== "<3>"
+    ![최대 용량 그리디 3단계](max_capacity_problem.assets/max_capacity_greedy_step3.png)
+
+=== "<4>"
+    ![최대 용량 그리디 4단계](max_capacity_problem.assets/max_capacity_greedy_step4.png)
+
+=== "<5>"
+    ![최대 용량 그리디 5단계](max_capacity_problem.assets/max_capacity_greedy_step5.png)
+
+=== "<6>"
+    ![최대 용량 그리디 6단계](max_capacity_problem.assets/max_capacity_greedy_step6.png)
+
+=== "<7>"
+    ![최대 용량 그리디 7단계](max_capacity_problem.assets/max_capacity_greedy_step7.png)
+
+=== "<8>"
+    ![최대 용량 그리디 8단계](max_capacity_problem.assets/max_capacity_greedy_step8.png)
+
+=== "<9>"
+    ![최대 용량 그리디 9단계](max_capacity_problem.assets/max_capacity_greedy_step9.png)
+
+### 코드 구현
+
+코드는 최대 $n$라운드 실행되므로 **시간 복잡도는 $O(n)$입니다.**
+
+변수 $i$, $j$, $res$는 상수 크기의 추가 공간만 사용하므로 **공간 복잡도는 $O(1)$입니다.**
+
+```python
+# 잠긴 원문의 13개 언어 최대 용량 공식 코드가 이 위치에 삽입됩니다.
+```
+
+### 정확성 증명
+
+그리디 방식이 완전 탐색보다 빠른 이유는 매 라운드의 그리디 선택이 일부 상태를 “건너뛰기” 때문입니다.
+
+예를 들어 상태 $cap[i, j]$에서 $i$가 더 짧은 칸막이이고 $j$가 더 긴 칸막이라고 합시다. 더 짧은 칸막이 $i$를 탐욕스럽게 한 칸 안쪽으로 이동하면 아래 그림의 상태들을 “건너뜁니다.” **따라서 나중에는 이 상태들의 용량을 검사할 수 없습니다.**
+
+$$
+cap[i, i+1], cap[i, i+2], \dots, cap[i, j-2], cap[i, j-1]
+$$
+
+![짧은 칸막이를 이동할 때 건너뛰는 상태](max_capacity_problem.assets/max_capacity_skipped_states.png)
+
+자세히 살펴보면 **건너뛴 상태들은 정확히 더 긴 칸막이 $j$를 안쪽으로 이동했을 때 얻는 상태들입니다.** 더 긴 칸막이를 안쪽으로 옮기면 용량이 반드시 줄어든다는 사실은 이미 증명했습니다. 따라서 건너뛴 상태 중 어느 것도 최적해가 될 수 없으므로 **이들을 생략해도 최적값을 놓치지 않습니다.**
+
+위 분석은 더 짧은 칸막이를 이동하는 것이 “안전한” 연산이며, 이 그리디 전략이 유효함을 보여 줍니다.

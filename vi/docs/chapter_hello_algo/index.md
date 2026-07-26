@@ -17,7 +17,7 @@ Tôi hiểu rõ giới hạn trong kiến thức và kinh nghiệm của mình. 
 
 ![Hello Algo](../assets/covers/chapter_hello_algo.jpg)
 
-## Xin chào, thuật toán!
+**Xin chào, thuật toán!**
 
 Sự ra đời của máy tính đã làm thế giới thay đổi sâu sắc. Nhờ khả năng tính toán tốc độ cao và khả năng lập trình linh hoạt, máy tính trở thành phương tiện lý tưởng để thực thi thuật toán và xử lý dữ liệu. Đồ họa chân thực trong trò chơi, quyết định thông minh của xe tự hành, những ván cờ xuất sắc của AlphaGo hay khả năng đối thoại tự nhiên của ChatGPT đều là những minh chứng nổi bật cho thuật toán hoạt động trên máy tính.
 
