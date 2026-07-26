@@ -100,6 +100,8 @@ The v1.16 content wave completes structural parity for all nine Korean Chapter 1
 
 The v1.17 content wave completes structural parity for all seven Korean Chapter 15 documents. Greedy-choice conditions and counterexamples, fractional knapsack, the complete nine-frame maximum-capacity trace and skipped-state proof, maximum-product derivations, 25 images, six displayed derivations, ten callouts, exercises, and all four official code groups are preserved inline. The implemented scope and next release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_17.md](NEXT_CONTENT_RELEASE_PLAN_V1_17.md).
 
+The v1.18 content wave closes every remaining Korean structural-parity gap. The book home, Before Starting, and complete Appendix preserve the source reader link, author message, ten programming-language setup guides, GitHub and Docker contribution workflow, all 126 bilingual glossary entries, five images, one callout, and three mathematical glossary spans. Both localized editions now report 119 of 119 structurally ready documents. The implemented scope and final audit boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_18.md](NEXT_CONTENT_RELEASE_PLAN_V1_18.md).
+
 ## Shared Atlas experience
 
 All three Atlas routes include:

@@ -195,6 +195,7 @@ export async function checkBuiltSite(outputRoot) {
     }
     const releaseUnits = language === "vi"
       ? [
+          { prefix: "en/docs/index.md", count: 1, label: "Vietnamese Book Home" },
           { prefix: "en/docs/chapter_hello_algo/", count: 1, label: "Vietnamese Chapter 0" },
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Vietnamese Preface" },
           { prefix: "en/docs/chapter_introduction/", count: 4, label: "Vietnamese Chapter 1" },
@@ -212,9 +213,12 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Vietnamese Chapter 13" },
           { prefix: "en/docs/chapter_dynamic_programming/", count: 9, label: "Vietnamese Chapter 14" },
           { prefix: "en/docs/chapter_greedy/", count: 7, label: "Vietnamese Chapter 15" },
-          { prefix: "en/docs/chapter_appendix/", count: 4, label: "Vietnamese Appendix" }
+          { prefix: "en/docs/chapter_appendix/", count: 4, label: "Vietnamese Appendix" },
+          { prefix: "en/docs/chapter_reference/", count: 1, label: "Vietnamese References" }
         ]
       : [
+          { prefix: "en/docs/index.md", count: 1, label: "Korean Book Home" },
+          { prefix: "en/docs/chapter_hello_algo/", count: 1, label: "Korean Chapter 0" },
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
           { prefix: "en/docs/chapter_introduction/", count: 4, label: "Korean Chapter 1" },
           { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Korean Chapter 2" },
@@ -230,7 +234,9 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Korean Chapter 12" },
           { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Korean Chapter 13" },
           { prefix: "en/docs/chapter_dynamic_programming/", count: 9, label: "Korean Chapter 14" },
-          { prefix: "en/docs/chapter_greedy/", count: 7, label: "Korean Chapter 15" }
+          { prefix: "en/docs/chapter_greedy/", count: 7, label: "Korean Chapter 15" },
+          { prefix: "en/docs/chapter_appendix/", count: 4, label: "Korean Appendix" },
+          { prefix: "en/docs/chapter_reference/", count: 1, label: "Korean References" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -238,6 +244,9 @@ export async function checkBuiltSite(outputRoot) {
           releaseDocuments.some((document) => !document.structuralParity || document.officialCodeGroups.deferred !== 0)) {
         failures.push(`${releaseUnit.label} is not a complete, structurally ready inline-code release unit`);
       }
+    }
+    if (report.summary.structurallyReady !== 119 || report.summary.needsWork !== 0) {
+      failures.push(`${language} reader must keep all 119 source documents structurally ready`);
     }
   }
   for (const language of ["vi", "ko", "en"]) {
@@ -889,7 +898,12 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseAppendix = await readFile(path.join(pilotDirectory, "cai-dat-moi-truong-lap-trinh.html"), "utf8");
   const vietnameseContribution = await readFile(path.join(pilotDirectory, "cung-dong-gop.html"), "utf8");
   const vietnameseTerminology = await readFile(path.join(pilotDirectory, "bang-thuat-ngu.html"), "utf8");
+  const koreanBookHome = await readFile(path.join(koreanDirectory, "book-home.html"), "utf8");
+  const koreanBeforeStarting = await readFile(path.join(koreanDirectory, "before-starting.html"), "utf8");
+  const koreanAppendixIndex = await readFile(path.join(koreanDirectory, "appendix.html"), "utf8");
   const koreanAppendix = await readFile(path.join(koreanDirectory, "programming-environment.html"), "utf8");
+  const koreanContribution = await readFile(path.join(koreanDirectory, "contributing.html"), "utf8");
+  const koreanTerminology = await readFile(path.join(koreanDirectory, "glossary.html"), "utf8");
   if (!vietnameseGreedy.includes("fractional_knapsack_example.png") || !koreanGreedy.includes("fractional_knapsack_example.png") || !vietnameseGreedy.includes('<pre><code class="language-python"') || !koreanGreedy.includes('<pre><code class="language-python"')) failures.push("Chapter 15 fractional-knapsack pages are missing diagrams or Python examples");
   if ((vietnameseGreedyAlgorithm.match(/class="content-tabs"/g) || []).length !== 1 ||
       !vietnameseGreedyAlgorithm.includes("coin_change_greedy_vs_dp.png") ||
@@ -959,6 +973,34 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseTerminology.includes("greedy algorithm — thuật toán tham lam") ||
       !vietnameseTerminology.includes("state-transition equation — phương trình chuyển trạng thái")) {
     failures.push("Vietnamese Chapter 0 or Appendix is missing source-complete opening, installation, contribution, Docker, or glossary content");
+  }
+  if (!koreanBookHome.includes('href="before-starting.html"') ||
+      !koreanBookHome.includes("애니메이션 그림과 바로 실행할 수 있는 코드") ||
+      !koreanBeforeStarting.includes("chapter_hello_algo.jpg") ||
+      !koreanBeforeStarting.includes("<strong>안녕하세요, 알고리즘!</strong>") ||
+      !koreanBeforeStarting.includes("파인만 교수") ||
+      !koreanAppendixIndex.includes("chapter_appendix.jpg") ||
+      !koreanAppendix.includes("vscode_installation.png") ||
+      !koreanAppendix.includes("vscode_extension_installation.png") ||
+      !koreanAppendix.includes("Python 환경") ||
+      !koreanAppendix.includes("C/C++ 환경") ||
+      !koreanAppendix.includes("Java 환경") ||
+      !koreanAppendix.includes("C# 환경") ||
+      !koreanAppendix.includes("Go 환경") ||
+      !koreanAppendix.includes("Swift 환경") ||
+      !koreanAppendix.includes("JavaScript 환경") ||
+      !koreanAppendix.includes("Pretty TypeScript Errors") ||
+      !koreanAppendix.includes("Dart 환경") ||
+      !koreanAppendix.includes("Rust 환경") ||
+      !koreanContribution.includes('class="admonition admonition-success"') ||
+      !koreanContribution.includes("edit_markdown.png") ||
+      !koreanContribution.includes('<pre><code class="language-shell">docker-compose up -d') ||
+      !koreanContribution.includes('<pre><code class="language-shell">docker-compose down') ||
+      !koreanTerminology.includes("<table>") ||
+      (koreanTerminology.match(/<tr>/g) || []).length !== 127 ||
+      !koreanTerminology.includes("state-transition equation — 상태 전이 방정식") ||
+      !koreanTerminology.includes("greedy algorithm — 그리디 알고리즘")) {
+    failures.push("Korean Book Home, Chapter 0, or Appendix is missing source-complete navigation, opening, installation, contribution, Docker, or glossary content");
   }
   if (!vietnameseAppendix.includes("vscode_installation.png") ||
       !vietnameseAppendix.includes("vscode_extension_installation.png") ||
