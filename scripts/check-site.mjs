@@ -7,6 +7,7 @@ import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
 import { createTranslationRegistry, translationReadinessFailures } from "./translation-registry.mjs";
 import { resolveSiteRequest } from "./server-path.mjs";
+import { renderMarkdown } from "./build-vi-book.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
@@ -72,6 +73,43 @@ function countMarkdownH1(markdown) {
     if (!inCodeFence && line.startsWith("# ")) count += 1;
   }
   return count;
+}
+
+const tabFixture = `=== "Python"
+
+    \`\`\`python
+    print("one")
+    \`\`\`
+
+=== "C++"
+
+    \`\`\`cpp
+    std::cout << "one";
+    \`\`\``;
+const tabFixtureExpectations = [
+  ["en/docs/test.md", "Programming language examples"],
+  ["vi/docs/test.md", "Ví dụ theo ngôn ngữ lập trình"],
+  ["ko/docs/test.md", "프로그래밍 언어 예제"]
+];
+for (const [sourcePath, ariaLabel] of tabFixtureExpectations) {
+  const renderedTabs = renderMarkdown(tabFixture, sourcePath);
+  if (!renderedTabs.includes(`role="tablist" aria-label="${ariaLabel}"`) ||
+      (renderedTabs.match(/role="tab"/g) || []).length !== 2 ||
+      (renderedTabs.match(/role="tabpanel"/g) || []).length !== 2 ||
+      (renderedTabs.match(/aria-selected="true"/g) || []).length !== 1 ||
+      !renderedTabs.includes('data-tab-sync="language"')) {
+    failures.push(`Shared Markdown renderer does not create accessible synchronized tabs for ${sourcePath}`);
+  }
+}
+const illustrationTabs = renderMarkdown(`=== "<1>"
+
+    First step
+
+=== "<2>"
+
+    Second step`, "vi/docs/test.md");
+if (!illustrationTabs.includes('aria-label="Các bước minh họa"') || illustrationTabs.includes('data-tab-sync="language"')) {
+  failures.push("Shared Markdown renderer does not keep illustration tabs independent");
 }
 
 const validServerPath = resolveSiteRequest(path.join(projectRoot, "dist"), "/en/");

@@ -382,7 +382,15 @@ function tableCells(line) {
   return line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
 }
 
-export function renderMarkdown(markdown, sourcePath) {
+const programmingLanguages = new Set(["Python", "C++", "Java", "C#", "Go", "Swift", "JS", "TS", "Dart", "Rust", "C", "Kotlin", "Ruby"]);
+
+function tabListLabel(sourcePath, synchronized) {
+  if (sourcePath.startsWith("vi/")) return synchronized ? "Ví dụ theo ngôn ngữ lập trình" : "Các bước minh họa";
+  if (sourcePath.startsWith("ko/")) return synchronized ? "프로그래밍 언어 예제" : "그림 단계";
+  return synchronized ? "Programming language examples" : "Illustration steps";
+}
+
+export function renderMarkdown(markdown, sourcePath, tabState = { count: 0 }) {
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const output = [];
 
@@ -416,8 +424,38 @@ export function renderMarkdown(markdown, sourcePath) {
         : sourcePath.startsWith("ko/") ? "대화형 코드 시각화 열기 ↗" : "Open interactive code visualization ↗";
       const renderedContent = visualizationUrl
         ? `<p><a class="visualization-link" href="${escapeHtml(visualizationUrl)}" target="_blank" rel="noreferrer">${visualizationLabel}</a></p>`
-        : renderMarkdown(admonitionContent, sourcePath);
+        : renderMarkdown(admonitionContent, sourcePath, tabState);
       output.push(`<aside class="admonition admonition-${kind}"><strong>${escapeHtml(label)}</strong>${renderedContent}</aside>`);
+      continue;
+    }
+
+    if (/^===\s+"([^"]+)"/.test(line)) {
+      const tabs = [];
+      while (index < lines.length) {
+        const tab = lines[index].match(/^===\s+"([^"]+)"/);
+        if (!tab) break;
+        const content = [];
+        index += 1;
+        while (index < lines.length && (lines[index] === "" || /^\s{4}/.test(lines[index]))) {
+          content.push(lines[index].replace(/^\s{4}/, ""));
+          index += 1;
+        }
+        tabs.push({ label: tab[1], markdown: content.join("\n") });
+      }
+      if (tabs.length < 2) throw new Error(`A tab group in ${sourcePath} contains fewer than two choices`);
+
+      tabState.count += 1;
+      const groupId = `content-tabs-${tabState.count}`;
+      const synchronized = tabs.every((tab) => programmingLanguages.has(tab.label));
+      const tabButtons = tabs.map((tab, tabIndex) => {
+        const selected = tabIndex === 0;
+        return `<button type="button" role="tab" id="${groupId}-tab-${tabIndex + 1}" aria-controls="${groupId}-panel-${tabIndex + 1}" aria-selected="${selected}" tabindex="${selected ? "0" : "-1"}" data-tab-label="${escapeHtml(tab.label)}">${escapeHtml(tab.label)}</button>`;
+      }).join("");
+      const tabPanels = tabs.map((tab, tabIndex) => {
+        const selected = tabIndex === 0;
+        return `<div class="content-tabpanel" role="tabpanel" id="${groupId}-panel-${tabIndex + 1}" aria-labelledby="${groupId}-tab-${tabIndex + 1}"${selected ? "" : " hidden"}>${renderMarkdown(tab.markdown, sourcePath, tabState)}</div>`;
+      }).join("");
+      output.push(`<section class="content-tabs" data-content-tabs${synchronized ? ' data-tab-sync="language"' : ""}><div class="content-tablist" role="tablist" aria-label="${tabListLabel(sourcePath, synchronized)}">${tabButtons}</div><div class="content-tabpanels">${tabPanels}</div></section>`);
       continue;
     }
 
@@ -522,7 +560,7 @@ export function renderMarkdown(markdown, sourcePath) {
     index += 1;
     while (index < lines.length) {
       const next = lines[index].trimEnd();
-      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || next.startsWith("```") || next.trim() === "$$" || /^\s*(\d+\.|[-*])\s+/.test(next)) break;
+      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^===\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || next.startsWith("```") || next.trim() === "$$" || /^\s*(\d+\.|[-*])\s+/.test(next)) break;
       if (next.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1])) break;
       paragraph.push(next.trim());
       index += 1;
