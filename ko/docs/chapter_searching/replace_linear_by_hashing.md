@@ -1,24 +1,50 @@
-# 해싱으로 선형 탐색 최적화
+# 해시 테이블을 이용한 최적화
 
-해시 테이블은 추가 메모리로 인덱스를 만들어 반복 탐색의 평균 비용을 $O(n)$에서 $O(1)$로 줄일 수 있습니다.
+알고리즘 문제에서 **시간 복잡도를 낮추는 흔한 전략은 선형 탐색을 해시 테이블 조회로 바꾸는 것**입니다. 두 수의 합 문제는 시간과 공간의 교환을 잘 보여 줍니다.
 
-## 두 수의 합 예제
+!!! question
 
-모든 쌍을 확인하는 완전 탐색은 $O(n^2)$입니다.
+    정수 배열 `nums`와 목표값 `target`이 주어집니다. 합이 `target`인 두 원소를 찾아 그 인덱스를 반환하세요. 아무 해 하나만 반환하면 됩니다.
 
-![완전 탐색으로 두 수의 합 찾기](replace_linear_by_hashing.assets/two_sum_brute_force.png)
+## 선형 탐색: 공간을 아끼고 시간을 사용
+
+직접적인 방법은 모든 인덱스 쌍을 순회하는 것입니다. 중첩 반복문으로 각 쌍의 합을 검사하고 `target`과 같으면 두 인덱스를 바로 반환합니다.
+
+![선형 탐색으로 두 수의 합 풀기](replace_linear_by_hashing.assets/two_sum_brute_force.png)
 
 ```python
-def two_sum(values, target):
-    seen = {}
-    for index, value in enumerate(values):
-        complement = target - value
-        if complement in seen:
-            return [seen[complement], index]
-        seen[value] = index
-    return []
+# 잠긴 원문의 두 수의 합 완전 탐색 구현이 삽입됩니다.
 ```
 
-![해시 테이블로 두 수의 합 찾기](replace_linear_by_hashing.assets/two_sum_hashtable_step3.png)
+원소 수에 따라 쌍의 수가 제곱으로 증가하므로 시간 복잡도는 $O(n^2)$이고, 몇 개의 변수만 사용하므로 공간 복잡도는 $O(1)$입니다. 입력이 크면 배열의 나머지 부분에서 보수를 반복해서 찾는 비용이 빠르게 증가합니다.
 
-이 해법은 $O(n)$ 시간과 $O(n)$ 공간을 사용하며, 공간으로 시간을 줄이는 대표적인 사례입니다.
+## 해시 조회: 공간으로 시간을 교환
+
+반복해서 다시 찾는 대신, 이미 본 값을 키로 하고 그 인덱스를 값으로 하는 해시 테이블을 유지합니다. `nums[i]`를 처리할 때:
+
+1. `target - nums[i]`가 해시 테이블에 있는지 확인합니다. 있으면 저장된 인덱스와 `i`를 반환합니다.
+2. 아직 찾지 못했으면 `nums[i]`와 인덱스 `i`를 키-값 쌍으로 추가합니다.
+
+현재 원소를 넣기 전에 보수를 검사하면 같은 인덱스를 두 번 사용하는 일을 막을 수 있습니다.
+
+**1단계**
+
+![해시 테이블 두 수의 합 1단계](replace_linear_by_hashing.assets/two_sum_hashtable_step1.png)
+
+**2단계**
+
+![해시 테이블 두 수의 합 2단계](replace_linear_by_hashing.assets/two_sum_hashtable_step2.png)
+
+**3단계**
+
+![해시 테이블 두 수의 합 3단계](replace_linear_by_hashing.assets/two_sum_hashtable_step3.png)
+
+이 버전은 반복문 하나만 필요합니다.
+
+```python
+# 잠긴 원문의 해시 테이블 두 수의 합 구현이 삽입됩니다.
+```
+
+해시 조회는 시간 복잡도를 $O(n^2)$에서 평균 $O(n)$으로 낮추어 큰 데이터에서 효율을 크게 개선합니다.
+
+대신 테이블에 순회한 각 원소의 항목을 최대 하나씩 저장하므로 공간 복잡도는 $O(n)$입니다. **합리적인 시간-공간 교환이며 이 문제의 대표적인 최적 풀이입니다.** 시간 결론은 해시 함수가 키를 고르게 분산하고 충돌을 효율적으로 처리한다는 가정에 기반합니다.

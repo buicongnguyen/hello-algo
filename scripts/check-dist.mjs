@@ -204,7 +204,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_sorting/", count: 13, label: "Vietnamese Chapter 11" },
           { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Vietnamese Chapter 12" },
           { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Vietnamese Chapter 13" },
-          { prefix: "en/docs/chapter_dynamic_programming/", count: 9, label: "Vietnamese Chapter 14" }
+          { prefix: "en/docs/chapter_dynamic_programming/", count: 9, label: "Vietnamese Chapter 14" },
+          { prefix: "en/docs/chapter_greedy/", count: 7, label: "Vietnamese Chapter 15" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
@@ -216,7 +217,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_hashing/", count: 6, label: "Korean Chapter 6" },
           { prefix: "en/docs/chapter_tree/", count: 8, label: "Korean Chapter 7" },
           { prefix: "en/docs/chapter_heap/", count: 6, label: "Korean Chapter 8" },
-          { prefix: "en/docs/chapter_graph/", count: 6, label: "Korean Chapter 9" }
+          { prefix: "en/docs/chapter_graph/", count: 6, label: "Korean Chapter 9" },
+          { prefix: "en/docs/chapter_searching/", count: 8, label: "Korean Chapter 10" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -509,6 +511,11 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseSearchRevisited = await readFile(path.join(pilotDirectory, "nhin-lai-thuat-toan-tim-kiem.html"), "utf8");
   const vietnameseSearchExercises = await readFile(path.join(pilotDirectory, "bai-tap-tim-kiem.html"), "utf8");
   const koreanSearch = await readFile(path.join(koreanDirectory, "binary-search.html"), "utf8");
+  const koreanSearchInsertion = await readFile(path.join(koreanDirectory, "binary-search-insertion.html"), "utf8");
+  const koreanSearchEdge = await readFile(path.join(koreanDirectory, "binary-search-edge.html"), "utf8");
+  const koreanHashOptimization = await readFile(path.join(koreanDirectory, "replace-linear-by-hashing.html"), "utf8");
+  const koreanSearchRevisited = await readFile(path.join(koreanDirectory, "searching-algorithms-revisited.html"), "utf8");
+  const koreanSearchExercises = await readFile(path.join(koreanDirectory, "chapter-10-exercises.html"), "utf8");
   if (!vietnameseGraph.includes("graph_bfs.png") || !koreanGraph.includes("graph_bfs.png") || !vietnameseGraph.includes('<pre><code class="language-python"') || !koreanGraph.includes('<pre><code class="language-python"')) failures.push("Chapter 9 graph-traversal pages are missing diagrams or Python examples");
   if (!vietnameseGraphOperations.includes("adjacency_matrix_step5_remove_vertex.png") ||
       !vietnameseGraphOperations.includes("adjacency_list_step5_remove_vertex.png") ||
@@ -554,6 +561,26 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseSearchRevisited.includes("<table>") ||
       (vietnameseSearchExercises.match(/class="admonition/g) || []).length < 5) {
     failures.push("Vietnamese Chapter 10 is missing search traces, code tabs, comparison media/table, callouts, or exercises");
+  }
+  if (!koreanSearch.includes("binary_search_step7.png") ||
+      !koreanSearch.includes("binary_search_ranges.png") ||
+      (koreanSearch.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanSearchInsertion.includes("binary_search_insertion_step8.png") ||
+      (koreanSearchInsertion.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanSearchInsertion.match(/class="admonition/g) || []).length !== 3 ||
+      !koreanSearchEdge.includes("binary_search_edge_by_element.png") ||
+      !koreanSearchEdge.includes("binary_search_right_edge_by_left_edge.png") ||
+      (koreanSearchEdge.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanHashOptimization.includes("two_sum_hashtable_step3.png") ||
+      (koreanHashOptimization.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanSearchRevisited.includes("searching_algorithms.png") ||
+      !koreanSearchRevisited.includes("<table>") ||
+      !koreanSearchRevisited.includes('class="admonition admonition-tip"') ||
+      (koreanSearchExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (koreanSearchExercises.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
+      !koreanSearchExercises.includes("<table>") ||
+      !koreanSearchExercises.includes("leetcode.com/problems/search-insert-position")) {
+    failures.push("Korean Chapter 10 is missing complete search traces, code tabs, comparison media/table, callouts, or exercises");
   }
 
   const vietnameseSort = await readFile(path.join(pilotDirectory, "sap-xep-nhanh.html"), "utf8");
@@ -672,7 +699,10 @@ export async function checkBuiltSite(outputRoot) {
     failures.push("Vietnamese Chapter 14 is missing complete code tabs, state derivations, dynamic-programming traces, callouts, or exercises");
   }
 
+  const vietnameseGreedyAlgorithm = await readFile(path.join(pilotDirectory, "thuat-toan-tham-lam.html"), "utf8");
   const vietnameseGreedy = await readFile(path.join(pilotDirectory, "ba-lo-phan-so.html"), "utf8");
+  const vietnameseMaxCapacity = await readFile(path.join(pilotDirectory, "suc-chua-lon-nhat.html"), "utf8");
+  const vietnameseMaxProduct = await readFile(path.join(pilotDirectory, "tich-cat-lon-nhat.html"), "utf8");
   const koreanGreedy = await readFile(path.join(koreanDirectory, "fractional-knapsack.html"), "utf8");
   const koreanDynamicExercises = await readFile(path.join(koreanDirectory, "dynamic-programming-exercises.html"), "utf8");
   const vietnameseGreedyExercises = await readFile(path.join(pilotDirectory, "bai-tap-tham-lam.html"), "utf8");
@@ -680,6 +710,23 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseAppendix = await readFile(path.join(pilotDirectory, "cai-dat-moi-truong-lap-trinh.html"), "utf8");
   const koreanAppendix = await readFile(path.join(koreanDirectory, "programming-environment.html"), "utf8");
   if (!vietnameseGreedy.includes("fractional_knapsack_example.png") || !koreanGreedy.includes("fractional_knapsack_example.png") || !vietnameseGreedy.includes('<pre><code class="language-python"') || !koreanGreedy.includes('<pre><code class="language-python"')) failures.push("Chapter 15 fractional-knapsack pages are missing diagrams or Python examples");
+  if ((vietnameseGreedyAlgorithm.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseGreedyAlgorithm.includes("coin_change_greedy_vs_dp.png") ||
+      (vietnameseGreedyAlgorithm.match(/class="admonition/g) || []).length !== 2 ||
+      (vietnameseGreedy.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseGreedy.includes("fractional_knapsack_area_chart.png") ||
+      (vietnameseMaxCapacity.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseMaxCapacity.includes("max_capacity_greedy_step9.png") ||
+      !vietnameseMaxCapacity.includes("max_capacity_skipped_states.png") ||
+      (vietnameseMaxCapacity.match(/class="math-block"/g) || []).length !== 2 ||
+      (vietnameseMaxProduct.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseMaxProduct.includes("max_product_cutting_greedy_infer2.png") ||
+      (vietnameseMaxProduct.match(/class="math-block"/g) || []).length !== 4 ||
+      (vietnameseGreedyExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (vietnameseGreedyExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !vietnameseGreedyExercises.includes("Ba lô phân số")) {
+    failures.push("Vietnamese Chapter 15 is missing complete code tabs, greedy traces, derivations, callouts, or exercises");
+  }
   if (!vietnameseDynamicExercises.includes('class="admonition admonition-success"') || !koreanDynamicExercises.includes('class="admonition admonition-success"') || !vietnameseDynamicExercises.includes("leetcode.com/problems/climbing-stairs") || !koreanDynamicExercises.includes("leetcode.com/problems/climbing-stairs")) failures.push("Chapter 14 exercise pages are missing rendered answers or programming links");
   if (!vietnameseGreedyExercises.includes('class="admonition admonition-success"') || !koreanGreedyExercises.includes('class="admonition admonition-success"') || !vietnameseGreedyExercises.includes("10 + 1 + 1 + 1 + 1") || !koreanGreedyExercises.includes("10 + 1 + 1 + 1 + 1")) failures.push("Chapter 15 exercise pages are missing rendered answers or greedy counterexamples");
   if (!vietnameseGreedyExercises.includes("kg, nên B có mật độ giá trị cao hơn và được đưa vào trước.</li>")) failures.push("Wrapped Markdown list items are split outside their list item");

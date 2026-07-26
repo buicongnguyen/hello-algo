@@ -1,25 +1,103 @@
 # 이진 탐색 삽입 위치
 
-삽입 위치는 목표를 추가한 뒤에도 배열이 정렬되도록 하는 인덱스입니다. 같은 값이 이미 있다면 첫 값 앞이나 마지막 값 뒤를 선택할 수 있습니다.
+이진 탐색은 목표 원소를 찾는 데만 쓰이지 않습니다. 값을 삽입한 뒤에도 배열의 정렬 순서를 유지할 위치를 찾는 등 여러 변형 문제를 해결할 수 있습니다.
 
-![삽입 위치 예제](binary_search_insertion.assets/binary_search_insertion_example.png)
+## 중복 원소가 없는 경우
 
-## 목표와 같은 값 앞에 삽입
+!!! question
+
+    길이가 $n$이고 오름차순이며 중복이 없는 배열 `nums`와 `target`이 주어집니다. 순서를 유지하도록 `target`을 삽입하세요. 이미 같은 값이 있으면 그 값의 왼쪽에 새 값을 넣습니다. 삽입 뒤 `target`의 인덱스를 반환하세요.
+
+![삽입 위치 예시 데이터](binary_search_insertion.assets/binary_search_insertion_example.png)
+
+앞 절의 이진 탐색을 재사용하려면 두 질문에 답해야 합니다.
+
+**질문 1: 배열에 `target`이 있으면 삽입 위치가 그 원소의 인덱스와 같은가요?**
+
+문제는 같은 원소의 왼쪽에 삽입하라고 요구합니다. 새 값은 기존 `target`의 위치를 차지하고 기존 값과 뒤의 원소들은 오른쪽으로 이동합니다. 따라서 목표가 이미 있으면 삽입 위치는 그 원소의 인덱스입니다.
+
+**질문 2: 배열에 `target`이 없으면 삽입 위치는 어디인가요?**
+
+탐색 중 `nums[m] < target`이면 포인터 $i$가 오른쪽으로 이동하며 목표보다 크거나 같은 첫 원소에 가까워집니다. 마찬가지로 $j$는 목표보다 작거나 같은 마지막 원소에 가까워집니다.
+
+반복이 끝나면 $i$는 `target`보다 큰 첫 원소를, $j$는 `target`보다 작은 마지막 원소를 가리킵니다. 따라서 **배열에 목표가 없을 때 삽입 위치는 $i$입니다**.
+
+종료 시 두 포인터는 서로 이웃한 경계를 나타냅니다. `j`의 왼쪽은 모두 목표보다 작고, 포인터 $i$부터 오른쪽은 모두 목표보다 큽니다. 두 영역 사이가 정렬 순서를 깨뜨리지 않고 새 값을 넣을 수 있는 유일한 위치입니다.
 
 ```python
-def insertion_index(values, target):
-    left, right = 0, len(values)
-    while left < right:
-        middle = (left + right) // 2
-        if values[middle] < target:
-            left = middle + 1
-        else:
-            right = middle
-    return left
+# 잠긴 원문의 중복 없는 삽입 위치 구현이 삽입됩니다.
 ```
 
-## 목표와 같은 값 뒤에 삽입
+이 결론은 양쪽 경계에서도 맞습니다. 목표가 모든 원소보다 작으면 왼쪽 포인터가 배열 시작에서 멈추고, 모든 원소보다 크면 마지막 원소 바로 뒤, 즉 덧붙일 위치에서 멈춥니다.
 
-조건을 `values[middle] <= target`으로 바꾸어 오른쪽을 계속 탐색합니다. 두 방식 모두 $O(\log n)$입니다.
+## 중복 원소가 있는 경우
 
-![삽입 위치 탐색 과정](binary_search_insertion.assets/binary_search_insertion_step8.png)
+!!! question
+
+    앞 문제와 같지만 배열에 중복 원소가 있을 수 있습니다. 나머지 요구 사항은 같습니다.
+
+배열에 `target`과 같은 원소가 여러 개 있으면 일반 이진 탐색은 임의의 한 인덱스만 반환하며 **목표와 같은 원소가 왼쪽과 오른쪽에 얼마나 더 있는지는 알려 주지 않습니다**.
+
+가장 왼쪽에 삽입해야 하므로 `target`의 가장 왼쪽 인덱스를 찾아야 합니다. 직접적인 방법은:
+
+1. 이진 탐색으로 한 `target`의 인덱스 $k$를 찾습니다.
+2. $k$에서 왼쪽으로 선형 순회하여 첫 번째 출현 위치를 반환합니다.
+
+![중복 원소가 있을 때 선형으로 삽입 위치 찾기](binary_search_insertion.assets/binary_search_insertion_naive.png)
+
+정답은 맞지만 선형 순회가 포함되어 시간 복잡도가 $O(n)$입니다. 목표와 같은 원소가 많으면 이진 탐색의 이점이 사라집니다.
+
+이진 탐색 자체를 확장할 수 있습니다. 매 반복에서 가운데 $m$을 계산하고 목표와 비교합니다.
+
+- `nums[m] < target` 또는 `nums[m] > target`이면 아직 답을 찾지 못했으므로 일반 방식으로 범위를 좁혀 $i$와 $j$를 `target`에 가깝게 합니다.
+- `nums[m] == target`이면 목표보다 작은 원소는 $[i, m - 1]$에만 있을 수 있습니다. $j = m - 1$로 두어 왼쪽 탐색을 계속하고, $j$를 목표보다 작은 원소에 가깝게 합니다.
+
+반복이 끝나면 $i$는 가장 왼쪽 `target`을, $j$는 `target`보다 작은 마지막 원소를 가리킵니다. 따라서 $i$가 삽입 위치입니다.
+
+**1단계**
+
+![중복 삽입 위치 1단계](binary_search_insertion.assets/binary_search_insertion_step1.png)
+
+**2단계**
+
+![중복 삽입 위치 2단계](binary_search_insertion.assets/binary_search_insertion_step2.png)
+
+**3단계**
+
+![중복 삽입 위치 3단계](binary_search_insertion.assets/binary_search_insertion_step3.png)
+
+**4단계**
+
+![중복 삽입 위치 4단계](binary_search_insertion.assets/binary_search_insertion_step4.png)
+
+**5단계**
+
+![중복 삽입 위치 5단계](binary_search_insertion.assets/binary_search_insertion_step5.png)
+
+**6단계**
+
+![중복 삽입 위치 6단계](binary_search_insertion.assets/binary_search_insertion_step6.png)
+
+**7단계**
+
+![중복 삽입 위치 7단계](binary_search_insertion.assets/binary_search_insertion_step7.png)
+
+**8단계**
+
+![중복 삽입 위치 8단계](binary_search_insertion.assets/binary_search_insertion_step8.png)
+
+아래 코드에서 `nums[m] > target`과 `nums[m] == target`은 같은 갱신을 수행하므로 합칠 수 있습니다. 하지만 나누어 두면 각 경우의 목적이 더 명확합니다.
+
+```python
+# 잠긴 원문의 중복 삽입 위치 구현이 삽입됩니다.
+```
+
+!!! tip
+
+    이 절의 코드는 닫힌 구간을 사용합니다. 왼쪽 닫힘·오른쪽 열림 버전을 직접 구현하고 반복 조건과 경계 갱신을 다시 확인해 보세요.
+
+일반적으로 이진 탐색은 두 포인터 $i$와 $j$에 각자의 목표를 정하는 과정입니다. 목표는 특정 원소일 수도 있고 `target`보다 작은 원소처럼 값의 영역일 수도 있습니다.
+
+매 반복마다 $i$와 $j$는 정한 목표에 가까워집니다. 마지막에는 답을 찾거나 반환해야 할 경계에서 서로 지나칩니다. 이런 경계 불변식을 이해하면 삽입 위치, 왼쪽·오른쪽 경계와 여러 단조 문제에 이진 탐색을 적용하기 쉽습니다.
+
+구현을 검토할 때는 “같은 값을 만났을 때 어느 쪽을 계속 탐색하는가”를 먼저 확인해야 합니다. 왼쪽 삽입 위치에서는 같은 값을 답 후보로 보더라도 왼쪽 구간을 버리지 않습니다. 이 규칙 덕분에 중복 원소가 아무리 많아도 선형 순회 없이 로그 시간 안에 가장 왼쪽 위치를 얻습니다.
