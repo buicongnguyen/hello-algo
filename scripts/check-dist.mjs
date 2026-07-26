@@ -197,12 +197,14 @@ export async function checkBuiltSite(outputRoot) {
       ? [
           { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" },
           { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" },
-          { prefix: "en/docs/chapter_tree/", count: 8, label: "Vietnamese Chapter 7" }
+          { prefix: "en/docs/chapter_tree/", count: 8, label: "Vietnamese Chapter 7" },
+          { prefix: "en/docs/chapter_heap/", count: 6, label: "Vietnamese Chapter 8" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
           { prefix: "en/docs/chapter_introduction/", count: 4, label: "Korean Chapter 1" },
-          { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Korean Chapter 2" }
+          { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Korean Chapter 2" },
+          { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Korean Chapter 3" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -350,6 +352,8 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseAvl = await readFile(path.join(pilotDirectory, "cay-avl.html"), "utf8");
   const koreanTree = await readFile(path.join(koreanDirectory, "binary-tree.html"), "utf8");
   const vietnameseHeap = await readFile(path.join(pilotDirectory, "cau-truc-heap.html"), "utf8");
+  const vietnameseBuildHeap = await readFile(path.join(pilotDirectory, "xay-dung-heap.html"), "utf8");
+  const vietnameseTopK = await readFile(path.join(pilotDirectory, "top-k.html"), "utf8");
   const koreanHeap = await readFile(path.join(koreanDirectory, "heap.html"), "utf8");
   if (!vietnameseTree.includes("binary_tree_definition.png") || !koreanTree.includes("binary_tree_definition.png") || !vietnameseTree.includes('<pre><code class="language-python"') || !koreanTree.includes('<pre><code class="language-python"')) failures.push("Chapter 7 binary-tree pages are missing diagrams or Python examples");
   if (!vietnameseAvl.includes("avltree_rotation_cases.png") ||
@@ -358,6 +362,28 @@ export async function checkBuiltSite(outputRoot) {
     failures.push("Vietnamese AVL page is missing rotation diagrams, Python examples, or its rotation table");
   }
   if (!vietnameseHeap.includes("min_heap_and_max_heap.png") || !koreanHeap.includes("min_heap_and_max_heap.png") || !vietnameseHeap.includes('<pre><code class="language-python"') || !koreanHeap.includes('<pre><code class="language-python"')) failures.push("Chapter 8 heap pages are missing diagrams or Python examples");
+  if (!vietnameseHeap.includes("heap_push_step9.png") ||
+      !vietnameseHeap.includes("heap_pop_step10.png") ||
+      !vietnameseHeap.includes("<table>") ||
+      !vietnameseBuildHeap.includes("heapify_operations_count.png") ||
+      (vietnameseBuildHeap.match(/class="math-block"/g) || []).length < 4 ||
+      !vietnameseTopK.includes("top_k_heap_step9.png") ||
+      !vietnameseTopK.includes('<pre><code class="language-python"')) {
+    failures.push("Vietnamese Chapter 8 is missing heap steps, its operation table, complexity derivation, or Top-k code");
+  }
+
+  const koreanClassification = await readFile(path.join(koreanDirectory, "data-structure-classification.html"), "utf8");
+  const koreanBasicTypes = await readFile(path.join(koreanDirectory, "basic-data-types.html"), "utf8");
+  const koreanCharacterEncoding = await readFile(path.join(koreanDirectory, "character-encoding.html"), "utf8");
+  if (!koreanClassification.includes("classification_logic_structure.png") ||
+      !koreanClassification.includes("classification_phisical_structure.png") ||
+      !koreanBasicTypes.includes("<table>") ||
+      !koreanBasicTypes.includes('<pre><code class="language-python"') ||
+      !koreanNumberEncoding.includes("ieee_754_float.png") ||
+      (koreanNumberEncoding.match(/class="math-block"/g) || []).length < 10 ||
+      !koreanCharacterEncoding.includes("utf-8_hello_algo.png")) {
+    failures.push("Korean Chapter 3 is missing classification media, basic-type code/table, number mathematics, or encoding media");
+  }
 
   const vietnameseGraph = await readFile(path.join(pilotDirectory, "duyet-do-thi.html"), "utf8");
   const koreanGraph = await readFile(path.join(koreanDirectory, "graph-traversal.html"), "utf8");
