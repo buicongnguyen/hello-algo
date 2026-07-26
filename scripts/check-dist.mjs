@@ -4,6 +4,7 @@ import path from "node:path";
 import { localizeSourceExamples, sourceCodeLanguages } from "./source-code-tabs.mjs";
 import { createTranslationRegistry, englishReaderHref, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
 import { createTranslationParityReport } from "./translation-parity.mjs";
+import { auditFullBook } from "./check-full-book.mjs";
 
 const katexCssUrl = "https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css";
 const katexCssIntegrity = "sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1";
@@ -92,6 +93,7 @@ async function localizedCodeStats({ projectRoot, sourcePath, sourceMarkdown, tar
     renderedGroups: (html.match(/class="content-tabs"/g) || []).length,
     renderedTabs: (html.match(/role="tab"/g) || []).length,
     renderedPanels: (html.match(/role="tabpanel"/g) || []).length,
+    focusablePanels: (html.match(/role="tabpanel" tabindex="0"/g) || []).length,
     selectedTabs: (html.match(/aria-selected="true"/g) || []).length,
     renderedCodeBlocks: (html.match(/<pre><code(?: class="language-[^"]+")?>/g) || []).length
   };
@@ -110,10 +112,15 @@ export async function checkBuiltSite(outputRoot) {
       failures.push(`${relativeHtml} does not use the current Atlas script cache key`);
     }
     const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
-    if (readerPage && (!html.includes("book.js?v=20260726c") || !html.includes("book.css?v=20260726c"))) {
+    if (readerPage && (!html.includes("book.js?v=20260727a") || !html.includes("book.css?v=20260727a"))) {
       failures.push(`${relativeHtml} does not use the current reader asset cache keys`);
     }
     if (readerPage) {
+      const themeLabel = relativeHtml.startsWith("vi/")
+        ? "Giao diện sáng"
+        : relativeHtml.startsWith("ko/")
+          ? "밝은 테마"
+          : "Light theme";
       const headingIds = [...html.matchAll(/<h[1-4] id="([^"]+)">/g)].map((match) => match[1]);
       const headingAnchors = [...html.matchAll(/<a class="heading-anchor" href="#([^"]+)"/g)].map((match) => match[1]);
       if (!headingIds.length || JSON.stringify(headingIds) !== JSON.stringify(headingAnchors)) {
@@ -123,8 +130,15 @@ export async function checkBuiltSite(outputRoot) {
         failures.push(`${relativeHtml} does not expose the complete EN/VI/KO/x-default alternate set`);
       }
       if (!html.includes('id="reader-search-open"') || !html.includes('id="reader-search-input"') ||
+          !html.includes('class="reader-search" id="reader-search" role="search"') ||
           !html.includes('class="article-outline"')) {
         failures.push(`${relativeHtml} is missing search or the current-article outline`);
+      }
+      if (/<img\b(?![^>]*\balt="[^"]+")[^>]*>/i.test(html)) {
+        failures.push(`${relativeHtml} contains an image without meaningful alternative text`);
+      }
+      if (!html.includes(`id="reader-theme" type="button" aria-label="${themeLabel}" aria-pressed="false"`)) {
+        failures.push(`${relativeHtml} does not expose the stable localized theme state`);
       }
     }
     if (readerPage && (!html.includes(`href="${katexCssUrl}" integrity="${katexCssIntegrity}"`) ||
@@ -170,6 +184,15 @@ export async function checkBuiltSite(outputRoot) {
   }
 
   const pilotDirectory = path.join(outputRoot, "vi", "learn");
+  const fullBookAudit = JSON.parse(await readFile(path.join(outputRoot, "full-book-audit.json"), "utf8"));
+  const expectedFullBookAudit = await auditFullBook();
+  if (JSON.stringify(fullBookAudit) !== JSON.stringify(expectedFullBookAudit) ||
+      fullBookAudit.failures.length !== 0 ||
+      fullBookAudit.source.documents !== 119 ||
+      fullBookAudit.localized.vi.structurallyReady !== 119 ||
+      fullBookAudit.localized.ko.structurallyReady !== 119) {
+    failures.push("full-book-audit.json is stale, incomplete, or does not prove all three editions");
+  }
   const pilotPages = (await readdir(pilotDirectory)).filter((file) => file.endsWith(".html"));
   const translationStatus = JSON.parse(await readFile(path.join(outputRoot, "vi", "translation-status.json"), "utf8"));
   const koreanStatus = JSON.parse(await readFile(path.join(outputRoot, "ko", "translation-status.json"), "utf8"));
@@ -291,6 +314,7 @@ export async function checkBuiltSite(outputRoot) {
     if (codeStats.renderedGroups !== codeStats.expectedGroups ||
         codeStats.renderedTabs !== codeStats.expectedTabs ||
         codeStats.renderedPanels !== codeStats.expectedTabs ||
+        codeStats.focusablePanels !== codeStats.expectedTabs ||
         codeStats.selectedTabs !== codeStats.expectedGroups ||
         codeStats.renderedCodeBlocks !== codeStats.expectedCodeBlocks) {
       failures.push(`${pilotPage} does not preserve all authored and official multilingual code examples`);
@@ -377,6 +401,7 @@ export async function checkBuiltSite(outputRoot) {
     if (codeStats.renderedGroups !== codeStats.expectedGroups ||
         codeStats.renderedTabs !== codeStats.expectedTabs ||
         codeStats.renderedPanels !== codeStats.expectedTabs ||
+        codeStats.focusablePanels !== codeStats.expectedTabs ||
         codeStats.selectedTabs !== codeStats.expectedGroups ||
         codeStats.renderedCodeBlocks !== codeStats.expectedCodeBlocks) {
       failures.push(`${koreanPage} does not preserve all authored and official multilingual code examples`);
@@ -1023,10 +1048,12 @@ export async function checkBuiltSite(outputRoot) {
     const renderedGroups = (englishPage.match(/class="content-tabs"/g) || []).length;
     const renderedTabs = (englishPage.match(/role="tab"/g) || []).length;
     const renderedPanels = (englishPage.match(/role="tabpanel"/g) || []).length;
+    const focusablePanels = (englishPage.match(/role="tabpanel" tabindex="0"/g) || []).length;
     const selectedTabs = (englishPage.match(/aria-selected="true"/g) || []).length;
     expectedEnglishTabGroups += expectedGroups;
     expectedEnglishTabs += expectedTabs;
-    if (renderedGroups !== expectedGroups || renderedTabs !== expectedTabs || renderedPanels !== expectedTabs || selectedTabs !== expectedGroups) {
+    if (renderedGroups !== expectedGroups || renderedTabs !== expectedTabs || renderedPanels !== expectedTabs ||
+        focusablePanels !== expectedTabs || selectedTabs !== expectedGroups) {
       failures.push(`${route} does not preserve its ${expectedGroups} code groups and ${expectedTabs} tab choices`);
     }
     const vietnameseDocument = translationRegistry.byLanguage.vi.get(source);

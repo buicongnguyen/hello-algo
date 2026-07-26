@@ -39,6 +39,7 @@ const requiredFiles = [
   "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs",
   "scripts/source-code-tabs.mjs",
   "scripts/translation-parity.mjs",
+  "scripts/check-full-book.mjs",
   "scripts/markdown-renderer.mjs",
   "scripts/server-path.mjs",
   ".github/workflows/ci.yml",
@@ -61,7 +62,8 @@ const requiredFiles = [
   "NEXT_CONTENT_RELEASE_PLAN_V1_15.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_16.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_17.md",
-  "NEXT_CONTENT_RELEASE_PLAN_V1_18.md"
+  "NEXT_CONTENT_RELEASE_PLAN_V1_18.md",
+  "NEXT_CONTENT_RELEASE_PLAN_V1_19.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -131,6 +133,7 @@ for (const [sourcePath, ariaLabel] of tabFixtureExpectations) {
   if (!renderedTabs.includes(`role="tablist" aria-label="${ariaLabel}"`) ||
       (renderedTabs.match(/role="tab"/g) || []).length !== 2 ||
       (renderedTabs.match(/role="tabpanel"/g) || []).length !== 2 ||
+      (renderedTabs.match(/role="tabpanel" tabindex="0"/g) || []).length !== 2 ||
       (renderedTabs.match(/aria-selected="true"/g) || []).length !== 1 ||
       !renderedTabs.includes('data-tab-sync="language"')) {
     failures.push(`Shared Markdown renderer does not create accessible synchronized tabs for ${sourcePath}`);
@@ -378,6 +381,11 @@ if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-m
 if (!bookJs.includes('["light", "dark"].includes(value)') || !bookJs.includes("try {") || !bookJs.includes("catch {")) {
   failures.push("Reader theme state is not validated or storage-safe");
 }
+if (!bookJs.includes("syncThemeButton") || !bookJs.includes('setAttribute("aria-pressed"') ||
+    !bookJs.includes('"Light theme"') || !bookJs.includes('"Giao diện sáng"') ||
+    !bookJs.includes('"밝은 테마"')) {
+  failures.push("Reader theme control does not expose its current state in all three languages");
+}
 if (!bookCss.includes(".content-tablist") || !bookCss.includes(".content-tabpanel[hidden]") ||
     !bookJs.includes("hello-algo-code-language") || !bookJs.includes("aria-selected") ||
     !bookJs.includes("ArrowLeft") || !bookJs.includes("ArrowRight")) {
@@ -387,6 +395,11 @@ if (!bookCss.includes(".article-outline") || !bookCss.includes(".reader-search")
     !bookJs.includes('fetch("search-index.json")') || !bookJs.includes("normalizeSearchText") ||
     !bookJs.includes("reader-search-open")) {
   failures.push("Shared reader assets are missing article outlines, permalinks, or lazy search");
+}
+if (!bookCss.includes("@media (prefers-reduced-motion: reduce)") ||
+    !bookCss.includes("animation-duration: .01ms") ||
+    !bookCss.includes("animation-iteration-count: 1")) {
+  failures.push("Reader reduced-motion CSS does not suppress both transitions and animations");
 }
 if (!bookCss.includes(".math-block .katex-display") || !bookJs.includes("globalThis.katex?.render") ||
     !bookJs.includes("TextDecoder") || !bookJs.includes('querySelectorAll("[data-math]")') ||

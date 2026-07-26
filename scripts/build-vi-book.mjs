@@ -398,9 +398,9 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260726c">
+  <link rel="stylesheet" href="book.css?v=20260727a">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
-  <script src="book.js?v=20260726c" defer></script>
+  <script src="book.js?v=20260727a" defer></script>
 </head>
 <body data-translation-status="${vietnameseDocument.status}">
   <a class="skip-link" href="#article">Bỏ qua để đến bài đọc</a>
@@ -413,7 +413,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
       <a class="active" href="${canonicalName || "./"}" lang="vi" hreflang="vi" aria-current="page">VI</a>
       <a href="${englishUrl}" lang="en" hreflang="en" aria-label="Đọc trang tương ứng bằng tiếng Anh">EN</a>
       <button id="reader-search-open" type="button" aria-label="Tìm trong sách">⌕</button>
-      <button id="reader-theme" type="button" aria-label="Đổi giao diện sáng hoặc tối">◐</button>
+      <button id="reader-theme" type="button" aria-label="Giao diện sáng" aria-pressed="false">◐</button>
     </nav>
   </header>
   <div class="reader-shell">
@@ -423,7 +423,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
       <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
     <main class="reader-main">
-      <section class="reader-search" id="reader-search" hidden aria-label="Tìm trong sách">
+      <section class="reader-search" id="reader-search" role="search" hidden aria-label="Tìm trong sách">
         <div><label for="reader-search-input">Tìm trong 119 tài liệu</label><button id="reader-search-close" type="button" aria-label="Đóng tìm kiếm">×</button></div>
         <input id="reader-search-input" type="search" autocomplete="off" placeholder="Thuật toán, cấu trúc dữ liệu, tiêu đề…" data-empty-label="Không tìm thấy kết quả">
         <ul id="reader-search-results" aria-live="polite"></ul>

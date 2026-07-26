@@ -19,14 +19,28 @@ const saveTheme = (value) => {
 };
 const savedTheme = readStoredTheme();
 const mobileReader = matchMedia("(max-width: 820px)");
+const themeLabels = {
+  en: "Light theme",
+  vi: "Giao diện sáng",
+  ko: "밝은 테마"
+};
 
 if (savedTheme) root.dataset.theme = savedTheme;
+
+function syncThemeButton() {
+  if (!themeButton) return;
+  const currentTheme = root.dataset.theme === "light" ? "light" : "dark";
+  themeButton.setAttribute("aria-pressed", String(currentTheme === "light"));
+  themeButton.setAttribute("aria-label", themeLabels[document.documentElement.lang] || themeLabels.en);
+}
 
 themeButton?.addEventListener("click", () => {
   const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
   root.dataset.theme = nextTheme;
   saveTheme(nextTheme);
+  syncThemeButton();
 });
+syncThemeButton();
 
 function setMenu(open) {
   sidebar.classList.toggle("open", open);

@@ -8,6 +8,7 @@ import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { createTranslationParityReport } from "./translation-parity.mjs";
 import { englishReaderCatalog } from "./translation-registry.mjs";
+import { auditFullBook } from "./check-full-book.mjs";
 
 await import("./check-site.mjs");
 await import("./check-javascript-examples.mjs");
@@ -31,6 +32,12 @@ if (path.dirname(outputRoot) !== projectRoot || path.basename(outputRoot) !== "d
 
 await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
+
+const fullBookAudit = await auditFullBook();
+if (fullBookAudit.failures.length) {
+  throw new Error("Full-book audit failed before build:\n" + fullBookAudit.failures.map((failure) => `- ${failure}`).join("\n"));
+}
+await writeFile(path.join(outputRoot, "full-book-audit.json"), JSON.stringify(fullBookAudit, null, 2) + "\n");
 
 for (const file of sharedFiles) {
   await cp(path.join(projectRoot, file), path.join(outputRoot, file));

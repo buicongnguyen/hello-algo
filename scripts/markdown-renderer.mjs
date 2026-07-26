@@ -241,7 +241,7 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, head
       }).join("");
       const tabPanels = tabs.map((tab, tabIndex) => {
         const selected = tabIndex === 0;
-        return `<div class="content-tabpanel" role="tabpanel" id="${groupId}-panel-${tabIndex + 1}" aria-labelledby="${groupId}-tab-${tabIndex + 1}"${selected ? "" : " hidden"}>${renderMarkdown(tab.markdown, sourcePath, tabState)}</div>`;
+        return `<div class="content-tabpanel" role="tabpanel" tabindex="0" id="${groupId}-panel-${tabIndex + 1}" aria-labelledby="${groupId}-tab-${tabIndex + 1}"${selected ? "" : " hidden"}>${renderMarkdown(tab.markdown, sourcePath, tabState)}</div>`;
       }).join("");
       output.push(`<section class="content-tabs" data-content-tabs${synchronized ? ' data-tab-sync="language"' : ""}><div class="content-tablist" role="tablist" aria-label="${tabListLabel(sourcePath, synchronized)}">${tabButtons}</div><div class="content-tabpanels">${tabPanels}</div></section>`);
       continue;
