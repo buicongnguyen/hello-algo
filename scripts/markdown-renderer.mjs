@@ -93,6 +93,8 @@ function renderInline(value) {
   };
   const safeUrl = /^(?:https?:\/\/[^\s"'<>]+|mailto:[^\s"'<>]+|#[a-zA-Z0-9_-]+|\.{0,2}\/[a-zA-Z0-9_./#-]*|[a-zA-Z0-9_./-]+(?:#[a-zA-Z0-9_-]+)?)$/;
   const protectedValue = value
+    .replaceAll("<u>", () => protect("<u>"))
+    .replaceAll("</u>", () => protect("</u>"))
     .replace(/`([^`]+)`/g, (_, code) => protect(`<code>${escapeHtml(code)}</code>`))
     .replace(/\$([^$]+)\$/g, (_, expression) => {
       return protect(`<span class="math" data-math="${encodeMath(expression)}">${escapeHtml(formatMath(expression))}</span>`);
@@ -361,4 +363,3 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, head
 
   return output.join("\n");
 }
-

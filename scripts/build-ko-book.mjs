@@ -223,7 +223,7 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
   await mkdir(coverOutput, { recursive: true });
   for (const cover of ["chapter_hello_algo.jpg", "chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg", "chapter_data_structure.jpg", "chapter_array_and_linkedlist.jpg", "chapter_stack_and_queue.jpg", "chapter_hashing.jpg", "chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg", "chapter_backtracking.jpg", "chapter_dynamic_programming.jpg", "chapter_greedy.jpg", "chapter_appendix.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   for (const [chapter, directory] of [
-    ["chapter_preface", "about_the_book.assets"], ["chapter_introduction", "algorithms_are_everywhere.assets"],
+    ["chapter_preface", "about_the_book.assets"], ["chapter_preface", "suggestions.assets"], ["chapter_introduction", "algorithms_are_everywhere.assets"],
     ["chapter_data_structure", "classification_of_data_structure.assets"], ["chapter_data_structure", "number_encoding.assets"], ["chapter_data_structure", "character_encoding.assets"],
     ["chapter_array_and_linkedlist", "array.assets"], ["chapter_array_and_linkedlist", "linked_list.assets"], ["chapter_array_and_linkedlist", "ram_and_cache.assets"],
     ["chapter_stack_and_queue", "stack.assets"], ["chapter_stack_and_queue", "queue.assets"], ["chapter_stack_and_queue", "deque.assets"],
@@ -245,7 +245,9 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
   }
   const motionOutput = path.join(bookOutput, "assets", "index.assets");
   await mkdir(motionOutput, { recursive: true });
-  await cp(path.join(projectRoot, "en", "docs", "index.assets", "animation.gif"), path.join(motionOutput, "animation.gif"));
+  for (const asset of ["animation.gif", "running_code.gif", "comment.gif"]) {
+    await cp(path.join(projectRoot, "en", "docs", "index.assets", asset), path.join(motionOutput, asset));
+  }
   const searchIndex = [];
   for (const [index, page] of pages.entries()) {
     const koreanDocument = registry.byLanguage.ko.get(page.source);

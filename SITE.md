@@ -30,9 +30,15 @@ Translation governance lives under `vi/`: a versioned glossary, style guide, con
 
 The complete working plan is in [VIETNAMESE_TRANSLATION_PLAN.md](VIETNAMESE_TRANSLATION_PLAN.md).
 
+The v1.2 content wave completes structural parity for all six Vietnamese Chapter 5 documents: the chapter opening, stack, queue, deque, summary, and exercises. Their official diagrams, operation tables, complexity notation, callouts, and 13-language code groups are preserved inline. The pages remain drafts pending independent technical and Vietnamese-language review.
+
 ## Korean draft
 
 The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains all 119 source-locked drafts with exact Vietnamese and English counterpart links. Documents preserve the official diagrams and 13-language code groups; condensed prose remains draft until content-parity and review gates pass. Governance files live under `ko/`.
+
+The v1.2 content wave also completes structural parity for the four-document Korean Preface, including audience, prerequisites, acknowledgements, reading conventions, animated guidance, local code setup, discussion guidance, and learning roadmap. These pages remain drafts pending independent technical and Korean-language review.
+
+The implemented scope and the following Vietnamese Chapter 6 / Korean Chapter 1 release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN.md](NEXT_CONTENT_RELEASE_PLAN.md).
 
 ## Shared Atlas experience
 

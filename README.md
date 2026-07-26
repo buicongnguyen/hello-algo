@@ -74,6 +74,7 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 - [Trình đọc tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện có đủ 119/119 tuyến tài liệu từ trang chủ sách, *Before Starting*, Chương 0–16, bài tập và tài liệu tham khảo. Tất cả vẫn là bản nháp chờ báo cáo đối chiếu cấu trúc cùng phản biện kỹ thuật/ngôn ngữ; mỗi trang mở đúng nội dung tiếng Anh và tiếng Hàn tương ứng.
 - [Kế hoạch Việt hóa](VIETNAMESE_TRANSLATION_PLAN.md) mô tả lộ trình, tiêu chuẩn chất lượng, quy trình duyệt và cách đồng bộ với upstream.
 - [Kế hoạch bản tiếng Hàn](KOREAN_TRANSLATION_PLAN.md) xác định kiến trúc ba ngôn ngữ, phạm vi bản thử và các cổng kiểm tra trước khi triển khai.
+- [Đợt nội dung v1.2](NEXT_CONTENT_RELEASE_PLAN.md) hoàn thiện đối chiếu cấu trúc cho toàn bộ Chương 5 tiếng Việt và phần Lời nói đầu tiếng Hàn; mã đa ngôn ngữ, hình, bảng và bài tập đều được giữ đúng vị trí so với nguồn tiếng Anh đã khóa.
 - [Atlas tiếng Hàn](https://buicongnguyen.github.io/hello-algo/ko/) và [trình đọc đủ 119/119 tài liệu](https://buicongnguyen.github.io/hello-algo/ko/learn/) hiện có dưới trạng thái bản nháp để cộng đồng phản biện.
 - [Trình đọc tiếng Anh đầy đủ](https://buicongnguyen.github.io/hello-algo/en/learn/) tạo toàn bộ 119 trang từ nguồn chính thức đã khóa: trang chủ, phần *Before Starting*, Chương 0–16 và tài liệu tham khảo. Mọi trang đều liên kết trực tiếp đến bản Việt/Hàn tương ứng.
 - Cả ba trình đọc có tìm kiếm tiêu đề/đề mục, mục lục trong bài, liên kết cố định cho tiêu đề và các nhóm mã 13 ngôn ngữ dạng thẻ.

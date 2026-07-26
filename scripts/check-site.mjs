@@ -44,7 +44,8 @@ const requiredFiles = [
   ".github/workflows/ci.yml",
   ".github/ISSUE_TEMPLATE/ko-translation.yml",
   ".github/PULL_REQUEST_TEMPLATE/ko-translation.md",
-  "NEXT_RELEASE_PLAN.md"
+  "NEXT_RELEASE_PLAN.md",
+  "NEXT_CONTENT_RELEASE_PLAN.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -205,6 +206,13 @@ if (mathSources.length !== 2 ||
     renderedMath.includes(" arrow ") ||
     /<(?:span|div) class="(?:math|math-block)"[^>]*>[^<]*\\[A-Za-z]+/.test(renderedMath)) {
   failures.push("Shared Markdown renderer does not preserve complex math for KaTeX with a readable fallback");
+}
+
+const renderedTerminology = renderMarkdown("Technical <u>array</u> and <u>big-$O$ notation</u>.", "en/docs/test.md");
+if (!renderedTerminology.includes("<u>array</u>") ||
+    !renderedTerminology.includes("<u>big-<span class=\"math\"") ||
+    renderedTerminology.includes("&lt;u&gt;")) {
+  failures.push("Shared Markdown renderer does not safely preserve underlined technical terms");
 }
 
 const validServerPath = resolveSiteRequest(path.join(projectRoot, "dist"), "/en/");

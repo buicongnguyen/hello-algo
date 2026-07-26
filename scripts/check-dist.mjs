@@ -131,6 +131,9 @@ export async function checkBuiltSite(outputRoot) {
         !html.includes(`src="${katexScriptUrl}" integrity="${katexScriptIntegrity}"`))) {
       failures.push(`${relativeHtml} does not load the pinned KaTeX assets with integrity checks`);
     }
+    if (readerPage && (html.includes("&lt;u&gt;") || html.includes("&lt;/u&gt;") || html.includes("&lt;p align="))) {
+      failures.push(`${relativeHtml} exposes escaped source-formatting markup to readers`);
+    }
     if (readerPage) {
       for (const match of html.matchAll(/<(?:span|div) class="(?:math|math-block)"[^>]*>([^<]*)<\/(?:span|div)>/g)) {
         if (!match[0].includes('data-math="')) failures.push(`${relativeHtml} has a math node without an encoded source expression`);
@@ -189,6 +192,14 @@ export async function checkBuiltSite(outputRoot) {
       if (["pilot", "published"].includes(document.status) && !document.eligibleForPilot) {
         failures.push(`${document.target} is marked ${document.status} but fails parity: ${document.failures.join(", ")}`);
       }
+    }
+    const releaseUnit = language === "vi"
+      ? { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" }
+      : { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" };
+    const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
+    if (releaseDocuments.length !== releaseUnit.count ||
+        releaseDocuments.some((document) => !document.structuralParity || document.officialCodeGroups.deferred !== 0)) {
+      failures.push(`${releaseUnit.label} is not a complete, structurally ready inline-code release unit`);
     }
   }
   for (const language of ["vi", "ko", "en"]) {
