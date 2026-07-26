@@ -34,6 +34,8 @@ The v1.2 content wave completes structural parity for all six Vietnamese Chapter
 
 The v1.3 content wave completes structural parity for all six Vietnamese Chapter 6 documents. Hash-table operations, collision strategies, hash-algorithm design, formulas, diagrams, summaries, exercises, and all seven official code groups are preserved at their source teaching positions.
 
+The v1.4 content wave completes structural parity for all eight Vietnamese Chapter 7 documents. Binary-tree terminology and operations, BFS/DFS traversal, array representation, binary search trees, AVL rotations, 52 images, exercises, and all 18 official code groups are preserved at their source teaching positions.
+
 ## Korean draft
 
 The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains all 119 source-locked drafts with exact Vietnamese and English counterpart links. Documents preserve the official diagrams and 13-language code groups; condensed prose remains draft until content-parity and review gates pass. Governance files live under `ko/`.
@@ -43,6 +45,8 @@ The v1.2 content wave also completes structural parity for the four-document Kor
 The implemented v1.2 scope and its handoff to the now-completed v1.3 wave are recorded in [NEXT_CONTENT_RELEASE_PLAN.md](NEXT_CONTENT_RELEASE_PLAN.md).
 
 The v1.3 content wave completes structural parity for the four-document Korean Chapter 1, including all dictionary-search steps, card sorting, greedy change-making, the data-structure relationship diagrams, comparison table, and engineering Q&A. The implemented scope and following release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_3.md](NEXT_CONTENT_RELEASE_PLAN_V1_3.md).
+
+The v1.4 content wave completes structural parity for all seven Korean Chapter 2 documents. Efficiency evaluation, iteration and recursion, time and space complexity, formulas, 20 images, exercises, and all 33 official code groups are preserved inline. The implemented scope and following release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_4.md](NEXT_CONTENT_RELEASE_PLAN_V1_4.md).
 
 ## Shared Atlas experience
 

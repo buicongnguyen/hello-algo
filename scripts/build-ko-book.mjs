@@ -225,6 +225,9 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
   for (const [chapter, directory] of [
     ["chapter_preface", "about_the_book.assets"], ["chapter_preface", "suggestions.assets"],
     ["chapter_introduction", "algorithms_are_everywhere.assets"], ["chapter_introduction", "what_is_dsa.assets"],
+    ["chapter_computational_complexity", "iteration_and_recursion.assets"],
+    ["chapter_computational_complexity", "time_complexity.assets"],
+    ["chapter_computational_complexity", "space_complexity.assets"],
     ["chapter_data_structure", "classification_of_data_structure.assets"], ["chapter_data_structure", "number_encoding.assets"], ["chapter_data_structure", "character_encoding.assets"],
     ["chapter_array_and_linkedlist", "array.assets"], ["chapter_array_and_linkedlist", "linked_list.assets"], ["chapter_array_and_linkedlist", "ram_and_cache.assets"],
     ["chapter_stack_and_queue", "stack.assets"], ["chapter_stack_and_queue", "queue.assets"], ["chapter_stack_and_queue", "deque.assets"],

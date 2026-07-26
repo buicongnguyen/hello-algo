@@ -196,11 +196,13 @@ export async function checkBuiltSite(outputRoot) {
     const releaseUnits = language === "vi"
       ? [
           { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" },
-          { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" }
+          { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" },
+          { prefix: "en/docs/chapter_tree/", count: 8, label: "Vietnamese Chapter 7" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
-          { prefix: "en/docs/chapter_introduction/", count: 4, label: "Korean Chapter 1" }
+          { prefix: "en/docs/chapter_introduction/", count: 4, label: "Korean Chapter 1" },
+          { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Korean Chapter 2" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -316,7 +318,18 @@ export async function checkBuiltSite(outputRoot) {
     if (proseHtml.includes("```") || /\$[^$<>]+\$/.test(proseHtml)) failures.push(`${koreanPage} contains unrendered Markdown`);
   }
   const koreanTime = await readFile(path.join(koreanDirectory, "time-complexity.html"), "utf8");
-  if (!koreanTime.includes('<pre><code class="language-python"') || !koreanTime.includes('class="math-block"')) failures.push("Korean time-complexity page is missing rendered Python or display mathematics");
+  const koreanIteration = await readFile(path.join(koreanDirectory, "iteration-and-recursion.html"), "utf8");
+  if (!koreanTime.includes('<pre><code class="language-python"') ||
+      !koreanTime.includes('class="math-block"') ||
+      !koreanTime.includes("time_complexity_common_types.png")) {
+    failures.push("Korean time-complexity page is missing rendered Python, display mathematics, or its comparison diagram");
+  }
+  if (!koreanIteration.includes("iteration.png") ||
+      !koreanIteration.includes("recursion_tree.png") ||
+      !koreanIteration.includes('<pre><code class="language-python"') ||
+      !koreanIteration.includes("<table>")) {
+    failures.push("Korean iteration-and-recursion page is missing diagrams, Python examples, or its comparison table");
+  }
   const koreanNumberEncoding = await readFile(path.join(koreanDirectory, "number-encoding.html"), "utf8");
   const koreanArray = await readFile(path.join(koreanDirectory, "arrays.html"), "utf8");
   const koreanLinkedList = await readFile(path.join(koreanDirectory, "linked-lists.html"), "utf8");
@@ -334,10 +347,16 @@ export async function checkBuiltSite(outputRoot) {
   }
 
   const vietnameseTree = await readFile(path.join(pilotDirectory, "cay-nhi-phan.html"), "utf8");
+  const vietnameseAvl = await readFile(path.join(pilotDirectory, "cay-avl.html"), "utf8");
   const koreanTree = await readFile(path.join(koreanDirectory, "binary-tree.html"), "utf8");
   const vietnameseHeap = await readFile(path.join(pilotDirectory, "cau-truc-heap.html"), "utf8");
   const koreanHeap = await readFile(path.join(koreanDirectory, "heap.html"), "utf8");
   if (!vietnameseTree.includes("binary_tree_definition.png") || !koreanTree.includes("binary_tree_definition.png") || !vietnameseTree.includes('<pre><code class="language-python"') || !koreanTree.includes('<pre><code class="language-python"')) failures.push("Chapter 7 binary-tree pages are missing diagrams or Python examples");
+  if (!vietnameseAvl.includes("avltree_rotation_cases.png") ||
+      !vietnameseAvl.includes('<pre><code class="language-python"') ||
+      !vietnameseAvl.includes("<table>")) {
+    failures.push("Vietnamese AVL page is missing rotation diagrams, Python examples, or its rotation table");
+  }
   if (!vietnameseHeap.includes("min_heap_and_max_heap.png") || !koreanHeap.includes("min_heap_and_max_heap.png") || !vietnameseHeap.includes('<pre><code class="language-python"') || !koreanHeap.includes('<pre><code class="language-python"')) failures.push("Chapter 8 heap pages are missing diagrams or Python examples");
 
   const vietnameseGraph = await readFile(path.join(pilotDirectory, "duyet-do-thi.html"), "utf8");

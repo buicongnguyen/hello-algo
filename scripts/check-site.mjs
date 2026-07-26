@@ -46,7 +46,8 @@ const requiredFiles = [
   ".github/PULL_REQUEST_TEMPLATE/ko-translation.md",
   "NEXT_RELEASE_PLAN.md",
   "NEXT_CONTENT_RELEASE_PLAN.md",
-  "NEXT_CONTENT_RELEASE_PLAN_V1_3.md"
+  "NEXT_CONTENT_RELEASE_PLAN_V1_3.md",
+  "NEXT_CONTENT_RELEASE_PLAN_V1_4.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -173,11 +174,11 @@ const localizedBinaryTreeExamples = await localizeSourceExamples({
   locale: "vi"
 });
 if (localizedBinaryTreeExamples.sourceGroups !== 3 ||
-    localizedBinaryTreeExamples.inlineGroups !== 1 ||
-    localizedBinaryTreeExamples.deferredGroups !== 2 ||
-    !localizedBinaryTreeExamples.markdown.includes("đang chờ đặt vào bản dịch đầy đủ") ||
+    localizedBinaryTreeExamples.inlineGroups !== 3 ||
+    localizedBinaryTreeExamples.deferredGroups !== 0 ||
+    localizedBinaryTreeExamples.markdown.includes("đang chờ đặt vào bản dịch đầy đủ") ||
     (localizedBinaryTreeExamples.markdown.match(/^=== "/gm) || []).length !== 3 * sourceCodeLanguages.length) {
-  failures.push("Condensed localized drafts do not preserve every official code group with transparent deferred placement");
+  failures.push("Vietnamese binary-tree content does not place every official code group inline");
 }
 const dartQuickSort = await readFile(path.join(projectRoot, "en", "codes", "dart", "chapter_sorting", "quick_sort.dart"), "utf8");
 const dartLanguage = sourceCodeLanguages.find((language) => language.label === "Dart");
