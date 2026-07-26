@@ -1,24 +1,168 @@
 # 0-1 배낭 문제
 
-각 물건에는 무게와 가치가 있고 최대 한 번만 선택할 수 있습니다. 용량을 넘지 않으면서 총 가치를 최대화합니다.
+배낭 문제는 동적 계획법을 배우기에 좋은 대표 예제이며 가장 자주 등장하는 문제 유형 중 하나입니다. 0-1 배낭, 완전 배낭, 다중 배낭 등 여러 변형이 있습니다.
 
-![0-1 배낭 예시 데이터](knapsack_problem.assets/knapsack_example.png)
+이 절에서는 가장 널리 쓰이는 0-1 배낭 문제를 풉니다.
 
-물건 $i$와 용량 $c$에 대한 전이식은 다음과 같습니다.
+!!! question
+
+    $n$개의 물건과 용량이 $cap$인 배낭이 있습니다. $i$번째 물건의 무게와 가치는 각각 $wgt[i-1]$, $val[i-1]$입니다. 각 물건은 최대 한 번만 선택할 수 있습니다. 용량을 넘지 않으면서 배낭에 담을 수 있는 가치의 최댓값은 얼마입니까?
+
+아래 그림에서 물건 번호 $i$는 $1$부터 시작하지만 배열 인덱스는 $0$부터 시작하므로, 물건 $i$의 무게와 가치는 $wgt[i-1]$, $val[i-1]$에 대응합니다.
+
+![0-1 배낭 문제의 예제 데이터](knapsack_problem.assets/knapsack_example.png)
+
+0-1 배낭 문제는 $n$번의 의사 결정으로 볼 수 있습니다. 각 물건마다 배낭에 넣지 않거나 넣는 두 선택이 있으므로 의사 결정 트리 모형을 만족합니다.
+
+목표가 “용량 제한 안에서 얻을 수 있는 최대 가치”이므로 동적 계획법 문제일 가능성이 높습니다.
+
+**1단계: 각 차례의 결정을 살펴보고 상태를 정의한 뒤 $dp$ 테이블을 만듭니다**
+
+물건을 넣지 않으면 남은 용량은 그대로이고, 넣으면 남은 용량이 감소합니다. 따라서 현재 고려한 물건 수 $i$와 배낭 용량 $c$를 상태 변수로 삼아 $[i, c]$로 표시합니다.
+
+상태 $[i, c]$는 **앞의 $i$개 물건과 용량 $c$의 배낭으로 얻을 수 있는 최대 가치**라는 하위 문제에 대응하며 $dp[i, c]$로 표시합니다.
+
+목표는 $dp[n, cap]$이므로 크기가 $(n+1) \times (cap+1)$인 이차원 $dp$ 테이블이 필요합니다.
+
+**2단계: 최적 부분 구조를 찾고 상태 전이 방정식을 유도합니다**
+
+물건 $i$를 결정한 뒤 남는 문제는 앞의 $i-1$개 물건에 대한 하위 문제이며 두 경우로 나뉩니다.
+
+- **물건 $i$를 넣지 않음**: 용량이 바뀌지 않아 상태가 $[i-1, c]$로 전이됩니다.
+- **물건 $i$를 넣음**: 남은 용량이 $wgt[i-1]$만큼 줄고 가치는 $val[i-1]$만큼 늘어나며, 상태가 $[i-1, c-wgt[i-1]]$로 전이됩니다.
+
+최적 부분 구조는 다음과 같습니다. **$dp[i, c]$의 최대 가치는 물건 $i$를 넣지 않는 경우와 넣는 경우 중 더 큰 값입니다.** 상태 전이 방정식은 다음과 같습니다.
 
 $$
-dp[i,c] = \max(dp[i-1,c], dp[i-1,c-w_i] + v_i)
+dp[i, c] = \max(dp[i-1, c], dp[i-1, c - wgt[i-1]] + val[i-1])
 $$
+
+현재 물건의 무게 $wgt[i - 1]$가 남은 용량 $c$보다 크면 넣을 수 없으므로 선택지는 넣지 않는 것뿐입니다.
+
+**3단계: 경계 조건과 상태 전이 순서를 결정합니다**
+
+물건이 없거나 용량이 $0$이면 최대 가치는 $0$입니다. 따라서 첫 번째 열 $dp[i, 0]$과 첫 번째 행 $dp[0, c]$은 모두 $0$입니다.
+
+현재 상태 $[i, c]$는 바로 위 $[i-1, c]$와 왼쪽 위 $[i-1, c-wgt[i-1]]$에서 전이됩니다. 두 겹 반복문으로 $dp$ 테이블을 앞에서부터 채울 수 있습니다.
+
+이제 완전 탐색, 메모이제이션, 동적 계획법을 차례로 구현합니다.
+
+### 방법 1: 완전 탐색
+
+탐색 함수의 구성은 다음과 같습니다.
+
+- **재귀 매개변수**: 상태 $[i, c]$.
+- **반환값**: 하위 문제의 해 $dp[i, c]$.
+- **종료 조건**: 물건이 남지 않았거나($i = 0$) 남은 용량이 $0$이면 재귀를 끝내고 $0$을 반환합니다.
+- **가지치기**: 현재 물건의 무게가 남은 용량보다 크면 그 물건을 넣지 않는 선택만 수행합니다.
 
 ```python
-def knapsack_01(weights, values, capacity):
-    dp = [0] * (capacity + 1)
-    for weight, value in zip(weights, values):
-        for current in range(capacity, weight - 1, -1):
-            dp[current] = max(dp[current], dp[current - weight] + value)
-    return dp[capacity]
+# 잠긴 원문의 13개 언어 0-1 배낭 DFS 공식 코드가 이 위치에 삽입됩니다.
 ```
 
-용량을 역순으로 순회해야 같은 반복에서 물건이 다시 사용되지 않습니다. 시간은 $O(n \times capacity)$, 공간은 $O(capacity)$입니다.
+아래 그림처럼 각 물건에서 제외와 선택의 두 탐색 가지가 생기므로 시간 복잡도는 $O(2^n)$입니다.
 
-![배낭 재귀 트리](knapsack_problem.assets/knapsack_dfs.png)
+재귀 트리에는 $dp[1, 10]$처럼 겹치는 하위 문제가 나타납니다. 물건 수와 용량이 커지고 같은 무게를 가진 물건이 많을수록 반복되는 하위 문제가 크게 늘어납니다.
+
+![0-1 배낭 완전 탐색 재귀 트리](knapsack_problem.assets/knapsack_dfs.png)
+
+### 방법 2: 메모이제이션
+
+각 하위 문제를 한 번만 계산하도록 `mem`에 해를 기록합니다. 여기서 `mem[i][c]`는 $dp[i, c]$에 대응합니다.
+
+메모이제이션 뒤에는 **시간 복잡도가 하위 문제의 수**, 즉 $O(n \times cap)$에 비례합니다. 공식 코드는 다음과 같습니다.
+
+```python
+# 잠긴 원문의 13개 언어 메모이제이션 0-1 배낭 공식 코드가 이 위치에 삽입됩니다.
+```
+
+아래 그림은 메모이제이션으로 잘려 나간 탐색 가지를 보여 줍니다.
+
+![0-1 배낭 메모이제이션 재귀 트리](knapsack_problem.assets/knapsack_dfs_mem.png)
+
+### 방법 3: 동적 계획법
+
+동적 계획법은 상태 전이에 따라 $dp$ 테이블을 채우는 과정입니다.
+
+```python
+# 잠긴 원문의 13개 언어 0-1 배낭 동적 계획법 공식 코드가 이 위치에 삽입됩니다.
+```
+
+다음 단계 그림처럼 시간 복잡도와 공간 복잡도는 모두 `dp` 배열 크기로 결정되며 $O(n \times cap)$입니다.
+
+=== "<1>"
+    ![0-1 배낭 동적 계획법 1단계](knapsack_problem.assets/knapsack_dp_step1.png)
+
+=== "<2>"
+    ![0-1 배낭 동적 계획법 2단계](knapsack_problem.assets/knapsack_dp_step2.png)
+
+=== "<3>"
+    ![0-1 배낭 동적 계획법 3단계](knapsack_problem.assets/knapsack_dp_step3.png)
+
+=== "<4>"
+    ![0-1 배낭 동적 계획법 4단계](knapsack_problem.assets/knapsack_dp_step4.png)
+
+=== "<5>"
+    ![0-1 배낭 동적 계획법 5단계](knapsack_problem.assets/knapsack_dp_step5.png)
+
+=== "<6>"
+    ![0-1 배낭 동적 계획법 6단계](knapsack_problem.assets/knapsack_dp_step6.png)
+
+=== "<7>"
+    ![0-1 배낭 동적 계획법 7단계](knapsack_problem.assets/knapsack_dp_step7.png)
+
+=== "<8>"
+    ![0-1 배낭 동적 계획법 8단계](knapsack_problem.assets/knapsack_dp_step8.png)
+
+=== "<9>"
+    ![0-1 배낭 동적 계획법 9단계](knapsack_problem.assets/knapsack_dp_step9.png)
+
+=== "<10>"
+    ![0-1 배낭 동적 계획법 10단계](knapsack_problem.assets/knapsack_dp_step10.png)
+
+=== "<11>"
+    ![0-1 배낭 동적 계획법 11단계](knapsack_problem.assets/knapsack_dp_step11.png)
+
+=== "<12>"
+    ![0-1 배낭 동적 계획법 12단계](knapsack_problem.assets/knapsack_dp_step12.png)
+
+=== "<13>"
+    ![0-1 배낭 동적 계획법 13단계](knapsack_problem.assets/knapsack_dp_step13.png)
+
+=== "<14>"
+    ![0-1 배낭 동적 계획법 14단계](knapsack_problem.assets/knapsack_dp_step14.png)
+
+### 공간 최적화
+
+각 상태는 바로 위 행의 상태에만 의존하므로 두 개의 롤링 배열을 사용하면 공간 복잡도를 $O(n \times cap)$에서 $O(cap)$으로 줄일 수 있습니다.
+
+한 배열만 사용할 수도 있을까요? 각 상태는 바로 위 칸 또는 왼쪽 위 칸에서 전이됩니다. 배열이 하나뿐이라면 행 $i$의 순회를 시작할 때 그 배열에는 행 $i-1$의 상태가 들어 있습니다.
+
+- 정방향으로 순회하면 $dp[i, j]$에 도달했을 때 왼쪽 위 값 $dp[i-1, 1]$ ~ $dp[i-1, j-1]$이 이미 덮어써졌을 수 있어 올바른 상태 전이가 불가능합니다.
+- 역방향으로 순회하면 아직 필요한 이전 행의 값이 덮어써지지 않으므로 상태 전이가 정확합니다.
+
+다음 단계 그림은 한 배열로 행 $i = 1$에서 행 $i = 2$로 전이하는 과정을 보여 줍니다. 정방향 순회와 역방향 순회의 차이에 주목하세요.
+
+=== "<1>"
+    ![0-1 배낭 공간 최적화 1단계](knapsack_problem.assets/knapsack_dp_comp_step1.png)
+
+=== "<2>"
+    ![0-1 배낭 공간 최적화 2단계](knapsack_problem.assets/knapsack_dp_comp_step2.png)
+
+=== "<3>"
+    ![0-1 배낭 공간 최적화 3단계](knapsack_problem.assets/knapsack_dp_comp_step3.png)
+
+=== "<4>"
+    ![0-1 배낭 공간 최적화 4단계](knapsack_problem.assets/knapsack_dp_comp_step4.png)
+
+=== "<5>"
+    ![0-1 배낭 공간 최적화 5단계](knapsack_problem.assets/knapsack_dp_comp_step5.png)
+
+=== "<6>"
+    ![0-1 배낭 공간 최적화 6단계](knapsack_problem.assets/knapsack_dp_comp_step6.png)
+
+코드에서는 `dp` 배열의 첫 번째 차원 $i$를 없애고 안쪽 반복문을 역순으로 바꾸면 됩니다.
+
+```python
+# 잠긴 원문의 13개 언어 공간 최적화 0-1 배낭 공식 코드가 이 위치에 삽입됩니다.
+```

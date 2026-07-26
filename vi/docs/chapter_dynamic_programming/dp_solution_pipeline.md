@@ -138,53 +138,41 @@ Chuỗi hình dưới mô tả quá trình chuyển trạng thái. Thuật toán
 
 Mảng `dp` có kích thước $n \times m$, vì vậy **độ phức tạp không gian là $O(nm)$**.
 
-**Bước 1**
+=== "<1>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 1](dp_solution_pipeline.assets/min_path_sum_dp_step1.png)
 
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 1](dp_solution_pipeline.assets/min_path_sum_dp_step1.png)
+=== "<2>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 2](dp_solution_pipeline.assets/min_path_sum_dp_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 3](dp_solution_pipeline.assets/min_path_sum_dp_step3.png)
 
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 2](dp_solution_pipeline.assets/min_path_sum_dp_step2.png)
+=== "<4>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 4](dp_solution_pipeline.assets/min_path_sum_dp_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 5](dp_solution_pipeline.assets/min_path_sum_dp_step5.png)
 
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 3](dp_solution_pipeline.assets/min_path_sum_dp_step3.png)
+=== "<6>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 6](dp_solution_pipeline.assets/min_path_sum_dp_step6.png)
 
-**Bước 4**
+=== "<7>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 7](dp_solution_pipeline.assets/min_path_sum_dp_step7.png)
 
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 4](dp_solution_pipeline.assets/min_path_sum_dp_step4.png)
+=== "<8>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 8](dp_solution_pipeline.assets/min_path_sum_dp_step8.png)
 
-**Bước 5**
+=== "<9>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 9](dp_solution_pipeline.assets/min_path_sum_dp_step9.png)
 
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 5](dp_solution_pipeline.assets/min_path_sum_dp_step5.png)
+=== "<10>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 10](dp_solution_pipeline.assets/min_path_sum_dp_step10.png)
 
-**Bước 6**
+=== "<11>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 11](dp_solution_pipeline.assets/min_path_sum_dp_step11.png)
 
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 6](dp_solution_pipeline.assets/min_path_sum_dp_step6.png)
-
-**Bước 7**
-
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 7](dp_solution_pipeline.assets/min_path_sum_dp_step7.png)
-
-**Bước 8**
-
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 8](dp_solution_pipeline.assets/min_path_sum_dp_step8.png)
-
-**Bước 9**
-
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 9](dp_solution_pipeline.assets/min_path_sum_dp_step9.png)
-
-**Bước 10**
-
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 10](dp_solution_pipeline.assets/min_path_sum_dp_step10.png)
-
-**Bước 11**
-
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 11](dp_solution_pipeline.assets/min_path_sum_dp_step11.png)
-
-**Bước 12**
-
-![Quy hoạch động tổng đường đi nhỏ nhất, bước 12](dp_solution_pipeline.assets/min_path_sum_dp_step12.png)
+=== "<12>"
+    ![Quy hoạch động tổng đường đi nhỏ nhất, bước 12](dp_solution_pipeline.assets/min_path_sum_dp_step12.png)
 
 ### Tối ưu không gian
 

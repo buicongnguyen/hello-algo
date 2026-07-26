@@ -195,6 +195,8 @@ export async function checkBuiltSite(outputRoot) {
     }
     const releaseUnits = language === "vi"
       ? [
+          { prefix: "en/docs/chapter_preface/", count: 4, label: "Vietnamese Preface" },
+          { prefix: "en/docs/chapter_introduction/", count: 4, label: "Vietnamese Chapter 1" },
           { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Vietnamese Chapter 2" },
           { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Vietnamese Chapter 3" },
           { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Vietnamese Chapter 4" },
@@ -224,7 +226,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_searching/", count: 8, label: "Korean Chapter 10" },
           { prefix: "en/docs/chapter_sorting/", count: 13, label: "Korean Chapter 11" },
           { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Korean Chapter 12" },
-          { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Korean Chapter 13" }
+          { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Korean Chapter 13" },
+          { prefix: "en/docs/chapter_dynamic_programming/", count: 9, label: "Korean Chapter 14" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -297,6 +300,40 @@ export async function checkBuiltSite(outputRoot) {
     } else if (html.includes('hreflang="ko"') || !html.includes('href="../../ko/learn/" lang="ko" data-language-home="ko"')) {
       failures.push(`${pilotPage} must expose Korean home without claiming an equivalent translation`);
     }
+  }
+
+  const vietnamesePreface = await readFile(path.join(pilotDirectory, "loi-noi-dau.html"), "utf8");
+  const vietnameseAbout = await readFile(path.join(pilotDirectory, "ve-cuon-sach.html"), "utf8");
+  const vietnameseSuggestions = await readFile(path.join(pilotDirectory, "cach-su-dung-cuon-sach.html"), "utf8");
+  const vietnameseIntroduction = await readFile(path.join(pilotDirectory, "index.html"), "utf8");
+  const vietnameseAlgorithmsEverywhere = await readFile(path.join(pilotDirectory, "thuat-toan-o-khap-noi.html"), "utf8");
+  const vietnameseWhatIsDsa = await readFile(path.join(pilotDirectory, "thuat-toan-la-gi.html"), "utf8");
+  const vietnameseChapterOneSummary = await readFile(path.join(pilotDirectory, "tom-tat-chuong-1.html"), "utf8");
+  if (!vietnamesePreface.includes("chapter_preface.jpg") ||
+      !vietnamesePreface.includes('class="admonition admonition-abstract"') ||
+      !vietnameseAbout.includes("hello_algo_mindmap.png") ||
+      !vietnameseAbout.includes('class="admonition admonition-success"') ||
+      !vietnameseAbout.includes("Material for MkDocs") ||
+      (vietnameseSuggestions.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseSuggestions.match(/<img /g) || []).length < 7 ||
+      !vietnameseSuggestions.includes('class="admonition admonition-tip"') ||
+      !vietnameseSuggestions.includes("download_code.png") ||
+      !vietnameseSuggestions.includes("learning_route.png")) {
+    failures.push("Vietnamese preface is missing its complete guidance, multilingual comment tabs, media, callouts, or acknowledgements");
+  }
+  if (!vietnameseIntroduction.includes("chapter_introduction.jpg") ||
+      !vietnameseIntroduction.includes('class="admonition admonition-abstract"') ||
+      (vietnameseAlgorithmsEverywhere.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseAlgorithmsEverywhere.match(/<img /g) || []).length < 7 ||
+      !vietnameseAlgorithmsEverywhere.includes("binary_search_dictionary_step5.png") ||
+      !vietnameseAlgorithmsEverywhere.includes('class="admonition admonition-tip"') ||
+      !vietnameseWhatIsDsa.includes("relationship_between_data_structure_and_algorithm.png") ||
+      !vietnameseWhatIsDsa.includes("assembling_blocks.png") ||
+      !vietnameseWhatIsDsa.includes("<table>") ||
+      !vietnameseWhatIsDsa.includes('class="admonition admonition-tip"') ||
+      !vietnameseChapterOneSummary.includes("sắp xếp cơ số") ||
+      !vietnameseChapterOneSummary.includes('class="math"')) {
+    failures.push("Vietnamese Chapter 1 is missing its interactive lookup trace, definitions, relationship media/table, callouts, or technical review");
   }
 
   const koreanDirectory = path.join(outputRoot, "ko", "learn");
@@ -728,7 +765,13 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseUnboundedKnapsack = await readFile(path.join(pilotDirectory, "ba-lo-vo-han.html"), "utf8");
   const vietnameseDynamicProgramming = await readFile(path.join(pilotDirectory, "khoang-cach-chinh-sua.html"), "utf8");
   const vietnameseDynamicExercises = await readFile(path.join(pilotDirectory, "bai-tap-quy-hoach-dong.html"), "utf8");
+  const koreanDpIntro = await readFile(path.join(koreanDirectory, "intro-to-dynamic-programming.html"), "utf8");
+  const koreanDpFeatures = await readFile(path.join(koreanDirectory, "dynamic-programming-characteristics.html"), "utf8");
+  const koreanDpPipeline = await readFile(path.join(koreanDirectory, "dynamic-programming-approach.html"), "utf8");
+  const koreanKnapsack = await readFile(path.join(koreanDirectory, "zero-one-knapsack.html"), "utf8");
+  const koreanUnboundedKnapsack = await readFile(path.join(koreanDirectory, "unbounded-knapsack.html"), "utf8");
   const koreanDynamicProgramming = await readFile(path.join(koreanDirectory, "edit-distance.html"), "utf8");
+  const koreanDynamicExercises = await readFile(path.join(koreanDirectory, "dynamic-programming-exercises.html"), "utf8");
   if (!vietnameseBacktracking.includes("solution_4_queens.png") || !koreanBacktracking.includes("solution_4_queens.png") || !vietnameseBacktracking.includes('<pre><code class="language-python"') || !koreanBacktracking.includes('<pre><code class="language-python"')) failures.push("Chapter 13 N-Queens pages are missing diagrams or Python examples");
   if ((vietnameseBacktrackingAlgorithm.match(/class="content-tabs"/g) || []).length !== 6 ||
       !vietnameseBacktrackingAlgorithm.includes("preorder_find_paths_step11.png") ||
@@ -781,17 +824,17 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseDpFeatures.includes("climbing_stairs_constraint_state_transfer.png") ||
       (vietnameseDpFeatures.match(/class="math-block"/g) || []).length !== 2 ||
       (vietnameseDpFeatures.match(/class="admonition/g) || []).length !== 3 ||
-      (vietnameseDpPipeline.match(/class="content-tabs"/g) || []).length !== 4 ||
+      (vietnameseDpPipeline.match(/class="content-tabs"/g) || []).length !== 5 ||
       !vietnameseDpPipeline.includes("min_path_sum_dp_step12.png") ||
       (vietnameseDpPipeline.match(/class="admonition/g) || []).length !== 4 ||
-      (vietnameseKnapsack.match(/class="content-tabs"/g) || []).length !== 4 ||
+      (vietnameseKnapsack.match(/class="content-tabs"/g) || []).length !== 6 ||
       !vietnameseKnapsack.includes("knapsack_dp_step14.png") ||
       !vietnameseKnapsack.includes("knapsack_dp_comp_step6.png") ||
-      (vietnameseUnboundedKnapsack.match(/class="content-tabs"/g) || []).length !== 6 ||
+      (vietnameseUnboundedKnapsack.match(/class="content-tabs"/g) || []).length !== 8 ||
       !vietnameseUnboundedKnapsack.includes("unbounded_knapsack_dp_comp_step6.png") ||
       !vietnameseUnboundedKnapsack.includes("coin_change_dp_step15.png") ||
       (vietnameseUnboundedKnapsack.match(/class="math-block"/g) || []).length !== 3 ||
-      (vietnameseDynamicProgramming.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseDynamicProgramming.match(/class="content-tabs"/g) || []).length !== 3 ||
       !vietnameseDynamicProgramming.includes("edit_distance_dp_step15.png") ||
       (vietnameseDynamicProgramming.match(/class="math-block"/g) || []).length !== 2 ||
       (vietnameseDynamicExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
@@ -799,13 +842,38 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseDynamicExercises.includes("leetcode.com/problems/climbing-stairs")) {
     failures.push("Vietnamese Chapter 14 is missing complete code tabs, state derivations, dynamic-programming traces, callouts, or exercises");
   }
+  if ((koreanDpIntro.match(/class="content-tabs"/g) || []).length !== 5 ||
+      !koreanDpIntro.includes("climbing_stairs_dfs_memo_tree.png") ||
+      !koreanDpIntro.includes("climbing_stairs_dp.png") ||
+      (koreanDpIntro.match(/class="math-block"/g) || []).length !== 2 ||
+      (koreanDpFeatures.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanDpFeatures.includes("climbing_stairs_constraint_state_transfer.png") ||
+      (koreanDpFeatures.match(/class="math-block"/g) || []).length !== 2 ||
+      (koreanDpFeatures.match(/class="admonition/g) || []).length !== 3 ||
+      (koreanDpPipeline.match(/class="content-tabs"/g) || []).length !== 5 ||
+      !koreanDpPipeline.includes("min_path_sum_dp_step12.png") ||
+      (koreanDpPipeline.match(/class="admonition/g) || []).length !== 4 ||
+      (koreanKnapsack.match(/class="content-tabs"/g) || []).length !== 6 ||
+      !koreanKnapsack.includes("knapsack_dp_step14.png") ||
+      !koreanKnapsack.includes("knapsack_dp_comp_step6.png") ||
+      (koreanUnboundedKnapsack.match(/class="content-tabs"/g) || []).length !== 8 ||
+      !koreanUnboundedKnapsack.includes("unbounded_knapsack_dp_comp_step6.png") ||
+      !koreanUnboundedKnapsack.includes("coin_change_dp_step15.png") ||
+      (koreanUnboundedKnapsack.match(/class="math-block"/g) || []).length !== 3 ||
+      (koreanDynamicProgramming.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanDynamicProgramming.includes("edit_distance_dp_step15.png") ||
+      (koreanDynamicProgramming.match(/class="math-block"/g) || []).length !== 2 ||
+      (koreanDynamicExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (koreanDynamicExercises.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
+      !koreanDynamicExercises.includes("leetcode.com/problems/climbing-stairs")) {
+    failures.push("Korean Chapter 14 is missing complete code tabs, state derivations, interactive dynamic-programming traces, callouts, or exercises");
+  }
 
   const vietnameseGreedyAlgorithm = await readFile(path.join(pilotDirectory, "thuat-toan-tham-lam.html"), "utf8");
   const vietnameseGreedy = await readFile(path.join(pilotDirectory, "ba-lo-phan-so.html"), "utf8");
   const vietnameseMaxCapacity = await readFile(path.join(pilotDirectory, "suc-chua-lon-nhat.html"), "utf8");
   const vietnameseMaxProduct = await readFile(path.join(pilotDirectory, "tich-cat-lon-nhat.html"), "utf8");
   const koreanGreedy = await readFile(path.join(koreanDirectory, "fractional-knapsack.html"), "utf8");
-  const koreanDynamicExercises = await readFile(path.join(koreanDirectory, "dynamic-programming-exercises.html"), "utf8");
   const vietnameseGreedyExercises = await readFile(path.join(pilotDirectory, "bai-tap-tham-lam.html"), "utf8");
   const koreanGreedyExercises = await readFile(path.join(koreanDirectory, "greedy-exercises.html"), "utf8");
   const vietnameseAppendix = await readFile(path.join(pilotDirectory, "cai-dat-moi-truong-lap-trinh.html"), "utf8");

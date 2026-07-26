@@ -21,5 +21,5 @@
 **Bài toán khoảng cách chỉnh sửa**
 
 - Khoảng cách chỉnh sửa, hay Levenshtein, đo độ tương đồng giữa hai chuỗi và được định nghĩa là số bước chỉnh sửa ít nhất để biến chuỗi này thành chuỗi kia. Các thao tác gồm chèn, xóa và thay.
-- Trạng thái là số bước nhỏ nhất để biến $i$ ký tự đầu của $s$ thành $j$ ký tự đầu của $t$. Khi $s[i] \ne t[j]$, có ba quyết định chèn, xóa và thay, mỗi quyết định dẫn đến một bài toán con. Khi $s[i] = t[j]$, ký tự hiện tại không cần chỉnh sửa.
+- Trạng thái là số bước nhỏ nhất để biến $i$ ký tự đầu của $s$ thành $j$ ký tự đầu của $t$. Khi $s[i-1] \ne t[j-1]$, có ba quyết định chèn, xóa và thay, mỗi quyết định dẫn đến một bài toán con. Khi $s[i-1] = t[j-1]$, ký tự hiện tại không cần chỉnh sửa.
 - Trạng thái khoảng cách chỉnh sửa phụ thuộc ô phía trên, bên trái và phía trên bên trái. Sau tối ưu không gian, cả duyệt thuận lẫn duyệt ngược đều không tự bảo toàn mọi giá trị cần thiết. Vì vậy dùng một biến tạm lưu trạng thái phía trên bên trái, biến bài toán thành tình huống tương tự ba lô vô hạn và cho phép duyệt thuận.

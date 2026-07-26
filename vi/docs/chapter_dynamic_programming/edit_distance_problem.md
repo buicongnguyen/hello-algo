@@ -75,65 +75,50 @@ Phương trình cho thấy $dp[i, j]$ phụ thuộc lời giải bên trái, ph�
 
 Chuỗi hình dưới cho thấy quá trình chuyển trạng thái rất giống bài toán ba lô; cả hai đều là quá trình điền một lưới hai chiều.
 
-**Bước 1**
+=== "<1>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 1](edit_distance_problem.assets/edit_distance_dp_step1.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 1](edit_distance_problem.assets/edit_distance_dp_step1.png)
+=== "<2>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 2](edit_distance_problem.assets/edit_distance_dp_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 3](edit_distance_problem.assets/edit_distance_dp_step3.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 2](edit_distance_problem.assets/edit_distance_dp_step2.png)
+=== "<4>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 4](edit_distance_problem.assets/edit_distance_dp_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 5](edit_distance_problem.assets/edit_distance_dp_step5.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 3](edit_distance_problem.assets/edit_distance_dp_step3.png)
+=== "<6>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 6](edit_distance_problem.assets/edit_distance_dp_step6.png)
 
-**Bước 4**
+=== "<7>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 7](edit_distance_problem.assets/edit_distance_dp_step7.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 4](edit_distance_problem.assets/edit_distance_dp_step4.png)
+=== "<8>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 8](edit_distance_problem.assets/edit_distance_dp_step8.png)
 
-**Bước 5**
+=== "<9>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 9](edit_distance_problem.assets/edit_distance_dp_step9.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 5](edit_distance_problem.assets/edit_distance_dp_step5.png)
+=== "<10>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 10](edit_distance_problem.assets/edit_distance_dp_step10.png)
 
-**Bước 6**
+=== "<11>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 11](edit_distance_problem.assets/edit_distance_dp_step11.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 6](edit_distance_problem.assets/edit_distance_dp_step6.png)
+=== "<12>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 12](edit_distance_problem.assets/edit_distance_dp_step12.png)
 
-**Bước 7**
+=== "<13>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 13](edit_distance_problem.assets/edit_distance_dp_step13.png)
 
-![Quy hoạch động khoảng cách chỉnh sửa, bước 7](edit_distance_problem.assets/edit_distance_dp_step7.png)
+=== "<14>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 14](edit_distance_problem.assets/edit_distance_dp_step14.png)
 
-**Bước 8**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 8](edit_distance_problem.assets/edit_distance_dp_step8.png)
-
-**Bước 9**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 9](edit_distance_problem.assets/edit_distance_dp_step9.png)
-
-**Bước 10**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 10](edit_distance_problem.assets/edit_distance_dp_step10.png)
-
-**Bước 11**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 11](edit_distance_problem.assets/edit_distance_dp_step11.png)
-
-**Bước 12**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 12](edit_distance_problem.assets/edit_distance_dp_step12.png)
-
-**Bước 13**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 13](edit_distance_problem.assets/edit_distance_dp_step13.png)
-
-**Bước 14**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 14](edit_distance_problem.assets/edit_distance_dp_step14.png)
-
-**Bước 15**
-
-![Quy hoạch động khoảng cách chỉnh sửa, bước 15](edit_distance_problem.assets/edit_distance_dp_step15.png)
+=== "<15>"
+    ![Quy hoạch động khoảng cách chỉnh sửa, bước 15](edit_distance_problem.assets/edit_distance_dp_step15.png)
 
 ### Tối ưu không gian
 

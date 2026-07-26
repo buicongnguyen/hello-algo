@@ -90,65 +90,51 @@ Quy hoạch động về bản chất là quá trình điền bảng $dp$ theo c
 
 Như chuỗi hình dưới, cả độ phức tạp thời gian và không gian đều được quyết định bởi kích thước mảng `dp`, tức $O(n \times cap)$.
 
-**Bước 1**
+=== "<1>"
+    ![Quy hoạch động ba lô 0-1, bước 1](knapsack_problem.assets/knapsack_dp_step1.png)
 
-![Quy hoạch động ba lô 0-1, bước 1](knapsack_problem.assets/knapsack_dp_step1.png)
+=== "<2>"
+    ![Quy hoạch động ba lô 0-1, bước 2](knapsack_problem.assets/knapsack_dp_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Quy hoạch động ba lô 0-1, bước 3](knapsack_problem.assets/knapsack_dp_step3.png)
 
-![Quy hoạch động ba lô 0-1, bước 2](knapsack_problem.assets/knapsack_dp_step2.png)
+=== "<4>"
+    ![Quy hoạch động ba lô 0-1, bước 4](knapsack_problem.assets/knapsack_dp_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Quy hoạch động ba lô 0-1, bước 5](knapsack_problem.assets/knapsack_dp_step5.png)
 
-![Quy hoạch động ba lô 0-1, bước 3](knapsack_problem.assets/knapsack_dp_step3.png)
+=== "<6>"
+    ![Quy hoạch động ba lô 0-1, bước 6](knapsack_problem.assets/knapsack_dp_step6.png)
 
-**Bước 4**
+=== "<7>"
+    ![Quy hoạch động ba lô 0-1, bước 7](knapsack_problem.assets/knapsack_dp_step7.png)
 
-![Quy hoạch động ba lô 0-1, bước 4](knapsack_problem.assets/knapsack_dp_step4.png)
+=== "<8>"
+    ![Quy hoạch động ba lô 0-1, bước 8](knapsack_problem.assets/knapsack_dp_step8.png)
 
-**Bước 5**
+=== "<9>"
+    ![Quy hoạch động ba lô 0-1, bước 9](knapsack_problem.assets/knapsack_dp_step9.png)
 
-![Quy hoạch động ba lô 0-1, bước 5](knapsack_problem.assets/knapsack_dp_step5.png)
+=== "<10>"
+    ![Quy hoạch động ba lô 0-1, bước 10](knapsack_problem.assets/knapsack_dp_step10.png)
 
-**Bước 6**
+=== "<11>"
+    ![Quy hoạch động ba lô 0-1, bước 11](knapsack_problem.assets/knapsack_dp_step11.png)
 
-![Quy hoạch động ba lô 0-1, bước 6](knapsack_problem.assets/knapsack_dp_step6.png)
+=== "<12>"
+    ![Quy hoạch động ba lô 0-1, bước 12](knapsack_problem.assets/knapsack_dp_step12.png)
 
-**Bước 7**
+=== "<13>"
+    ![Quy hoạch động ba lô 0-1, bước 13](knapsack_problem.assets/knapsack_dp_step13.png)
 
-![Quy hoạch động ba lô 0-1, bước 7](knapsack_problem.assets/knapsack_dp_step7.png)
-
-**Bước 8**
-
-![Quy hoạch động ba lô 0-1, bước 8](knapsack_problem.assets/knapsack_dp_step8.png)
-
-**Bước 9**
-
-![Quy hoạch động ba lô 0-1, bước 9](knapsack_problem.assets/knapsack_dp_step9.png)
-
-**Bước 10**
-
-![Quy hoạch động ba lô 0-1, bước 10](knapsack_problem.assets/knapsack_dp_step10.png)
-
-**Bước 11**
-
-![Quy hoạch động ba lô 0-1, bước 11](knapsack_problem.assets/knapsack_dp_step11.png)
-
-**Bước 12**
-
-![Quy hoạch động ba lô 0-1, bước 12](knapsack_problem.assets/knapsack_dp_step12.png)
-
-**Bước 13**
-
-![Quy hoạch động ba lô 0-1, bước 13](knapsack_problem.assets/knapsack_dp_step13.png)
-
-**Bước 14**
-
-![Quy hoạch động ba lô 0-1, bước 14](knapsack_problem.assets/knapsack_dp_step14.png)
+=== "<14>"
+    ![Quy hoạch động ba lô 0-1, bước 14](knapsack_problem.assets/knapsack_dp_step14.png)
 
 ### Tối ưu không gian
 
-Vì mỗi trạng thái chỉ liên quan tới trạng thái ở hàng phía trên, có thể dùng hai mảng cuộn tiến để giảm độ phức tạp không gian từ $O(n^2)$ xuống $O(n)$.
+Vì mỗi trạng thái chỉ liên quan tới trạng thái ở hàng phía trên, có thể dùng hai mảng cuộn tiến để giảm độ phức tạp không gian từ $O(n \times cap)$ xuống $O(cap)$.
 
 Liệu chỉ dùng một mảng có được không? Mỗi trạng thái chuyển từ ô ngay phía trên hoặc ô phía trên bên trái. Nếu chỉ có một mảng, khi bắt đầu duyệt hàng $i$, mảng ấy vẫn đang lưu trạng thái của hàng $i-1$.
 
@@ -157,29 +143,23 @@ Liệu chỉ dùng một mảng có được không? Mỗi trạng thái chuyể
 
 Chuỗi hình dưới minh họa việc chuyển từ hàng $i = 1$ sang hàng $i = 2$ bằng một mảng. Hãy chú ý khác biệt giữa duyệt thuận và duyệt ngược.
 
-**Bước 1**
+=== "<1>"
+    ![Tối ưu không gian ba lô 0-1, bước 1](knapsack_problem.assets/knapsack_dp_comp_step1.png)
 
-![Tối ưu không gian ba lô 0-1, bước 1](knapsack_problem.assets/knapsack_dp_comp_step1.png)
+=== "<2>"
+    ![Tối ưu không gian ba lô 0-1, bước 2](knapsack_problem.assets/knapsack_dp_comp_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Tối ưu không gian ba lô 0-1, bước 3](knapsack_problem.assets/knapsack_dp_comp_step3.png)
 
-![Tối ưu không gian ba lô 0-1, bước 2](knapsack_problem.assets/knapsack_dp_comp_step2.png)
+=== "<4>"
+    ![Tối ưu không gian ba lô 0-1, bước 4](knapsack_problem.assets/knapsack_dp_comp_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Tối ưu không gian ba lô 0-1, bước 5](knapsack_problem.assets/knapsack_dp_comp_step5.png)
 
-![Tối ưu không gian ba lô 0-1, bước 3](knapsack_problem.assets/knapsack_dp_comp_step3.png)
-
-**Bước 4**
-
-![Tối ưu không gian ba lô 0-1, bước 4](knapsack_problem.assets/knapsack_dp_comp_step4.png)
-
-**Bước 5**
-
-![Tối ưu không gian ba lô 0-1, bước 5](knapsack_problem.assets/knapsack_dp_comp_step5.png)
-
-**Bước 6**
-
-![Tối ưu không gian ba lô 0-1, bước 6](knapsack_problem.assets/knapsack_dp_comp_step6.png)
+=== "<6>"
+    ![Tối ưu không gian ba lô 0-1, bước 6](knapsack_problem.assets/knapsack_dp_comp_step6.png)
 
 Trong mã, chỉ cần bỏ chiều thứ nhất $i$ của mảng `dp` và đổi vòng lặp trong thành duyệt ngược:
 

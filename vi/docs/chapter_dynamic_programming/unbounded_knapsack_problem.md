@@ -42,29 +42,23 @@ Vì trạng thái hiện tại chuyển từ trạng thái bên trái và phía 
 
 Thứ tự này ngược hoàn toàn với ba lô 0-1. Chuỗi hình dưới minh họa khác biệt.
 
-**Bước 1**
+=== "<1>"
+    ![Tối ưu không gian ba lô vô hạn, bước 1](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step1.png)
 
-![Tối ưu không gian ba lô vô hạn, bước 1](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step1.png)
+=== "<2>"
+    ![Tối ưu không gian ba lô vô hạn, bước 2](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Tối ưu không gian ba lô vô hạn, bước 3](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step3.png)
 
-![Tối ưu không gian ba lô vô hạn, bước 2](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step2.png)
+=== "<4>"
+    ![Tối ưu không gian ba lô vô hạn, bước 4](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Tối ưu không gian ba lô vô hạn, bước 5](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step5.png)
 
-![Tối ưu không gian ba lô vô hạn, bước 3](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step3.png)
-
-**Bước 4**
-
-![Tối ưu không gian ba lô vô hạn, bước 4](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step4.png)
-
-**Bước 5**
-
-![Tối ưu không gian ba lô vô hạn, bước 5](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step5.png)
-
-**Bước 6**
-
-![Tối ưu không gian ba lô vô hạn, bước 6](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step6.png)
+=== "<6>"
+    ![Tối ưu không gian ba lô vô hạn, bước 6](unbounded_knapsack_problem.assets/unbounded_knapsack_dp_comp_step6.png)
 
 Mã khá đơn giản, chỉ cần bỏ chiều thứ nhất của mảng `dp`:
 
@@ -125,65 +119,50 @@ Vì vậy, dùng $amt + 1$ biểu diễn lời giải không hợp lệ, bởi s
 
 Chuỗi hình dưới mô tả quy hoạch động đổi tiền xu, rất giống ba lô vô hạn.
 
-**Bước 1**
+=== "<1>"
+    ![Quy hoạch động đổi tiền xu, bước 1](unbounded_knapsack_problem.assets/coin_change_dp_step1.png)
 
-![Quy hoạch động đổi tiền xu, bước 1](unbounded_knapsack_problem.assets/coin_change_dp_step1.png)
+=== "<2>"
+    ![Quy hoạch động đổi tiền xu, bước 2](unbounded_knapsack_problem.assets/coin_change_dp_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Quy hoạch động đổi tiền xu, bước 3](unbounded_knapsack_problem.assets/coin_change_dp_step3.png)
 
-![Quy hoạch động đổi tiền xu, bước 2](unbounded_knapsack_problem.assets/coin_change_dp_step2.png)
+=== "<4>"
+    ![Quy hoạch động đổi tiền xu, bước 4](unbounded_knapsack_problem.assets/coin_change_dp_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Quy hoạch động đổi tiền xu, bước 5](unbounded_knapsack_problem.assets/coin_change_dp_step5.png)
 
-![Quy hoạch động đổi tiền xu, bước 3](unbounded_knapsack_problem.assets/coin_change_dp_step3.png)
+=== "<6>"
+    ![Quy hoạch động đổi tiền xu, bước 6](unbounded_knapsack_problem.assets/coin_change_dp_step6.png)
 
-**Bước 4**
+=== "<7>"
+    ![Quy hoạch động đổi tiền xu, bước 7](unbounded_knapsack_problem.assets/coin_change_dp_step7.png)
 
-![Quy hoạch động đổi tiền xu, bước 4](unbounded_knapsack_problem.assets/coin_change_dp_step4.png)
+=== "<8>"
+    ![Quy hoạch động đổi tiền xu, bước 8](unbounded_knapsack_problem.assets/coin_change_dp_step8.png)
 
-**Bước 5**
+=== "<9>"
+    ![Quy hoạch động đổi tiền xu, bước 9](unbounded_knapsack_problem.assets/coin_change_dp_step9.png)
 
-![Quy hoạch động đổi tiền xu, bước 5](unbounded_knapsack_problem.assets/coin_change_dp_step5.png)
+=== "<10>"
+    ![Quy hoạch động đổi tiền xu, bước 10](unbounded_knapsack_problem.assets/coin_change_dp_step10.png)
 
-**Bước 6**
+=== "<11>"
+    ![Quy hoạch động đổi tiền xu, bước 11](unbounded_knapsack_problem.assets/coin_change_dp_step11.png)
 
-![Quy hoạch động đổi tiền xu, bước 6](unbounded_knapsack_problem.assets/coin_change_dp_step6.png)
+=== "<12>"
+    ![Quy hoạch động đổi tiền xu, bước 12](unbounded_knapsack_problem.assets/coin_change_dp_step12.png)
 
-**Bước 7**
+=== "<13>"
+    ![Quy hoạch động đổi tiền xu, bước 13](unbounded_knapsack_problem.assets/coin_change_dp_step13.png)
 
-![Quy hoạch động đổi tiền xu, bước 7](unbounded_knapsack_problem.assets/coin_change_dp_step7.png)
+=== "<14>"
+    ![Quy hoạch động đổi tiền xu, bước 14](unbounded_knapsack_problem.assets/coin_change_dp_step14.png)
 
-**Bước 8**
-
-![Quy hoạch động đổi tiền xu, bước 8](unbounded_knapsack_problem.assets/coin_change_dp_step8.png)
-
-**Bước 9**
-
-![Quy hoạch động đổi tiền xu, bước 9](unbounded_knapsack_problem.assets/coin_change_dp_step9.png)
-
-**Bước 10**
-
-![Quy hoạch động đổi tiền xu, bước 10](unbounded_knapsack_problem.assets/coin_change_dp_step10.png)
-
-**Bước 11**
-
-![Quy hoạch động đổi tiền xu, bước 11](unbounded_knapsack_problem.assets/coin_change_dp_step11.png)
-
-**Bước 12**
-
-![Quy hoạch động đổi tiền xu, bước 12](unbounded_knapsack_problem.assets/coin_change_dp_step12.png)
-
-**Bước 13**
-
-![Quy hoạch động đổi tiền xu, bước 13](unbounded_knapsack_problem.assets/coin_change_dp_step13.png)
-
-**Bước 14**
-
-![Quy hoạch động đổi tiền xu, bước 14](unbounded_knapsack_problem.assets/coin_change_dp_step14.png)
-
-**Bước 15**
-
-![Quy hoạch động đổi tiền xu, bước 15](unbounded_knapsack_problem.assets/coin_change_dp_step15.png)
+=== "<15>"
+    ![Quy hoạch động đổi tiền xu, bước 15](unbounded_knapsack_problem.assets/coin_change_dp_step15.png)
 
 ### Tối ưu không gian
 

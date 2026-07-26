@@ -1,6 +1,6 @@
 # Tóm tắt Chương 1
 
-## Kiến thức trọng tâm
+### Kiến thức trọng tâm
 
 - Thuật toán hiện diện trong đời sống hằng ngày, không phải một khối kiến thức xa lạ. Chúng ta đã vô thức học và dùng nhiều thuật toán để giải quyết các vấn đề lớn nhỏ.
 - Cách tra từ điển tương đồng với tìm kiếm nhị phân. Thuật toán này thể hiện tư tưởng quan trọng: liên tục thu hẹp bài toán bằng cách bỏ đi một nửa phạm vi không thể chứa đáp án.
@@ -10,7 +10,7 @@
 - Cấu trúc dữ liệu và thuật toán gắn bó chặt chẽ: cấu trúc dữ liệu là nền móng, còn thuật toán biến dữ liệu đã tổ chức thành một lời giải.
 - Chúng ta có thể so sánh hai khái niệm này với việc lắp mô hình: khối ghép là dữ liệu, cách sắp và nối các khối là cấu trúc dữ liệu, còn hướng dẫn lắp là thuật toán.
 
-## Hỏi và đáp
+### Hỏi và đáp
 
 **Hỏi:** Tôi hiếm khi phải tự cài đặt thuật toán trong công việc vì ngôn ngữ lập trình đã cung cấp sẵn các hàm cần thiết. Vậy học thuật toán có còn cần thiết không?
 

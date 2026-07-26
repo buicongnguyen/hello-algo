@@ -1,6 +1,8 @@
 # Cách sử dụng cuốn sách
 
-> Để có trải nghiệm đọc tốt nhất, bạn nên đọc hết phần hướng dẫn này trước khi bắt đầu.
+!!! tip
+
+    Để có trải nghiệm đọc tốt nhất, bạn nên đọc hết phần hướng dẫn này trước khi bắt đầu.
 
 ## Quy ước trình bày
 
@@ -24,19 +26,19 @@ nhiều dòng.
 """
 ```
 
-Các trang tiếng Việt giữ ví dụ Python đại diện để việc đọc trên web gọn hơn. Nút `EN` trên mỗi trang dẫn đến bản tiếng Anh tương ứng, nơi có đầy đủ ví dụ cho các ngôn ngữ được upstream hỗ trợ.
+Trên trang web, ví dụ này được trình bày bằng thẻ chọn ngôn ngữ. Bạn có thể chuyển giữa Python, C++, Java, C#, Go, Swift, JavaScript, TypeScript, Dart, Rust, C, Kotlin và Ruby mà không phải cuộn qua mười ba khối mã liên tiếp. Lựa chọn ngôn ngữ cũng được đồng bộ giữa các nhóm mã trong cùng trình đọc.
 
 ## Học hiệu quả với hình minh họa động
 
 So với văn bản thuần túy, hình ảnh và video có mật độ thông tin cao hơn và cấu trúc trực quan hơn. Trong cuốn sách này, **khái niệm trọng tâm và nội dung khó chủ yếu được trình bày bằng hình động**, còn văn bản đóng vai trò giải thích và bổ sung.
 
-Khi gặp hình minh họa động, hãy xem hình là nội dung chính, đọc phần chữ đi kèm và kết hợp cả hai để hiểu vấn đề.
+Khi gặp hình minh họa động, hãy xem hình là nội dung chính, đọc phần chữ đi kèm và kết hợp cả hai để hiểu vấn đề. Dừng ở từng trạng thái, xác định phần dữ liệu vừa thay đổi, rồi đối chiếu với câu giải thích trước khi chuyển sang bước kế tiếp. Cách đọc chủ động này hiệu quả hơn việc chỉ xem hoạt ảnh chạy hết một lượt.
 
 ![Ví dụ về hình minh họa động](../index.assets/animation.gif)
 
 ## Hiểu sâu hơn qua thực hành mã
 
-Mã nguồn đi kèm được lưu trong [kho mã nguồn Hello Algo](https://github.com/krahets/hello-algo), có ca kiểm thử và có thể chạy trực tiếp.
+Mã nguồn đi kèm được lưu trong [kho mã nguồn Hello Algo](https://github.com/krahets/hello-algo). Các tệp có ca kiểm thử và được tổ chức theo chương cùng ngôn ngữ, nhờ đó người đọc có thể chạy trực tiếp và so sánh cùng một thuật toán giữa nhiều cách triển khai.
 
 Nếu có thời gian, **bạn nên tự gõ lại mã**. Nếu thời gian học hạn chế, ít nhất hãy đọc và chạy toàn bộ ví dụ. Việc tự tay thực hành thường mang lại nhiều hiểu biết hơn so với chỉ đọc mã.
 
@@ -59,13 +61,15 @@ Bạn cũng có thể chọn “Download ZIP” trên GitHub rồi giải nén.
 
 ![Khối mã và tệp nguồn tương ứng](suggestions.assets/code_md_to_repo.png)
 
-Phiên bản web chính thức còn hỗ trợ chạy trực quan mã Python dựa trên [Python Tutor](https://pythontutor.com/), cho phép quan sát từng bước thực thi.
+Phiên bản web chính thức còn hỗ trợ chạy trực quan mã Python dựa trên [Python Tutor](https://pythontutor.com/). Nút chạy trực quan bên dưới khối mã cho phép quan sát từng bước thực thi; chế độ toàn màn hình giúp theo dõi ngăn xếp, biến và cấu trúc dữ liệu rõ hơn.
 
 ![Chạy trực quan mã Python](suggestions.assets/pythontutor_example.png)
 
 ## Cùng trưởng thành qua câu hỏi và thảo luận
 
-Đừng bỏ qua những điểm bạn chưa hiểu rõ. Phiên bản web chính thức có khu vực thảo luận ở cuối mỗi chương. Bạn có thể học từ câu hỏi của người khác, chia sẻ cách hiểu của mình và giúp cộng đồng cùng tiến bộ.
+Đừng bỏ qua những điểm bạn chưa hiểu rõ. Hãy nêu câu hỏi ở khu vực thảo luận của phiên bản web chính thức; tác giả và cộng đồng thường cố gắng phản hồi sớm. Đọc câu hỏi của người khác cũng giúp phát hiện những lỗ hổng trong cách hiểu của chính mình và gợi mở các hướng suy nghĩ sâu hơn.
+
+Khi đã hiểu một vấn đề, hãy chia sẻ cách giải thích hoặc trả lời độc giả khác. Việc diễn đạt lại bằng lời của mình là một phép kiểm tra rất tốt: nếu chưa thể giải thích rõ ràng, có thể một mắt xích trong lập luận vẫn còn thiếu. Trao đổi hai chiều vì vậy vừa giúp người hỏi vừa củng cố kiến thức của người trả lời.
 
 ![Ví dụ về khu vực thảo luận](../index.assets/comment.gif)
 

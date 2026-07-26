@@ -44,4 +44,6 @@ Chúng ta có thể hình dung cấu trúc dữ liệu và thuật toán giống
 
 Điểm đáng chú ý là cấu trúc dữ liệu và thuật toán không phụ thuộc vào một ngôn ngữ lập trình cụ thể. Vì vậy, cùng một nội dung trong sách có thể được minh họa bằng nhiều ngôn ngữ.
 
-> Trong trao đổi thực tế, cụm “cấu trúc dữ liệu và thuật toán” thường được rút gọn thành “thuật toán”. Chẳng hạn, “bài tập thuật toán” trên LeetCode thực tế kiểm tra kiến thức ở cả hai mảng.
+!!! tip "Cách viết tắt thông dụng"
+
+    Trong trao đổi thực tế, cụm “cấu trúc dữ liệu và thuật toán” thường được rút gọn thành “thuật toán”. Chẳng hạn, “bài tập thuật toán” trên LeetCode thực tế kiểm tra kiến thức ở cả hai mảng.
