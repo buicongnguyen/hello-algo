@@ -201,7 +201,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_heap/", count: 6, label: "Vietnamese Chapter 8" },
           { prefix: "en/docs/chapter_graph/", count: 6, label: "Vietnamese Chapter 9" },
           { prefix: "en/docs/chapter_searching/", count: 8, label: "Vietnamese Chapter 10" },
-          { prefix: "en/docs/chapter_sorting/", count: 13, label: "Vietnamese Chapter 11" }
+          { prefix: "en/docs/chapter_sorting/", count: 13, label: "Vietnamese Chapter 11" },
+          { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Vietnamese Chapter 12" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
@@ -210,7 +211,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Korean Chapter 3" },
           { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Korean Chapter 4" },
           { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Korean Chapter 5" },
-          { prefix: "en/docs/chapter_hashing/", count: 6, label: "Korean Chapter 6" }
+          { prefix: "en/docs/chapter_hashing/", count: 6, label: "Korean Chapter 6" },
+          { prefix: "en/docs/chapter_tree/", count: 8, label: "Korean Chapter 7" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -410,6 +412,11 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseTree = await readFile(path.join(pilotDirectory, "cay-nhi-phan.html"), "utf8");
   const vietnameseAvl = await readFile(path.join(pilotDirectory, "cay-avl.html"), "utf8");
   const koreanTree = await readFile(path.join(koreanDirectory, "binary-tree.html"), "utf8");
+  const koreanTreeTraversal = await readFile(path.join(koreanDirectory, "binary-tree-traversal.html"), "utf8");
+  const koreanArrayTree = await readFile(path.join(koreanDirectory, "array-representation-of-binary-trees.html"), "utf8");
+  const koreanBst = await readFile(path.join(koreanDirectory, "binary-search-tree.html"), "utf8");
+  const koreanAvl = await readFile(path.join(koreanDirectory, "avl-tree.html"), "utf8");
+  const koreanTreeExercises = await readFile(path.join(koreanDirectory, "chapter-7-exercises.html"), "utf8");
   const vietnameseHeap = await readFile(path.join(pilotDirectory, "cau-truc-heap.html"), "utf8");
   const vietnameseBuildHeap = await readFile(path.join(pilotDirectory, "xay-dung-heap.html"), "utf8");
   const vietnameseTopK = await readFile(path.join(pilotDirectory, "top-k.html"), "utf8");
@@ -419,6 +426,26 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseAvl.includes('<pre><code class="language-python"') ||
       !vietnameseAvl.includes("<table>")) {
     failures.push("Vietnamese AVL page is missing rotation diagrams, Python examples, or its rotation table");
+  }
+  if ((koreanTree.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanTree.includes("binary_tree_best_worst_cases.png") ||
+      !koreanTree.includes("<table>") ||
+      (koreanTree.match(/class="admonition/g) || []).length !== 5 ||
+      (koreanTreeTraversal.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanTreeTraversal.includes("preorder_step11.png") ||
+      (koreanArrayTree.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanArrayTree.includes("array_representation_complete_binary_tree.png") ||
+      (koreanBst.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanBst.includes("bst_remove_case3_step4.png") ||
+      !koreanBst.includes("<table>") ||
+      (koreanAvl.match(/class="content-tabs"/g) || []).length !== 8 ||
+      !koreanAvl.includes("avltree_rotation_cases.png") ||
+      !koreanAvl.includes("<table>") ||
+      !koreanAvl.includes('class="admonition admonition-tip"') ||
+      (koreanTreeExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (koreanTreeExercises.match(/class="admonition admonition-tip"/g) || []).length !== 3 ||
+      !koreanTreeExercises.includes("leetcode.com/problems/kth-smallest-element-in-a-bst")) {
+    failures.push("Korean Chapter 7 is missing complete code tabs, tree traces, tables, callouts, or exercises");
   }
   if (!vietnameseHeap.includes("min_heap_and_max_heap.png") || !koreanHeap.includes("min_heap_and_max_heap.png") || !vietnameseHeap.includes('<pre><code class="language-python"') || !koreanHeap.includes('<pre><code class="language-python"')) failures.push("Chapter 8 heap pages are missing diagrams or Python examples");
   if (!vietnameseHeap.includes("heap_push_step9.png") ||
@@ -489,7 +516,10 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseRadixSort = await readFile(path.join(pilotDirectory, "sap-xep-co-so.html"), "utf8");
   const vietnameseSortExercises = await readFile(path.join(pilotDirectory, "bai-tap-sap-xep.html"), "utf8");
   const koreanSort = await readFile(path.join(koreanDirectory, "quick-sort.html"), "utf8");
+  const vietnameseDivideOverview = await readFile(path.join(pilotDirectory, "thuat-toan-chia-de-tri.html"), "utf8");
+  const vietnameseBuildTree = await readFile(path.join(pilotDirectory, "dung-cay-nhi-phan.html"), "utf8");
   const vietnameseDivide = await readFile(path.join(pilotDirectory, "thap-ha-noi.html"), "utf8");
+  const vietnameseDivideExercises = await readFile(path.join(pilotDirectory, "bai-tap-chia-de-tri.html"), "utf8");
   const koreanDivide = await readFile(path.join(koreanDirectory, "hanota.html"), "utf8");
   if (!vietnameseSort.includes("quick_sort_overview.png") || !koreanSort.includes("quick_sort_overview.png") || !vietnameseSort.includes('<pre><code class="language-python"') || !koreanSort.includes('<pre><code class="language-python"')) failures.push("Chapter 11 quick-sort pages are missing diagrams or Python examples");
   if ((vietnameseSort.match(/class="content-tabs"/g) || []).length !== 4 ||
@@ -513,6 +543,23 @@ export async function checkBuiltSite(outputRoot) {
     failures.push("Vietnamese Chapter 11 is missing complete code tabs, sorting traces, mathematics, callouts, or exercises");
   }
   if (!vietnameseDivide.includes("hanota_example.png") || !koreanDivide.includes("hanota_example.png") || !vietnameseDivide.includes('<pre><code class="language-python"') || !koreanDivide.includes('<pre><code class="language-python"')) failures.push("Chapter 12 Hanota pages are missing diagrams or Python examples");
+  if (!vietnameseDivideOverview.includes("divide_and_conquer_parallel_computing.png") ||
+      (vietnameseDivideOverview.match(/class="math-block"/g) || []).length !== 2 ||
+      (vietnameseBuildTree.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseBuildTree.includes("built_tree_step9.png") ||
+      !vietnameseBuildTree.includes("built_tree_overall.png") ||
+      !vietnameseBuildTree.includes("<table>") ||
+      !vietnameseBuildTree.includes('class="admonition admonition-question"') ||
+      (vietnameseDivide.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseDivide.includes("hanota_f2_step4.png") ||
+      !vietnameseDivide.includes("hanota_f3_step4.png") ||
+      !vietnameseDivide.includes("hanota_recursive_tree.png") ||
+      !vietnameseDivide.includes('class="admonition admonition-quote"') ||
+      (vietnameseDivideExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (vietnameseDivideExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !vietnameseDivideExercises.includes("leetcode.com/problems/powx-n")) {
+    failures.push("Vietnamese Chapter 12 is missing complete code tabs, derivations, visual traces, callouts, or exercises");
+  }
 
   const vietnameseBacktracking = await readFile(path.join(pilotDirectory, "bai-toan-n-hau.html"), "utf8");
   const koreanBacktracking = await readFile(path.join(koreanDirectory, "n-queens.html"), "utf8");

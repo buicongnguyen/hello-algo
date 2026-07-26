@@ -2,4 +2,8 @@
 
 ![Chia để trị](../assets/covers/chapter_divide_and_conquer.jpg)
 
-Chia để trị tách bài toán thành các bài toán con cùng dạng, giải chúng độc lập rồi kết hợp kết quả. Tư tưởng này đứng sau tìm kiếm nhị phân, merge sort và nhiều thuật toán song song.
+!!! abstract
+
+    Bài toán khó được phân rã từng tầng; sau mỗi lần phân rã, nó lại trở nên đơn giản hơn.
+
+    Chia để trị hé lộ một sự thật quan trọng: bắt đầu từ những điều đơn giản, rồi sẽ không còn gì phức tạp.
