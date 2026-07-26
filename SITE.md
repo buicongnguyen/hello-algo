@@ -54,6 +54,8 @@ The v1.12 content wave completes structural parity for all seven Vietnamese Chap
 
 The v1.13 content wave completes structural parity for all seven Vietnamese Chapter 3 documents. Logical/physical classification, basic types, two’s-complement arithmetic, the full IEEE 754 derivation, ASCII/Unicode/UTF encoding, nine images, two tables, thirteen displayed derivations, exercises, and the official basic-type code group are preserved at their source teaching positions.
 
+The v1.14 content wave completes structural parity for all seven Vietnamese Chapter 2 documents. Efficiency evaluation, iteration and recursion, exact Big-O derivations, time and space growth families, twenty images, two tables, six displayed derivations, exercises, and all thirty-three official code groups are preserved at their source teaching positions.
+
 ## Korean draft
 
 The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains all 119 source-locked drafts with exact Vietnamese and English counterpart links. Documents preserve the official diagrams and 13-language code groups; condensed prose remains draft until content-parity and review gates pass. Governance files live under `ko/`.
@@ -83,6 +85,8 @@ The v1.11 content wave completes structural parity for all six Korean Chapter 9 
 The v1.12 content wave completes structural parity for all eight Korean Chapter 10 documents. Binary-search interval invariants, insertion and boundary variants, two-sum hash optimization, search-method lifecycle comparison, 27 images, one table, exercises, and all eight official code groups are preserved inline. The implemented scope and next release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_12.md](NEXT_CONTENT_RELEASE_PLAN_V1_12.md).
 
 The v1.13 content wave completes structural parity for all thirteen Korean Chapter 11 documents. Evaluation criteria, selection/bubble/insertion traces, optimized quick sort, merge sort, heap sort, bucket/counting/radix sort, 71 images, exercises, and all fourteen official code groups are preserved inline. The implemented scope and next release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_13.md](NEXT_CONTENT_RELEASE_PLAN_V1_13.md).
+
+The v1.14 content wave completes structural parity for all seven Korean Chapter 12 documents. Divide-and-conquer criteria and efficiency, recursive binary search, preorder/inorder tree reconstruction, the complete Hanota traces, 31 images, two displayed derivations, exercises, and all three official code groups are preserved inline. The implemented scope and next release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_14.md](NEXT_CONTENT_RELEASE_PLAN_V1_14.md).
 
 ## Shared Atlas experience
 

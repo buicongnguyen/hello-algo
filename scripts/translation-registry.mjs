@@ -245,19 +245,19 @@ export function englishReaderHref(source) {
 }
 
 export function markdownStructure(markdown) {
-  const prose = markdown
-    .replace(/```[\s\S]*?```/g, "")
+  const structuralMarkdown = markdown.replace(/```[\s\S]*?```/g, "");
+  const prose = structuralMarkdown
     .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/\[[^\]]+\]\([^)]+\)/g, "")
     .replace(/[#*_`|>$\s-]/g, "");
   return {
-    headings: (markdown.match(/^#{1,6} /gm) || []).length,
-    images: (markdown.match(/!\[[^\]]*\]\([^)]+\)/g) || []).length,
+    headings: (structuralMarkdown.match(/^#{1,6} /gm) || []).length,
+    images: (structuralMarkdown.match(/!\[[^\]]*\]\([^)]+\)/g) || []).length,
     codeFences: (markdown.match(/^```/gm) || []).length,
-    displayMathFences: (markdown.match(/^\$\$$/gm) || []).length,
-    inlineMath: (markdown.match(/\$[^$\n]+\$/g) || []).length,
-    tables: (markdown.match(/^\|?\s*:?-{3,}:?(?:\s*\|\s*:?-{3,}:?)+\s*\|?\s*$/gm) || []).length,
-    callouts: (markdown.match(/^(?:!!!|\?\?\?)\s+/gm) || []).length,
+    displayMathFences: (structuralMarkdown.match(/^\$\$$/gm) || []).length,
+    inlineMath: (structuralMarkdown.match(/\$[^$\n]+\$/g) || []).length,
+    tables: (structuralMarkdown.match(/^\|?\s*:?-{3,}:?(?:\s*\|\s*:?-{3,}:?)+\s*\|?\s*$/gm) || []).length,
+    callouts: (structuralMarkdown.match(/^(?:!!!|\?\?\?)\s+/gm) || []).length,
     proseCharacters: prose.length,
     nonWhitespaceCharacters: markdown.replace(/\s/g, "").length
   };

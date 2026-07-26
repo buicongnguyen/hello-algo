@@ -195,6 +195,7 @@ export async function checkBuiltSite(outputRoot) {
     }
     const releaseUnits = language === "vi"
       ? [
+          { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Vietnamese Chapter 2" },
           { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Vietnamese Chapter 3" },
           { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" },
           { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" },
@@ -220,7 +221,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_heap/", count: 6, label: "Korean Chapter 8" },
           { prefix: "en/docs/chapter_graph/", count: 6, label: "Korean Chapter 9" },
           { prefix: "en/docs/chapter_searching/", count: 8, label: "Korean Chapter 10" },
-          { prefix: "en/docs/chapter_sorting/", count: 13, label: "Korean Chapter 11" }
+          { prefix: "en/docs/chapter_sorting/", count: 13, label: "Korean Chapter 11" },
+          { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Korean Chapter 12" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -606,7 +608,11 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseBuildTree = await readFile(path.join(pilotDirectory, "dung-cay-nhi-phan.html"), "utf8");
   const vietnameseDivide = await readFile(path.join(pilotDirectory, "thap-ha-noi.html"), "utf8");
   const vietnameseDivideExercises = await readFile(path.join(pilotDirectory, "bai-tap-chia-de-tri.html"), "utf8");
+  const koreanDivideOverview = await readFile(path.join(koreanDirectory, "divide-and-conquer-algorithms.html"), "utf8");
+  const koreanDivideSearch = await readFile(path.join(koreanDirectory, "binary-search-recursive.html"), "utf8");
+  const koreanBuildTree = await readFile(path.join(koreanDirectory, "build-binary-tree.html"), "utf8");
   const koreanDivide = await readFile(path.join(koreanDirectory, "hanota.html"), "utf8");
+  const koreanDivideExercises = await readFile(path.join(koreanDirectory, "chapter-12-exercises.html"), "utf8");
   if (!vietnameseSort.includes("quick_sort_overview.png") || !koreanSort.includes("quick_sort_overview.png") || !vietnameseSort.includes('<pre><code class="language-python"') || !koreanSort.includes('<pre><code class="language-python"')) failures.push("Chapter 11 quick-sort pages are missing diagrams or Python examples");
   if ((vietnameseSort.match(/class="content-tabs"/g) || []).length !== 4 ||
       !vietnameseSort.includes("pivot_division_step9.png") ||
@@ -680,6 +686,27 @@ export async function checkBuiltSite(outputRoot) {
       (vietnameseDivideExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
       !vietnameseDivideExercises.includes("leetcode.com/problems/powx-n")) {
     failures.push("Vietnamese Chapter 12 is missing complete code tabs, derivations, visual traces, callouts, or exercises");
+  }
+  if (!koreanDivideOverview.includes("divide_and_conquer_merge_sort.png") ||
+      !koreanDivideOverview.includes("divide_and_conquer_parallel_computing.png") ||
+      (koreanDivideOverview.match(/class="math-block"/g) || []).length !== 2 ||
+      (koreanDivideSearch.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !koreanDivideSearch.includes("binary_search_recur.png") ||
+      !koreanDivideSearch.includes('class="admonition admonition-question"') ||
+      (koreanBuildTree.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanBuildTree.includes("built_tree_step9.png") ||
+      !koreanBuildTree.includes("built_tree_overall.png") ||
+      !koreanBuildTree.includes("<table>") ||
+      !koreanBuildTree.includes('class="admonition admonition-question"') ||
+      (koreanDivide.match(/class="content-tabs"/g) || []).length !== 4 ||
+      !koreanDivide.includes("hanota_f2_step4.png") ||
+      !koreanDivide.includes("hanota_f3_step4.png") ||
+      !koreanDivide.includes("hanota_recursive_tree.png") ||
+      !koreanDivide.includes('class="admonition admonition-quote"') ||
+      (koreanDivideExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (koreanDivideExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !koreanDivideExercises.includes("leetcode.com/problems/powx-n")) {
+    failures.push("Korean Chapter 12 is missing complete derivations, inline code tabs, visual traces, tables, callouts, or exercises");
   }
 
   const vietnameseBacktrackingAlgorithm = await readFile(path.join(pilotDirectory, "thuat-toan-quay-lui.html"), "utf8");
@@ -856,9 +883,29 @@ export async function checkBuiltSite(outputRoot) {
   if (!englishBookCss.includes("overflow-wrap: anywhere")) failures.push("Reader CSS does not contain long official visualization URLs");
   if (!englishDynamicExercises.includes("When Is Dynamic Programming Appropriate?") || !englishDynamicExercises.includes("leetcode.com/problems/climbing-stairs") || !englishGreedyExercises.includes("Is Choosing the Largest Coin Always Best?") || !englishGreedyExercises.includes("10 + 1 + 1 + 1 + 1")) failures.push("Local English Chapter 14–15 exercise pages are incomplete");
 
+  const vietnameseIteration = await readFile(path.join(pilotDirectory, "vong-lap-va-de-quy.html"), "utf8");
   const timeComplexityPage = await readFile(path.join(pilotDirectory, "do-phuc-tap-thoi-gian.html"), "utf8");
-  if (!timeComplexityPage.includes('<pre><code class="language-python"') || !timeComplexityPage.includes('class="math-block"')) {
-    failures.push("Vietnamese time-complexity page is missing rendered code or display mathematics");
+  const vietnameseSpaceComplexity = await readFile(path.join(pilotDirectory, "do-phuc-tap-khong-gian.html"), "utf8");
+  const vietnameseComplexityExercises = await readFile(path.join(pilotDirectory, "bai-tap-do-phuc-tap.html"), "utf8");
+  if ((vietnameseIteration.match(/class="content-tabs"/g) || []).length !== 8 ||
+      !vietnameseIteration.includes("recursion_tree.png") ||
+      !vietnameseIteration.includes("<table>") ||
+      (vietnameseIteration.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
+      (vietnameseIteration.match(/class="admonition admonition-question"/g) || []).length !== 1 ||
+      (timeComplexityPage.match(/class="content-tabs"/g) || []).length !== 16 ||
+      !timeComplexityPage.includes("time_complexity_factorial.png") ||
+      (timeComplexityPage.match(/class="math-block"/g) || []).length !== 5 ||
+      !timeComplexityPage.includes("<table>") ||
+      !timeComplexityPage.includes('class="admonition admonition-note"') ||
+      !timeComplexityPage.includes('class="admonition admonition-tip"') ||
+      !timeComplexityPage.includes('class="admonition admonition-question"') ||
+      (vietnameseSpaceComplexity.match(/class="content-tabs"/g) || []).length !== 9 ||
+      !vietnameseSpaceComplexity.includes("space_complexity_exponential.png") ||
+      (vietnameseSpaceComplexity.match(/class="math-block"/g) || []).length !== 1 ||
+      (vietnameseComplexityExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (vietnameseComplexityExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !vietnameseComplexityExercises.includes("leetcode.com/problems/fibonacci-number")) {
+    failures.push("Vietnamese Chapter 2 is missing complete iteration/recursion media, inline code tabs, complexity derivations, tables, callouts, or exercises");
   }
 
   const vietnameseClassification = await readFile(path.join(pilotDirectory, "phan-loai-cau-truc-du-lieu.html"), "utf8");

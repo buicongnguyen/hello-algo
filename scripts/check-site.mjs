@@ -5,7 +5,7 @@ import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 import { htmlTranslations, interactiveLocale } from "../vi/atlas-locale.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
-import { createTranslationRegistry, translationReadinessFailures } from "./translation-registry.mjs";
+import { createTranslationRegistry, markdownStructure, translationReadinessFailures } from "./translation-registry.mjs";
 import { resolveSiteRequest } from "./server-path.mjs";
 import { renderMarkdown } from "./markdown-renderer.mjs";
 import {
@@ -56,7 +56,8 @@ const requiredFiles = [
   "NEXT_CONTENT_RELEASE_PLAN_V1_10.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_11.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_12.md",
-  "NEXT_CONTENT_RELEASE_PLAN_V1_13.md"
+  "NEXT_CONTENT_RELEASE_PLAN_V1_13.md",
+  "NEXT_CONTENT_RELEASE_PLAN_V1_14.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -79,6 +80,10 @@ const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "tra
 const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
 
 const failures = [];
+const codeAwareStructure = markdownStructure("Text $n$\n\n```text\n$not_math$\n```");
+if (codeAwareStructure.inlineMath !== 1) {
+  failures.push("Translation parity must ignore math-like tokens inside fenced code");
+}
 function registryAccepts(manifests) {
   try {
     createTranslationRegistry(manifests);

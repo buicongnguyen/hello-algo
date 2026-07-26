@@ -10,7 +10,7 @@ Với mã sinh viên tám chữ số, coi hàng thấp nhất là chữ số th�
 
 1. Khởi tạo vị trí chữ số $k = 1$.
 2. Dùng counting sort ổn định theo chữ số thứ $k$. Sau lượt này, dữ liệu có thứ tự theo riêng chữ số đó.
-3. Tăng $k$ thêm một, quay lại bước 2 và tiếp tục đến khi đã xử lý mọi chữ số $k$; khi đó toàn bộ số có thứ tự.
+3. Tăng $k$ thêm $1$, quay lại bước 2 và tiếp tục đến khi đã xử lý mọi chữ số $k$; khi đó toàn bộ số có thứ tự.
 
 ![Quy trình sắp xếp theo cơ số](radix_sort.assets/radix_sort_overview.png)
 

@@ -1,9 +1,9 @@
 # Phân tích độ phức tạp
 
-![Bìa chương phân tích độ phức tạp](../assets/covers/chapter_complexity_analysis.jpg)
+![Phân tích độ phức tạp](../assets/covers/chapter_complexity_analysis.jpg)
 
-> Phân tích độ phức tạp giống một bản chỉ dẫn về không gian và thời gian trong vũ trụ rộng lớn của thuật toán.
->
-> Nó dẫn chúng ta khảo sát hai chiều thời gian và bộ nhớ để tìm kiếm những lời giải thanh lịch hơn.
+!!! abstract
 
-Chương này xây dựng một “thước đo” độc lập với máy tính cụ thể. Thay vì chỉ hỏi chương trình chạy bao nhiêu mili giây trên một thiết bị, chúng ta xem thời gian và bộ nhớ tăng nhanh đến đâu khi kích thước đầu vào lớn lên.
+    Phân tích độ phức tạp giống như một tấm bản đồ không–thời gian trong vũ trụ rộng lớn của các thuật toán.
+
+    Tấm bản đồ ấy dẫn chúng ta đi sâu vào hai chiều thời gian và không gian để tìm những lời giải thanh lịch hơn.

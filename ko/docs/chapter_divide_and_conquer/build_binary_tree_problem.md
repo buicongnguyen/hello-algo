@@ -1,25 +1,105 @@
 # 이진 트리 구성 문제
 
-중복 키가 없는 전위 순회와 중위 순회가 주어지면 트리를 유일하게 복원할 수 있습니다. 전위 순회의 첫 원소가 루트이고, 중위 순회에서 루트 위치가 왼쪽과 오른쪽 서브트리를 나눕니다.
+!!! question
 
-![전위·중위 순회 분할](build_binary_tree_problem.assets/build_tree_preorder_inorder_division.png)
+    이진 트리의 전위 순회 `preorder`와 중위 순회 `inorder`가 주어졌습니다. 두 순회 결과로 이진 트리를 구성하고 루트 노드를 반환하세요. 트리에는 중복된 노드 값이 없다고 가정합니다.
+
+![이진 트리 구성의 예시 데이터](build_binary_tree_problem.assets/build_tree_example.png)
+
+### 분할 정복 문제인지 판단하기
+
+원래 문제는 `preorder`와 `inorder`로 하나의 이진 트리를 구성하는 것입니다. 이 문제는 전형적인 분할 정복 조건을 만족합니다.
+
+- **문제를 분해할 수 있음**: 현재 루트를 만들고, 왼쪽 부분 트리와 오른쪽 부분 트리를 구성하는 두 부분 문제로 나눌 수 있습니다. 각 부분 트리에도 같은 분해 방법을 적용해 빈 트리까지 내려갈 수 있습니다.
+- **부분 문제가 독립적임**: 왼쪽과 오른쪽 부분 트리는 겹치지 않습니다. 왼쪽 트리를 만들 때는 두 순회 배열에서 왼쪽 트리에 해당하는 구간만 필요하고, 오른쪽도 마찬가지입니다.
+- **부분 해를 결합할 수 있음**: 완성된 왼쪽과 오른쪽 부분 트리를 현재 루트의 두 자식으로 연결하면 원래 트리의 해가 됩니다.
+
+재귀 호출은 “현재 구간에 해당하는 트리를 구성한다”는 동일한 계약을 가집니다. 빈 구간이 종료 조건이고, 그보다 큰 구간에서는 루트 하나를 만든 뒤 두 독립 구간에 같은 함수를 적용합니다.
+
+### 부분 트리를 나누는 방법
+
+분할 정복으로 풀 수 있다는 사실만으로는 충분하지 않습니다. **전위 순회 `preorder`와 중위 순회 `inorder`를 어떻게 왼쪽과 오른쪽 부분 트리 구간으로 나눌지** 정해야 합니다.
+
+순회의 정의에 따라 두 배열은 다음 세 부분으로 나뉩니다.
+
+- 전위 순회: `[ 루트 | 왼쪽 부분 트리 | 오른쪽 부분 트리 ]`. 위 예시는 `[ 3 | 9 | 2 1 7 ]`입니다.
+- 중위 순회: `[ 왼쪽 부분 트리 | 루트 | 오른쪽 부분 트리 ]`. 위 예시는 `[ 9 | 3 | 1 2 7 ]`입니다.
+
+예시 데이터는 다음 순서로 나눌 수 있습니다.
+
+1. 전위 순회의 첫 원소 `3`이 현재 트리의 루트입니다.
+2. `inorder`에서 루트 `3`의 위치를 찾아 `[ 9 | 3 | 1 2 7 ]`로 나눕니다.
+3. 중위 순회의 분할로 왼쪽과 오른쪽 부분 트리에 각각 1개와 3개의 노드가 있음을 알 수 있습니다. 이 크기를 사용해 `preorder`도 `[ 3 | 9 | 2 1 7 ]`로 나눕니다.
+
+![전위·중위 순회에서 부분 트리 나누기](build_binary_tree_problem.assets/build_tree_preorder_inorder_division.png)
+
+중복 값이 없다는 조건은 중위 순회에서 루트 위치를 하나로 결정하기 위해 필요합니다. 중복을 허용하면 값만으로 어느 위치를 선택해야 하는지 알 수 없으므로 추가 식별 정보나 다른 규칙이 필요합니다.
+
+### 변수로 부분 트리 구간 표현하기
+
+위 분할 방법으로 루트와 두 부분 트리가 각 순회 배열에서 차지하는 인덱스 구간을 얻었습니다. 이를 재귀 함수에 전달하려면 몇 개의 인덱스 변수가 필요합니다.
+
+- 현재 트리 루트가 `preorder`에서 갖는 인덱스를 $i$라고 합니다.
+- 현재 트리 루트가 `inorder`에서 갖는 인덱스를 $m$이라고 합니다.
+- 현재 트리가 `inorder`에서 차지하는 구간을 $[l, r]$이라고 합니다.
+
+다음 표는 이 변수로 현재 트리와 두 부분 트리의 구간을 나타냅니다.
+
+| 구분 | `preorder`의 루트 인덱스 | `inorder`의 부분 트리 구간 |
+| --- | --- | --- |
+| 현재 트리 | $i$ | $[l, r]$ |
+| 왼쪽 부분 트리 | $i + 1$ | $[l, m-1]$ |
+| 오른쪽 부분 트리 | $i + 1 + (m - l)$ | $[m+1, r]$ |
+
+오른쪽 부분 트리의 루트 인덱스에 들어 있는 $(m-l)$은 왼쪽 부분 트리의 노드 수입니다. 현재 루트 바로 뒤에서 왼쪽 트리의 모든 노드를 건너뛴 위치가 오른쪽 트리의 루트가 됩니다.
+
+![루트와 두 부분 트리의 인덱스 구간](build_binary_tree_problem.assets/build_tree_division_pointers.png)
+
+구간 경계를 닫힌 구간으로 해석했으므로 종료 조건은 왼쪽 경계가 오른쪽 경계보다 커지는 경우입니다. 경계 규칙을 구현 전체에서 일관되게 유지하면 빈 트리와 잎 노드도 별도 예외 없이 처리할 수 있습니다.
+
+### 코드 구현
+
+$m$을 빠르게 찾기 위해 `inorder`의 각 원소를 인덱스에 대응시키는 해시 테이블 `hmap`을 먼저 만듭니다. 그러면 매 재귀 호출에서 중위 순회를 다시 선형 탐색하지 않고 루트 위치를 바로 얻을 수 있습니다.
+
+재귀 함수는 현재 전위 루트 인덱스와 중위 구간만 전달하면 됩니다. 배열을 매번 잘라 복사하지 않고 경계만 이동하므로 부분 문제 사이의 소유 범위가 명확하고 불필요한 복사 비용도 피할 수 있습니다. 만들어진 루트는 두 재귀 호출의 반환값을 각각 왼쪽과 오른쪽 자식으로 연결한 뒤 상위 호출에 반환합니다.
 
 ```python
-def build_tree(preorder, inorder):
-    positions = {value: i for i, value in enumerate(inorder)}
-
-    def build(pre_left, pre_right, in_left, in_right):
-        if pre_left > pre_right:
-            return None
-        root_value = preorder[pre_left]
-        root = TreeNode(root_value)
-        middle = positions[root_value]
-        left_size = middle - in_left
-        root.left = build(pre_left + 1, pre_left + left_size, in_left, middle - 1)
-        root.right = build(pre_left + left_size + 1, pre_right, middle + 1, in_right)
-        return root
-
-    return build(0, len(preorder) - 1, 0, len(inorder) - 1)
+# 잠긴 원문의 공식 이진 트리 구성 구현이 삽입됩니다.
 ```
 
-위치 맵을 만들면 $O(n)$ 시간과 $O(n)$ 공간에 구성할 수 있습니다.
+아래 단계는 트리가 만들어지는 재귀 과정을 보여 줍니다. 내려가는 재귀에서 각 노드를 만들고, 반환하는 과정에서 왼쪽·오른쪽 참조를 부모 노드에 연결합니다.
+
+=== "<1>"
+    ![이진 트리 구성 재귀 과정 1단계](build_binary_tree_problem.assets/built_tree_step1.png)
+
+=== "<2>"
+    ![이진 트리 구성 재귀 과정 2단계](build_binary_tree_problem.assets/built_tree_step2.png)
+
+=== "<3>"
+    ![이진 트리 구성 재귀 과정 3단계](build_binary_tree_problem.assets/built_tree_step3.png)
+
+=== "<4>"
+    ![이진 트리 구성 재귀 과정 4단계](build_binary_tree_problem.assets/built_tree_step4.png)
+
+=== "<5>"
+    ![이진 트리 구성 재귀 과정 5단계](build_binary_tree_problem.assets/built_tree_step5.png)
+
+=== "<6>"
+    ![이진 트리 구성 재귀 과정 6단계](build_binary_tree_problem.assets/built_tree_step6.png)
+
+=== "<7>"
+    ![이진 트리 구성 재귀 과정 7단계](build_binary_tree_problem.assets/built_tree_step7.png)
+
+=== "<8>"
+    ![이진 트리 구성 재귀 과정 8단계](build_binary_tree_problem.assets/built_tree_step8.png)
+
+=== "<9>"
+    ![이진 트리 구성 재귀 과정 9단계](build_binary_tree_problem.assets/built_tree_step9.png)
+
+각 재귀 함수 안에서 `preorder`와 `inorder`가 나뉘는 전체 결과는 다음 그림과 같습니다.
+
+![각 재귀 함수의 순회 배열 분할 결과](build_binary_tree_problem.assets/built_tree_overall.png)
+
+트리의 노드 수를 $n$이라고 하겠습니다. 각 노드를 한 번 초기화하고 각 재귀 호출의 나머지 작업이 $O(1)$이므로 **전체 시간 복잡도는 $O(n)$입니다.**
+
+해시 테이블은 `inorder`의 원소와 인덱스 대응을 저장하므로 $O(n)$ 공간을 사용합니다. 최악의 경우 트리가 연결 리스트처럼 한쪽으로 퇴화하여 재귀 깊이가 $n$에 이르고 호출 스택도 $O(n)$ 공간을 사용합니다. 따라서 **전체 공간 복잡도는 $O(n)$입니다.**

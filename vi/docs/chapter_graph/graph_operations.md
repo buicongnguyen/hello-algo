@@ -72,7 +72,7 @@ Cài đặt thực tế khác hình minh họa ở hai điểm.
 - Để thêm và xóa đỉnh thuận tiện, đồng thời làm mã ngắn gọn, cài đặt dùng danh sách động thay cho danh sách liên kết.
 - Một bảng băm lưu danh sách kề; `key` là thực thể đỉnh và `value` là danh sách các đỉnh kề với nó.
 
-Lớp `Vertex` được dùng để biểu diễn đỉnh. Nếu dùng chỉ số danh sách để phân biệt đỉnh giống ma trận kề, khi xóa đỉnh ở chỉ số $i$ sẽ phải duyệt toàn bộ danh sách kề và giảm mọi chỉ số lớn hơn `i` đi `1`, rất kém hiệu quả. Khi mỗi đỉnh là một thực thể `Vertex` duy nhất, xóa một đỉnh không yêu cầu sửa định danh của các đỉnh còn lại.
+Lớp `Vertex` được dùng để biểu diễn đỉnh. Nếu dùng chỉ số danh sách để phân biệt đỉnh giống ma trận kề, khi xóa đỉnh ở chỉ số $i$ sẽ phải duyệt toàn bộ danh sách kề và giảm mọi chỉ số lớn hơn $i$ đi $1$, rất kém hiệu quả. Khi mỗi đỉnh là một thực thể `Vertex` duy nhất, xóa một đỉnh không yêu cầu sửa định danh của các đỉnh còn lại.
 
 ```python
 # Cài đặt danh sách kề chính thức được chèn từ nguồn đã khóa.

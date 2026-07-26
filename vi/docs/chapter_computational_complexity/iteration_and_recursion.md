@@ -2,6 +2,8 @@
 
 Trong thuật toán, việc thực hiện lặp lại một nhiệm vụ xuất hiện rất thường xuyên và liên quan chặt chẽ đến phân tích độ phức tạp. Trước khi học độ phức tạp thời gian và không gian, chúng ta cần hiểu hai cấu trúc điều khiển cơ bản để lặp lại công việc: **phép lặp** và **đệ quy**.
 
+Hai cấu trúc có thể tạo ra cùng một kết quả nhưng tổ chức quá trình tính toán khác nhau. Phép lặp mô tả trực tiếp thứ tự thực hiện qua biến điều khiển; đệ quy giao phần việc còn lại cho một lời gọi nhỏ hơn của chính hàm đó. Việc nhận ra số lượt lặp, số lời gọi đồng thời và kích thước bài toán ở mỗi bước là nền tảng để phân tích thời gian và không gian ở các phần sau.
+
 ## Phép lặp
 
 **Phép lặp** là cấu trúc điều khiển thực hiện lặp lại một đoạn mã khi điều kiện còn đúng và dừng khi điều kiện không còn thỏa mãn.
@@ -22,9 +24,13 @@ def for_loop(n: int) -> int:
 
 Số phép toán tỉ lệ với kích thước đầu vào $n$, nghĩa là có quan hệ tuyến tính. Độ phức tạp thời gian chính là công cụ mô tả quan hệ tăng trưởng như vậy.
 
+Ở đây, biến `res` giữ kết quả tích lũy, còn `i` lần lượt nhận mọi giá trị cần cộng. Khi đầu vào tăng thêm một đơn vị, vòng lặp cũng thực hiện thêm một lượt, nên quan hệ với `n` có thể quan sát trực tiếp từ mã.
+
 ### Vòng lặp `while`
 
 Với `while`, chương trình kiểm tra điều kiện trước mỗi lượt. Nếu điều kiện đúng, thân vòng lặp tiếp tục chạy; nếu sai, vòng lặp kết thúc.
+
+Ví dụ dưới đây vẫn tính tổng $1 + 2 + \dots + n$, nhưng biến điều kiện $i$ được khởi tạo và cập nhật tường minh.
 
 ```python
 def while_loop(n: int) -> int:
@@ -53,6 +59,8 @@ def while_loop_twice(n: int) -> int:
 
 Nhìn chung, `for` gọn hơn còn `while` linh hoạt hơn. Hãy chọn cấu trúc phù hợp với yêu cầu cụ thể.
 
+`for` thường làm rõ tập giá trị sẽ duyệt ngay trong tiêu đề vòng lặp. `while` phù hợp hơn khi số lượt chưa biết trước, khi điều kiện dừng phụ thuộc trạng thái được cập nhật trong thân vòng lặp, hoặc khi mỗi lượt không tiến theo một bước cố định.
+
 ### Vòng lặp lồng nhau
 
 Một vòng lặp có thể nằm bên trong vòng lặp khác:
@@ -69,6 +77,8 @@ def nested_for_loop(n: int) -> str:
 ![Lưu đồ của vòng lặp lồng nhau](iteration_and_recursion.assets/nested_iteration.png)
 
 Hai vòng lặp, mỗi vòng chạy theo $n$, tạo số phép toán tỉ lệ với $n^2$. Thêm một tầng lồng nhau tương ứng với việc tăng thêm một bậc: bậc ba, bậc bốn, v.v.
+
+Có thể xem mỗi tầng lồng như thêm một chiều cho không gian các tổ hợp chỉ số. Vì vậy, khi đếm phép toán của vòng lặp lồng nhau, số lượt của các tầng được nhân với nhau thay vì cộng đơn giản.
 
 ## Đệ quy
 
@@ -101,6 +111,10 @@ Phép lặp và đệ quy có thể cho cùng kết quả nhưng thể hiện ha
 
 Với $f(n) = 1 + 2 + \dots + n$, vòng lặp cộng lần lượt từ $1$ đến $n$, còn đệ quy dùng quan hệ $f(n) = n + f(n - 1)$ và dừng tại $f(1) = 1$.
 
+Mỗi lời gọi của $f(n)$ chỉ biết cách kết hợp giá trị hiện tại với kết quả của bài toán nhỏ hơn.
+
+Điểm quan trọng không phải là cú pháp ngắn hơn, mà là cách phân rã bài toán. Nếu lời giải của một trường hợp lớn có thể biểu diễn trực tiếp bằng lời giải của trường hợp nhỏ hơn cùng dạng, đệ quy thường phản ánh cấu trúc toán học rõ ràng. Nếu công việc chỉ là tiến qua một dãy trạng thái, phép lặp thường đơn giản và tiết kiệm hơn.
+
 ### Ngăn xếp lời gọi
 
 Mỗi khi hàm đệ quy tự gọi, hệ thống cấp một **khung ngăn xếp** mới để lưu biến cục bộ, tham số, địa chỉ trả về và ngữ cảnh khác. Điều này dẫn tới hai hệ quả.
@@ -114,9 +128,13 @@ Trước khi chạm điều kiện dừng, có thể tồn tại đồng thời 
 
 Ngôn ngữ lập trình thường giới hạn độ sâu đệ quy; đệ quy quá sâu có thể gây tràn ngăn xếp.
 
+Giới hạn này phụ thuộc ngôn ngữ và môi trường chạy. Vì thế, một quan hệ đệ quy đúng về mặt toán học vẫn có thể không an toàn với đầu vào lớn nếu độ sâu lời gọi tăng tuyến tính.
+
 ### Đệ quy đuôi
 
 Nếu lời gọi đệ quy là thao tác cuối cùng trước khi hàm trả về, trình biên dịch hoặc thông dịch có thể tái sử dụng khung ngăn xếp. Trường hợp này gọi là **đệ quy đuôi**.
+
+Với bài toán tính $1 + 2 + \dots + n$, có thể chuyển kết quả tích lũy thành tham số để phép cộng diễn ra trước lời gọi tiếp theo.
 
 - Với đệ quy thông thường, sau khi lời gọi con trả về, lớp trước còn phải tiếp tục tính toán nên ngữ cảnh cũ phải được giữ lại.
 - Với đệ quy đuôi, không còn thao tác nào sau lời gọi con, nên về lý thuyết không cần giữ ngữ cảnh lớp trước.
@@ -132,13 +150,17 @@ Trong đệ quy thường, phép cộng diễn ra khi “đi lên”; trong đ�
 
 ![Quá trình đệ quy đuôi](iteration_and_recursion.assets/tail_recursion_sum.png)
 
-> Nhiều trình biên dịch và thông dịch không hỗ trợ tối ưu đệ quy đuôi. Python không hỗ trợ mặc định, nên hàm ở dạng đệ quy đuôi vẫn có thể bị tràn ngăn xếp.
+!!! tip
+
+    Nhiều trình biên dịch và thông dịch không hỗ trợ tối ưu đệ quy đuôi. Python không hỗ trợ mặc định, nên hàm ở dạng đệ quy đuôi vẫn có thể bị tràn ngăn xếp.
 
 ### Cây đệ quy
 
 Đệ quy thường trực quan hơn vòng lặp khi giải bài toán chia để trị. Xét dãy Fibonacci $0, 1, 1, 2, 3, 5, 8, 13, \dots$.
 
-> **Bài toán:** Tìm số thứ $n$ trong dãy Fibonacci.
+!!! question
+
+    Cho dãy Fibonacci $0, 1, 1, 2, 3, 5, 8, 13, \dots$. Hãy tìm số thứ $n$ trong dãy.
 
 Gọi số thứ $n$ là $f(n)$:
 
@@ -160,6 +182,8 @@ Mỗi lời gọi tạo hai nhánh, rồi các nhánh tiếp tục phân tách t
 
 Tư duy “chia bài toán thành bài toán con” xuất hiện trực tiếp hoặc gián tiếp trong tìm kiếm, sắp xếp, chia để trị, quay lui và quy hoạch động. Đệ quy cũng tự nhiên khi xử lý danh sách liên kết, cây và đồ thị.
 
+Về bản chất, đệ quy thể hiện mô hình “chia một bài toán thành các bài toán con nhỏ hơn”. Ở góc độ thuật toán, mô hình này là nền tảng của nhiều chiến lược quan trọng. Ở góc độ cấu trúc dữ liệu, các nút của danh sách liên kết, cây và đồ thị cũng thường được định nghĩa hoặc duyệt theo quan hệ đệ quy.
+
 ## So sánh phép lặp và đệ quy
 
 | Tiêu chí | Phép lặp | Đệ quy |
@@ -169,9 +193,13 @@ Tư duy “chia bài toán thành bài toán con” xuất hiện trực tiếp 
 | Bộ nhớ | Thường dùng lượng bộ nhớ cố định | Các lời gọi tích lũy có thể dùng nhiều khung ngăn xếp |
 | Bài toán phù hợp | Nhiệm vụ lặp đơn giản, trực quan | Chia bài toán con, cây, đồ thị, chia để trị, quay lui |
 
-> Nếu phần tiếp theo khó hiểu, bạn có thể đọc lại sau khi học chương “Ngăn xếp và hàng đợi”.
+!!! tip
+
+    Nếu phần tiếp theo khó hiểu, bạn có thể đọc lại sau khi học chương “Ngăn xếp và hàng đợi”.
 
 Cơ chế đi lên của đệ quy tuân theo nguyên tắc “vào sau, ra trước” của ngăn xếp. Khi gọi hàm, hệ thống đẩy một khung mới vào ngăn xếp lời gọi; khi hàm trả về, khung tương ứng bị lấy ra.
+
+Trong pha đi xuống, mỗi lời gọi lưu biến cục bộ, tham số và địa chỉ quay về trong một khung riêng. Trong pha đi lên, khung được lấy ra theo thứ tự ngược với lúc tạo. Vì lời gọi vào trước hoàn tất sau, cơ chế này trùng với nguyên tắc vào sau–ra trước của ngăn xếp.
 
 Vì vậy, chúng ta có thể dùng một ngăn xếp tường minh để mô phỏng đệ quy:
 
@@ -188,3 +216,5 @@ def for_loop_recur(n: int) -> int:
 ```
 
 Việc chuyển đệ quy thành phép lặp thường làm mã phức tạp và khó đọc hơn; với bài toán lớn, mô phỏng chính xác ngăn xếp hệ thống cũng không đơn giản. **Hãy chọn phép lặp hay đệ quy dựa trên bản chất bài toán, khả năng đọc hiểu và giới hạn tài nguyên.**
+
+Dù nhiều quá trình đệ quy có thể chuyển thành phép lặp bằng ngăn xếp tường minh, phép chuyển đổi không phải lúc nào cũng đáng làm. Mã mới có thể khó hiểu hơn, và việc mô phỏng đầy đủ ngữ cảnh của lời gọi trong các bài toán phức tạp dễ tạo lỗi. Lựa chọn tốt nhất là cấu trúc diễn đạt đúng bản chất bài toán mà vẫn đáp ứng giới hạn thời gian, bộ nhớ và độ sâu lời gọi.

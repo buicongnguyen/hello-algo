@@ -8,9 +8,9 @@ Giả sử có $n$ sinh viên, mỗi người có hai thông tin là họ tên v
 
 Ngoài bảng băm, mảng và danh sách liên kết cũng có thể thực hiện chức năng truy vấn. Hiệu suất của chúng được so sánh như sau.
 
-- **Thêm phần tử**: Chỉ cần thêm phần tử vào cuối mảng hoặc danh sách liên kết, tốn thời gian `O(1)`.
-- **Truy vấn phần tử**: Vì mảng hoặc danh sách liên kết không có thứ tự, phải duyệt qua mọi phần tử, tốn thời gian `O(n)`.
-- **Xóa phần tử**: Trước tiên phải tìm phần tử, sau đó mới xóa khỏi mảng hoặc danh sách liên kết, tốn thời gian `O(n)`.
+- **Thêm phần tử**: Chỉ cần thêm phần tử vào cuối mảng hoặc danh sách liên kết, tốn thời gian $O(1)$.
+- **Truy vấn phần tử**: Vì mảng hoặc danh sách liên kết không có thứ tự, phải duyệt qua mọi phần tử, tốn thời gian $O(n)$.
+- **Xóa phần tử**: Trước tiên phải tìm phần tử, sau đó mới xóa khỏi mảng hoặc danh sách liên kết, tốn thời gian $O(n)$.
 
 Bảng: So sánh hiệu suất truy vấn phần tử
 
@@ -20,7 +20,7 @@ Bảng: So sánh hiệu suất truy vấn phần tử
 | Thêm phần tử | $O(1)$ | $O(1)$ | $O(1)$ |
 | Xóa phần tử | $O(n)$ | $O(n)$ | $O(1)$ |
 
-Có thể thấy **các thao tác thêm, xóa, truy vấn và cập nhật trong bảng băm đều có độ phức tạp thời gian `O(1)`**, nhờ đó bảng băm đạt hiệu suất rất cao.
+Có thể thấy **các thao tác thêm, xóa, truy vấn và cập nhật trong bảng băm đều có độ phức tạp thời gian $O(1)$**, nhờ đó bảng băm đạt hiệu suất rất cao.
 
 ## Các thao tác thường dùng của bảng băm
 

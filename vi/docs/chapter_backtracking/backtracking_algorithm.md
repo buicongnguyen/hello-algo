@@ -130,8 +130,8 @@ Bảng: Thuật ngữ thường dùng trong thuật toán quay lui
 
 | Thuật ngữ | Định nghĩa | Ví dụ 3 |
 | --- | --- | --- |
-| Lời giải | Đáp án thỏa các điều kiện cụ thể của bài toán; một bài toán có thể có một hoặc nhiều lời giải | Mọi đường từ gốc đến nút có giá trị `7` và thỏa ràng buộc |
-| Ràng buộc | Điều kiện giới hạn tính khả thi của lời giải, thường được dùng để cắt tỉa | Đường đi không chứa nút có giá trị `3` |
+| Lời giải | Đáp án thỏa các điều kiện cụ thể của bài toán; một bài toán có thể có một hoặc nhiều lời giải | Mọi đường từ gốc đến nút có giá trị $7$ và thỏa ràng buộc |
+| Ràng buộc | Điều kiện giới hạn tính khả thi của lời giải, thường được dùng để cắt tỉa | Đường đi không chứa nút có giá trị $3$ |
 | Trạng thái | Tình huống của bài toán tại một thời điểm, gồm các lựa chọn đã thực hiện | Đường nút đang thăm, tức danh sách `path` |
 | Thử | Khám phá không gian lời giải theo các lựa chọn: thực hiện lựa chọn, cập nhật trạng thái và kiểm tra lời giải | Thăm đệ quy con trái hoặc phải, thêm nút vào `path`, kiểm tra giá trị bằng $7$ |
 | Quay lui | Hủy lựa chọn trước và trở về trạng thái cũ khi nhánh kết thúc hoặc vi phạm ràng buộc | Dừng ở nút lá, kết thúc lượt thăm hoặc gặp nút giá trị $3$ rồi trả về |

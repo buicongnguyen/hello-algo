@@ -43,6 +43,8 @@ Cách tính gần giống độ phức tạp thời gian, nhưng đại lượng
 
 **Chúng ta thường chỉ quan tâm đến độ phức tạp không gian trong trường hợp xấu nhất**, vì bộ nhớ là yêu cầu cứng và chương trình phải đủ chỗ cho mọi đầu vào hợp lệ.
 
+Nếu một nhánh chỉ dùng $O(1)$ nhưng nhánh khác có thể cấp phát $O(n)$, chương trình phải chuẩn bị cho nhánh tốn nhiều hơn. Tương tự, khi bộ nhớ tăng rồi được giải phóng trong cùng một lần chạy, chúng ta lấy đỉnh sử dụng theo $n$, không cộng mọi lần cấp phát như thể chúng cùng tồn tại. Đầu vào có kích thước $n$ chỉ được tính khi bài toán hoặc quy ước phân tích yêu cầu tính cả bản sao của đầu vào.
+
 “Xấu nhất” có hai nghĩa.
 
 1. **Đầu vào xấu nhất**: Nếu $n \le 10$, hàm dưới dùng $O(1)$; nếu $n > 10$, mảng `nums` dùng $O(n)$. Vì vậy kết quả chung là $O(n)$.
@@ -78,6 +80,8 @@ Cả `loop()` và `recur()` đều chạy $O(n)$ bước. Tuy nhiên, mỗi lư�
 
 Theo thứ tự tăng dần:
 
+Với kích thước đầu vào $n$, các bậc sau mô tả tốc độ tăng của lượng bộ nhớ cực đại.
+
 $$
 O(1) < O(\log n) < O(n) < O(n^2) < O(2^n)
 $$
@@ -102,6 +106,8 @@ Mảng có kích thước cố định và biến `value` được tái sử d�
 
 Bậc tuyến tính thường gặp ở mảng, danh sách liên kết, ngăn xếp và hàng đợi có số phần tử tỉ lệ với $n$.
 
+Khi số phần tử tăng thêm một, cấu trúc cần thêm một lượng bộ nhớ hằng, nên tổng không gian tăng theo $n$.
+
 ```python
 def linear(n: int) -> list[int]:
     return [0] * n
@@ -113,6 +119,10 @@ def linear_recur(n: int):
 ```
 
 `linear_recur()` có độ sâu $n$, nên dùng $O(n)$ không gian khung ngăn xếp.
+
+```python
+# Nhóm mã chính thức về không gian tuyến tính của đệ quy được chèn tại đây.
+```
 
 ![Không gian tuyến tính do hàm đệ quy tạo ra](space_complexity.assets/space_complexity_recursive_linear.png)
 
@@ -131,13 +141,21 @@ def quadratic_recur(n: int):
     quadratic_recur(n - 1)
 ```
 
-Trong `quadratic_recur()`, các lời gọi chưa trả về đồng thời giữ mảng có độ dài $n, n - 1, \dots, 1$. Tổng không gian thuộc $O(n^2)$.
+Trong `quadratic_recur()`, các lời gọi chưa trả về đồng thời giữ mảng có độ dài $n$, $n - 1$, $\dots$, $2$, $1$. Tổng không gian thuộc $O(n^2)$.
+
+Tổng kích thước đồng thời là $n+(n-1)+\dots+1=n(n+1)/2$; độ dài trung bình xấp xỉ $n/2$, nên hạng chi phối là $n^2$.
+
+```python
+# Nhóm mã chính thức về không gian bậc hai của đệ quy được chèn tại đây.
+```
 
 ![Không gian bậc hai do hàm đệ quy tạo ra](space_complexity.assets/space_complexity_recursive_quadratic.png)
 
 ### Bậc hàm mũ $O(2^n)$
 
 Bậc hàm mũ thường xuất hiện khi xây một cây nhị phân đầy đủ. Cây có $n$ tầng chứa $2^n - 1$ nút.
+
+Do số nút tăng gần gấp đôi ở mỗi tầng, tổng bộ nhớ thuộc $O(2^n)$.
 
 ```python
 class TreeNode:
@@ -162,6 +180,8 @@ def build_tree(n: int) -> TreeNode | None:
 Bậc logarit thường gặp trong chia để trị. Chẳng hạn, nếu mỗi lời gọi chia kích thước mảng làm đôi, cây đệ quy có chiều cao khoảng $\log n$ và dùng $O(\log n)$ khung ngăn xếp.
 
 Một ví dụ khác là chuyển số nguyên dương $n$ thành chuỗi. Số chữ số là $\lfloor \log_{10} n \rfloor + 1$, nên chuỗi kết quả dùng $O(\log n)$ không gian.
+
+Độ dài chuỗi cũng chính là $\lfloor \log_{10} n \rfloor + 1$. Trong cả hai ví dụ, mỗi bước chỉ giữ thêm một mức trạng thái, nên số mức quyết định bậc $O(\log n)$.
 
 ## Đánh đổi thời gian và không gian
 

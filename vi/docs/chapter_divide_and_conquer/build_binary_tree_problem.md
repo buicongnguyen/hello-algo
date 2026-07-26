@@ -103,6 +103,6 @@ Kết quả chia thứ tự duyệt tiền tự `preorder` và trung tự `inord
 
 ![Kết quả phân chia trong từng lời gọi đệ quy](build_binary_tree_problem.assets/built_tree_overall.png)
 
-Gọi số nút của cây là `n`. Khởi tạo mỗi nút, tức thực thi một lần hàm đệ quy `dfs()`, cần thời gian $O(1)$. **Vì vậy, độ phức tạp thời gian tổng thể là $O(n)$**.
+Gọi số nút của cây là $n$. Khởi tạo mỗi nút, tức thực thi một lần hàm đệ quy `dfs()`, cần thời gian $O(1)$. **Vì vậy, độ phức tạp thời gian tổng thể là $O(n)$**.
 
 Bảng băm lưu ánh xạ từ phần tử `inorder` tới chỉ số, dùng không gian $O(n)$. Trong trường hợp xấu nhất, khi cây nhị phân suy biến thành danh sách liên kết, độ sâu đệ quy đạt $n$ và các khung ngăn xếp dùng $O(n)$ không gian. **Vì vậy, độ phức tạp không gian tổng thể là $O(n)$**.

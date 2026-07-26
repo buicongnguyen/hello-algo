@@ -29,13 +29,13 @@ Phương pháp tạo chuỗi riêng có hai hạn chế chính.
 Mã dưới đây cài đặt đơn giản một bảng băm tạo chuỗi riêng. Có hai điểm cần lưu ý.
 
 - Để mã ngắn gọn, bản cài đặt dùng danh sách động thay cho danh sách liên kết. Mảng bảng băm chứa nhiều bucket và mỗi bucket là một danh sách.
-- Bản cài đặt có phương thức mở rộng. Khi hệ số tải vượt quá `2/3`, bảng được mở rộng lên `2` lần kích thước ban đầu.
+- Bản cài đặt có phương thức mở rộng. Khi hệ số tải vượt quá $\frac{2}{3}$, bảng được mở rộng lên $2$ lần kích thước ban đầu.
 
 ```python
 # Mã bảng băm tạo chuỗi riêng chính thức được chèn từ nguồn đã khóa.
 ```
 
-Khi danh sách liên kết trở nên quá dài, thời gian truy vấn `O(n)` là không tốt. **Khi đó có thể chuyển danh sách thành cây AVL hoặc cây đỏ–đen**, qua đó giảm độ phức tạp truy vấn xuống `O(log n)`.
+Khi danh sách liên kết trở nên quá dài, thời gian truy vấn $O(n)$ là không tốt. **Khi đó có thể chuyển danh sách thành cây AVL hoặc cây đỏ–đen**, qua đó giảm độ phức tạp truy vấn xuống $O(\log n)$.
 
 ## Định địa chỉ mở
 
@@ -47,7 +47,7 @@ Hãy dùng thăm dò tuyến tính để tìm hiểu cơ chế của bảng băm
 
 Thăm dò tuyến tính dùng một bước nhảy cố định để lần lượt kiểm tra các bucket, vì vậy thao tác hơi khác bảng băm thông thường.
 
-- **Thêm phần tử**: Tính chỉ số bucket bằng hàm băm. Nếu bucket đã có phần tử, tiếp tục thăm dò từ vị trí xung đột với bước cố định, thường là `1`, cho đến khi tìm thấy bucket trống rồi chèn phần tử.
+- **Thêm phần tử**: Tính chỉ số bucket bằng hàm băm. Nếu bucket đã có phần tử, tiếp tục thăm dò từ vị trí xung đột với bước cố định, thường là $1$, cho đến khi tìm thấy bucket trống rồi chèn phần tử.
 - **Tìm phần tử**: Nếu gặp xung đột, tiếp tục thăm dò với cùng bước nhảy cho đến khi tìm thấy khóa và trả về `value`. Nếu gặp bucket trống, khóa đích không có trong bảng nên trả về `None`.
 
 Hình dưới đây cho thấy cách phân bố cặp khóa–giá trị trong bảng băm định địa chỉ mở dùng thăm dò tuyến tính. Theo hàm băm này, các khóa có hai chữ số cuối giống nhau được ánh xạ tới cùng bucket; quá trình thăm dò đặt chúng vào bucket đó và các bucket kế tiếp.
