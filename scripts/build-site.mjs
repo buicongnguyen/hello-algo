@@ -8,6 +8,7 @@ import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 
 await import("./check-site.mjs");
+await import("./check-javascript-examples.mjs");
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const outputRoot = path.join(projectRoot, "dist");

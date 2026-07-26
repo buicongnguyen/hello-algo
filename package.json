@@ -2,11 +2,10 @@
   "name": "hello-algo-atlas",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "description": "A trilingual Korean, Vietnamese, and English interactive learning companion for Hello Algo.",
   "scripts": {
     "build": "node scripts/build-site.mjs",
-    "check": "node scripts/check-site.mjs",
+    "check": "node scripts/check-site.mjs && node scripts/check-javascript-examples.mjs",
     "start": "npm run build && node scripts/serve-site.mjs"
   },
   "engines": {

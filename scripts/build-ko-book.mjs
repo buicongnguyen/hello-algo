@@ -151,7 +151,7 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
   <meta name="description" content="${escapeHtml(page.description)}">
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/ko/learn/${outputName}">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo 한국어</title>
-  <link rel="stylesheet" href="book.css?v=20260718g"><script src="book.js?v=20260718g" defer></script>
+  <link rel="stylesheet" href="book.css?v=20260726a"><script src="book.js?v=20260726a" defer></script>
 </head>
 <body data-translation-status="${koreanDocument.status}">
   <a class="skip-link" href="#article">본문으로 건너뛰기</a>

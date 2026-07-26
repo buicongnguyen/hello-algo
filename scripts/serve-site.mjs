@@ -2,6 +2,7 @@ import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
+import { resolveSiteRequest } from "./server-path.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const outputRoot = path.join(projectRoot, "dist");
@@ -18,19 +19,23 @@ const types = {
 };
 
 createServer(async (request, response) => {
-  const requestPath = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
-  const filePath = requestPath.endsWith("/") ? `${requestPath}index.html` : requestPath;
-  const candidate = path.resolve(outputRoot, `.${filePath}`);
-  if (!candidate.startsWith(outputRoot + path.sep)) {
-    response.writeHead(403).end("Forbidden");
+  if (!["GET", "HEAD"].includes(request.method || "")) {
+    response.writeHead(405, { "Allow": "GET, HEAD", "Content-Type": "text/plain; charset=utf-8" }).end("Method not allowed");
     return;
   }
+  const resolved = resolveSiteRequest(outputRoot, request.url || "/");
+  if (resolved.error) {
+    response.writeHead(resolved.error, { "Content-Type": "text/plain; charset=utf-8" }).end(resolved.message);
+    return;
+  }
+  const { candidate } = resolved;
 
   try {
     const file = await stat(candidate);
     if (!file.isFile()) throw new Error("Not a file");
     response.writeHead(200, { "Content-Type": types[path.extname(candidate)] || "application/octet-stream" });
-    createReadStream(candidate).pipe(response);
+    if (request.method === "HEAD") response.end();
+    else createReadStream(candidate).pipe(response);
   } catch {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
   }

@@ -3,6 +3,7 @@ import path from "node:path";
 
 const supportedLanguages = ["vi", "ko"];
 const supportedStatuses = new Set(["planned", "draft", "pilot", "published"]);
+const sourceCommitPattern = /^[0-9a-f]{40}$/;
 
 const stableEnglishReaderRoutes = new Map([
   ["en/docs/chapter_tree/index.md", "en/learn/trees.html"],
@@ -139,13 +140,29 @@ async function loadEnglishReaderCatalog() {
 export const englishReaderCatalog = await loadEnglishReaderCatalog();
 export const englishReaderRoutes = new Map(englishReaderCatalog.map((page) => [page.source, page.route]));
 
+function isSafeDocumentPath(value, prefix) {
+  return typeof value === "string" &&
+    /^[a-zA-Z0-9_./-]+$/.test(value) &&
+    value.startsWith(prefix) &&
+    value.endsWith(".md") &&
+    path.posix.normalize(value) === value &&
+    !value.split("/").includes("..");
+}
+
+function isSafeReaderRoute(value, language) {
+  if (value === `${language}/learn/`) return true;
+  return new RegExp(`^${language}/learn/[a-z0-9]+(?:-[a-z0-9]+)*\\.html$`).test(value);
+}
+
 export function createTranslationRegistry(manifests) {
   const byLanguage = {};
   let sourceCommit;
 
   for (const language of supportedLanguages) {
     const manifest = manifests[language];
-    if (!manifest || manifest.targetLanguage !== language || manifest.sourceLanguage !== "en" || !Array.isArray(manifest.documents)) {
+    if (!manifest || manifest.schemaVersion !== 1 || manifest.targetLanguage !== language ||
+        manifest.sourceLanguage !== "en" || !sourceCommitPattern.test(manifest.sourceCommit || "") ||
+        !Array.isArray(manifest.documents)) {
       throw new Error(`Invalid ${language} translation manifest`);
     }
     if (sourceCommit === undefined) sourceCommit = manifest.sourceCommit;
@@ -155,18 +172,27 @@ export function createTranslationRegistry(manifests) {
 
     const documents = new Map();
     const routes = new Set();
+    const targets = new Set();
     for (const document of manifest.documents) {
-      if (!document.source?.startsWith("en/docs/") || !document.target?.startsWith(`${language}/docs/`) ||
-          !document.route?.startsWith(`${language}/learn/`) || !supportedStatuses.has(document.status)) {
+      if (!isSafeDocumentPath(document.source, "en/docs/") ||
+          !englishReaderRoutes.has(document.source) ||
+          !isSafeDocumentPath(document.target, `${language}/docs/`) ||
+          !isSafeReaderRoute(document.route, language) ||
+          !Number.isInteger(document.wave) || document.wave < 1 ||
+          !supportedStatuses.has(document.status)) {
         throw new Error(`${language} translation manifest has an invalid document identity for ${document.source || "unknown source"}`);
       }
       if (documents.has(document.source)) {
         throw new Error(`${language} translation manifest duplicates source: ${document.source}`);
       }
+      if (targets.has(document.target)) {
+        throw new Error(`${language} translation manifest duplicates target: ${document.target}`);
+      }
       if (routes.has(document.route)) {
         throw new Error(`${language} translation manifest duplicates route: ${document.route}`);
       }
       documents.set(document.source, document);
+      targets.add(document.target);
       routes.add(document.route);
     }
     byLanguage[language] = documents;

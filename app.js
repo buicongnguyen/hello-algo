@@ -9,15 +9,31 @@ const message = (key, fallback, variables = {}) => {
   );
 };
 
-const savedTheme = localStorage.getItem("hello-algo-atlas-theme");
+function readStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // The learning labs still work when storage is blocked or unavailable.
+  }
+}
+
+const savedTheme = readStorage("hello-algo-atlas-theme");
 const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-root.dataset.theme = savedTheme || (prefersLight ? "light" : "dark");
+root.dataset.theme = ["light", "dark"].includes(savedTheme) ? savedTheme : (prefersLight ? "light" : "dark");
 
 const cssColor = (name) => getComputedStyle(root).getPropertyValue(name).trim();
 
 themeToggle.addEventListener("click", () => {
   root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
-  localStorage.setItem("hello-algo-atlas-theme", root.dataset.theme);
+  writeStorage("hello-algo-atlas-theme", root.dataset.theme);
   drawRoadmap();
   drawTraversal();
   drawComplexity();
@@ -176,7 +192,17 @@ const roadmapCanvas = document.querySelector("#roadmap-canvas");
 const roadmapContext = roadmapCanvas.getContext("2d");
 const topicButtons = [...document.querySelectorAll(".topic-node")];
 let activeTopic = "foundations";
-let exploredTopics = new Set(JSON.parse(localStorage.getItem("hello-algo-atlas-explored") || "[]"));
+let exploredTopics;
+try {
+  const storedTopics = JSON.parse(readStorage("hello-algo-atlas-explored") || "[]");
+  exploredTopics = new Set(
+    Array.isArray(storedTopics)
+      ? storedTopics.filter((topic) => Object.hasOwn(topicData, topic))
+      : []
+  );
+} catch {
+  exploredTopics = new Set();
+}
 exploredTopics.add("foundations");
 
 function fitCanvas(canvas, context) {
@@ -246,9 +272,10 @@ function drawRoadmap() {
 }
 
 function updateTopic(topic) {
+  if (!Object.hasOwn(topicData, topic)) return;
   activeTopic = topic;
   exploredTopics.add(topic);
-  localStorage.setItem("hello-algo-atlas-explored", JSON.stringify([...exploredTopics]));
+  writeStorage("hello-algo-atlas-explored", JSON.stringify([...exploredTopics]));
 
   topicButtons.forEach((button) => {
     const selected = button.dataset.topic === topic;
@@ -407,9 +434,12 @@ let traversalMode = "bfs";
 let frontier = ["A"];
 let discovered = new Set(["A"]);
 let visited = [];
+let traversedEdges = new Set();
 let current = null;
 let traversalStep = 0;
 let autoTimer = null;
+
+const traversalEdgeKey = (a, b) => [a, b].sort().join("-");
 
 function traversalPositions(width, height) {
   const horizontalPad = Math.max(42, width * .05);
@@ -428,7 +458,7 @@ function drawTraversal() {
   graphEdges.forEach(([a, b]) => {
     const [x1, y1] = positions[a];
     const [x2, y2] = positions[b];
-    const traversed = visited.includes(a) && visited.includes(b);
+    const traversed = traversedEdges.has(traversalEdgeKey(a, b));
     traversalContext.beginPath();
     traversalContext.moveTo(x1, y1);
     traversalContext.lineTo(x2, y2);
@@ -470,6 +500,7 @@ function resetTraversal() {
   frontier = ["A"];
   discovered = new Set(["A"]);
   visited = [];
+  traversedEdges = new Set();
   current = null;
   traversalStep = 0;
   document.querySelector("#step-label").textContent = message("ready", "Ready");
@@ -508,7 +539,10 @@ function nextTraversalStep() {
   visited.push(current);
   traversalStep += 1;
   const newlyDiscovered = adjacency[current].filter((node) => !discovered.has(node));
-  newlyDiscovered.forEach((node) => discovered.add(node));
+  newlyDiscovered.forEach((node) => {
+    discovered.add(node);
+    traversedEdges.add(traversalEdgeKey(current, node));
+  });
 
   if (traversalMode === "bfs") {
     frontier.push(...newlyDiscovered);
@@ -550,8 +584,8 @@ document.querySelector("#next-step").addEventListener("click", nextTraversalStep
 document.querySelector("#reset-traversal").addEventListener("click", resetTraversal);
 document.querySelector("#auto-play").addEventListener("click", () => {
   if (autoTimer) { stopAuto(); return; }
-  document.querySelector("#auto-play").textContent = message("pause", "Pause");
   if (!frontier.length) resetTraversal();
+  document.querySelector("#auto-play").textContent = message("pause", "Pause");
   nextTraversalStep();
   autoTimer = setInterval(nextTraversalStep, 900);
 });

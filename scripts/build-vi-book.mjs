@@ -325,14 +325,18 @@ const escapeHtml = (value) => value
   .replaceAll('"', "&quot;");
 
 const formatMath = (value) => value
+  .replace(/\\(?:mathrm|text)\s*\{([^{}]*)\}/g, "$1")
+  .replaceAll("\\left", "")
+  .replaceAll("\\right", "")
+  .replace(/\\([{}])/g, "$1")
   .replaceAll("\\log", "log")
   .replaceAll("\\Omega", "Ω")
   .replaceAll("\\Theta", "Θ")
   .replaceAll("\\times", "×")
   .replaceAll("\\cdot", "·")
   .replaceAll("\\dots", "…")
-  .replaceAll("\\le", "≤")
-  .replaceAll("\\ge", "≥")
+  .replace(/\\leq?\b/g, "≤")
+  .replace(/\\geq?\b/g, "≥")
   .replaceAll("\\lfloor", "⌊")
   .replaceAll("\\rfloor", "⌋");
 
@@ -400,7 +404,7 @@ export function renderMarkdown(markdown, sourcePath) {
       const content = [];
       index += 1;
       while (index < lines.length && (!lines[index].trim() || /^\s{4}/.test(lines[index]))) {
-        content.push(lines[index].replace(/^\s{4}/, ""));
+        content.push(lines[index].replace(/^\s{4}(?:\s{4})?/, ""));
         index += 1;
       }
       const kind = admonition[1].replace(/[^a-zA-Z0-9_-]/g, "");
@@ -479,8 +483,24 @@ export function renderMarkdown(markdown, sourcePath) {
       while (index < lines.length) {
         const match = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
         if (!match || /\d+\./.test(match[1]) !== ordered) break;
-        items.push(`<li>${renderInline(match[2])}</li>`);
+        const item = [match[2].trim()];
         index += 1;
+        while (index < lines.length) {
+          if (!lines[index].trim()) {
+            let nextIndex = index;
+            while (nextIndex < lines.length && !lines[nextIndex].trim()) nextIndex += 1;
+            const nextItem = lines[nextIndex]?.match(/^\s*(\d+\.|[-*])\s+(.+)$/);
+            if (nextItem && /\d+\./.test(nextItem[1]) === ordered) {
+              index = nextIndex;
+            }
+            break;
+          }
+          const nextItem = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
+          if (nextItem && /\d+\./.test(nextItem[1]) === ordered) break;
+          item.push(lines[index].trim());
+          index += 1;
+        }
+        items.push(`<li>${renderInline(item.join(" "))}</li>`);
       }
       output.push(`<${tag}${ordered && start !== 1 ? ` start="${start}"` : ""}>${items.join("")}</${tag}>`);
       continue;
@@ -545,8 +565,8 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/vi/learn/${canonicalName}">
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
-  <link rel="stylesheet" href="book.css?v=20260718g">
-  <script src="book.js?v=20260718g" defer></script>
+  <link rel="stylesheet" href="book.css?v=20260726a">
+  <script src="book.js?v=20260726a" defer></script>
 </head>
 <body data-translation-status="${vietnameseDocument.status}">
   <a class="skip-link" href="#article">Bỏ qua để đến bài đọc</a>

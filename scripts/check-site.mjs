@@ -6,6 +6,7 @@ import { htmlTranslations, interactiveLocale } from "../vi/atlas-locale.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
 import { createTranslationRegistry, translationReadinessFailures } from "./translation-registry.mjs";
+import { resolveSiteRequest } from "./server-path.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
@@ -27,7 +28,8 @@ const requiredFiles = [
   "VIETNAMESE_TRANSLATION_PLAN.md",
   "KOREAN_TRANSLATION_PLAN.md",
   "ko/atlas-locale.mjs", "ko/README.md", "ko/CONTRIBUTING.md", "ko/glossary.md", "ko/style-guide.md", "ko/translation-status.json",
-  "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs"
+  "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs",
+  "scripts/server-path.mjs"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -50,6 +52,15 @@ const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "tra
 const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
 
 const failures = [];
+function registryAccepts(manifests) {
+  try {
+    createTranslationRegistry(manifests);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function countMarkdownH1(markdown) {
   let inCodeFence = false;
   let count = 0;
@@ -61,6 +72,14 @@ function countMarkdownH1(markdown) {
     if (!inCodeFence && line.startsWith("# ")) count += 1;
   }
   return count;
+}
+
+const validServerPath = resolveSiteRequest(path.join(projectRoot, "dist"), "/en/");
+const malformedServerPath = resolveSiteRequest(path.join(projectRoot, "dist"), "/%E0%A4%A");
+const traversalServerPath = resolveSiteRequest(path.join(projectRoot, "dist"), "/%2e%2e%2fpackage.json");
+if (!validServerPath.candidate?.endsWith(path.join("dist", "en", "index.html")) ||
+    malformedServerPath.error !== 400 || traversalServerPath.error !== 403) {
+  failures.push("Local server path resolution does not safely handle valid, malformed, and traversal URLs");
 }
 
 const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]));
@@ -116,6 +135,17 @@ const motionSources = [...html.matchAll(/<source src="([^"]+\.mp4)"/g)].map((mat
 if (motionSources.length !== 3) failures.push(`Expected 3 motion demos, found ${motionSources.length}`);
 if (!js.includes("IntersectionObserver") || !js.includes("prefers-reduced-motion")) {
   failures.push("Motion playback does not include visibility and reduced-motion handling");
+}
+if (!js.includes('["light", "dark"].includes(savedTheme)') || !js.includes("Array.isArray(storedTopics)") || !js.includes("Object.hasOwn(topicData, topic)")) {
+  failures.push("Atlas persisted theme and learning-progress state is not validated");
+}
+if (!js.includes("traversedEdges.has(traversalEdgeKey(a, b))") || !js.includes("traversedEdges.add(traversalEdgeKey(current, node))")) {
+  failures.push("Traversal visualization does not track the actual BFS/DFS discovery edges");
+}
+const autoRestartIndex = js.indexOf('if (!frontier.length) resetTraversal();');
+const autoPauseIndex = js.indexOf('document.querySelector("#auto-play").textContent = message("pause", "Pause");', autoRestartIndex);
+if (autoRestartIndex < 0 || autoPauseIndex < autoRestartIndex) {
+  failures.push("Traversal autoplay does not restore its Pause label after restarting");
 }
 
 if (!css.includes("@media (max-width: 760px)")) failures.push("Responsive layout breakpoint is missing");
@@ -184,6 +214,14 @@ if (viHtml.includes("See the connections.") || viHtml.includes("Choose the shape
 if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-menu")) {
   failures.push("Vietnamese reader responsive navigation is incomplete");
 }
+if (!bookJs.includes('["light", "dark"].includes(value)') || !bookJs.includes("try {") || !bookJs.includes("catch {")) {
+  failures.push("Reader theme state is not validated or storage-safe");
+}
+if (!bookCss.includes(".content-tablist") || !bookCss.includes(".content-tabpanel[hidden]") ||
+    !bookJs.includes("hello-algo-code-language") || !bookJs.includes("aria-selected") ||
+    !bookJs.includes("ArrowLeft") || !bookJs.includes("ArrowRight")) {
+  failures.push("Reader code tabs are missing accessible styles, persistence, or keyboard navigation");
+}
 if (translationStatus.sourceCommit !== "a3166c201853739213d5a3a31b1e4a237aaf1076") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
@@ -229,6 +267,20 @@ for (const document of translationStatus.documents) {
   }
 }
 if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 104 || koreanStatus.documents.some((document) => document.status !== "draft")) failures.push("Expected 104 source-locked Korean reader documents at draft status");
+const vietnameseSources = [...translationRegistry.byLanguage.vi.keys()].sort();
+const koreanSources = [...translationRegistry.byLanguage.ko.keys()].sort();
+if (JSON.stringify(vietnameseSources) !== JSON.stringify(koreanSources)) failures.push("Vietnamese and Korean reader manifests do not cover the same English documents");
+for (const mutation of [
+  (manifests) => { manifests.vi.documents[0].source = "en/docs/not-in-catalog.md"; },
+  (manifests) => { manifests.vi.documents[1].target = manifests.vi.documents[0].target; },
+  (manifests) => { manifests.vi.documents[0].target = "vi/docs/../../README.md"; },
+  (manifests) => { manifests.vi.documents[0].route = "vi/learn/../../escape.html"; },
+  (manifests) => { manifests.vi.sourceCommit = "not-a-sha"; manifests.ko.sourceCommit = "not-a-sha"; }
+]) {
+  const manifests = structuredClone({ vi: translationStatus, ko: koreanStatus });
+  mutation(manifests);
+  if (registryAccepts(manifests)) failures.push("Translation registry accepted an unsafe or inconsistent manifest mutation");
+}
 for (const document of koreanStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
     try { await access(path.join(projectRoot, relativePath), constants.R_OK); } catch { failures.push(`Korean status references a missing file: ${relativePath}`); }

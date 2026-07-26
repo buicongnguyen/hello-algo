@@ -5,6 +5,7 @@ import { renderMarkdown } from "./build-vi-book.mjs";
 import { englishReaderCatalog, englishReaderRoutes, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+const programmingLanguages = new Set(["Python", "C++", "Java", "C#", "Go", "Swift", "JS", "TS", "Dart", "Rust", "C", "Kotlin", "Ruby"]);
 
 function cleanInlineMarkdown(value) {
   return value
@@ -34,32 +35,69 @@ function pageDescription(markdown, fallback) {
   return fallback;
 }
 
-function prepareEnglishMarkdown(markdown) {
-  const lines = markdown.replaceAll("\r\n", "\n").split("\n");
-  const output = [];
-  for (let index = 0; index < lines.length;) {
-    const tab = lines[index].match(/^===\s+"([^"]+)"/);
-    if (tab) {
-      const label = tab[1];
-      const content = [];
-      index += 1;
-      while (index < lines.length && (lines[index] === "" || /^\s{4}/.test(lines[index]))) {
-        content.push(lines[index].replace(/^\s{4}/, ""));
-        index += 1;
-      }
-      if (label === "English" || /^<\d+>$/.test(label)) output.push(...content);
-      else output.push(`#### ${label}`, ...content);
-      continue;
-    }
+function stripMkDocsAttributes(value) {
+  return value.replace(
+    /\s*\{\s*(?=[.#a-zA-Z])(?:(?:[.#][a-zA-Z0-9_-]+|[a-zA-Z][a-zA-Z0-9_-]*=(?:"[^"]*"|'[^']*'|[^\s}]+))\s*)+\}\s*$/,
+    ""
+  );
+}
 
-    output.push(lines[index]
-      .replaceAll("<u>", "")
-      .replaceAll("</u>", "")
-      .replace(/<\/?(?:div|p|span|center)[^>]*>/g, "")
-      .replace(/\{[^}]*\}/g, ""));
-    index += 1;
+function prepareEnglishMarkdown(markdown, source, sourceCommit) {
+  const tabGroups = [];
+
+  function prepareLines(lines) {
+    const output = [];
+    for (let index = 0; index < lines.length;) {
+      if (/^```src\s*$/.test(lines[index])) {
+        const directive = lines[index + 1]?.match(/^\[file\]\{([a-zA-Z0-9_-]+)\}-\[class\]\{([a-zA-Z0-9_-]*)\}-\[func\]\{([a-zA-Z0-9_-]*)\}$/);
+        if (!directive || lines[index + 2]?.trim() !== "```") {
+          throw new Error(`Invalid source-code directive in ${source} at line ${index + 1}`);
+        }
+        const [, file, className, functionName] = directive;
+        const chapter = path.posix.basename(path.posix.dirname(source));
+        const symbol = functionName || className;
+        const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/en/codes/javascript/${chapter}/${file}.js`;
+        output.push(`[Open JavaScript implementation: ${file}.js${symbol ? ` · ${symbol}` : ""}](${sourceUrl})`);
+        index += 3;
+        continue;
+      }
+
+      if (/^===\s+"([^"]+)"/.test(lines[index])) {
+        const groupIndex = tabGroups.length;
+        const tabs = [];
+        tabGroups.push(null);
+        while (index < lines.length) {
+          const tab = lines[index].match(/^===\s+"([^"]+)"/);
+          if (!tab) break;
+          const content = [];
+          index += 1;
+          while (index < lines.length && (lines[index] === "" || /^\s{4}/.test(lines[index]))) {
+            content.push(lines[index].replace(/^\s{4}/, ""));
+            index += 1;
+          }
+          tabs.push({ label: tab[1], markdown: prepareLines(content).join("\n") });
+        }
+        if (tabs.length < 2) throw new Error(`A tab group in ${source} contains fewer than two choices`);
+        tabGroups[groupIndex] = tabs;
+        output.push(`HELLOALGOTABGROUP${groupIndex}END`, "");
+        continue;
+      }
+
+      output.push(stripMkDocsAttributes(lines[index]
+        .replace(/^\s*<p[^>]*>\s*Table\s+<id>\s+&nbsp;\s*(.*?)\s*<\/p>\s*$/, "Table: $1")
+        .replace(/^\s*<h2[^>]*>(.*?)<\/h2>\s*$/, "## $1")
+        .replaceAll("<u>", "")
+        .replaceAll("</u>", "")
+        .replace(/<\/?(?:div|p|span|center)[^>]*>/g, "")));
+      index += 1;
+    }
+    return output;
   }
-  return output.join("\n");
+
+  return {
+    markdown: prepareLines(markdown.replaceAll("\r\n", "\n").split("\n")).join("\n"),
+    tabGroups
+  };
 }
 
 function rewriteInternalLinks(markdown, source) {
@@ -75,6 +113,29 @@ function rewriteInternalLinks(markdown, source) {
     if (!route) return full;
     return `[${label}](${path.posix.basename(route)}${fragment ? `#${fragment}` : ""})`;
   });
+}
+
+function renderPreparedEnglishMarkdown(prepared, source) {
+  const renderContent = (markdown) => {
+    const rendered = renderMarkdown(rewriteInternalLinks(markdown, source), source);
+    return rendered.replace(/<p>HELLOALGOTABGROUP(\d+)END<\/p>/g, (_, groupIndex) => {
+      const tabs = prepared.tabGroups[Number(groupIndex)];
+      if (!tabs) throw new Error(`Missing prepared tab group ${groupIndex} in ${source}`);
+      const groupId = `content-tabs-${Number(groupIndex) + 1}`;
+      const synchronized = tabs.every((tab) => programmingLanguages.has(tab.label));
+      const tabListLabel = synchronized ? "Programming language examples" : "Illustration steps";
+      const tabButtons = tabs.map((tab, tabIndex) => {
+        const selected = tabIndex === 0;
+        return `<button type="button" role="tab" id="${groupId}-tab-${tabIndex + 1}" aria-controls="${groupId}-panel-${tabIndex + 1}" aria-selected="${selected}" tabindex="${selected ? "0" : "-1"}" data-tab-label="${escapeHtml(tab.label)}">${escapeHtml(tab.label)}</button>`;
+      }).join("");
+      const tabPanels = tabs.map((tab, tabIndex) => {
+        const selected = tabIndex === 0;
+        return `<div class="content-tabpanel" role="tabpanel" id="${groupId}-panel-${tabIndex + 1}" aria-labelledby="${groupId}-tab-${tabIndex + 1}"${selected ? "" : " hidden"}>${renderContent(tab.markdown)}</div>`;
+      }).join("");
+      return `<section class="content-tabs" data-content-tabs${synchronized ? ' data-tab-sync="language"' : ""}><div class="content-tablist" role="tablist" aria-label="${tabListLabel}">${tabButtons}</div><div class="content-tabpanels">${tabPanels}</div></section>`;
+    });
+  };
+  return renderContent(prepared.markdown);
 }
 
 function navigation(pages, currentSlug) {
@@ -103,7 +164,7 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
   <meta name="description" content="${escapeHtml(page.description)}">
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/en/learn/${page.slug}.html">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo English</title>
-  <link rel="stylesheet" href="book.css?v=20260719a"><script src="book.js?v=20260718g" defer></script>
+  <link rel="stylesheet" href="book.css?v=20260726a"><script src="book.js?v=20260726a" defer></script>
 </head>
 <body data-translation-status="source">
   <a class="skip-link" href="#article">Skip to the article</a>
@@ -177,7 +238,8 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
   for (const [index, page] of pages.entries()) {
     const vietnameseDocument = registry.byLanguage.vi.get(page.source);
     const koreanDocument = registry.byLanguage.ko.get(page.source);
-    const body = renderMarkdown(rewriteInternalLinks(prepareEnglishMarkdown(page.markdown), page.source), page.source);
+    const prepared = prepareEnglishMarkdown(page.markdown, page.source, registry.sourceCommit);
+    const body = renderPreparedEnglishMarkdown(prepared, page.source);
     await writeFile(path.join(bookOutput, `${page.slug}.html`), pageTemplate(pages, page, body, index, registry.sourceCommit, vietnameseDocument, koreanDocument));
     await access(path.join(bookOutput, `${page.slug}.html`), constants.R_OK);
   }
