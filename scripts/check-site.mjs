@@ -53,7 +53,8 @@ const requiredFiles = [
   "NEXT_CONTENT_RELEASE_PLAN_V1_7.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_8.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_9.md",
-  "NEXT_CONTENT_RELEASE_PLAN_V1_10.md"
+  "NEXT_CONTENT_RELEASE_PLAN_V1_10.md",
+  "NEXT_CONTENT_RELEASE_PLAN_V1_11.md"
 ];
 
 for (const relativePath of requiredFiles) {
