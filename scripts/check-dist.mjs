@@ -202,7 +202,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_graph/", count: 6, label: "Vietnamese Chapter 9" },
           { prefix: "en/docs/chapter_searching/", count: 8, label: "Vietnamese Chapter 10" },
           { prefix: "en/docs/chapter_sorting/", count: 13, label: "Vietnamese Chapter 11" },
-          { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Vietnamese Chapter 12" }
+          { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Vietnamese Chapter 12" },
+          { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Vietnamese Chapter 13" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
@@ -212,7 +213,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Korean Chapter 4" },
           { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Korean Chapter 5" },
           { prefix: "en/docs/chapter_hashing/", count: 6, label: "Korean Chapter 6" },
-          { prefix: "en/docs/chapter_tree/", count: 8, label: "Korean Chapter 7" }
+          { prefix: "en/docs/chapter_tree/", count: 8, label: "Korean Chapter 7" },
+          { prefix: "en/docs/chapter_heap/", count: 6, label: "Korean Chapter 8" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -421,6 +423,9 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseBuildHeap = await readFile(path.join(pilotDirectory, "xay-dung-heap.html"), "utf8");
   const vietnameseTopK = await readFile(path.join(pilotDirectory, "top-k.html"), "utf8");
   const koreanHeap = await readFile(path.join(koreanDirectory, "heap.html"), "utf8");
+  const koreanBuildHeap = await readFile(path.join(koreanDirectory, "build-heap.html"), "utf8");
+  const koreanTopK = await readFile(path.join(koreanDirectory, "top-k.html"), "utf8");
+  const koreanHeapExercises = await readFile(path.join(koreanDirectory, "chapter-8-exercises.html"), "utf8");
   if (!vietnameseTree.includes("binary_tree_definition.png") || !koreanTree.includes("binary_tree_definition.png") || !vietnameseTree.includes('<pre><code class="language-python"') || !koreanTree.includes('<pre><code class="language-python"')) failures.push("Chapter 7 binary-tree pages are missing diagrams or Python examples");
   if (!vietnameseAvl.includes("avltree_rotation_cases.png") ||
       !vietnameseAvl.includes('<pre><code class="language-python"') ||
@@ -456,6 +461,24 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseTopK.includes("top_k_heap_step9.png") ||
       !vietnameseTopK.includes('<pre><code class="language-python"')) {
     failures.push("Vietnamese Chapter 8 is missing heap steps, its operation table, complexity derivation, or Top-k code");
+  }
+  if ((koreanHeap.match(/class="content-tabs"/g) || []).length !== 5 ||
+      !koreanHeap.includes("heap_push_step9.png") ||
+      !koreanHeap.includes("heap_pop_step10.png") ||
+      !koreanHeap.includes("<table>") ||
+      !koreanHeap.includes('class="admonition admonition-pythontutor"') ||
+      (koreanBuildHeap.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !koreanBuildHeap.includes("heapify_operations_count.png") ||
+      (koreanBuildHeap.match(/class="math-block"/g) || []).length !== 4 ||
+      (koreanTopK.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !koreanTopK.includes("top_k_heap_step9.png") ||
+      !koreanTopK.includes('class="admonition admonition-question"') ||
+      !koreanTopK.includes('class="admonition admonition-tip"') ||
+      (koreanHeapExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (koreanHeapExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !koreanHeapExercises.includes("<table>") ||
+      !koreanHeapExercises.includes("leetcode.com/problems/kth-largest-element-in-an-array")) {
+    failures.push("Korean Chapter 8 is missing complete code tabs, heap traces, derivations, callouts, tables, or exercises");
   }
 
   const koreanClassification = await readFile(path.join(koreanDirectory, "data-structure-classification.html"), "utf8");
@@ -561,11 +584,36 @@ export async function checkBuiltSite(outputRoot) {
     failures.push("Vietnamese Chapter 12 is missing complete code tabs, derivations, visual traces, callouts, or exercises");
   }
 
+  const vietnameseBacktrackingAlgorithm = await readFile(path.join(pilotDirectory, "thuat-toan-quay-lui.html"), "utf8");
   const vietnameseBacktracking = await readFile(path.join(pilotDirectory, "bai-toan-n-hau.html"), "utf8");
+  const vietnamesePermutations = await readFile(path.join(pilotDirectory, "bai-toan-hoan-vi.html"), "utf8");
+  const vietnameseSubsetSum = await readFile(path.join(pilotDirectory, "bai-toan-tong-tap-con.html"), "utf8");
+  const vietnameseBacktrackingExercises = await readFile(path.join(pilotDirectory, "bai-tap-quay-lui.html"), "utf8");
   const koreanBacktracking = await readFile(path.join(koreanDirectory, "n-queens.html"), "utf8");
   const vietnameseDynamicProgramming = await readFile(path.join(pilotDirectory, "khoang-cach-chinh-sua.html"), "utf8");
   const koreanDynamicProgramming = await readFile(path.join(koreanDirectory, "edit-distance.html"), "utf8");
   if (!vietnameseBacktracking.includes("solution_4_queens.png") || !koreanBacktracking.includes("solution_4_queens.png") || !vietnameseBacktracking.includes('<pre><code class="language-python"') || !koreanBacktracking.includes('<pre><code class="language-python"')) failures.push("Chapter 13 N-Queens pages are missing diagrams or Python examples");
+  if ((vietnameseBacktrackingAlgorithm.match(/class="content-tabs"/g) || []).length !== 5 ||
+      !vietnameseBacktrackingAlgorithm.includes("preorder_find_paths_step11.png") ||
+      !vietnameseBacktrackingAlgorithm.includes("preorder_find_constrained_paths.png") ||
+      !vietnameseBacktrackingAlgorithm.includes("backtrack_remove_return_or_not.png") ||
+      !vietnameseBacktrackingAlgorithm.includes("<table>") ||
+      (vietnameseBacktrackingAlgorithm.match(/class="admonition/g) || []).length !== 4 ||
+      (vietnameseBacktracking.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseBacktracking.includes("n_queens_cols_diagonals.png") ||
+      !vietnameseBacktracking.includes('class="admonition admonition-question"') ||
+      !vietnameseBacktracking.includes('class="admonition admonition-tip"') ||
+      (vietnamesePermutations.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !vietnamesePermutations.includes("permutations_ii_pruning_summary.png") ||
+      !vietnamesePermutations.includes("<table>") ||
+      (vietnameseSubsetSum.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !vietnameseSubsetSum.includes("subset_sum_i.png") ||
+      !vietnameseSubsetSum.includes("subset_sum_ii.png") ||
+      (vietnameseBacktrackingExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (vietnameseBacktrackingExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !vietnameseBacktrackingExercises.includes("leetcode.com/problems/permutations")) {
+    failures.push("Vietnamese Chapter 13 is missing complete code tabs, decision traces, pruning media, tables, callouts, or exercises");
+  }
   if (!vietnameseDynamicProgramming.includes("edit_distance_example.png") || !koreanDynamicProgramming.includes("edit_distance_example.png") || !vietnameseDynamicProgramming.includes('<pre><code class="language-python"') || !koreanDynamicProgramming.includes('<pre><code class="language-python"')) failures.push("Chapter 14 edit-distance pages are missing diagrams or Python examples");
 
   const vietnameseGreedy = await readFile(path.join(pilotDirectory, "ba-lo-phan-so.html"), "utf8");

@@ -1,7 +1,9 @@
 # Quay lui
 
-Quay lui khám phá không gian nghiệm bằng cách thử một lựa chọn, đi sâu, rồi hoàn tác lựa chọn đó khi nhánh hiện tại không thể tạo ra nghiệm hợp lệ.
-
 ![Quay lui](../assets/covers/chapter_backtracking.jpg)
 
-Chương này xây dựng khuôn mẫu **thử - cắt tỉa - quay lui** và áp dụng nó cho bài toán N quân hậu, hoán vị và tổng tập con.
+!!! abstract
+
+    Chúng ta giống như những nhà thám hiểm trong mê cung, có thể gặp ngõ cụt trên con đường tiến về phía trước.
+
+    Sức mạnh của quay lui cho phép bắt đầu lại, tiếp tục thử và cuối cùng tìm thấy lối ra dẫn tới ánh sáng.
