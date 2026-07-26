@@ -1,29 +1,38 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "sourceLanguage": "en",
   "targetLanguage": "vi",
   "sourceCommit": "a3166c201853739213d5a3a31b1e4a237aaf1076",
-  "updated": "2026-07-19",
+  "updated": "2026-07-26",
   "statusDefinitions": {
     "planned": "Đã xếp vào lộ trình nhưng chưa có bản nháp",
     "draft": "Đã có bản nháp, chưa hoàn tất phản biện",
     "pilot": "Đã tự kiểm tra kỹ thuật, ngôn ngữ và bản dựng; đang chờ phản biện độc lập",
     "published": "Đã qua đầy đủ phản biện và phát hành ổn định"
   },
+  "qualityPolicy": {
+    "structuralParityRequiredForPilot": true,
+    "technicalReviewRequiredForPublished": true,
+    "languageReviewRequiredForPublished": true,
+    "defaultReviewState": { "technical": "pending", "language": "pending" },
+    "generatedReport": "vi/translation-parity.json"
+  },
   "documents": [
+    { "source": "en/docs/index.md", "target": "vi/docs/index.md", "route": "vi/learn/trang-chu-sach.html", "wave": 17, "status": "draft" },
+    { "source": "en/docs/chapter_hello_algo/index.md", "target": "vi/docs/chapter_hello_algo/index.md", "route": "vi/learn/truoc-khi-bat-dau.html", "wave": 17, "status": "draft" },
     {
       "source": "en/docs/chapter_preface/index.md",
       "target": "vi/docs/chapter_preface/index.md",
       "route": "vi/learn/loi-noi-dau.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_preface/about_the_book.md",
       "target": "vi/docs/chapter_preface/about_the_book.md",
       "route": "vi/learn/ve-cuon-sach.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_preface/suggestions.md",
@@ -37,14 +46,14 @@
       "target": "vi/docs/chapter_preface/summary.md",
       "route": "vi/learn/tom-tat-chuong-0.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_introduction/index.md",
       "target": "vi/docs/chapter_introduction/index.md",
       "route": "vi/learn/",
       "wave": 1,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_introduction/algorithms_are_everywhere.md",
@@ -58,21 +67,21 @@
       "target": "vi/docs/chapter_introduction/what_is_dsa.md",
       "route": "vi/learn/thuat-toan-la-gi.html",
       "wave": 1,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_introduction/summary.md",
       "target": "vi/docs/chapter_introduction/summary.md",
       "route": "vi/learn/tom-tat-chuong-1.html",
       "wave": 1,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_computational_complexity/index.md",
       "target": "vi/docs/chapter_computational_complexity/index.md",
       "route": "vi/learn/phan-tich-do-phuc-tap.html",
       "wave": 1,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_computational_complexity/performance_evaluation.md",
@@ -86,7 +95,7 @@
       "target": "vi/docs/chapter_computational_complexity/iteration_and_recursion.md",
       "route": "vi/learn/vong-lap-va-de-quy.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_computational_complexity/time_complexity.md",
@@ -107,21 +116,22 @@
       "target": "vi/docs/chapter_computational_complexity/summary.md",
       "route": "vi/learn/tom-tat-chuong-2.html",
       "wave": 2,
-      "status": "pilot"
+      "status": "draft"
     },
+    { "source": "en/docs/chapter_computational_complexity/exercises.md", "target": "vi/docs/chapter_computational_complexity/exercises.md", "route": "vi/learn/bai-tap-do-phuc-tap.html", "wave": 17, "status": "draft" },
     {
       "source": "en/docs/chapter_data_structure/index.md",
       "target": "vi/docs/chapter_data_structure/index.md",
       "route": "vi/learn/cau-truc-du-lieu.html",
       "wave": 3,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_data_structure/classification_of_data_structure.md",
       "target": "vi/docs/chapter_data_structure/classification_of_data_structure.md",
       "route": "vi/learn/phan-loai-cau-truc-du-lieu.html",
       "wave": 3,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_data_structure/basic_data_types.md",
@@ -151,12 +161,13 @@
       "wave": 3,
       "status": "draft"
     },
+    { "source": "en/docs/chapter_data_structure/exercises.md", "target": "vi/docs/chapter_data_structure/exercises.md", "route": "vi/learn/bai-tap-cau-truc-du-lieu.html", "wave": 17, "status": "draft" },
     {
       "source": "en/docs/chapter_array_and_linkedlist/index.md",
       "target": "vi/docs/chapter_array_and_linkedlist/index.md",
       "route": "vi/learn/mang-va-danh-sach-lien-ket.html",
       "wave": 4,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_array_and_linkedlist/array.md",
@@ -184,7 +195,7 @@
       "target": "vi/docs/chapter_array_and_linkedlist/ram_and_cache.md",
       "route": "vi/learn/ram-va-bo-nho-dem.html",
       "wave": 4,
-      "status": "pilot"
+      "status": "draft"
     },
     {
       "source": "en/docs/chapter_array_and_linkedlist/summary.md",
@@ -193,16 +204,19 @@
       "wave": 4,
       "status": "draft"
     },
+    { "source": "en/docs/chapter_array_and_linkedlist/exercises.md", "target": "vi/docs/chapter_array_and_linkedlist/exercises.md", "route": "vi/learn/bai-tap-mang-va-danh-sach-lien-ket.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_stack_and_queue/index.md", "target": "vi/docs/chapter_stack_and_queue/index.md", "route": "vi/learn/ngan-xep-va-hang-doi.html", "wave": 5, "status": "draft" },
     { "source": "en/docs/chapter_stack_and_queue/stack.md", "target": "vi/docs/chapter_stack_and_queue/stack.md", "route": "vi/learn/ngan-xep.html", "wave": 5, "status": "draft" },
     { "source": "en/docs/chapter_stack_and_queue/queue.md", "target": "vi/docs/chapter_stack_and_queue/queue.md", "route": "vi/learn/hang-doi.html", "wave": 5, "status": "draft" },
     { "source": "en/docs/chapter_stack_and_queue/deque.md", "target": "vi/docs/chapter_stack_and_queue/deque.md", "route": "vi/learn/hang-doi-hai-dau.html", "wave": 5, "status": "draft" },
     { "source": "en/docs/chapter_stack_and_queue/summary.md", "target": "vi/docs/chapter_stack_and_queue/summary.md", "route": "vi/learn/tom-tat-chuong-5.html", "wave": 5, "status": "draft" },
+    { "source": "en/docs/chapter_stack_and_queue/exercises.md", "target": "vi/docs/chapter_stack_and_queue/exercises.md", "route": "vi/learn/bai-tap-ngan-xep-va-hang-doi.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_hashing/index.md", "target": "vi/docs/chapter_hashing/index.md", "route": "vi/learn/bam.html", "wave": 6, "status": "draft" },
     { "source": "en/docs/chapter_hashing/hash_map.md", "target": "vi/docs/chapter_hashing/hash_map.md", "route": "vi/learn/bang-bam.html", "wave": 6, "status": "draft" },
     { "source": "en/docs/chapter_hashing/hash_collision.md", "target": "vi/docs/chapter_hashing/hash_collision.md", "route": "vi/learn/xung-dot-bam.html", "wave": 6, "status": "draft" },
     { "source": "en/docs/chapter_hashing/hash_algorithm.md", "target": "vi/docs/chapter_hashing/hash_algorithm.md", "route": "vi/learn/thuat-toan-bam.html", "wave": 6, "status": "draft" },
     { "source": "en/docs/chapter_hashing/summary.md", "target": "vi/docs/chapter_hashing/summary.md", "route": "vi/learn/tom-tat-chuong-6.html", "wave": 6, "status": "draft" },
+    { "source": "en/docs/chapter_hashing/exercises.md", "target": "vi/docs/chapter_hashing/exercises.md", "route": "vi/learn/bai-tap-bam.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_tree/index.md", "target": "vi/docs/chapter_tree/index.md", "route": "vi/learn/cay.html", "wave": 7, "status": "draft" },
     { "source": "en/docs/chapter_tree/binary_tree.md", "target": "vi/docs/chapter_tree/binary_tree.md", "route": "vi/learn/cay-nhi-phan.html", "wave": 7, "status": "draft" },
     { "source": "en/docs/chapter_tree/binary_tree_traversal.md", "target": "vi/docs/chapter_tree/binary_tree_traversal.md", "route": "vi/learn/duyet-cay-nhi-phan.html", "wave": 7, "status": "draft" },
@@ -210,16 +224,19 @@
     { "source": "en/docs/chapter_tree/binary_search_tree.md", "target": "vi/docs/chapter_tree/binary_search_tree.md", "route": "vi/learn/cay-tim-kiem-nhi-phan.html", "wave": 7, "status": "draft" },
     { "source": "en/docs/chapter_tree/avl_tree.md", "target": "vi/docs/chapter_tree/avl_tree.md", "route": "vi/learn/cay-avl.html", "wave": 7, "status": "draft" },
     { "source": "en/docs/chapter_tree/summary.md", "target": "vi/docs/chapter_tree/summary.md", "route": "vi/learn/tom-tat-chuong-7.html", "wave": 7, "status": "draft" },
+    { "source": "en/docs/chapter_tree/exercises.md", "target": "vi/docs/chapter_tree/exercises.md", "route": "vi/learn/bai-tap-cay.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_heap/index.md", "target": "vi/docs/chapter_heap/index.md", "route": "vi/learn/heap.html", "wave": 8, "status": "draft" },
     { "source": "en/docs/chapter_heap/heap.md", "target": "vi/docs/chapter_heap/heap.md", "route": "vi/learn/cau-truc-heap.html", "wave": 8, "status": "draft" },
     { "source": "en/docs/chapter_heap/build_heap.md", "target": "vi/docs/chapter_heap/build_heap.md", "route": "vi/learn/xay-dung-heap.html", "wave": 8, "status": "draft" },
     { "source": "en/docs/chapter_heap/top_k.md", "target": "vi/docs/chapter_heap/top_k.md", "route": "vi/learn/top-k.html", "wave": 8, "status": "draft" },
     { "source": "en/docs/chapter_heap/summary.md", "target": "vi/docs/chapter_heap/summary.md", "route": "vi/learn/tom-tat-chuong-8.html", "wave": 8, "status": "draft" },
+    { "source": "en/docs/chapter_heap/exercises.md", "target": "vi/docs/chapter_heap/exercises.md", "route": "vi/learn/bai-tap-heap.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_graph/index.md", "target": "vi/docs/chapter_graph/index.md", "route": "vi/learn/do-thi.html", "wave": 9, "status": "draft" },
     { "source": "en/docs/chapter_graph/graph.md", "target": "vi/docs/chapter_graph/graph.md", "route": "vi/learn/cau-truc-do-thi.html", "wave": 9, "status": "draft" },
     { "source": "en/docs/chapter_graph/graph_operations.md", "target": "vi/docs/chapter_graph/graph_operations.md", "route": "vi/learn/thao-tac-do-thi.html", "wave": 9, "status": "draft" },
     { "source": "en/docs/chapter_graph/graph_traversal.md", "target": "vi/docs/chapter_graph/graph_traversal.md", "route": "vi/learn/duyet-do-thi.html", "wave": 9, "status": "draft" },
     { "source": "en/docs/chapter_graph/summary.md", "target": "vi/docs/chapter_graph/summary.md", "route": "vi/learn/tom-tat-chuong-9.html", "wave": 9, "status": "draft" },
+    { "source": "en/docs/chapter_graph/exercises.md", "target": "vi/docs/chapter_graph/exercises.md", "route": "vi/learn/bai-tap-do-thi.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_searching/index.md", "target": "vi/docs/chapter_searching/index.md", "route": "vi/learn/tim-kiem.html", "wave": 10, "status": "draft" },
     { "source": "en/docs/chapter_searching/binary_search.md", "target": "vi/docs/chapter_searching/binary_search.md", "route": "vi/learn/tim-kiem-nhi-phan.html", "wave": 10, "status": "draft" },
     { "source": "en/docs/chapter_searching/binary_search_insertion.md", "target": "vi/docs/chapter_searching/binary_search_insertion.md", "route": "vi/learn/diem-chen-tim-kiem-nhi-phan.html", "wave": 10, "status": "draft" },
@@ -227,6 +244,7 @@
     { "source": "en/docs/chapter_searching/replace_linear_by_hashing.md", "target": "vi/docs/chapter_searching/replace_linear_by_hashing.md", "route": "vi/learn/toi-uu-tim-kiem-bang-bam.html", "wave": 10, "status": "draft" },
     { "source": "en/docs/chapter_searching/searching_algorithm_revisited.md", "target": "vi/docs/chapter_searching/searching_algorithm_revisited.md", "route": "vi/learn/nhin-lai-thuat-toan-tim-kiem.html", "wave": 10, "status": "draft" },
     { "source": "en/docs/chapter_searching/summary.md", "target": "vi/docs/chapter_searching/summary.md", "route": "vi/learn/tom-tat-chuong-10.html", "wave": 10, "status": "draft" },
+    { "source": "en/docs/chapter_searching/exercises.md", "target": "vi/docs/chapter_searching/exercises.md", "route": "vi/learn/bai-tap-tim-kiem.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_sorting/index.md", "target": "vi/docs/chapter_sorting/index.md", "route": "vi/learn/sap-xep.html", "wave": 11, "status": "draft" },
     { "source": "en/docs/chapter_sorting/sorting_algorithm.md", "target": "vi/docs/chapter_sorting/sorting_algorithm.md", "route": "vi/learn/thuat-toan-sap-xep.html", "wave": 11, "status": "draft" },
     { "source": "en/docs/chapter_sorting/selection_sort.md", "target": "vi/docs/chapter_sorting/selection_sort.md", "route": "vi/learn/sap-xep-chon.html", "wave": 11, "status": "draft" },
@@ -239,18 +257,21 @@
     { "source": "en/docs/chapter_sorting/counting_sort.md", "target": "vi/docs/chapter_sorting/counting_sort.md", "route": "vi/learn/sap-xep-dem.html", "wave": 11, "status": "draft" },
     { "source": "en/docs/chapter_sorting/radix_sort.md", "target": "vi/docs/chapter_sorting/radix_sort.md", "route": "vi/learn/sap-xep-co-so.html", "wave": 11, "status": "draft" },
     { "source": "en/docs/chapter_sorting/summary.md", "target": "vi/docs/chapter_sorting/summary.md", "route": "vi/learn/tom-tat-chuong-11.html", "wave": 11, "status": "draft" },
+    { "source": "en/docs/chapter_sorting/exercises.md", "target": "vi/docs/chapter_sorting/exercises.md", "route": "vi/learn/bai-tap-sap-xep.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/index.md", "target": "vi/docs/chapter_divide_and_conquer/index.md", "route": "vi/learn/chia-de-tri.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/divide_and_conquer.md", "target": "vi/docs/chapter_divide_and_conquer/divide_and_conquer.md", "route": "vi/learn/thuat-toan-chia-de-tri.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/binary_search_recur.md", "target": "vi/docs/chapter_divide_and_conquer/binary_search_recur.md", "route": "vi/learn/tim-kiem-nhi-phan-de-quy.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "target": "vi/docs/chapter_divide_and_conquer/build_binary_tree_problem.md", "route": "vi/learn/dung-cay-nhi-phan.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/hanota_problem.md", "target": "vi/docs/chapter_divide_and_conquer/hanota_problem.md", "route": "vi/learn/thap-ha-noi.html", "wave": 12, "status": "draft" },
     { "source": "en/docs/chapter_divide_and_conquer/summary.md", "target": "vi/docs/chapter_divide_and_conquer/summary.md", "route": "vi/learn/tom-tat-chuong-12.html", "wave": 12, "status": "draft" },
+    { "source": "en/docs/chapter_divide_and_conquer/exercises.md", "target": "vi/docs/chapter_divide_and_conquer/exercises.md", "route": "vi/learn/bai-tap-chia-de-tri.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_backtracking/index.md", "target": "vi/docs/chapter_backtracking/index.md", "route": "vi/learn/quay-lui.html", "wave": 13, "status": "draft" },
     { "source": "en/docs/chapter_backtracking/backtracking_algorithm.md", "target": "vi/docs/chapter_backtracking/backtracking_algorithm.md", "route": "vi/learn/thuat-toan-quay-lui.html", "wave": 13, "status": "draft" },
     { "source": "en/docs/chapter_backtracking/n_queens_problem.md", "target": "vi/docs/chapter_backtracking/n_queens_problem.md", "route": "vi/learn/bai-toan-n-hau.html", "wave": 13, "status": "draft" },
     { "source": "en/docs/chapter_backtracking/permutations_problem.md", "target": "vi/docs/chapter_backtracking/permutations_problem.md", "route": "vi/learn/bai-toan-hoan-vi.html", "wave": 13, "status": "draft" },
     { "source": "en/docs/chapter_backtracking/subset_sum_problem.md", "target": "vi/docs/chapter_backtracking/subset_sum_problem.md", "route": "vi/learn/bai-toan-tong-tap-con.html", "wave": 13, "status": "draft" },
     { "source": "en/docs/chapter_backtracking/summary.md", "target": "vi/docs/chapter_backtracking/summary.md", "route": "vi/learn/tom-tat-chuong-13.html", "wave": 13, "status": "draft" },
+    { "source": "en/docs/chapter_backtracking/exercises.md", "target": "vi/docs/chapter_backtracking/exercises.md", "route": "vi/learn/bai-tap-quay-lui.html", "wave": 17, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/index.md", "target": "vi/docs/chapter_dynamic_programming/index.md", "route": "vi/learn/quy-hoach-dong.html", "wave": 14, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "target": "vi/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "route": "vi/learn/gioi-thieu-quy-hoach-dong.html", "wave": 14, "status": "draft" },
     { "source": "en/docs/chapter_dynamic_programming/dp_problem_features.md", "target": "vi/docs/chapter_dynamic_programming/dp_problem_features.md", "route": "vi/learn/dac-trung-bai-toan-quy-hoach-dong.html", "wave": 14, "status": "draft" },
@@ -270,6 +291,7 @@
     { "source": "en/docs/chapter_appendix/index.md", "target": "vi/docs/chapter_appendix/index.md", "route": "vi/learn/phu-luc.html", "wave": 16, "status": "draft" },
     { "source": "en/docs/chapter_appendix/installation.md", "target": "vi/docs/chapter_appendix/installation.md", "route": "vi/learn/cai-dat-moi-truong-lap-trinh.html", "wave": 16, "status": "draft" },
     { "source": "en/docs/chapter_appendix/contribution.md", "target": "vi/docs/chapter_appendix/contribution.md", "route": "vi/learn/cung-dong-gop.html", "wave": 16, "status": "draft" },
-    { "source": "en/docs/chapter_appendix/terminology.md", "target": "vi/docs/chapter_appendix/terminology.md", "route": "vi/learn/bang-thuat-ngu.html", "wave": 16, "status": "draft" }
+    { "source": "en/docs/chapter_appendix/terminology.md", "target": "vi/docs/chapter_appendix/terminology.md", "route": "vi/learn/bang-thuat-ngu.html", "wave": 16, "status": "draft" },
+    { "source": "en/docs/chapter_reference/index.md", "target": "vi/docs/chapter_reference/index.md", "route": "vi/learn/tai-lieu-tham-khao.html", "wave": 17, "status": "draft" }
   ]
 }

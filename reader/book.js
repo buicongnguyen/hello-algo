@@ -157,3 +157,85 @@ for (const group of contentTabGroups) {
     activateContentTab(group, tabs[nextIndex], { focus: true, synchronize: true });
   });
 }
+
+const searchOpenButton = document.querySelector("#reader-search-open");
+const searchCloseButton = document.querySelector("#reader-search-close");
+const searchPanel = document.querySelector("#reader-search");
+const searchInput = document.querySelector("#reader-search-input");
+const searchResults = document.querySelector("#reader-search-results");
+let searchIndexPromise;
+
+const normalizeSearchText = (value) => value
+  .normalize("NFKD")
+  .replace(/\p{Mark}/gu, "")
+  .toLocaleLowerCase(document.documentElement.lang);
+
+function loadSearchIndex() {
+  searchIndexPromise ??= fetch("search-index.json")
+    .then((response) => {
+      if (!response.ok) throw new Error(`Search index returned ${response.status}`);
+      return response.json();
+    })
+    .catch(() => []);
+  return searchIndexPromise;
+}
+
+function renderSearchResults(documents, query) {
+  if (!searchResults) return;
+  searchResults.replaceChildren();
+  const normalizedQuery = normalizeSearchText(query.trim());
+  if (!normalizedQuery) return;
+
+  const matches = documents.filter((document) =>
+    normalizeSearchText([document.title, document.shortTitle, document.chapter, ...document.headings].join(" ")).includes(normalizedQuery)
+  ).slice(0, 12);
+  if (!matches.length) {
+    const item = document.createElement("li");
+    item.className = "search-empty";
+    item.textContent = searchInput?.dataset.emptyLabel || "No results";
+    searchResults.append(item);
+    return;
+  }
+
+  for (const match of matches) {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    const title = document.createElement("strong");
+    const context = document.createElement("span");
+    link.href = match.url;
+    title.textContent = match.title;
+    context.textContent = match.chapter;
+    link.append(title, context);
+    item.append(link);
+    searchResults.append(item);
+  }
+}
+
+async function openSearch() {
+  if (!searchPanel || !searchInput) return;
+  searchPanel.hidden = false;
+  searchOpenButton?.setAttribute("aria-expanded", "true");
+  searchInput.focus();
+  renderSearchResults(await loadSearchIndex(), searchInput.value);
+}
+
+function closeSearch() {
+  if (!searchPanel) return;
+  searchPanel.hidden = true;
+  searchOpenButton?.setAttribute("aria-expanded", "false");
+  searchOpenButton?.focus();
+}
+
+searchOpenButton?.setAttribute("aria-expanded", "false");
+searchOpenButton?.setAttribute("aria-controls", "reader-search");
+searchOpenButton?.addEventListener("click", openSearch);
+searchCloseButton?.addEventListener("click", closeSearch);
+searchInput?.addEventListener("input", async () => renderSearchResults(await loadSearchIndex(), searchInput.value));
+document.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    openSearch();
+  } else if (event.key === "Escape" && searchPanel && !searchPanel.hidden) {
+    closeSearch();
+  }
+});

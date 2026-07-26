@@ -6,13 +6,13 @@ This fork publishes a Korean, Vietnamese, and English GitHub Pages experience fo
 
 - `/hello-algo/` redirects to Vietnamese.
 - `/hello-algo/vi/` is the complete Vietnamese Hello Algo Atlas, with the same sections and interactions as English.
-- `/hello-algo/vi/learn/` is a 104-of-119-document Vietnamese reader covering Chapters 0–16; 13 structurally verified pages are pilots and the remaining 91 are drafts.
+- `/hello-algo/vi/learn/` is a complete 119-document Vietnamese route set covering the book home, Before Starting, Chapters 0–16, exercises, and References. All documents remain drafts until generated parity and human-review gates pass.
 - `/hello-algo/en/` preserves the complete interactive English Hello Algo Atlas.
 - `/hello-algo/ko/` is the complete Korean Hello Algo Atlas.
-- `/hello-algo/ko/learn/` is a 104-of-119-document Korean draft reader covering Chapters 0–16.
-- `/hello-algo/en/learn/` starts a 119-document local reader generated from the locked official English source, covering the source home, Before Starting, Chapters 0–16, and References. Existing localized counterparts are linked exactly; untranslated counterparts are visibly marked pending.
+- `/hello-algo/ko/learn/` is a complete 119-document Korean draft reader.
+- `/hello-algo/en/learn/` is a 119-document local reader generated from the locked official English source, covering the source home, Before Starting, Chapters 0–16, and References. Every page links to its exact VI and KO counterpart.
 
-All Atlas and reader pages include a visible KO/VI/EN switch or a disabled pending state when that document has no translation. Vietnamese documents are labelled as pilots or drafts; Korean reader documents remain drafts until their structure and content are expanded to match the locked English source and pass review.
+All Atlas and reader pages include a visible KO/VI/EN switch. Vietnamese and Korean documents remain drafts until their structure and content match the locked English source and pass technical and language review.
 
 ## Vietnamese Atlas
 
@@ -21,18 +21,18 @@ The page includes:
 - the same learning graph, data-structure guide, traversal, complexity, binary-search, sorting, motion, and problem-choice sections as `/en/`;
 - Vietnamese static copy, controls, live status messages, chart labels, and interactive datasets;
 - stable interaction keys shared with English and generated section-for-section from the same source page;
-- 104 source-tracked Vietnamese documents covering Chapters 0–16, with per-document draft or pilot status;
-- a responsive reader with chapter navigation, theme control, source attribution, and previous/next links;
+- 119 source-tracked Vietnamese documents covering the complete official catalog;
+- a responsive reader with chapter navigation, article outline, search, theme control, source attribution, and previous/next links;
 - a per-page English option that opens the exact corresponding upstream chapter;
 - links to the translation plan and upstream project.
 
-Translation governance lives under `vi/`: a versioned glossary, style guide, contribution workflow, and machine-readable status ledger. Pilot pages are explicitly labelled as self-reviewed and awaiting independent community review.
+Translation governance lives under `vi/`: a versioned glossary, style guide, contribution workflow, machine-readable status ledger, and generated parity report.
 
 The complete working plan is in [VIETNAMESE_TRANSLATION_PLAN.md](VIETNAMESE_TRANSLATION_PLAN.md).
 
 ## Korean draft
 
-The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains 104 source-locked Chapter 0–16 drafts with exact Vietnamese and English counterpart links. Chapters 3–16 include Korean explanations, diagrams, formulas, tables, Python examples, and new exercise pages for Chapters 14–15. Condensed documents remain drafts until content-parity and review gates pass. Governance files live under `ko/`.
+The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains all 119 source-locked drafts with exact Vietnamese and English counterpart links. Documents preserve the official diagrams and 13-language code groups; condensed prose remains draft until content-parity and review gates pass. Governance files live under `ko/`.
 
 ## Shared Atlas experience
 

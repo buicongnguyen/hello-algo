@@ -1,10 +1,17 @@
 import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
-import { sourceCodeAppendix } from "./source-code-tabs.mjs";
-import { englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
+import { localizeSourceExamples } from "./source-code-tabs.mjs";
+import { englishReaderCatalog, englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
+import { articleOutline, markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
 
-const pages = [
+const escapeHtml = (value) => value
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;");
+
+const corePages = [
   {
     slug: "loi-noi-dau",
     title: "Lời nói đầu",
@@ -293,9 +300,9 @@ const pages = [
   { slug: "tom-tat-chuong-12", title: "Tóm tắt Chương 12", shortTitle: "12.5 · Tóm tắt", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/summary.md", target: "vi/docs/chapter_divide_and_conquer/summary.md", description: "Ôn tập chia để trị, dựng cây và Tháp Hà Nội." },
   { slug: "quay-lui", title: "Quay lui", shortTitle: "Mở đầu quay lui", chapter: "Chương 13", source: "en/docs/chapter_backtracking/index.md", target: "vi/docs/chapter_backtracking/index.md", description: "Giới thiệu thử, cắt tỉa và hoàn tác trong không gian nghiệm." },
   { slug: "thuat-toan-quay-lui", title: "Thuật toán quay lui", shortTitle: "13.1 · Thuật toán quay lui", chapter: "Chương 13", source: "en/docs/chapter_backtracking/backtracking_algorithm.md", target: "vi/docs/chapter_backtracking/backtracking_algorithm.md", description: "Xây dựng khuôn mẫu thử, cắt tỉa và quay lui." },
-  { slug: "bai-toan-n-hau", title: "Bài toán N quân hậu", shortTitle: "13.2 · N quân hậu", chapter: "Chương 13", source: "en/docs/chapter_backtracking/n_queens_problem.md", target: "vi/docs/chapter_backtracking/n_queens_problem.md", description: "Đặt quân hậu bằng cắt tỉa cột và đường chéo." },
-  { slug: "bai-toan-hoan-vi", title: "Bài toán hoán vị", shortTitle: "13.3 · Hoán vị", chapter: "Chương 13", source: "en/docs/chapter_backtracking/permutations_problem.md", target: "vi/docs/chapter_backtracking/permutations_problem.md", description: "Sinh hoán vị phân biệt và xử lý phần tử trùng." },
-  { slug: "bai-toan-tong-tap-con", title: "Bài toán tổng tập con", shortTitle: "13.4 · Tổng tập con", chapter: "Chương 13", source: "en/docs/chapter_backtracking/subset_sum_problem.md", target: "vi/docs/chapter_backtracking/subset_sum_problem.md", description: "Tìm tổ hợp và cắt các nhánh trùng hoặc không thể đạt đích." },
+  { slug: "bai-toan-n-hau", title: "Bài toán N quân hậu", shortTitle: "13.4 · N quân hậu", chapter: "Chương 13", source: "en/docs/chapter_backtracking/n_queens_problem.md", target: "vi/docs/chapter_backtracking/n_queens_problem.md", description: "Đặt quân hậu bằng cắt tỉa cột và đường chéo." },
+  { slug: "bai-toan-hoan-vi", title: "Bài toán hoán vị", shortTitle: "13.2 · Hoán vị", chapter: "Chương 13", source: "en/docs/chapter_backtracking/permutations_problem.md", target: "vi/docs/chapter_backtracking/permutations_problem.md", description: "Sinh hoán vị phân biệt và xử lý phần tử trùng." },
+  { slug: "bai-toan-tong-tap-con", title: "Bài toán tổng tập con", shortTitle: "13.3 · Tổng tập con", chapter: "Chương 13", source: "en/docs/chapter_backtracking/subset_sum_problem.md", target: "vi/docs/chapter_backtracking/subset_sum_problem.md", description: "Tìm tổ hợp và cắt các nhánh trùng hoặc không thể đạt đích." },
   { slug: "tom-tat-chuong-13", title: "Tóm tắt Chương 13", shortTitle: "13.5 · Tóm tắt", chapter: "Chương 13", source: "en/docs/chapter_backtracking/summary.md", target: "vi/docs/chapter_backtracking/summary.md", description: "Ôn tập trạng thái, ràng buộc và cắt tỉa trong quay lui." },
   { slug: "quy-hoach-dong", title: "Quy hoạch động", shortTitle: "Mở đầu quy hoạch động", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/index.md", target: "vi/docs/chapter_dynamic_programming/index.md", description: "Tái sử dụng kết quả bài toán con để xây dựng nghiệm lớn." },
   { slug: "gioi-thieu-quy-hoach-dong", title: "Giới thiệu quy hoạch động", shortTitle: "14.1 · Giới thiệu", chapter: "Chương 14", source: "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", target: "vi/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", description: "Đi từ đệ quy vét cạn đến ghi nhớ và lập bảng." },
@@ -319,320 +326,34 @@ const pages = [
   { slug: "bang-thuat-ngu", title: "Bảng thuật ngữ", shortTitle: "16.3 · Thuật ngữ", chapter: "Chương 16", source: "en/docs/chapter_appendix/terminology.md", target: "vi/docs/chapter_appendix/terminology.md", description: "Tra cứu thuật ngữ cấu trúc dữ liệu và thuật toán cốt lõi." }
 ];
 
-const escapeHtml = (value) => value
-  .replaceAll("&", "&amp;")
-  .replaceAll("<", "&lt;")
-  .replaceAll(">", "&gt;")
-  .replaceAll('"', "&quot;");
+const supplementalPages = [
+  { slug: "trang-chu-sach", title: "Hello Algo", shortTitle: "Trang chủ sách", chapter: "Trang chủ", source: "en/docs/index.md", target: "vi/docs/index.md", description: "Mở đầu trình đọc Hello Algo tiếng Việt." },
+  { slug: "truoc-khi-bat-dau", title: "Trước khi bắt đầu", shortTitle: "Trước khi bắt đầu", chapter: "Trước khi bắt đầu", source: "en/docs/chapter_hello_algo/index.md", target: "vi/docs/chapter_hello_algo/index.md", description: "Lời nhắn của tác giả và mục tiêu của cuốn sách." },
+  { slug: "bai-tap-do-phuc-tap", title: "Bài tập phân tích độ phức tạp", shortTitle: "2.6 · Bài tập", chapter: "Chương 2", source: "en/docs/chapter_computational_complexity/exercises.md", target: "vi/docs/chapter_computational_complexity/exercises.md", description: "Luyện phân tích thời gian, không gian, phép lặp và đệ quy." },
+  { slug: "bai-tap-cau-truc-du-lieu", title: "Bài tập cấu trúc dữ liệu", shortTitle: "3.6 · Bài tập", chapter: "Chương 3", source: "en/docs/chapter_data_structure/exercises.md", target: "vi/docs/chapter_data_structure/exercises.md", description: "Ôn quan hệ dữ liệu, tổ chức bộ nhớ và biểu diễn nhị phân." },
+  { slug: "bai-tap-mang-va-danh-sach-lien-ket", title: "Bài tập mảng và danh sách liên kết", shortTitle: "4.6 · Bài tập", chapter: "Chương 4", source: "en/docs/chapter_array_and_linkedlist/exercises.md", target: "vi/docs/chapter_array_and_linkedlist/exercises.md", description: "So sánh truy cập, chèn, mở rộng và đảo liên kết." },
+  { slug: "bai-tap-ngan-xep-va-hang-doi", title: "Bài tập ngăn xếp và hàng đợi", shortTitle: "5.5 · Bài tập", chapter: "Chương 5", source: "en/docs/chapter_stack_and_queue/exercises.md", target: "vi/docs/chapter_stack_and_queue/exercises.md", description: "Luyện LIFO, FIFO, hàng đợi vòng, deque và dấu ngoặc." },
+  { slug: "bai-tap-bam", title: "Bài tập băm", shortTitle: "6.5 · Bài tập", chapter: "Chương 6", source: "en/docs/chapter_hashing/exercises.md", target: "vi/docs/chapter_hashing/exercises.md", description: "Luyện xung đột, mở rộng, xóa và đếm tần suất." },
+  { slug: "bai-tap-cay", title: "Bài tập cây", shortTitle: "7.7 · Bài tập", chapter: "Chương 7", source: "en/docs/chapter_tree/exercises.md", target: "vi/docs/chapter_tree/exercises.md", description: "Ôn loại cây, phép duyệt và cây tìm kiếm nhị phân." },
+  { slug: "bai-tap-heap", title: "Bài tập heap", shortTitle: "8.5 · Bài tập", chapter: "Chương 8", source: "en/docs/chapter_heap/exercises.md", target: "vi/docs/chapter_heap/exercises.md", description: "Luyện cập nhật heap và bài toán top-k." },
+  { slug: "bai-tap-do-thi", title: "Bài tập đồ thị", shortTitle: "9.5 · Bài tập", chapter: "Chương 9", source: "en/docs/chapter_graph/exercises.md", target: "vi/docs/chapter_graph/exercises.md", description: "Luyện biểu diễn, BFS, DFS và tính liên thông." },
+  { slug: "bai-tap-tim-kiem", title: "Bài tập tìm kiếm", shortTitle: "10.7 · Bài tập", chapter: "Chương 10", source: "en/docs/chapter_searching/exercises.md", target: "vi/docs/chapter_searching/exercises.md", description: "Luyện tìm kiếm nhị phân, biên và vị trí chèn." },
+  { slug: "bai-tap-sap-xep", title: "Bài tập sắp xếp", shortTitle: "11.12 · Bài tập", chapter: "Chương 11", source: "en/docs/chapter_sorting/exercises.md", target: "vi/docs/chapter_sorting/exercises.md", description: "Ôn tính ổn định, merge sort, counting sort và radix sort." },
+  { slug: "bai-tap-chia-de-tri", title: "Bài tập chia để trị", shortTitle: "12.6 · Bài tập", chapter: "Chương 12", source: "en/docs/chapter_divide_and_conquer/exercises.md", target: "vi/docs/chapter_divide_and_conquer/exercises.md", description: "Luyện phân rã bài toán, lũy thừa nhanh và dựng cây." },
+  { slug: "bai-tap-quay-lui", title: "Bài tập quay lui", shortTitle: "13.6 · Bài tập", chapter: "Chương 13", source: "en/docs/chapter_backtracking/exercises.md", target: "vi/docs/chapter_backtracking/exercises.md", description: "Luyện cây quyết định, hoàn tác, cắt tỉa và hoán vị." },
+  { slug: "tai-lieu-tham-khao", title: "Tài liệu tham khảo", shortTitle: "Tài liệu tham khảo", chapter: "Tài liệu tham khảo", source: "en/docs/chapter_reference/index.md", target: "vi/docs/chapter_reference/index.md", description: "Các sách và tài liệu nền tảng được Hello Algo tham khảo." }
+];
 
-function readMathGroup(value, start) {
-  while (/\s/.test(value[start] || "")) start += 1;
-  if (value[start] !== "{") return null;
-  let depth = 0;
-  for (let index = start; index < value.length; index += 1) {
-    if (value[index] === "{") depth += 1;
-    if (value[index] === "}") depth -= 1;
-    if (depth === 0) return { content: value.slice(start + 1, index), end: index + 1 };
+const officialPageOrder = new Map(englishReaderCatalog.map((page, index) => [page.source, index]));
+const pages = [...corePages, ...supplementalPages].sort((left, right) =>
+  officialPageOrder.get(left.source) - officialPageOrder.get(right.source)
+);
+for (const page of pages) {
+  const officialNumber = englishReaderCatalog[officialPageOrder.get(page.source)]?.shortTitle.match(/^(\d+\.\d+)\b/)?.[1];
+  const localizedNumber = page.shortTitle.match(/^(\d+\.\d+)\b/)?.[1];
+  if (officialNumber && localizedNumber !== officialNumber) {
+    throw new Error(`Vietnamese navigation number ${localizedNumber || "(missing)"} does not match ${officialNumber} for ${page.source}`);
   }
-  return null;
-}
-
-function replaceFractions(value) {
-  let output = "";
-  let cursor = 0;
-  while (cursor < value.length) {
-    const fractionIndex = value.indexOf("\\frac", cursor);
-    if (fractionIndex < 0) return output + value.slice(cursor);
-    const numerator = readMathGroup(value, fractionIndex + "\\frac".length);
-    const denominator = numerator && readMathGroup(value, numerator.end);
-    if (!numerator || !denominator) {
-      output += value.slice(cursor, fractionIndex) + "frac";
-      cursor = fractionIndex + "\\frac".length;
-      continue;
-    }
-    output += value.slice(cursor, fractionIndex);
-    output += `(${replaceFractions(numerator.content)})/(${replaceFractions(denominator.content)})`;
-    cursor = denominator.end;
-  }
-  return output;
-}
-
-const formatMath = (value) => replaceFractions(value)
-  .replace(/\\begin\s*\{[^{}]+\}/g, "")
-  .replace(/\\end\s*\{[^{}]+\}/g, "")
-  .replace(/\\(?:mathrm|text)\s*\{([^{}]*)\}/g, "$1")
-  .replace(/\\hat\s*\{([^{}]*)\}/g, "$1̂")
-  .replaceAll("\\Rightarrow", "⇒")
-  .replaceAll("\\rightarrow", "→")
-  .replaceAll("\\leftarrow", "←")
-  .replaceAll("\\left", "")
-  .replaceAll("\\right", "")
-  .replace(/\\([{}])/g, "$1")
-  .replaceAll("\\newline", "\n")
-  .replaceAll("\\infty", "∞")
-  .replaceAll("\\approx", "≈")
-  .replaceAll("\\subset", "⊂")
-  .replaceAll("\\pm", "±")
-  .replaceAll("\\ne", "≠")
-  .replace(/\\in\b/g, "∈")
-  .replaceAll("\\sum", "Σ")
-  .replaceAll("\\prod", "Π")
-  .replaceAll("\\bmod", " mod ")
-  .replaceAll("\\min", "min")
-  .replaceAll("\\max", "max")
-  .replaceAll("\\ll", "≪")
-  .replaceAll("\\gg", "≫")
-  .replaceAll("\\quad", "  ")
-  .replaceAll("\\ldots", "…")
-  .replaceAll("\\log", "log")
-  .replaceAll("\\Omega", "Ω")
-  .replaceAll("\\Theta", "Θ")
-  .replaceAll("\\times", "×")
-  .replaceAll("\\cdot", "·")
-  .replaceAll("\\dots", "…")
-  .replace(/\\leq?/g, "≤")
-  .replace(/\\geq?/g, "≥")
-  .replaceAll("\\lfloor", "⌊")
-  .replaceAll("\\rfloor", "⌋")
-  .replaceAll("\\;", " ")
-  .replace(/\\(?=\s)/g, "")
-  .replace(/\\([A-Za-z]+)/g, "$1")
-  .replaceAll("&", "")
-  .trim();
-
-const prepareMath = (value) => value.replaceAll("\\newline", "\\\\");
-const encodeMath = (value) => Buffer.from(prepareMath(value), "utf8").toString("base64");
-
-function renderInline(value) {
-  const tokens = [];
-  const protect = (html) => {
-    const token = `@@TOKEN${tokens.length}@@`;
-    tokens.push(html);
-    return token;
-  };
-  const safeUrl = /^(?:https?:\/\/[^\s"'<>]+|mailto:[^\s"'<>]+|#[a-zA-Z0-9_-]+|\.{0,2}\/[a-zA-Z0-9_./#-]*|[a-zA-Z0-9_./-]+(?:#[a-zA-Z0-9_-]+)?)$/;
-  const protectedValue = value
-    .replace(/`([^`]+)`/g, (_, code) => protect(`<code>${escapeHtml(code)}</code>`))
-    .replace(/\$([^$]+)\$/g, (_, expression) => {
-      return protect(`<span class="math" data-math="${encodeMath(expression)}">${escapeHtml(formatMath(expression))}</span>`);
-    })
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
-      if (!safeUrl.test(url)) return escapeHtml(label);
-      return protect(`<a href="${escapeHtml(url)}">${escapeHtml(label)}</a>`);
-    });
-  let rendered = escapeHtml(protectedValue).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  tokens.forEach((tokenContent, index) => {
-    rendered = rendered.replace(`@@TOKEN${index}@@`, tokenContent);
-  });
-  return rendered;
-}
-
-function assetUrl(sourcePath, reference) {
-  if (reference.startsWith("../assets/covers/")) {
-    return `assets/covers/${path.basename(reference)}`;
-  }
-  const sourceDirectory = path.dirname(sourcePath.replaceAll("\\", "/"));
-  const relativeDirectory = sourceDirectory.replace(/^(?:en|vi|ko)\/docs\//, "");
-  return `assets/${relativeDirectory}/${reference}`;
-}
-
-function isTableDivider(line) {
-  const cells = line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
-  return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
-}
-
-function tableCells(line) {
-  return line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
-}
-
-const programmingLanguages = new Set(["Python", "C++", "Java", "C#", "Go", "Swift", "JS", "TS", "Dart", "Rust", "C", "Kotlin", "Ruby"]);
-
-function tabListLabel(sourcePath, synchronized) {
-  if (sourcePath.startsWith("vi/")) return synchronized ? "Ví dụ theo ngôn ngữ lập trình" : "Các bước minh họa";
-  if (sourcePath.startsWith("ko/")) return synchronized ? "프로그래밍 언어 예제" : "그림 단계";
-  return synchronized ? "Programming language examples" : "Illustration steps";
-}
-
-export function renderMarkdown(markdown, sourcePath, tabState = { count: 0 }) {
-  const lines = markdown.replaceAll("\r\n", "\n").split("\n");
-  const output = [];
-
-  for (let index = 0; index < lines.length;) {
-    const line = lines[index].trimEnd();
-    if (!line.trim()) {
-      index += 1;
-      continue;
-    }
-
-    if (line.trimStart().startsWith("<!--")) {
-      while (index < lines.length && !lines[index].includes("-->")) index += 1;
-      index += 1;
-      continue;
-    }
-
-    const admonition = line.trimStart().match(/^(?:!!!|\?\?\?)\s+(\w+)(?:\s+"([^"]+)")?/);
-    if (admonition) {
-      const content = [];
-      index += 1;
-      while (index < lines.length && (!lines[index].trim() || /^\s{4}/.test(lines[index]))) {
-        content.push(lines[index].replace(/^\s{4}(?:\s{4})?/, ""));
-        index += 1;
-      }
-      const kind = admonition[1].replace(/[^a-zA-Z0-9_-]/g, "");
-      const label = admonition[2] || admonition[1][0].toUpperCase() + admonition[1].slice(1);
-      const admonitionContent = content.join("\n");
-      const visualizationUrl = kind === "pythontutor" && admonitionContent.trim().match(/^https:\/\/pythontutor\.com\/\S+$/)?.[0];
-      const visualizationLabel = sourcePath.startsWith("vi/")
-        ? "Mở trực quan hóa mã tương tác ↗"
-        : sourcePath.startsWith("ko/") ? "대화형 코드 시각화 열기 ↗" : "Open interactive code visualization ↗";
-      const renderedContent = visualizationUrl
-        ? `<p><a class="visualization-link" href="${escapeHtml(visualizationUrl)}" target="_blank" rel="noreferrer">${visualizationLabel}</a></p>`
-        : renderMarkdown(admonitionContent, sourcePath, tabState);
-      output.push(`<aside class="admonition admonition-${kind}"><strong>${escapeHtml(label)}</strong>${renderedContent}</aside>`);
-      continue;
-    }
-
-    if (/^===\s+"([^"]+)"/.test(line)) {
-      const tabs = [];
-      while (index < lines.length) {
-        const tab = lines[index].match(/^===\s+"([^"]+)"/);
-        if (!tab) break;
-        const content = [];
-        index += 1;
-        while (index < lines.length && (lines[index] === "" || /^\s{4}/.test(lines[index]))) {
-          content.push(lines[index].replace(/^\s{4}/, ""));
-          index += 1;
-        }
-        tabs.push({ label: tab[1], markdown: content.join("\n") });
-      }
-      if (tabs.length < 2) throw new Error(`A tab group in ${sourcePath} contains fewer than two choices`);
-
-      tabState.count += 1;
-      const groupId = `content-tabs-${tabState.count}`;
-      const synchronized = tabs.every((tab) => programmingLanguages.has(tab.label));
-      const tabButtons = tabs.map((tab, tabIndex) => {
-        const selected = tabIndex === 0;
-        return `<button type="button" role="tab" id="${groupId}-tab-${tabIndex + 1}" aria-controls="${groupId}-panel-${tabIndex + 1}" aria-selected="${selected}" tabindex="${selected ? "0" : "-1"}" data-tab-label="${escapeHtml(tab.label)}">${escapeHtml(tab.label)}</button>`;
-      }).join("");
-      const tabPanels = tabs.map((tab, tabIndex) => {
-        const selected = tabIndex === 0;
-        return `<div class="content-tabpanel" role="tabpanel" id="${groupId}-panel-${tabIndex + 1}" aria-labelledby="${groupId}-tab-${tabIndex + 1}"${selected ? "" : " hidden"}>${renderMarkdown(tab.markdown, sourcePath, tabState)}</div>`;
-      }).join("");
-      output.push(`<section class="content-tabs" data-content-tabs${synchronized ? ' data-tab-sync="language"' : ""}><div class="content-tablist" role="tablist" aria-label="${tabListLabel(sourcePath, synchronized)}">${tabButtons}</div><div class="content-tabpanels">${tabPanels}</div></section>`);
-      continue;
-    }
-
-    const codeFence = line.match(/^```([^\s`]*)/);
-    if (codeFence) {
-      const language = codeFence[1].replace(/[^a-zA-Z0-9_-]/g, "");
-      const code = [];
-      index += 1;
-      while (index < lines.length && !lines[index].trimStart().startsWith("```")) {
-        code.push(lines[index]);
-        index += 1;
-      }
-      if (index >= lines.length) throw new Error(`Unclosed code fence in ${sourcePath}`);
-      index += 1;
-      output.push(`<pre><code${language ? ` class="language-${language}"` : ""}>${escapeHtml(code.join("\n"))}</code></pre>`);
-      continue;
-    }
-
-    if (line.trim() === "$$") {
-      const expression = [];
-      index += 1;
-      while (index < lines.length && lines[index].trim() !== "$$") {
-        expression.push(lines[index].trim());
-        index += 1;
-      }
-      if (index >= lines.length) throw new Error(`Unclosed display math in ${sourcePath}`);
-      index += 1;
-      const rawExpression = expression.join("\n");
-      output.push(`<div class="math-block" role="math" data-math="${encodeMath(rawExpression)}">${escapeHtml(formatMath(rawExpression))}</div>`);
-      continue;
-    }
-
-    const heading = line.match(/^(#{1,4})\s+(.+)$/);
-    if (heading) {
-      const level = heading[1].length;
-      output.push(`<h${level}>${renderInline(heading[2])}</h${level}>`);
-      index += 1;
-      continue;
-    }
-
-    const image = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
-    if (image) {
-      output.push(`<figure><img src="${escapeHtml(assetUrl(sourcePath, image[2]))}" alt="${escapeHtml(image[1])}" loading="lazy"><figcaption>${renderInline(image[1])}</figcaption></figure>`);
-      index += 1;
-      continue;
-    }
-
-    if (line.startsWith(">")) {
-      const quote = [];
-      while (index < lines.length && lines[index].trimStart().startsWith(">")) {
-        quote.push(lines[index].trimStart().replace(/^>\s?/, ""));
-        index += 1;
-      }
-      output.push(`<blockquote>${quote.filter(Boolean).map((part) => `<p>${renderInline(part)}</p>`).join("")}</blockquote>`);
-      continue;
-    }
-
-    const listMatch = line.match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-    if (listMatch) {
-      const ordered = /\d+\./.test(listMatch[1]);
-      const tag = ordered ? "ol" : "ul";
-      const start = ordered ? Number.parseInt(listMatch[1], 10) : 1;
-      const items = [];
-      while (index < lines.length) {
-        const match = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-        if (!match || /\d+\./.test(match[1]) !== ordered) break;
-        const item = [match[2].trim()];
-        index += 1;
-        while (index < lines.length) {
-          if (!lines[index].trim()) {
-            let nextIndex = index;
-            while (nextIndex < lines.length && !lines[nextIndex].trim()) nextIndex += 1;
-            const nextItem = lines[nextIndex]?.match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-            if (nextItem && /\d+\./.test(nextItem[1]) === ordered) {
-              index = nextIndex;
-            }
-            break;
-          }
-          const nextItem = lines[index].match(/^\s*(\d+\.|[-*])\s+(.+)$/);
-          if (nextItem && /\d+\./.test(nextItem[1]) === ordered) break;
-          item.push(lines[index].trim());
-          index += 1;
-        }
-        items.push(`<li>${renderInline(item.join(" "))}</li>`);
-      }
-      output.push(`<${tag}${ordered && start !== 1 ? ` start="${start}"` : ""}>${items.join("")}</${tag}>`);
-      continue;
-    }
-
-    if (line.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1])) {
-      const headers = tableCells(line);
-      index += 2;
-      const rows = [];
-      while (index < lines.length && lines[index].includes("|") && lines[index].trim()) {
-        rows.push(tableCells(lines[index]));
-        index += 1;
-      }
-      output.push(`<div class="table-wrap"><table><thead><tr>${headers.map((cell) => `<th>${renderInline(cell)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${renderInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`);
-      continue;
-    }
-
-    const paragraph = [line.trim()];
-    index += 1;
-    while (index < lines.length) {
-      const next = lines[index].trimEnd();
-      if (!next.trim() || /^(#{1,4})\s+/.test(next) || /^===\s+/.test(next) || /^!\[/.test(next) || next.startsWith(">") || next.startsWith("```") || next.trim() === "$$" || /^\s*(\d+\.|[-*])\s+/.test(next)) break;
-      if (next.includes("|") && index + 1 < lines.length && isTableDivider(lines[index + 1])) break;
-      paragraph.push(next.trim());
-      index += 1;
-    }
-    output.push(`<p>${renderInline(paragraph.join(" "))}</p>`);
-  }
-
-  return output.join("\n");
 }
 
 function navigation(currentSlug) {
@@ -650,6 +371,11 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   const canonicalName = page.slug === "index" ? "" : `${page.slug}.html`;
   const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/${page.source}`;
   const englishUrl = englishReaderHref(page.source);
+  const siteRoot = "https://buicongnguyen.github.io/hello-algo/";
+  const vietnameseCanonical = `${siteRoot}vi/learn/${canonicalName}`;
+  const koreanCanonical = `${siteRoot}${koreanDocument.route}`;
+  const englishCanonical = `${siteRoot}${englishUrl.replace(/^\.\.\/\.\.\//, "")}`;
+  const outline = articleOutline(body, "Trong bài này");
   const koreanOption = koreanDocument
     ? `<a href="${readerHref(koreanDocument)}" lang="ko" hreflang="ko" aria-label="Đọc trang tương ứng bằng tiếng Hàn">KO</a>`
     : '<a href="../../ko/learn/" lang="ko" data-language-home="ko" aria-label="Mở trang chủ bản tiếng Hàn; tài liệu tương ứng chưa có">KO</a>';
@@ -664,13 +390,17 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHtml(page.description)}">
-  <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/vi/learn/${canonicalName}">
+  <link rel="canonical" href="${vietnameseCanonical}">
+  <link rel="alternate" hreflang="vi" href="${vietnameseCanonical}">
+  <link rel="alternate" hreflang="ko" href="${koreanCanonical}">
+  <link rel="alternate" hreflang="en" href="${englishCanonical}">
+  <link rel="alternate" hreflang="x-default" href="${vietnameseCanonical}">
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260726b">
+  <link rel="stylesheet" href="book.css?v=20260726c">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
-  <script src="book.js?v=20260726b" defer></script>
+  <script src="book.js?v=20260726c" defer></script>
 </head>
 <body data-translation-status="${vietnameseDocument.status}">
   <a class="skip-link" href="#article">Bỏ qua để đến bài đọc</a>
@@ -682,6 +412,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
       ${koreanOption}
       <a class="active" href="${canonicalName || "./"}" lang="vi" hreflang="vi" aria-current="page">VI</a>
       <a href="${englishUrl}" lang="en" hreflang="en" aria-label="Đọc trang tương ứng bằng tiếng Anh">EN</a>
+      <button id="reader-search-open" type="button" aria-label="Tìm trong sách">⌕</button>
       <button id="reader-theme" type="button" aria-label="Đổi giao diện sáng hoặc tối">◐</button>
     </nav>
   </header>
@@ -692,9 +423,15 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
       <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
     <main class="reader-main">
+      <section class="reader-search" id="reader-search" hidden aria-label="Tìm trong sách">
+        <div><label for="reader-search-input">Tìm trong 119 tài liệu</label><button id="reader-search-close" type="button" aria-label="Đóng tìm kiếm">×</button></div>
+        <input id="reader-search-input" type="search" autocomplete="off" placeholder="Thuật toán, cấu trúc dữ liệu, tiêu đề…" data-empty-label="Không tìm thấy kết quả">
+        <ul id="reader-search-results" aria-live="polite"></ul>
+      </section>
       <article id="article">
         <div class="article-meta"><span>${page.chapter}</span><span>${statusCopy.label} · nguồn khóa tại ${sourceCommit.slice(0, 7)}</span></div>
         <div class="pilot-notice"><strong>${statusCopy.title}</strong><p>${statusCopy.description} Nút EN mở đúng tài liệu nguồn tương ứng.</p></div>
+        ${outline}
         ${body}
         <footer class="article-attribution">
           <strong>Nguồn và giấy phép</strong>
@@ -715,12 +452,13 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
   const registry = await loadTranslationRegistry(projectRoot);
   const bookOutput = path.join(outputRoot, "vi", "learn");
   await mkdir(bookOutput, { recursive: true });
-  await cp(path.join(projectRoot, "vi", "book.css"), path.join(bookOutput, "book.css"));
-  await cp(path.join(projectRoot, "vi", "book.js"), path.join(bookOutput, "book.js"));
+  await cp(path.join(projectRoot, "reader", "book.css"), path.join(bookOutput, "book.css"));
+  await cp(path.join(projectRoot, "reader", "book.js"), path.join(bookOutput, "book.js"));
 
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
   for (const cover of [
+    "chapter_hello_algo.jpg",
     "chapter_preface.jpg",
     "chapter_introduction.jpg",
     "chapter_complexity_analysis.jpg",
@@ -822,6 +560,7 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     await cp(path.join(projectRoot, "en", "docs", "index.assets", asset), path.join(sharedAssetOutput, asset));
   }
 
+  const searchIndex = [];
   for (const [pageIndex, page] of pages.entries()) {
     const vietnameseDocument = registry.byLanguage.vi.get(page.source);
     if (!vietnameseDocument) throw new Error(`Vietnamese reader page is missing from the translation registry: ${page.source}`);
@@ -832,11 +571,26 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
     }
     const markdown = await readFile(path.join(projectRoot, page.target), "utf8");
     const sourceMarkdown = await readFile(path.join(projectRoot, page.source), "utf8");
-    const codeAppendix = await sourceCodeAppendix({ projectRoot, sourcePath: page.source, sourceMarkdown, locale: "vi" });
-    const completeMarkdown = codeAppendix ? `${markdown.trimEnd()}\n\n${codeAppendix}` : markdown;
-    const html = pageTemplate(page, renderMarkdown(completeMarkdown, page.target), pageIndex, registry.sourceCommit, vietnameseDocument, registry.byLanguage.ko.get(page.source));
+    const localizedExamples = await localizeSourceExamples({
+      projectRoot,
+      sourcePath: page.source,
+      sourceMarkdown,
+      targetMarkdown: markdown,
+      locale: "vi"
+    });
+    const completeMarkdown = localizedExamples.markdown;
+    const body = renderMarkdown(completeMarkdown, page.target);
+    searchIndex.push({
+      title: page.title,
+      shortTitle: page.shortTitle,
+      chapter: page.chapter,
+      url: outputName,
+      headings: markdownHeadings(completeMarkdown)
+    });
+    const html = pageTemplate(page, body, pageIndex, registry.sourceCommit, vietnameseDocument, registry.byLanguage.ko.get(page.source));
     await writeFile(path.join(bookOutput, outputName), html);
   }
+  await writeFile(path.join(bookOutput, "search-index.json"), JSON.stringify(searchIndex, null, 2) + "\n");
 
   for (const page of pages) {
     const outputName = page.slug === "index" ? "index.html" : `${page.slug}.html`;

@@ -1,11 +1,11 @@
 import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
-import { renderMarkdown } from "./build-vi-book.mjs";
-import { sourceCodeAppendix } from "./source-code-tabs.mjs";
-import { englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
+import { articleOutline, markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
+import { localizeSourceExamples } from "./source-code-tabs.mjs";
+import { englishReaderCatalog, englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
-const pages = [
+const corePages = [
   ["preface", "머리말", "머리말", "0장", "en/docs/chapter_preface/index.md", "ko/docs/chapter_preface/index.md", "자료구조와 알고리즘 학습 여정을 여는 머리말입니다."],
   ["about-the-book", "이 책에 관하여", "0.1 · 이 책에 관하여", "0장", "en/docs/chapter_preface/about_the_book.md", "ko/docs/chapter_preface/about_the_book.md", "Hello Algo의 독자, 구성, 오픈 소스 공동체를 소개합니다."],
   ["how-to-use-the-book", "이 책을 활용하는 방법", "0.2 · 활용 방법", "0장", "en/docs/chapter_preface/suggestions.md", "ko/docs/chapter_preface/suggestions.md", "애니메이션, 코드 실행, 복습을 활용한 학습 방법입니다."],
@@ -86,9 +86,9 @@ const pages = [
   ["chapter-12-summary", "12장 요약", "12.5 · 요약", "12장", "en/docs/chapter_divide_and_conquer/summary.md", "ko/docs/chapter_divide_and_conquer/summary.md", "분할 정복, 트리 구성, 하노이 탑을 복습합니다."],
   ["backtracking", "백트래킹", "백트래킹 시작", "13장", "en/docs/chapter_backtracking/index.md", "ko/docs/chapter_backtracking/index.md", "선택, 가지치기, 되돌리기로 해 공간을 탐색합니다."],
   ["backtracking-algorithm", "백트래킹 알고리즘", "13.1 · 백트래킹 알고리즘", "13장", "en/docs/chapter_backtracking/backtracking_algorithm.md", "ko/docs/chapter_backtracking/backtracking_algorithm.md", "시도, 가지치기, 되돌리기 틀을 만듭니다."],
-  ["n-queens", "N-퀸 문제", "13.2 · N-퀸", "13장", "en/docs/chapter_backtracking/n_queens_problem.md", "ko/docs/chapter_backtracking/n_queens_problem.md", "열과 대각선 가지치기로 퀸을 배치합니다."],
-  ["permutations", "순열 문제", "13.3 · 순열", "13장", "en/docs/chapter_backtracking/permutations_problem.md", "ko/docs/chapter_backtracking/permutations_problem.md", "서로 다른 순열과 중복 원소 순열을 생성합니다."],
-  ["subset-sum", "부분집합 합 문제", "13.4 · 부분집합 합", "13장", "en/docs/chapter_backtracking/subset_sum_problem.md", "ko/docs/chapter_backtracking/subset_sum_problem.md", "중복되거나 불가능한 가지를 자르며 조합을 찾습니다."],
+  ["n-queens", "N-퀸 문제", "13.4 · N-퀸", "13장", "en/docs/chapter_backtracking/n_queens_problem.md", "ko/docs/chapter_backtracking/n_queens_problem.md", "열과 대각선 가지치기로 퀸을 배치합니다."],
+  ["permutations", "순열 문제", "13.2 · 순열", "13장", "en/docs/chapter_backtracking/permutations_problem.md", "ko/docs/chapter_backtracking/permutations_problem.md", "서로 다른 순열과 중복 원소 순열을 생성합니다."],
+  ["subset-sum", "부분집합 합 문제", "13.3 · 부분집합 합", "13장", "en/docs/chapter_backtracking/subset_sum_problem.md", "ko/docs/chapter_backtracking/subset_sum_problem.md", "중복되거나 불가능한 가지를 자르며 조합을 찾습니다."],
   ["chapter-13-summary", "13장 요약", "13.5 · 요약", "13장", "en/docs/chapter_backtracking/summary.md", "ko/docs/chapter_backtracking/summary.md", "백트래킹 상태, 제약, 가지치기와 대표 문제를 복습합니다."],
   ["dynamic-programming", "동적 계획법", "동적 계획법 시작", "14장", "en/docs/chapter_dynamic_programming/index.md", "ko/docs/chapter_dynamic_programming/index.md", "겹치는 하위 문제의 결과를 재사용해 큰 해를 구성합니다."],
   ["intro-to-dynamic-programming", "동적 계획법 소개", "14.1 · 소개", "14장", "en/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "ko/docs/chapter_dynamic_programming/intro_to_dynamic_programming.md", "완전 탐색 재귀에서 메모이제이션과 표 채우기로 발전합니다."],
@@ -112,6 +112,36 @@ const pages = [
   ["glossary", "용어집", "16.3 · 용어집", "16장", "en/docs/chapter_appendix/terminology.md", "ko/docs/chapter_appendix/terminology.md", "핵심 자료 구조와 알고리즘 용어를 참조합니다."]
 ].map(([slug, title, shortTitle, chapter, source, target, description]) => ({ slug, title, shortTitle, chapter, source, target, description }));
 
+const supplementalPages = [
+  ["book-home", "Hello Algo", "책 홈", "홈", "en/docs/index.md", "ko/docs/index.md", "한국어 Hello Algo 리더의 시작 페이지입니다."],
+  ["before-starting", "시작하기 전에", "시작하기 전에", "시작하기 전에", "en/docs/chapter_hello_algo/index.md", "ko/docs/chapter_hello_algo/index.md", "저자의 메시지와 책의 목표를 소개합니다."],
+  ["chapter-2-exercises", "복잡도 분석 연습문제", "2.6 · 연습문제", "2장", "en/docs/chapter_computational_complexity/exercises.md", "ko/docs/chapter_computational_complexity/exercises.md", "반복, 재귀, 시간 및 공간 복잡도를 연습합니다."],
+  ["chapter-3-exercises", "자료구조 연습문제", "3.6 · 연습문제", "3장", "en/docs/chapter_data_structure/exercises.md", "ko/docs/chapter_data_structure/exercises.md", "데이터 관계, 메모리 구조와 이진 표현을 복습합니다."],
+  ["chapter-4-exercises", "배열과 연결 리스트 연습문제", "4.6 · 연습문제", "4장", "en/docs/chapter_array_and_linkedlist/exercises.md", "ko/docs/chapter_array_and_linkedlist/exercises.md", "접근, 삽입, 확장과 링크 뒤집기를 연습합니다."],
+  ["chapter-5-exercises", "스택과 큐 연습문제", "5.5 · 연습문제", "5장", "en/docs/chapter_stack_and_queue/exercises.md", "ko/docs/chapter_stack_and_queue/exercises.md", "LIFO, FIFO, 원형 큐, 덱과 괄호 검사를 연습합니다."],
+  ["chapter-6-exercises", "해싱 연습문제", "6.5 · 연습문제", "6장", "en/docs/chapter_hashing/exercises.md", "ko/docs/chapter_hashing/exercises.md", "충돌, 확장, 삭제와 빈도 계산을 연습합니다."],
+  ["chapter-7-exercises", "트리 연습문제", "7.7 · 연습문제", "7장", "en/docs/chapter_tree/exercises.md", "ko/docs/chapter_tree/exercises.md", "트리 종류, 순회와 이진 탐색 트리를 복습합니다."],
+  ["chapter-8-exercises", "힙 연습문제", "8.5 · 연습문제", "8장", "en/docs/chapter_heap/exercises.md", "ko/docs/chapter_heap/exercises.md", "힙 갱신과 top-k 문제를 연습합니다."],
+  ["chapter-9-exercises", "그래프 연습문제", "9.5 · 연습문제", "9장", "en/docs/chapter_graph/exercises.md", "ko/docs/chapter_graph/exercises.md", "그래프 표현, BFS, DFS와 연결성을 연습합니다."],
+  ["chapter-10-exercises", "검색 연습문제", "10.7 · 연습문제", "10장", "en/docs/chapter_searching/exercises.md", "ko/docs/chapter_searching/exercises.md", "이진 탐색, 경계와 삽입 위치를 연습합니다."],
+  ["chapter-11-exercises", "정렬 연습문제", "11.12 · 연습문제", "11장", "en/docs/chapter_sorting/exercises.md", "ko/docs/chapter_sorting/exercises.md", "안정성, 병합 정렬, 계수 정렬과 기수 정렬을 복습합니다."],
+  ["chapter-12-exercises", "분할 정복 연습문제", "12.6 · 연습문제", "12장", "en/docs/chapter_divide_and_conquer/exercises.md", "ko/docs/chapter_divide_and_conquer/exercises.md", "문제 분할, 빠른 거듭제곱과 트리 구성을 연습합니다."],
+  ["chapter-13-exercises", "백트래킹 연습문제", "13.6 · 연습문제", "13장", "en/docs/chapter_backtracking/exercises.md", "ko/docs/chapter_backtracking/exercises.md", "결정 트리, 상태 복원, 가지치기와 순열을 연습합니다."],
+  ["references", "참고 문헌", "참고 문헌", "참고 문헌", "en/docs/chapter_reference/index.md", "ko/docs/chapter_reference/index.md", "Hello Algo가 참고한 기본 서적과 자료입니다."]
+].map(([slug, title, shortTitle, chapter, source, target, description]) => ({ slug, title, shortTitle, chapter, source, target, description }));
+
+const officialPageOrder = new Map(englishReaderCatalog.map((page, index) => [page.source, index]));
+const pages = [...corePages, ...supplementalPages].sort((left, right) =>
+  officialPageOrder.get(left.source) - officialPageOrder.get(right.source)
+);
+for (const page of pages) {
+  const officialNumber = englishReaderCatalog[officialPageOrder.get(page.source)]?.shortTitle.match(/^(\d+\.\d+)\b/)?.[1];
+  const localizedNumber = page.shortTitle.match(/^(\d+\.\d+)\b/)?.[1];
+  if (officialNumber && localizedNumber !== officialNumber) {
+    throw new Error(`Korean navigation number ${localizedNumber || "(missing)"} does not match ${officialNumber} for ${page.source}`);
+  }
+}
+
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 const chapters = [...new Set(pages.map((page) => page.chapter))];
 
@@ -125,6 +155,11 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
   const outputName = page.slug === "index" ? "" : `${page.slug}.html`;
   const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/${page.source}`;
   const viUrl = readerHref(vietnameseDocument);
+  const siteRoot = "https://buicongnguyen.github.io/hello-algo/";
+  const koreanCanonical = `${siteRoot}ko/learn/${outputName}`;
+  const vietnameseCanonical = `${siteRoot}${vietnameseDocument.route}`;
+  const englishCanonical = `${siteRoot}${englishReaderHref(page.source).replace(/^\.\.\/\.\.\//, "")}`;
+  const outline = articleOutline(body, "이 글의 내용");
   const statusCopy = {
     draft: {
       label: "초안",
@@ -150,12 +185,16 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHtml(page.description)}">
-  <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/ko/learn/${outputName}">
+  <link rel="canonical" href="${koreanCanonical}">
+  <link rel="alternate" hreflang="ko" href="${koreanCanonical}">
+  <link rel="alternate" hreflang="vi" href="${vietnameseCanonical}">
+  <link rel="alternate" hreflang="en" href="${englishCanonical}">
+  <link rel="alternate" hreflang="x-default" href="${vietnameseCanonical}">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo 한국어</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260726b">
+  <link rel="stylesheet" href="book.css?v=20260726c">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
-  <script src="book.js?v=20260726b" defer></script>
+  <script src="book.js?v=20260726c" defer></script>
 </head>
 <body data-translation-status="${koreanDocument.status}">
   <a class="skip-link" href="#article">본문으로 건너뛰기</a>
@@ -163,11 +202,11 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
     <button class="reader-menu" id="reader-menu" type="button" aria-label="목차 열기" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>KO</b></strong></a>
     <div class="reader-progress"><span>${statusCopy.label}</span><strong>${pages.length} / 119 문서</strong></div>
-    <nav aria-label="언어와 테마"><a class="active" href="${outputName || "./"}" lang="ko" hreflang="ko" aria-current="page">KO</a><a href="${viUrl}" lang="vi" hreflang="vi" aria-label="같은 문서를 베트남어로 읽기">VI</a><a href="${englishReaderHref(page.source)}" lang="en" hreflang="en" aria-label="같은 문서를 영어로 읽기">EN</a><button id="reader-theme" type="button" aria-label="밝은 테마와 어두운 테마 전환">◐</button></nav>
+    <nav aria-label="언어와 테마"><a class="active" href="${outputName || "./"}" lang="ko" hreflang="ko" aria-current="page">KO</a><a href="${viUrl}" lang="vi" hreflang="vi" aria-label="같은 문서를 베트남어로 읽기">VI</a><a href="${englishReaderHref(page.source)}" lang="en" hreflang="en" aria-label="같은 문서를 영어로 읽기">EN</a><button id="reader-search-open" type="button" aria-label="책에서 검색">⌕</button><button id="reader-theme" type="button" aria-label="밝은 테마와 어두운 테마 전환">◐</button></nav>
   </header>
   <div class="reader-shell">
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="한국어판 목차"><div class="sidebar-top"><strong>한국어 읽기</strong><small>0–16장 · ${statusCopy.sidebar}</small></div>${navigation(page.slug)}<div class="sidebar-links"><a href="../#roadmap">학습 지도</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/KOREAN_TRANSLATION_PLAN.md">번역 계획</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/ko/glossary.md">용어집</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/ko/CONTRIBUTING.md">기여하기</a></div></aside>
-    <main class="reader-main"><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>${statusCopy.label} · 원문 ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>${statusCopy.title}</strong><p>${statusCopy.description} VI와 EN 버튼은 같은 원문에 대응하는 문서를 엽니다.</p></div>${body}<footer class="article-attribution"><strong>출처와 라이선스</strong><p><a href="${sourceUrl}" target="_blank" rel="noreferrer">krahets와 기여 공동체의 Hello Algo 영어판</a>을 바탕으로 번역하고 예제를 선별하며 일부 내용을 편집했습니다. 파생 콘텐츠는 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>에 따라 제공합니다. 이 프로젝트는 비영리 커뮤니티 작업이며 원본 프로젝트의 공식 후원을 의미하지 않습니다.</p></footer></article>
+    <main class="reader-main"><section class="reader-search" id="reader-search" hidden aria-label="책에서 검색"><div><label for="reader-search-input">119개 문서에서 검색</label><button id="reader-search-close" type="button" aria-label="검색 닫기">×</button></div><input id="reader-search-input" type="search" autocomplete="off" placeholder="알고리즘, 자료구조, 제목…" data-empty-label="검색 결과가 없습니다"><ul id="reader-search-results" aria-live="polite"></ul></section><article id="article"><div class="article-meta"><span>${page.chapter}</span><span>${statusCopy.label} · 원문 ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>${statusCopy.title}</strong><p>${statusCopy.description} VI와 EN 버튼은 같은 원문에 대응하는 문서를 엽니다.</p></div>${outline}${body}<footer class="article-attribution"><strong>출처와 라이선스</strong><p><a href="${sourceUrl}" target="_blank" rel="noreferrer">krahets와 기여 공동체의 Hello Algo 영어판</a>을 바탕으로 번역하고 예제를 선별하며 일부 내용을 편집했습니다. 파생 콘텐츠는 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>에 따라 제공합니다. 이 프로젝트는 비영리 커뮤니티 작업이며 원본 프로젝트의 공식 후원을 의미하지 않습니다.</p></footer></article>
       <nav class="page-nav" aria-label="이전 글과 다음 글">${previous ? `<a href="${previous.slug === "index" ? "./" : `${previous.slug}.html`}"><span>← 이전 글</span><strong>${previous.title}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug === "index" ? "./" : `${next.slug}.html`}"><span>다음 글 →</span><strong>${next.title}</strong></a>` : "<i></i>"}</nav>
     </main>
   </div>
@@ -178,11 +217,11 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
   const registry = await loadTranslationRegistry(projectRoot);
   const bookOutput = path.join(outputRoot, "ko", "learn");
   await mkdir(bookOutput, { recursive: true });
-  await cp(path.join(projectRoot, "vi", "book.css"), path.join(bookOutput, "book.css"));
-  await cp(path.join(projectRoot, "vi", "book.js"), path.join(bookOutput, "book.js"));
+  await cp(path.join(projectRoot, "reader", "book.css"), path.join(bookOutput, "book.css"));
+  await cp(path.join(projectRoot, "reader", "book.js"), path.join(bookOutput, "book.js"));
   const coverOutput = path.join(bookOutput, "assets", "covers");
   await mkdir(coverOutput, { recursive: true });
-  for (const cover of ["chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg", "chapter_data_structure.jpg", "chapter_array_and_linkedlist.jpg", "chapter_stack_and_queue.jpg", "chapter_hashing.jpg", "chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg", "chapter_backtracking.jpg", "chapter_dynamic_programming.jpg", "chapter_greedy.jpg", "chapter_appendix.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
+  for (const cover of ["chapter_hello_algo.jpg", "chapter_preface.jpg", "chapter_introduction.jpg", "chapter_complexity_analysis.jpg", "chapter_data_structure.jpg", "chapter_array_and_linkedlist.jpg", "chapter_stack_and_queue.jpg", "chapter_hashing.jpg", "chapter_tree.jpg", "chapter_heap.jpg", "chapter_graph.jpg", "chapter_searching.jpg", "chapter_sorting.jpg", "chapter_divide_and_conquer.jpg", "chapter_backtracking.jpg", "chapter_dynamic_programming.jpg", "chapter_greedy.jpg", "chapter_appendix.jpg"]) await cp(path.join(projectRoot, "en", "docs", "assets", "covers", cover), path.join(coverOutput, cover));
   for (const [chapter, directory] of [
     ["chapter_preface", "about_the_book.assets"], ["chapter_introduction", "algorithms_are_everywhere.assets"],
     ["chapter_data_structure", "classification_of_data_structure.assets"], ["chapter_data_structure", "number_encoding.assets"], ["chapter_data_structure", "character_encoding.assets"],
@@ -207,19 +246,29 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
   const motionOutput = path.join(bookOutput, "assets", "index.assets");
   await mkdir(motionOutput, { recursive: true });
   await cp(path.join(projectRoot, "en", "docs", "index.assets", "animation.gif"), path.join(motionOutput, "animation.gif"));
+  const searchIndex = [];
   for (const [index, page] of pages.entries()) {
     const koreanDocument = registry.byLanguage.ko.get(page.source);
     const vietnameseDocument = registry.byLanguage.vi.get(page.source);
     if (!koreanDocument || !vietnameseDocument) throw new Error(`Korean reader page has no shared translation identity: ${page.source}`);
     const markdown = await readFile(path.join(projectRoot, page.target), "utf8");
     const sourceMarkdown = await readFile(path.join(projectRoot, page.source), "utf8");
-    const codeAppendix = await sourceCodeAppendix({ projectRoot, sourcePath: page.source, sourceMarkdown, locale: "ko" });
-    const completeMarkdown = codeAppendix ? `${markdown.trimEnd()}\n\n${codeAppendix}` : markdown;
+    const localizedExamples = await localizeSourceExamples({
+      projectRoot,
+      sourcePath: page.source,
+      sourceMarkdown,
+      targetMarkdown: markdown,
+      locale: "ko"
+    });
+    const completeMarkdown = localizedExamples.markdown;
     const outputName = page.slug === "index" ? "index.html" : `${page.slug}.html`;
     const expectedRoute = `ko/learn/${outputName === "index.html" ? "" : outputName}`;
     if (koreanDocument.target !== page.target || koreanDocument.route !== expectedRoute) throw new Error(`Korean registry identity does not match reader page ${page.source}`);
-    await writeFile(path.join(bookOutput, outputName), pageTemplate(page, renderMarkdown(completeMarkdown, page.target), index, registry.sourceCommit, koreanDocument, vietnameseDocument));
+    const body = renderMarkdown(completeMarkdown, page.target);
+    searchIndex.push({ title: page.title, shortTitle: page.shortTitle, chapter: page.chapter, url: outputName, headings: markdownHeadings(completeMarkdown) });
+    await writeFile(path.join(bookOutput, outputName), pageTemplate(page, body, index, registry.sourceCommit, koreanDocument, vietnameseDocument));
     await access(path.join(bookOutput, outputName), constants.R_OK);
   }
+  await writeFile(path.join(bookOutput, "search-index.json"), JSON.stringify(searchIndex, null, 2) + "\n");
   return { pageCount: pages.length, sourceCommit: registry.sourceCommit, status: "draft" };
 }

@@ -3,7 +3,7 @@
 Đây là bản dịch cộng đồng đang được xây dựng trong fork `buicongnguyen/hello-algo`.
 
 - Atlas tiếng Việt đầy đủ: <https://buicongnguyen.github.io/hello-algo/vi/>
-- Bản đọc thử: <https://buicongnguyen.github.io/hello-algo/vi/learn/>
+- Bản đọc đang biên tập: <https://buicongnguyen.github.io/hello-algo/vi/learn/>
 - Atlas tiếng Anh: <https://buicongnguyen.github.io/hello-algo/en/>
 - Kế hoạch đầy đủ: [`VIETNAMESE_TRANSLATION_PLAN.md`](../VIETNAMESE_TRANSLATION_PLAN.md)
 - Thuật ngữ: [`glossary.md`](glossary.md)
@@ -12,7 +12,7 @@
 
 ## Trạng thái
 
-Trình đọc hiện gồm 104/119 tài liệu từ Chương 0 đến Chương 16, bao gồm bài tập Chương 14–15. Mười ba tài liệu đã vượt qua cổng tương đương cấu trúc và được ghi là `pilot`; 91 tài liệu còn lại giữ trạng thái `draft` vì vẫn thiếu một phần tiêu đề, hình, mã, công thức hoặc độ phủ nội dung so với nguồn. Tất cả vẫn cần phản biện kỹ thuật và ngôn ngữ độc lập. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng. Trình đọc tiếng Anh cục bộ có đủ 119 tài liệu chính thức; 15 tài liệu chưa có bản Việt/Hàn được đánh dấu là đang chờ dịch.
+Trình đọc hiện có đủ 119/119 tuyến tài liệu: trang chủ sách, *Before Starting*, Chương 0–16, toàn bộ bài tập và tài liệu tham khảo. Mọi tài liệu vẫn giữ trạng thái `draft` cho đến khi báo cáo tương đương cấu trúc và phản biện kỹ thuật/ngôn ngữ đều đạt yêu cầu. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng, mục lục trong bài, tìm kiếm và các nhóm mã 13 ngôn ngữ dạng thẻ.
 
 Nguồn tiếng Anh hiện được khóa tại commit upstream `a3166c201853739213d5a3a31b1e4a237aaf1076`.
 

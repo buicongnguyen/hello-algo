@@ -1,8 +1,9 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
-import { sourceCodeLanguages } from "./source-code-tabs.mjs";
+import { localizeSourceExamples, sourceCodeLanguages } from "./source-code-tabs.mjs";
 import { createTranslationRegistry, englishReaderHref, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
+import { createTranslationParityReport } from "./translation-parity.mjs";
 
 const katexCssUrl = "https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css";
 const katexCssIntegrity = "sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1";
@@ -72,13 +73,22 @@ function sourceCodeFenceCount(markdown) {
   return count;
 }
 
-function localizedCodeStats(sourceMarkdown, targetMarkdown, html) {
-  const sourceDirectives = (sourceMarkdown.match(/^```src\s*$/gm) || []).length;
-  const targetTabs = sourceTabStats(targetMarkdown);
+async function localizedCodeStats({ projectRoot, sourcePath, sourceMarkdown, targetMarkdown, locale, html }) {
+  const localized = await localizeSourceExamples({
+    projectRoot,
+    sourcePath,
+    sourceMarkdown,
+    targetMarkdown,
+    locale
+  });
+  const expected = sourceTabStats(localized.markdown);
   return {
-    expectedGroups: targetTabs.groups + sourceDirectives,
-    expectedTabs: targetTabs.tabs + sourceDirectives * sourceCodeLanguages.length,
-    expectedCodeBlocks: sourceCodeFenceCount(targetMarkdown) + sourceDirectives * sourceCodeLanguages.length,
+    sourceGroups: localized.sourceGroups,
+    inlineGroups: localized.inlineGroups,
+    deferredGroups: localized.deferredGroups,
+    expectedGroups: expected.groups,
+    expectedTabs: expected.tabs,
+    expectedCodeBlocks: sourceCodeFenceCount(localized.markdown),
     renderedGroups: (html.match(/class="content-tabs"/g) || []).length,
     renderedTabs: (html.match(/role="tab"/g) || []).length,
     renderedPanels: (html.match(/role="tabpanel"/g) || []).length,
@@ -89,6 +99,7 @@ function localizedCodeStats(sourceMarkdown, targetMarkdown, html) {
 
 export async function checkBuiltSite(outputRoot) {
   const failures = [];
+  const projectRoot = path.resolve(import.meta.dirname, "..");
   const htmlFiles = await collectHtml(outputRoot);
 
   for (const htmlFile of htmlFiles) {
@@ -99,8 +110,22 @@ export async function checkBuiltSite(outputRoot) {
       failures.push(`${relativeHtml} does not use the current Atlas script cache key`);
     }
     const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
-    if (readerPage && (!html.includes("book.js?v=20260726b") || !html.includes("book.css?v=20260726b"))) {
+    if (readerPage && (!html.includes("book.js?v=20260726c") || !html.includes("book.css?v=20260726c"))) {
       failures.push(`${relativeHtml} does not use the current reader asset cache keys`);
+    }
+    if (readerPage) {
+      const headingIds = [...html.matchAll(/<h[1-4] id="([^"]+)">/g)].map((match) => match[1]);
+      const headingAnchors = [...html.matchAll(/<a class="heading-anchor" href="#([^"]+)"/g)].map((match) => match[1]);
+      if (!headingIds.length || JSON.stringify(headingIds) !== JSON.stringify(headingAnchors)) {
+        failures.push(`${relativeHtml} does not expose a stable permalink for every article heading`);
+      }
+      if ((html.match(/<link rel="alternate" hreflang="(?:en|vi|ko|x-default)"/g) || []).length !== 4) {
+        failures.push(`${relativeHtml} does not expose the complete EN/VI/KO/x-default alternate set`);
+      }
+      if (!html.includes('id="reader-search-open"') || !html.includes('id="reader-search-input"') ||
+          !html.includes('class="article-outline"')) {
+        failures.push(`${relativeHtml} is missing search or the current-article outline`);
+      }
     }
     if (readerPage && (!html.includes(`href="${katexCssUrl}" integrity="${katexCssIntegrity}"`) ||
         !html.includes(`src="${katexScriptUrl}" integrity="${katexScriptIntegrity}"`))) {
@@ -146,6 +171,34 @@ export async function checkBuiltSite(outputRoot) {
   const translationStatus = JSON.parse(await readFile(path.join(outputRoot, "vi", "translation-status.json"), "utf8"));
   const koreanStatus = JSON.parse(await readFile(path.join(outputRoot, "ko", "translation-status.json"), "utf8"));
   const translationRegistry = createTranslationRegistry({ vi: translationStatus, ko: koreanStatus });
+  for (const [language, manifest] of Object.entries({ vi: translationStatus, ko: koreanStatus })) {
+    const reportPath = path.join(outputRoot, language, "translation-parity.json");
+    const report = JSON.parse(await readFile(reportPath, "utf8"));
+    const expected = await createTranslationParityReport({ projectRoot, manifest });
+    if (JSON.stringify(report) !== JSON.stringify(expected)) {
+      failures.push(`${language}/translation-parity.json is stale or was not generated deterministically`);
+    }
+    if (report.documents.length !== 119 || report.summary.total !== 119 ||
+        report.summary.structurallyReady + report.summary.needsWork !== 119) {
+      failures.push(`${language} translation parity report does not cover all 119 documents`);
+    }
+    for (const document of report.documents) {
+      if (!document.officialCodeGroups.preserved) {
+        failures.push(`${document.target} does not preserve all official code groups in its effective reader Markdown`);
+      }
+      if (["pilot", "published"].includes(document.status) && !document.eligibleForPilot) {
+        failures.push(`${document.target} is marked ${document.status} but fails parity: ${document.failures.join(", ")}`);
+      }
+    }
+  }
+  for (const language of ["vi", "ko", "en"]) {
+    const searchIndex = JSON.parse(await readFile(path.join(outputRoot, language, "learn", "search-index.json"), "utf8"));
+    if (searchIndex.length !== 119 || searchIndex.some((entry) =>
+      typeof entry.title !== "string" || typeof entry.url !== "string" || !Array.isArray(entry.headings)
+    )) {
+      failures.push(`${language} reader search index is incomplete or malformed`);
+    }
+  }
   if (pilotPages.length !== translationStatus.documents.length) {
     failures.push(`Expected ${translationStatus.documents.length} Vietnamese pilot pages, found ${pilotPages.length}`);
   }
@@ -157,18 +210,25 @@ export async function checkBuiltSite(outputRoot) {
   }
 
   const pilotHome = await readFile(path.join(pilotDirectory, "index.html"), "utf8");
-  if (!pilotHome.includes("Bản thử · nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
-    failures.push("Vietnamese pilot pages are missing source-lock or license disclosure");
+  if (!pilotHome.includes("nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
+    failures.push("Vietnamese reader pages are missing source-lock or license disclosure");
   }
-  if (!pilotHome.includes("104 / 119 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 17) {
-    failures.push("Vietnamese reader progress or Chapters 0–16 navigation is incomplete");
+  if (!pilotHome.includes("119 / 119 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 20) {
+    failures.push("Vietnamese reader progress or complete book navigation is incomplete");
   }
   for (const document of translationStatus.documents) {
     const pilotPage = routeFileName(document.route);
     const html = await readFile(path.join(pilotDirectory, pilotPage), "utf8");
-    const sourceMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.source), "utf8");
-    const targetMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.target), "utf8");
-    const codeStats = localizedCodeStats(sourceMarkdown, targetMarkdown, html);
+    const sourceMarkdown = await readFile(path.join(projectRoot, document.source), "utf8");
+    const targetMarkdown = await readFile(path.join(projectRoot, document.target), "utf8");
+    const codeStats = await localizedCodeStats({
+      projectRoot,
+      sourcePath: document.source,
+      sourceMarkdown,
+      targetMarkdown,
+      locale: "vi",
+      html
+    });
     const proseHtml = html.replace(/<pre><code[\s\S]*?<\/code><\/pre>/g, "");
     if (codeStats.renderedGroups !== codeStats.expectedGroups ||
         codeStats.renderedTabs !== codeStats.expectedTabs ||
@@ -198,7 +258,7 @@ export async function checkBuiltSite(outputRoot) {
 
   const koreanDirectory = path.join(outputRoot, "ko", "learn");
   const koreanPages = (await readdir(koreanDirectory)).filter((file) => file.endsWith(".html"));
-  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 104) failures.push(`Expected 104 Korean draft pages, found ${koreanPages.length}`);
+  if (koreanPages.length !== koreanStatus.documents.length || koreanPages.length !== 119) failures.push(`Expected 119 Korean draft pages, found ${koreanPages.length}`);
   const koreanRoutes = koreanStatus.documents.map((document) => document.route);
   if (new Set(koreanRoutes).size !== koreanRoutes.length) failures.push("Korean translation status contains duplicate routes");
   for (const route of koreanRoutes) {
@@ -206,14 +266,21 @@ export async function checkBuiltSite(outputRoot) {
     if (!await referenceExists(candidate)) failures.push(`Korean status route was not built: ${route}`);
   }
   const koreanHome = await readFile(path.join(koreanDirectory, "index.html"), "utf8");
-  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("104 / 119 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 17) failures.push("Korean reader metadata, progress, or Chapters 0–16 navigation is incomplete");
+  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("119 / 119 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("Korean reader metadata, progress, or complete book navigation is incomplete");
   if (!koreanHome.includes("CC BY-NC-SA 4.0") || !koreanHome.includes("공식 후원을 의미하지 않습니다")) failures.push("Korean reader is missing source and license disclosure");
   for (const document of koreanStatus.documents) {
     const koreanPage = routeFileName(document.route);
     const pageHtml = await readFile(path.join(koreanDirectory, koreanPage), "utf8");
-    const sourceMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.source), "utf8");
-    const targetMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.target), "utf8");
-    const codeStats = localizedCodeStats(sourceMarkdown, targetMarkdown, pageHtml);
+    const sourceMarkdown = await readFile(path.join(projectRoot, document.source), "utf8");
+    const targetMarkdown = await readFile(path.join(projectRoot, document.target), "utf8");
+    const codeStats = await localizedCodeStats({
+      projectRoot,
+      sourcePath: document.source,
+      sourceMarkdown,
+      targetMarkdown,
+      locale: "ko",
+      html: pageHtml
+    });
     const proseHtml = pageHtml.replace(/<pre><code[\s\S]*?<\/code><\/pre>/g, "");
     if (codeStats.renderedGroups !== codeStats.expectedGroups ||
         codeStats.renderedTabs !== codeStats.expectedTabs ||
@@ -328,7 +395,11 @@ export async function checkBuiltSite(outputRoot) {
   const englishChapterSevenExercises = await readFile(path.join(englishDirectory, "chapter-7-exercises.html"), "utf8");
   const englishReferences = await readFile(path.join(englishDirectory, "references.html"), "utf8");
   if (!englishOfficialHome.includes("Hello Algo") || !englishBeforeStarting.includes("Before Starting") || !englishPreface.includes("Preface") || !englishReferences.includes("References")) failures.push("English special pages are missing official source content");
-  if (!englishChapterTwoExercises.includes('class="admonition') || !englishChapterTwoExercises.includes('class="language-pending" lang="vi"') || !englishChapterTwoExercises.includes('class="language-pending" lang="ko"')) failures.push("English Chapter 2 exercises do not render answers or pending translation states");
+  if (!englishChapterTwoExercises.includes('class="admonition') ||
+      !englishChapterTwoExercises.includes('href="../../vi/learn/bai-tap-do-phuc-tap.html" lang="vi" hreflang="vi"') ||
+      !englishChapterTwoExercises.includes('href="../../ko/learn/chapter-2-exercises.html" lang="ko" hreflang="ko"')) {
+    failures.push("English Chapter 2 exercises do not render answers or exact localized counterparts");
+  }
   if (!englishChapterSevenExercises.includes('<pre><code class="language-text">') || englishChapterSevenExercises.includes("<p>``")) failures.push("Nested exercise code blocks are not rendered as block code");
   if (!englishOfficialHome.includes("119 / 119 documents") || (englishOfficialHome.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("English reader progress or full Home / Chapters 0–16 / References navigation is incomplete");
   const englishTree = await readFile(path.join(englishDirectory, "binary-tree.html"), "utf8");
@@ -387,6 +458,20 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseAtlas.includes('data-topic="hashing"') ||
       !vietnameseAtlas.includes('data-topic="heaps"')) {
     failures.push("Built Vietnamese Atlas is missing its locale payload or stable interaction keys");
+  }
+
+  const sitemap = await readFile(path.join(outputRoot, "sitemap.xml"), "utf8");
+  const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  if (sitemapUrls.length !== 361 || new Set(sitemapUrls).size !== sitemapUrls.length) {
+    failures.push(`Sitemap must contain 361 unique Atlas and reader URLs, found ${sitemapUrls.length}`);
+  }
+  const notFound = await readFile(path.join(outputRoot, "404.html"), "utf8");
+  if (!notFound.includes('lang="vi"') || !notFound.includes('lang="ko"') || !notFound.includes('lang="en"')) {
+    failures.push("Multilingual 404 page does not link to all three readers");
+  }
+  const robots = await readFile(path.join(outputRoot, "robots.txt"), "utf8");
+  if (!robots.includes("Sitemap: https://buicongnguyen.github.io/hello-algo/sitemap.xml")) {
+    failures.push("robots.txt does not advertise the production sitemap");
   }
 
   if (failures.length) {

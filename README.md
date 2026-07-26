@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://buicongnguyen.github.io/hello-algo/vi/"><strong>Khám phá Atlas tiếng Việt</strong></a>
   ·
-  <a href="https://buicongnguyen.github.io/hello-algo/vi/learn/"><strong>Đọc bản dịch thử</strong></a>
+  <a href="https://buicongnguyen.github.io/hello-algo/vi/learn/"><strong>Đọc bản dịch đang biên tập</strong></a>
   ·
   <a href="https://github.com/krahets/hello-algo/releases"><strong>Tải PDF / EPUB gốc</strong></a>
 </p>
@@ -71,11 +71,12 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 ## Trải nghiệm tiếng Việt trong fork này
 
 - [Atlas tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/) có cùng 11 phần nội dung và tương tác với [Atlas tiếng Anh](https://buicongnguyen.github.io/hello-algo/en/).
-- [Trình đọc tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện gồm 104/119 tài liệu thuộc Chương 0–16, bao gồm bài tập mới của Chương 14–15. Mười ba trang đã đạt cổng cấu trúc ở trạng thái bản thử; 91 trang còn lại là bản nháp đang chờ hoàn thiện và phản biện. Mỗi trang mở đúng nội dung tiếng Anh và tiếng Hàn tương ứng.
+- [Trình đọc tiếng Việt](https://buicongnguyen.github.io/hello-algo/vi/learn/) hiện có đủ 119/119 tuyến tài liệu từ trang chủ sách, *Before Starting*, Chương 0–16, bài tập và tài liệu tham khảo. Tất cả vẫn là bản nháp chờ báo cáo đối chiếu cấu trúc cùng phản biện kỹ thuật/ngôn ngữ; mỗi trang mở đúng nội dung tiếng Anh và tiếng Hàn tương ứng.
 - [Kế hoạch Việt hóa](VIETNAMESE_TRANSLATION_PLAN.md) mô tả lộ trình, tiêu chuẩn chất lượng, quy trình duyệt và cách đồng bộ với upstream.
 - [Kế hoạch bản tiếng Hàn](KOREAN_TRANSLATION_PLAN.md) xác định kiến trúc ba ngôn ngữ, phạm vi bản thử và các cổng kiểm tra trước khi triển khai.
-- [Atlas tiếng Hàn](https://buicongnguyen.github.io/hello-algo/ko/) và [trình đọc 104/119 tài liệu Chương 0–16](https://buicongnguyen.github.io/hello-algo/ko/learn/) hiện đã có dưới trạng thái bản nháp để cộng đồng phản biện.
-- [Trình đọc tiếng Anh đầy đủ](https://buicongnguyen.github.io/hello-algo/en/learn/) tạo toàn bộ 119 trang từ nguồn chính thức đã khóa: trang chủ, phần *Before Starting*, Chương 0–16 và tài liệu tham khảo. Trang có bản Việt/Hàn sẽ liên kết trực tiếp; tài liệu chưa dịch được đánh dấu rõ là đang chờ.
+- [Atlas tiếng Hàn](https://buicongnguyen.github.io/hello-algo/ko/) và [trình đọc đủ 119/119 tài liệu](https://buicongnguyen.github.io/hello-algo/ko/learn/) hiện có dưới trạng thái bản nháp để cộng đồng phản biện.
+- [Trình đọc tiếng Anh đầy đủ](https://buicongnguyen.github.io/hello-algo/en/learn/) tạo toàn bộ 119 trang từ nguồn chính thức đã khóa: trang chủ, phần *Before Starting*, Chương 0–16 và tài liệu tham khảo. Mọi trang đều liên kết trực tiếp đến bản Việt/Hàn tương ứng.
+- Cả ba trình đọc có tìm kiếm tiêu đề/đề mục, mục lục trong bài, liên kết cố định cho tiêu đề và các nhóm mã 13 ngôn ngữ dạng thẻ.
 - [Báo cáo rà soát nội dung tiếng Anh](ENGLISH_CONTENT_REVIEW.md) ghi lại phạm vi từng chương, nguồn và các khoảng trống dịch còn lại.
 - [Từ điển thuật ngữ](vi/glossary.md), [quy chuẩn văn phong](vi/style-guide.md) và [hướng dẫn đóng góp](vi/CONTRIBUTING.md) giúp bản dịch nhất quán và dễ kiểm tra.
 
@@ -89,15 +90,6 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 >
 > **—— Mu Li, Nhà khoa học trưởng cấp cao tại Amazon**
 
-## Lời cảm ơn đặc biệt
-
-<p align="left">
-  <a href="https://go.warp.dev/hello-algo">
-    <img src="https://github.com/warpdotdev/brand-assets/blob/main/Github/Sponsor/Warp-Github-LG-02.png" alt="Warp" width="500"></a>
-</p>
-
-[Warp được xây dựng cho việc lập trình với nhiều tác nhân AI.](https://go.warp.dev/hello-algo)
-
 ## Đóng góp
 
 > [!IMPORTANT]
@@ -107,7 +99,7 @@ Nếu cuốn sách hữu ích với bạn, hãy tặng dự án một Star :star
 Cuốn sách mã nguồn mở này vẫn đang được cập nhật. Mọi đóng góp đều giúp mang đến nội dung học tập tốt hơn cho người đọc.
 
 - [Sửa nội dung](https://www.hello-algo.com/en/chapter_appendix/contribution/): hỗ trợ sửa hoặc báo cáo lỗi ngữ pháp, nội dung thiếu, câu chữ mơ hồ, liên kết hỏng hay lỗi mã nguồn.
-- [Chuyển mã sang ngôn ngữ khác](https://github.com/krahets/hello-algo/issues/15): dự án hoan nghênh thêm các bản triển khai; hiện đã hỗ trợ 12 ngôn ngữ, gồm Python, Java, C++, Go và JavaScript.
+- [Chuyển mã sang ngôn ngữ khác](https://github.com/krahets/hello-algo/issues/15): dự án hoan nghênh thêm các bản triển khai; hiện đã hỗ trợ 13 ngôn ngữ, gồm Python, Java, C++, Go và JavaScript.
 - Dịch và phản biện: tham gia chuyển ngữ, kiểm tra kỹ thuật hoặc biên tập tiếng Việt để nhiều người có thể học bằng tiếng mẹ đẻ.
 
 Bạn có thể gửi đề xuất hoặc câu hỏi qua [Issues của fork này](https://github.com/buicongnguyen/hello-algo/issues). Với các vấn đề liên quan đến dự án gốc, hãy dùng [Issues của Hello Algo](https://github.com/krahets/hello-algo/issues) hoặc liên hệ WeChat `krahets-jyd`.

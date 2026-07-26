@@ -1,0 +1,47 @@
+name: 한국어 번역 작업
+description: Hello Algo 한국어 문서 번역, 검토 또는 오류 수정을 제안합니다
+title: "[KO] "
+body:
+  - type: dropdown
+    id: work_type
+    attributes:
+      label: 작업 유형
+      options:
+        - 번역 확장
+        - 기술 검토
+        - 한국어 교정
+        - 게시된 번역 오류 신고
+    validations:
+      required: true
+  - type: input
+    id: source_path
+    attributes:
+      label: 영어 원문 경로
+      description: 예: en/docs/chapter_introduction/what_is_dsa.md
+      placeholder: en/docs/...
+    validations:
+      required: true
+  - type: input
+    id: source_commit
+    attributes:
+      label: 원문 커밋
+      description: 번역 대조에 사용한 잠긴 upstream 커밋
+      placeholder: a3166c2...
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 범위와 검토할 사항
+      description: 작업할 절, 새 용어, 기술적 질문을 적어 주세요.
+    validations:
+      required: true
+  - type: checkboxes
+    id: preparation
+    attributes:
+      label: 준비 확인
+      options:
+        - label: ko/glossary.md와 ko/style-guide.md를 읽었습니다.
+          required: true
+        - label: 중복 작업을 피하기 위해 ko/translation-status.json을 확인했습니다.
+          required: true

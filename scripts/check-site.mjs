@@ -7,8 +7,14 @@ import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale.mjs";
 import { createTranslationRegistry, translationReadinessFailures } from "./translation-registry.mjs";
 import { resolveSiteRequest } from "./server-path.mjs";
-import { renderMarkdown } from "./build-vi-book.mjs";
-import { extractSourceSnippet, sourceCodeAppendix, sourceCodeLanguages, sourceDirectiveTabs } from "./source-code-tabs.mjs";
+import { renderMarkdown } from "./markdown-renderer.mjs";
+import {
+  extractSourceSnippet,
+  localizeSourceExamples,
+  sourceCodeLanguages,
+  sourceDirectiveTabs,
+  sourceExampleGroups
+} from "./source-code-tabs.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
@@ -17,8 +23,8 @@ const requiredFiles = [
   "app.js",
   ".nojekyll",
   "vi/atlas-locale.mjs",
-  "vi/book.css",
-  "vi/book.js",
+  "reader/book.css",
+  "reader/book.js",
   "vi/README.md",
   "vi/CONTRIBUTING.md",
   "vi/glossary.md",
@@ -32,7 +38,13 @@ const requiredFiles = [
   "ko/atlas-locale.mjs", "ko/README.md", "ko/CONTRIBUTING.md", "ko/glossary.md", "ko/style-guide.md", "ko/translation-status.json",
   "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs",
   "scripts/source-code-tabs.mjs",
-  "scripts/server-path.mjs"
+  "scripts/translation-parity.mjs",
+  "scripts/markdown-renderer.mjs",
+  "scripts/server-path.mjs",
+  ".github/workflows/ci.yml",
+  ".github/ISSUE_TEMPLATE/ko-translation.yml",
+  ".github/PULL_REQUEST_TEMPLATE/ko-translation.md",
+  "NEXT_RELEASE_PLAN.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -44,8 +56,8 @@ const css = await readFile(path.join(projectRoot, "styles.css"), "utf8");
 const js = await readFile(path.join(projectRoot, "app.js"), "utf8");
 const viHtml = localizeVietnameseAtlas(html);
 const koHtml = localizeKoreanAtlas(html);
-const bookCss = await readFile(path.join(projectRoot, "vi", "book.css"), "utf8");
-const bookJs = await readFile(path.join(projectRoot, "vi", "book.js"), "utf8");
+const bookCss = await readFile(path.join(projectRoot, "reader", "book.css"), "utf8");
+const bookJs = await readFile(path.join(projectRoot, "reader", "book.js"), "utf8");
 const translationStatus = JSON.parse(await readFile(path.join(projectRoot, "vi", "translation-status.json"), "utf8"));
 const translationPlan = await readFile(path.join(projectRoot, "VIETNAMESE_TRANSLATION_PLAN.md"), "utf8");
 const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLAN.md"), "utf8");
@@ -128,15 +140,42 @@ if ((sourceCodeTabsFixture.match(/^=== "/gm) || []).length !== sourceCodeLanguag
   failures.push("Official source directives do not expand to all 13 programming-language snippets");
 }
 const arraySourceMarkdown = await readFile(path.join(projectRoot, "en", "docs", "chapter_array_and_linkedlist", "array.md"), "utf8");
-const vietnameseCodeAppendix = await sourceCodeAppendix({
+const arrayTargetMarkdown = await readFile(path.join(projectRoot, "vi", "docs", "chapter_array_and_linkedlist", "array.md"), "utf8");
+const arraySourceGroups = await sourceExampleGroups({
+  projectRoot,
+  sourcePath: "en/docs/chapter_array_and_linkedlist/array.md",
+  sourceMarkdown: arraySourceMarkdown
+});
+const localizedArrayExamples = await localizeSourceExamples({
   projectRoot,
   sourcePath: "en/docs/chapter_array_and_linkedlist/array.md",
   sourceMarkdown: arraySourceMarkdown,
+  targetMarkdown: arrayTargetMarkdown,
   locale: "vi"
 });
-if (!vietnameseCodeAppendix.includes("## Các ví dụ mã nguồn chính thức") ||
-    (vietnameseCodeAppendix.match(/^=== "/gm) || []).length !== 6 * sourceCodeLanguages.length) {
-  failures.push("Localized readers do not restore every official multilingual source-code group");
+if (arraySourceGroups.length !== 7 ||
+    localizedArrayExamples.sourceGroups !== 7 ||
+    localizedArrayExamples.inlineGroups !== 7 ||
+    localizedArrayExamples.deferredGroups !== 0 ||
+    localizedArrayExamples.markdown.includes("đang chờ đặt vào bản dịch đầy đủ") ||
+    (localizedArrayExamples.markdown.match(/^=== "/gm) || []).length !== 7 * sourceCodeLanguages.length) {
+  failures.push("Localized readers do not restore both explicit and source-directive code groups inline");
+}
+const binaryTreeSourceMarkdown = await readFile(path.join(projectRoot, "en", "docs", "chapter_tree", "binary_tree.md"), "utf8");
+const binaryTreeTargetMarkdown = await readFile(path.join(projectRoot, "vi", "docs", "chapter_tree", "binary_tree.md"), "utf8");
+const localizedBinaryTreeExamples = await localizeSourceExamples({
+  projectRoot,
+  sourcePath: "en/docs/chapter_tree/binary_tree.md",
+  sourceMarkdown: binaryTreeSourceMarkdown,
+  targetMarkdown: binaryTreeTargetMarkdown,
+  locale: "vi"
+});
+if (localizedBinaryTreeExamples.sourceGroups !== 3 ||
+    localizedBinaryTreeExamples.inlineGroups !== 1 ||
+    localizedBinaryTreeExamples.deferredGroups !== 2 ||
+    !localizedBinaryTreeExamples.markdown.includes("đang chờ đặt vào bản dịch đầy đủ") ||
+    (localizedBinaryTreeExamples.markdown.match(/^=== "/gm) || []).length !== 3 * sourceCodeLanguages.length) {
+  failures.push("Condensed localized drafts do not preserve every official code group with transparent deferred placement");
 }
 const dartQuickSort = await readFile(path.join(projectRoot, "en", "codes", "dart", "chapter_sorting", "quick_sort.dart"), "utf8");
 const dartLanguage = sourceCodeLanguages.find((language) => language.label === "Dart");
@@ -316,6 +355,11 @@ if (!bookCss.includes(".content-tablist") || !bookCss.includes(".content-tabpane
     !bookJs.includes("ArrowLeft") || !bookJs.includes("ArrowRight")) {
   failures.push("Reader code tabs are missing accessible styles, persistence, or keyboard navigation");
 }
+if (!bookCss.includes(".article-outline") || !bookCss.includes(".reader-search") || !bookCss.includes(".heading-anchor") ||
+    !bookJs.includes('fetch("search-index.json")') || !bookJs.includes("normalizeSearchText") ||
+    !bookJs.includes("reader-search-open")) {
+  failures.push("Shared reader assets are missing article outlines, permalinks, or lazy search");
+}
 if (!bookCss.includes(".math-block .katex-display") || !bookJs.includes("globalThis.katex?.render") ||
     !bookJs.includes("TextDecoder") || !bookJs.includes('querySelectorAll("[data-math]")') ||
     !bookJs.includes('output: "htmlAndMathml"')) {
@@ -324,11 +368,11 @@ if (!bookCss.includes(".math-block .katex-display") || !bookJs.includes("globalT
 if (translationStatus.sourceCommit !== "a3166c201853739213d5a3a31b1e4a237aaf1076") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
-if (translationStatus.documents.length !== 104 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
-  failures.push("Expected 104 source-locked Vietnamese reader documents at draft or later status");
+if (translationStatus.documents.length !== 119 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {
+  failures.push("Expected 119 source-locked Vietnamese reader documents at draft or later status");
 }
-if (translationStatus.documents.filter((document) => document.status === "pilot").length !== 13 || translationStatus.documents.filter((document) => document.status === "draft").length !== 91) {
-  failures.push("Vietnamese status ledger must contain 13 structurally verified pilots and 91 drafts");
+if (translationStatus.documents.filter((document) => document.status === "pilot").length !== 0 || translationStatus.documents.filter((document) => document.status === "draft").length !== 119) {
+  failures.push("Vietnamese status ledger must keep all 119 documents in draft until generated parity and human review gates pass");
 }
 for (const document of translationStatus.documents) {
   for (const relativePath of [document.source, document.target]) {
@@ -365,7 +409,7 @@ for (const document of translationStatus.documents) {
     // Missing targets are reported by the existence check above.
   }
 }
-if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 104 || koreanStatus.documents.some((document) => document.status !== "draft")) failures.push("Expected 104 source-locked Korean reader documents at draft status");
+if (translationRegistry.sourceCommit !== translationStatus.sourceCommit || koreanStatus.documents.length !== 119 || koreanStatus.documents.some((document) => document.status !== "draft")) failures.push("Expected 119 source-locked Korean reader documents at draft status");
 const vietnameseSources = [...translationRegistry.byLanguage.vi.keys()].sort();
 const koreanSources = [...translationRegistry.byLanguage.ko.keys()].sort();
 if (JSON.stringify(vietnameseSources) !== JSON.stringify(koreanSources)) failures.push("Vietnamese and Korean reader manifests do not cover the same English documents");
@@ -400,7 +444,7 @@ for (const document of koreanStatus.documents) {
 if (translationPlan.length < 15000 || !translationPlan.includes("Sáu giai đoạn phát triển")) {
   failures.push("Vietnamese translation plan is not sufficiently detailed");
 }
-if (koreanPlan.length < 20000 || !koreanPlan.includes("Korean pilot `v0.1`")) {
+if (koreanPlan.length < 20000 || !koreanPlan.includes("Korean draft `v1.0`")) {
   failures.push("Korean translation plan is not sufficiently detailed");
 }
 if (vietnameseGlossary.includes("4935d2d") || koreanContributing.includes("4935d2d") || !vietnameseGlossary.includes(translationStatus.sourceCommit) || !koreanContributing.includes(koreanStatus.sourceCommit)) {

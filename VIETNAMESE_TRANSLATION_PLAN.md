@@ -1,6 +1,6 @@
 # Kế hoạch Việt hóa Hello Algo
 
-> Trạng thái: đang triển khai nền tảng song ngữ
+> Trạng thái: đã triển khai nền tảng ba ngôn ngữ; đang mở rộng và phản biện nội dung
 >
 > Repository: `buicongnguyen/hello-algo`
 >
@@ -10,22 +10,25 @@
 
 ## Trạng thái thực thi
 
-Cập nhật ngày 2026-07-19:
+Cập nhật ngày 2026-07-26:
 
 - [x] Giai đoạn 1: đường dẫn `/vi/`, `/en/`, chuyển ngôn ngữ và GitHub Pages song ngữ.
 - [x] Atlas `/vi/` có cùng cấu trúc, nội dung trực quan và tương tác như `/en/`, với toàn bộ giao diện được Việt hóa.
 - [x] Khóa nguồn hiện tại tại upstream commit `a3166c201853739213d5a3a31b1e4a237aaf1076`.
 - [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
-- [x] Một trăm lẻ bốn trên 119 tài liệu: 13 trang đạt cổng tương đương cấu trúc ở trạng thái `pilot`, 91 trang còn lại ở trạng thái `draft`, có thêm bài tập Chương 14–15; trình đọc tiếng Anh cục bộ có đủ 119 tài liệu chính thức.
+- [x] Đủ 119/119 tuyến tài liệu ở cả tiếng Việt, tiếng Hàn và tiếng Anh, gồm trang chủ sách, *Before Starting*, bài tập Chương 2–15 và tài liệu tham khảo.
+- [x] Khôi phục 165 nhóm mã chính thức với đủ 13 ngôn ngữ ở đúng ngữ cảnh; nhóm mã hiển thị bằng thẻ và đồng bộ lựa chọn.
+- [x] Báo cáo tương đương cấu trúc được sinh tự động; toàn bộ bản Việt/Hàn giữ trạng thái `draft` cho đến khi các cổng máy và người đều đạt.
+- [x] Tìm kiếm, mục lục trong bài, liên kết cố định tiêu đề, `hreflang`, sitemap và trang 404 ba ngôn ngữ.
 - [x] Chương 5–6 có liên kết VI/KO/EN tương ứng, tài nguyên gốc và kiểm tra bản dựng tự động.
 - [x] Trình đọc `/vi/learn/`, điều hướng chương, attribution và công bố giấy phép.
 - [x] Kiểm tra tự động cho nguồn, trạng thái, trang sinh ra và liên kết cục bộ.
 - [ ] Phản biện kỹ thuật độc lập cho đợt thử.
 - [ ] Biên tập tiếng Việt độc lập cho đợt thử.
-- [ ] Hoàn thiện 10 bản nháp Chương 5–6 và nâng qua các cổng `pilot`, rồi tiếp tục xử lý phản biện cho toàn bộ trình đọc.
+- [ ] Mở rộng các bản nháp còn cô đọng theo thứ tự ưu tiên trong báo cáo parity, rồi nâng từng tài liệu qua cổng `pilot`.
 
-Vì chưa có hai lượt phản biện độc lập, website gọi nội dung hiện tại là **bản thử đã tự kiểm tra**, không gọi là bản dịch ổn định. Đây là trạng thái minh bạch đúng với các cổng chất lượng trong kế hoạch.
+Vì chưa có hai lượt phản biện độc lập và nhiều tài liệu còn cô đọng hơn nguồn, website gọi toàn bộ nội dung chuyển ngữ hiện tại là **bản nháp**, không gọi là bản dịch ổn định.
 
 ## 1. Mục tiêu
 
@@ -83,7 +86,7 @@ Kế hoạch, từ điển, quy chuẩn văn phong và quy trình duyệt vẫn 
 Ảnh chụp repository ngày 2026-07-18:
 
 - `en/` có khoảng 1.820 tệp.
-- Snapshot nguồn hiện tại có 119 tài liệu Markdown sau khi upstream bổ sung bài tập cho Chương 2–15; bản địa hóa đã phủ 104 tài liệu.
+- Snapshot nguồn có 119 tài liệu Markdown; bản Việt và bản Hàn đều có đủ 119 tuyến, nhưng độ đầy đủ nội dung được theo dõi riêng trong báo cáo parity.
 - `en/codes/` có khoảng 1.200 tệp mã và tài nguyên liên quan.
 - Nội dung bao gồm công thức, hình tĩnh, video, liên kết chéo, cấu hình MkDocs và ví dụ bằng nhiều ngôn ngữ lập trình.
 
@@ -338,7 +341,7 @@ Sản phẩm bàn giao:
 - `vi/style-guide.md`;
 - `vi/CONTRIBUTING.md`;
 - cấu hình `vi/mkdocs.yml`;
-- 26 tài liệu Chương 0–4 đã có bản dịch; 13 trang đạt cổng cấu trúc ở trạng thái `pilot`, các trang còn lại giữ trạng thái `draft`; phản biện kỹ thuật và ngôn ngữ độc lập là điều kiện nâng trạng thái;
+- 26 tài liệu Chương 0–4 đã có bản dịch ở đợt nền tảng; từ bản `v1.1`, mọi trang được đưa về `draft` để áp dụng cùng cổng parity và phản biện;
 - checklist và mẫu PR.
 
 Điều kiện hoàn thành:

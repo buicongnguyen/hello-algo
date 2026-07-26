@@ -3,7 +3,9 @@ import path from "node:path";
 
 const supportedLanguages = ["vi", "ko"];
 const supportedStatuses = new Set(["planned", "draft", "pilot", "published"]);
+const supportedReviewStates = new Set(["pending", "self-reviewed", "independently-reviewed"]);
 const sourceCommitPattern = /^[0-9a-f]{40}$/;
+const manifestDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 const stableEnglishReaderRoutes = new Map([
   ["en/docs/chapter_tree/index.md", "en/learn/trees.html"],
@@ -160,8 +162,15 @@ export function createTranslationRegistry(manifests) {
 
   for (const language of supportedLanguages) {
     const manifest = manifests[language];
-    if (!manifest || manifest.schemaVersion !== 1 || manifest.targetLanguage !== language ||
+    if (!manifest || manifest.schemaVersion !== 2 || manifest.targetLanguage !== language ||
         manifest.sourceLanguage !== "en" || !sourceCommitPattern.test(manifest.sourceCommit || "") ||
+        !manifestDatePattern.test(manifest.updated || "") ||
+        manifest.qualityPolicy?.structuralParityRequiredForPilot !== true ||
+        manifest.qualityPolicy?.technicalReviewRequiredForPublished !== true ||
+        manifest.qualityPolicy?.languageReviewRequiredForPublished !== true ||
+        manifest.qualityPolicy?.defaultReviewState?.technical !== "pending" ||
+        manifest.qualityPolicy?.defaultReviewState?.language !== "pending" ||
+        manifest.qualityPolicy?.generatedReport !== `${language}/translation-parity.json` ||
         !Array.isArray(manifest.documents)) {
       throw new Error(`Invalid ${language} translation manifest`);
     }
@@ -181,6 +190,12 @@ export function createTranslationRegistry(manifests) {
           !Number.isInteger(document.wave) || document.wave < 1 ||
           !supportedStatuses.has(document.status)) {
         throw new Error(`${language} translation manifest has an invalid document identity for ${document.source || "unknown source"}`);
+      }
+      const reviews = document.reviews || manifest.qualityPolicy.defaultReviewState;
+      if (!supportedReviewStates.has(reviews.technical) || !supportedReviewStates.has(reviews.language) ||
+          (document.status === "pilot" && (reviews.technical === "pending" || reviews.language === "pending")) ||
+          (document.status === "published" && (reviews.technical !== "independently-reviewed" || reviews.language !== "independently-reviewed"))) {
+        throw new Error(`${language} translation manifest has an invalid review state for ${document.source || "unknown source"}`);
       }
       if (documents.has(document.source)) {
         throw new Error(`${language} translation manifest duplicates source: ${document.source}`);
@@ -230,27 +245,36 @@ export function englishReaderHref(source) {
 }
 
 export function markdownStructure(markdown) {
+  const prose = markdown
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/\[[^\]]+\]\([^)]+\)/g, "")
+    .replace(/[#*_`|>$\s-]/g, "");
   return {
     headings: (markdown.match(/^#{1,6} /gm) || []).length,
     images: (markdown.match(/!\[[^\]]*\]\([^)]+\)/g) || []).length,
     codeFences: (markdown.match(/^```/gm) || []).length,
     displayMathFences: (markdown.match(/^\$\$$/gm) || []).length,
+    inlineMath: (markdown.match(/\$[^$\n]+\$/g) || []).length,
+    tables: (markdown.match(/^\|?\s*:?-{3,}:?(?:\s*\|\s*:?-{3,}:?)+\s*\|?\s*$/gm) || []).length,
+    callouts: (markdown.match(/^(?:!!!|\?\?\?)\s+/gm) || []).length,
+    proseCharacters: prose.length,
     nonWhitespaceCharacters: markdown.replace(/\s/g, "").length
   };
 }
 
-export function translationReadinessFailures(sourceMarkdown, targetMarkdown) {
+export function translationReadinessFailures(sourceMarkdown, targetMarkdown, minimumContentRatio = 0.6) {
   const source = markdownStructure(sourceMarkdown);
   const target = markdownStructure(targetMarkdown);
   const failures = [];
 
-  for (const field of ["headings", "images", "codeFences", "displayMathFences"]) {
+  for (const field of ["headings", "images", "displayMathFences", "inlineMath", "tables", "callouts"]) {
     if (target[field] !== source[field]) {
       failures.push(`${field} ${target[field]}/${source[field]}`);
     }
   }
-  if (target.nonWhitespaceCharacters < source.nonWhitespaceCharacters * 0.35) {
-    failures.push(`content length ${target.nonWhitespaceCharacters}/${source.nonWhitespaceCharacters}`);
+  if (target.proseCharacters < source.proseCharacters * minimumContentRatio) {
+    failures.push(`prose coverage ${target.proseCharacters}/${source.proseCharacters}`);
   }
   return failures;
 }

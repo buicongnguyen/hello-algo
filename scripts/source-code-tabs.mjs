@@ -290,6 +290,10 @@ function indentMarkdown(value) {
   return value.split("\n").map((line) => `    ${line}`).join("\n");
 }
 
+const sourceCodeLabels = new Set(sourceCodeLanguages.map((language) => language.label));
+const sourceCodeFences = new Set(sourceCodeLanguages.map((language) => language.fence));
+const sourceDirectivePattern = /^```src\s*\n\[file\]\{([a-zA-Z0-9_-]+)\}-\[class\]\{([a-zA-Z0-9_-]*)\}-\[func\]\{([a-zA-Z0-9_-]*)\}\s*\n```$/;
+
 export async function sourceDirectiveTabs({ projectRoot, sourcePath, file, className, functionName }) {
   const chapter = path.posix.basename(path.posix.dirname(sourcePath));
   const tabs = [];
@@ -304,30 +308,133 @@ export async function sourceDirectiveTabs({ projectRoot, sourcePath, file, class
   return tabs.join("\n\n");
 }
 
-export async function sourceCodeAppendix({ projectRoot, sourcePath, sourceMarkdown, locale }) {
-  const directives = [...sourceMarkdown.matchAll(
-    /```src\s*\n\[file\]\{([a-zA-Z0-9_-]+)\}-\[class\]\{([a-zA-Z0-9_-]*)\}-\[func\]\{([a-zA-Z0-9_-]*)\}\s*\n```/g
-  )];
-  if (!directives.length) return "";
+function explicitTabGroup(lines, start) {
+  const labels = [];
+  let index = start;
+  while (index < lines.length) {
+    const tab = lines[index].match(/^===\s+"([^"]+)"/);
+    if (!tab) break;
+    labels.push(tab[1]);
+    index += 1;
+    while (index < lines.length && (!lines[index].trim() || /^\s{4}/.test(lines[index]))) index += 1;
+  }
+  return {
+    end: index,
+    labels,
+    markdown: lines.slice(start, index).join("\n").trimEnd()
+  };
+}
 
-  const localized = {
+function cleanHeading(value) {
+  return value
+    .replace(/\s+\{[^{}]+\}\s*$/, "")
+    .replace(/[*_`]/g, "")
+    .trim();
+}
+
+export async function sourceExampleGroups({ projectRoot, sourcePath, sourceMarkdown }) {
+  const lines = sourceMarkdown.replaceAll("\r\n", "\n").split("\n");
+  const groups = [];
+  let nearestHeading = "";
+
+  for (let index = 0; index < lines.length;) {
+    const heading = lines[index].match(/^#{1,4}\s+(.+)$/);
+    if (heading) nearestHeading = cleanHeading(heading[1]);
+
+    if (/^===\s+"([^"]+)"/.test(lines[index])) {
+      const group = explicitTabGroup(lines, index);
+      if (group.labels.length > 1 && group.labels.every((label) => sourceCodeLabels.has(label))) {
+        groups.push({
+          kind: "tabs",
+          title: nearestHeading || `Example ${groups.length + 1}`,
+          markdown: group.markdown
+        });
+      }
+      index = group.end;
+      continue;
+    }
+
+    if (lines[index].trim() === "```src") {
+      const directive = lines.slice(index, index + 3).join("\n").match(sourceDirectivePattern);
+      if (!directive) throw new Error(`Invalid source-code directive in ${sourcePath} at line ${index + 1}`);
+      const [, file, className, functionName] = directive;
+      groups.push({
+        kind: "src",
+        title: `${file} · ${functionName || className}`,
+        markdown: await sourceDirectiveTabs({ projectRoot, sourcePath, file, className, functionName })
+      });
+      index += 3;
+      continue;
+    }
+
+    index += 1;
+  }
+  return groups;
+}
+
+function localizedDeferredCopy(locale) {
+  const copy = {
     vi: {
-      title: "Các ví dụ mã nguồn chính thức",
-      introduction: "Các ví dụ dưới đây khôi phục đầy đủ những đoạn mã đa ngôn ngữ theo thứ tự xuất hiện trong bản tiếng Anh chính thức."
+      title: "Ví dụ chính thức đang chờ đặt vào bản dịch đầy đủ",
+      introduction: "Bản nháp hiện chưa có đủ phần giải thích để đặt các ví dụ sau đúng vị trí như nguồn. Mã đa ngôn ngữ vẫn được cung cấp đầy đủ và sẽ được chuyển vào từng mục khi phần văn xuôi đạt tương đương cấu trúc.",
+      example: "Ví dụ"
     },
     ko: {
-      title: "공식 소스 코드 예제",
-      introduction: "아래 예제는 공식 영어판에 나오는 순서대로 다국어 코드 조각을 빠짐없이 복원합니다."
+      title: "전체 번역의 본문 배치를 기다리는 공식 예제",
+      introduction: "현재 초안에는 아래 예제를 원문과 같은 위치에 둘 설명이 아직 충분하지 않습니다. 다국어 코드는 빠짐없이 제공하며, 본문이 구조적 동등성을 갖추면 해당 절로 이동합니다.",
+      example: "예제"
     }
   }[locale];
-  if (!localized) throw new Error(`Unsupported source-code appendix locale: ${locale}`);
+  if (!copy) throw new Error(`Unsupported source-example locale: ${locale}`);
+  return copy;
+}
 
-  const sections = [];
-  for (const directive of directives) {
-    const [, file, className, functionName] = directive;
-    const symbol = functionName || className;
-    const tabs = await sourceDirectiveTabs({ projectRoot, sourcePath, file, className, functionName });
-    sections.push(`### \`${file}\` · \`${symbol}\`\n\n${tabs}`);
+function replaceStandaloneCodeFences(targetMarkdown, groups) {
+  const lines = targetMarkdown.replaceAll("\r\n", "\n").split("\n");
+  const output = [];
+  let groupIndex = 0;
+
+  for (let index = 0; index < lines.length;) {
+    const fence = lines[index].match(/^```([^\s`]*)/);
+    if (!fence || !sourceCodeFences.has(fence[1]) || groupIndex >= groups.length) {
+      output.push(lines[index]);
+      index += 1;
+      continue;
+    }
+
+    const closing = lines.findIndex((line, candidate) => candidate > index && line.trimStart().startsWith("```"));
+    if (closing < 0) throw new Error("Localized Markdown contains an unclosed programming-language code fence");
+    output.push(groups[groupIndex].markdown);
+    groupIndex += 1;
+    index = closing + 1;
   }
-  return `## ${localized.title}\n\n${localized.introduction}\n\n${sections.join("\n\n")}`;
+
+  return { markdown: output.join("\n"), placed: groupIndex };
+}
+
+export async function localizeSourceExamples({ projectRoot, sourcePath, sourceMarkdown, targetMarkdown, locale }) {
+  const groups = await sourceExampleGroups({ projectRoot, sourcePath, sourceMarkdown });
+  if (!groups.length) return { markdown: targetMarkdown, sourceGroups: 0, inlineGroups: 0, deferredGroups: 0 };
+
+  const merged = replaceStandaloneCodeFences(targetMarkdown, groups);
+  const deferred = groups.slice(merged.placed);
+  if (!deferred.length) {
+    return {
+      markdown: merged.markdown,
+      sourceGroups: groups.length,
+      inlineGroups: merged.placed,
+      deferredGroups: 0
+    };
+  }
+
+  const copy = localizedDeferredCopy(locale);
+  const sections = deferred.map((group, index) =>
+    `### ${copy.example} ${merged.placed + index + 1} · ${group.title}\n\n${group.markdown}`
+  );
+  return {
+    markdown: `${merged.markdown.trimEnd()}\n\n## ${copy.title}\n\n${copy.introduction}\n\n${sections.join("\n\n")}`,
+    sourceGroups: groups.length,
+    inlineGroups: merged.placed,
+    deferredGroups: deferred.length
+  };
 }

@@ -1,7 +1,7 @@
 import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
-import { renderMarkdown } from "./build-vi-book.mjs";
+import { articleOutline, markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
 import { sourceDirectiveTabs } from "./source-code-tabs.mjs";
 import { englishReaderCatalog, englishReaderRoutes, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
@@ -102,17 +102,26 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
   const counterpartNotice = koreanDocument && vietnameseDocument
     ? "KO and VI open the exact translated counterpart."
     : "A localized counterpart is marked as pending when that source page has not yet been translated.";
+  const siteRoot = "https://buicongnguyen.github.io/hello-algo/";
+  const englishCanonical = `${siteRoot}en/learn/${page.slug}.html`;
+  const vietnameseCanonical = `${siteRoot}${vietnameseDocument.route}`;
+  const koreanCanonical = `${siteRoot}${koreanDocument.route}`;
+  const outline = articleOutline(body, "On this page");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHtml(page.description)}">
-  <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/en/learn/${page.slug}.html">
+  <link rel="canonical" href="${englishCanonical}">
+  <link rel="alternate" hreflang="en" href="${englishCanonical}">
+  <link rel="alternate" hreflang="vi" href="${vietnameseCanonical}">
+  <link rel="alternate" hreflang="ko" href="${koreanCanonical}">
+  <link rel="alternate" hreflang="x-default" href="${vietnameseCanonical}">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo English</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260726b">
+  <link rel="stylesheet" href="book.css?v=20260726c">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
-  <script src="book.js?v=20260726b" defer></script>
+  <script src="book.js?v=20260726c" defer></script>
 </head>
 <body data-translation-status="source">
   <a class="skip-link" href="#article">Skip to the article</a>
@@ -120,11 +129,11 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
     <button class="reader-menu" id="reader-menu" type="button" aria-label="Open table of contents" aria-expanded="false">☰</button>
     <a class="reader-brand" href="../"><span>A→G</span><strong>Hello Algo <b>EN</b></strong></a>
     <div class="reader-progress"><span>Official source</span><strong>${pages.length} / 119 documents</strong></div>
-    <nav aria-label="Language and theme">${koreanOption}${vietnameseOption}<a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
+    <nav aria-label="Language and theme">${koreanOption}${vietnameseOption}<a class="active" href="${page.slug}.html" lang="en" hreflang="en" aria-current="page">EN</a><button id="reader-search-open" type="button" aria-label="Search the book">⌕</button><button id="reader-theme" type="button" aria-label="Toggle light and dark theme">◐</button></nav>
   </header>
   <div class="reader-shell">
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="English table of contents"><div class="sidebar-top"><strong>Official English reading</strong><small>Home · Chapters 0–16 · References</small></div>${navigation(pages, page.slug)}<div class="sidebar-links"><a href="https://www.hello-algo.com/en/">Official website</a><a href="https://github.com/krahets/hello-algo">Upstream repository</a><a href="../#roadmap">Learning map</a></div></aside>
-    <main class="reader-main"><article id="article"><div class="article-meta"><span>${escapeHtml(page.chapter)}</span><span>Official source · ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>Source-faithful English edition</strong><p>This local view is generated from the current official Hello Algo English Markdown and preserves every programming-language code tab as a labeled example. ${counterpartNotice}</p></div>${body}<footer class="article-attribution"><strong>Source and license</strong><p>English content from <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo by krahets and its contributors</a>, presented locally under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>.</p></footer></article>
+    <main class="reader-main"><section class="reader-search" id="reader-search" hidden aria-label="Search the book"><div><label for="reader-search-input">Search 119 documents</label><button id="reader-search-close" type="button" aria-label="Close search">×</button></div><input id="reader-search-input" type="search" autocomplete="off" placeholder="Algorithm, data structure, heading…" data-empty-label="No results found"><ul id="reader-search-results" aria-live="polite"></ul></section><article id="article"><div class="article-meta"><span>${escapeHtml(page.chapter)}</span><span>Official source · ${sourceCommit.slice(0, 7)}</span></div><div class="pilot-notice"><strong>Source-faithful English edition</strong><p>This local view is generated from the current official Hello Algo English Markdown and preserves every programming-language code tab as a labeled example. ${counterpartNotice}</p></div>${outline}${body}<footer class="article-attribution"><strong>Source and license</strong><p>English content from <a href="${sourceUrl}" target="_blank" rel="noreferrer">Hello Algo by krahets and its contributors</a>, presented locally under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a>.</p></footer></article>
       <nav class="page-nav" aria-label="Previous and next article">${previous ? `<a href="${previous.slug}.html"><span>← Previous</span><strong>${escapeHtml(previous.title)}</strong></a>` : "<i></i>"}${next ? `<a class="next" href="${next.slug}.html"><span>Next →</span><strong>${escapeHtml(next.title)}</strong></a>` : "<i></i>"}</nav>
     </main>
   </div>
@@ -179,17 +188,21 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
 
   const bookOutput = path.join(outputRoot, "en", "learn");
   await mkdir(bookOutput, { recursive: true });
-  await cp(path.join(projectRoot, "vi", "book.css"), path.join(bookOutput, "book.css"));
-  await cp(path.join(projectRoot, "vi", "book.js"), path.join(bookOutput, "book.js"));
+  await cp(path.join(projectRoot, "reader", "book.css"), path.join(bookOutput, "book.css"));
+  await cp(path.join(projectRoot, "reader", "book.js"), path.join(bookOutput, "book.js"));
   await copyReferencedAssets(pages, projectRoot, bookOutput);
 
+  const searchIndex = [];
   for (const [index, page] of pages.entries()) {
     const vietnameseDocument = registry.byLanguage.vi.get(page.source);
     const koreanDocument = registry.byLanguage.ko.get(page.source);
     const markdown = await prepareEnglishMarkdown(page.markdown, page.source, projectRoot);
-    const body = renderMarkdown(rewriteInternalLinks(markdown, page.source), page.source);
+    const preparedMarkdown = rewriteInternalLinks(markdown, page.source);
+    const body = renderMarkdown(preparedMarkdown, page.source);
+    searchIndex.push({ title: page.title, shortTitle: page.shortTitle, chapter: page.chapter, url: `${page.slug}.html`, headings: markdownHeadings(preparedMarkdown) });
     await writeFile(path.join(bookOutput, `${page.slug}.html`), pageTemplate(pages, page, body, index, registry.sourceCommit, vietnameseDocument, koreanDocument));
     await access(path.join(bookOutput, `${page.slug}.html`), constants.R_OK);
   }
+  await writeFile(path.join(bookOutput, "search-index.json"), JSON.stringify(searchIndex, null, 2) + "\n");
   return { pageCount: pages.length, sourceCommit: registry.sourceCommit };
 }
