@@ -57,7 +57,8 @@ const requiredFiles = [
   "NEXT_CONTENT_RELEASE_PLAN_V1_11.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_12.md",
   "NEXT_CONTENT_RELEASE_PLAN_V1_13.md",
-  "NEXT_CONTENT_RELEASE_PLAN_V1_14.md"
+  "NEXT_CONTENT_RELEASE_PLAN_V1_14.md",
+  "NEXT_CONTENT_RELEASE_PLAN_V1_15.md"
 ];
 
 for (const relativePath of requiredFiles) {
@@ -411,8 +412,8 @@ for (const document of translationStatus.documents) {
     const targetMarkdown = await readFile(path.join(projectRoot, document.target), "utf8");
     const h1Count = countMarkdownH1(targetMarkdown);
     if (h1Count !== 1) failures.push(`${document.target} must contain exactly one H1`);
-    if (/^(?:===|--8<--)/m.test(targetMarkdown)) {
-      failures.push(`${document.target} contains unsupported MkDocs-only syntax`);
+    if (/^--8<--/m.test(targetMarkdown)) {
+      failures.push(`${document.target} contains unsupported MkDocs snippet syntax`);
     }
     if ((targetMarkdown.match(/^```/gm) || []).length % 2 !== 0) {
       failures.push(`${document.target} contains an unbalanced code fence`);

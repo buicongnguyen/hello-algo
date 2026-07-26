@@ -2,6 +2,8 @@
 
 **Mảng** là cấu trúc dữ liệu tuyến tính lưu các phần tử cùng kiểu trong một vùng nhớ liên tục. Vị trí của một phần tử được gọi là **chỉ mục**.
 
+Mảng là một trong những cấu trúc dữ liệu cơ bản và phổ biến nhất. Mọi phần tử có quan hệ tuyến tính, nằm theo một thứ tự xác định và chiếm các ô nhớ liên tiếp có cùng kích thước. Nhờ cách bố trí đều đặn đó, hệ thống có thể tính địa chỉ của phần tử đích chỉ từ chỉ mục.
+
 ![Định nghĩa và cách lưu trữ mảng](array.assets/array_definition.png)
 
 ## Các thao tác thường gặp trên mảng
@@ -18,15 +20,21 @@ arr: list[int] = [0] * 5
 nums: list[int] = [1, 3, 2, 5, 4]
 ```
 
+??? pythontutor "Chạy trực quan"
+
+    [Quan sát quá trình khởi tạo mảng trong Python Tutor](https://pythontutor.com/render.html#code=arr%20%3D%20%5B0%5D%20%2A%205%0Anums%20%3D%20%5B1%2C%203%2C%202%2C%205%2C%204%5D&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=311&rawInputLstJSON=%5B%5D&textReferences=false)
+
 ### Truy cập phần tử
 
 Các phần tử nằm liên tục trong bộ nhớ nên địa chỉ của phần tử có thể được tính trực tiếp từ địa chỉ đầu mảng, kích thước phần tử và chỉ mục.
 
 ![Cách tính địa chỉ bộ nhớ của phần tử mảng](array.assets/array_memory_location_calculation.png)
 
-Chỉ mục đầu tiên là $0$ vì chỉ mục chính là độ lệch so với địa chỉ đầu mảng. Phần tử đầu tiên có độ lệch bằng $0$.
+Chỉ mục đầu tiên là $0$, dù trong đời sống chúng ta thường đếm từ $1$, vì chỉ mục chính là độ lệch so với địa chỉ đầu mảng. Phần tử đầu tiên có độ lệch bằng $0$.
 
 Nhờ cách tính địa chỉ trực tiếp, mảng hỗ trợ **truy cập ngẫu nhiên** một phần tử trong thời gian $O(1)$.
+
+Phép tính chỉ cần địa chỉ đầu mảng và số byte của một phần tử. Dù trước vị trí đích có bao nhiêu phần tử, số bước tính toán vẫn không đổi nên bậc thời gian truy cập không tăng theo độ dài mảng.
 
 ```python
 import random
@@ -46,6 +54,8 @@ Giữa các phần tử mảng không có chỗ trống. Muốn chèn một giá
 
 Vì độ dài mảng cố định, phần tử cuối có thể bị đẩy ra ngoài. Danh sách động ở phần sau sẽ giải quyết hạn chế này bằng cơ chế mở rộng.
 
+Khi dịch phần tử sang phải, phải đi từ cuối mảng về phía vị trí chèn. Nếu sao chép từ trái sang phải, giá trị chưa được di chuyển ở ô kế tiếp sẽ bị ghi đè và dữ liệu ban đầu sẽ mất.
+
 ```python
 def insert(nums: list[int], num: int, index: int) -> None:
     """Chèn num tại index trong một mảng có độ dài cố định."""
@@ -56,7 +66,7 @@ def insert(nums: list[int], num: int, index: int) -> None:
 
 ### Xóa phần tử
 
-Để xóa phần tử tại chỉ mục $i$, chúng ta dịch mọi phần tử phía sau sang trái một vị trí. Giá trị cũ ở cuối mảng không còn thuộc phần dữ liệu hợp lệ nên không nhất thiết phải sửa riêng.
+Để xóa phần tử tại chỉ mục `i`, chúng ta dịch mọi phần tử phía sau sang trái một vị trí. Giá trị cũ ở cuối mảng không còn thuộc phần dữ liệu hợp lệ nên không nhất thiết phải sửa riêng.
 
 ![Ví dụ xóa phần tử khỏi mảng](array.assets/array_remove_element.png)
 
@@ -69,13 +79,15 @@ def remove(nums: list[int], index: int) -> None:
 
 Chèn và xóa trong mảng có ba hạn chế chính.
 
-- **Độ phức tạp cao**: trung bình phải dịch nhiều phần tử nên tốn $O(n)$ thời gian.
+- **Độ phức tạp cao**: trung bình phải dịch nhiều phần tử nên tốn $O(n)$ thời gian, với $n$ là độ dài mảng.
 - **Có thể mất phần tử**: chèn vào mảng cố định có thể làm phần tử cuối bị đẩy ra ngoài.
 - **Có thể lãng phí bộ nhớ**: cấp phát một mảng lớn rồi chỉ dùng phần đầu để tránh mất dữ liệu sẽ để lại nhiều ô trống.
 
 ### Duyệt mảng
 
 Chúng ta có thể duyệt theo chỉ mục, duyệt trực tiếp từng giá trị hoặc lấy đồng thời chỉ mục và giá trị.
+
+Kiểu duyệt theo chỉ mục hữu ích khi cần biết vị trí; kiểu duyệt theo giá trị ngắn gọn hơn khi chỉ xử lý nội dung. Dù viết theo cách nào, toàn bộ các phần tử liên tiếp vẫn được thăm đúng một lần.
 
 ```python
 def traverse(nums: list[int]) -> int:
@@ -93,6 +105,8 @@ def traverse(nums: list[int]) -> int:
 
 Muốn tìm một giá trị trong mảng chưa sắp xếp, chúng ta duyệt từ đầu và so sánh từng phần tử. Cách này gọi là **tìm kiếm tuyến tính** và có độ phức tạp $O(n)$.
 
+Nếu mục tiêu nằm gần đầu mảng, thuật toán có thể dừng sớm; nếu mục tiêu không tồn tại hoặc nằm cuối, phải kiểm tra tất cả phần tử. Với mảng đã sắp xếp, tìm kiếm nhị phân ở chương sau sẽ giảm đáng kể số lần so sánh.
+
 ```python
 def find(nums: list[int], target: int) -> int:
     for i, num in enumerate(nums):
@@ -104,6 +118,8 @@ def find(nums: list[int], target: int) -> int:
 ### Mở rộng mảng
 
 Chương trình không thể giả định vùng nhớ ngay sau mảng còn trống, nên việc kéo dài trực tiếp một mảng là không an toàn. Muốn mở rộng, chúng ta tạo mảng mới lớn hơn và sao chép toàn bộ phần tử. Đây là thao tác $O(n)$.
+
+Lượng sức chứa bổ sung là một đánh đổi thời gian–không gian. Tăng rất ít giúp tiết kiệm bộ nhớ nhưng phải cấp phát và sao chép thường xuyên; tăng nhiều giảm số lần mở rộng nhưng để lại nhiều ô chưa dùng.
 
 ```python
 def extend(nums: list[int], enlarge: int) -> list[int]:
@@ -121,6 +137,8 @@ Các phần tử cùng kiểu và nằm liên tục cung cấp nhiều thông ti
 - **Truy cập ngẫu nhiên**: lấy bất kỳ phần tử nào trong $O(1)$.
 - **Tính cục bộ bộ nhớ đệm tốt**: khi tải một phần tử, hệ thống thường tải cả dữ liệu lân cận, giúp những lần truy cập tiếp theo nhanh hơn.
 
+Ưu điểm này khiến hai thuật toán có cùng độ phức tạp tiệm cận vẫn có thể chạy khác nhau đáng kể. Khi mảng được đọc tuần tự, CPU dễ dự đoán địa chỉ kế tiếp và nạp nhiều phần tử vào cùng một dòng bộ nhớ đệm.
+
 Mặt khác, lưu trữ liên tục cũng tạo ra hạn chế.
 
 - **Chèn và xóa chậm** vì phải dịch nhiều phần tử.
@@ -134,3 +152,7 @@ Mặt khác, lưu trữ liên tục cũng tạo ra hạn chế.
 - **Bảng tra cứu**: dùng một giá trị như mã ASCII làm chỉ mục để tìm quan hệ tương ứng.
 - **Học máy**: vector, ma trận và tensor đều được xây dựng theo dạng mảng.
 - **Triển khai cấu trúc khác**: ngăn xếp, hàng đợi, bảng băm, đống và ma trận kề của đồ thị đều có thể dựa trên mảng.
+
+Khi lựa chọn mảng, hãy cân nhắc liệu bài toán có cần truy cập ngẫu nhiên và hiệu quả bộ nhớ đệm, tần suất chèn/xóa ở giữa, cũng như khả năng dự đoán kích thước tối đa.
+
+Nếu phần lớn thao tác là đọc hoặc duyệt và số phần tử tương đối ổn định, mảng thường phát huy trực tiếp ưu thế. Ngược lại, khi chèn và xóa giữa cấu trúc diễn ra liên tục hoặc khó tìm một vùng nhớ liên tục đủ lớn, cần so sánh thêm với danh sách liên kết và các cấu trúc động. Quyết định nên dựa trên thao tác xuất hiện thường xuyên nhất chứ không chỉ dựa vào tên cấu trúc.

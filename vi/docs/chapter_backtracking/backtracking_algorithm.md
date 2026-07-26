@@ -38,49 +38,38 @@ Trong mỗi lần “thử”, nút hiện tại được thêm vào `path`. Tr�
 
 Quan sát chuỗi hình sau, có thể hiểu **thử và quay lui là “tiến” và “hoàn tác”**, hai thao tác đảo ngược nhau. Mỗi bước đi xuống làm trạng thái cụ thể hơn; mỗi bước đi lên loại bỏ đúng thay đổi của bước đi xuống tương ứng.
 
-**Bước 1**
+=== "<1>"
+    ![Thử và quay lui, bước 1](backtracking_algorithm.assets/preorder_find_paths_step1.png)
 
-![Thử và quay lui, bước 1](backtracking_algorithm.assets/preorder_find_paths_step1.png)
+=== "<2>"
+    ![Thử và quay lui, bước 2](backtracking_algorithm.assets/preorder_find_paths_step2.png)
 
-**Bước 2**
+=== "<3>"
+    ![Thử và quay lui, bước 3](backtracking_algorithm.assets/preorder_find_paths_step3.png)
 
-![Thử và quay lui, bước 2](backtracking_algorithm.assets/preorder_find_paths_step2.png)
+=== "<4>"
+    ![Thử và quay lui, bước 4](backtracking_algorithm.assets/preorder_find_paths_step4.png)
 
-**Bước 3**
+=== "<5>"
+    ![Thử và quay lui, bước 5](backtracking_algorithm.assets/preorder_find_paths_step5.png)
 
-![Thử và quay lui, bước 3](backtracking_algorithm.assets/preorder_find_paths_step3.png)
+=== "<6>"
+    ![Thử và quay lui, bước 6](backtracking_algorithm.assets/preorder_find_paths_step6.png)
 
-**Bước 4**
+=== "<7>"
+    ![Thử và quay lui, bước 7](backtracking_algorithm.assets/preorder_find_paths_step7.png)
 
-![Thử và quay lui, bước 4](backtracking_algorithm.assets/preorder_find_paths_step4.png)
+=== "<8>"
+    ![Thử và quay lui, bước 8](backtracking_algorithm.assets/preorder_find_paths_step8.png)
 
-**Bước 5**
+=== "<9>"
+    ![Thử và quay lui, bước 9](backtracking_algorithm.assets/preorder_find_paths_step9.png)
 
-![Thử và quay lui, bước 5](backtracking_algorithm.assets/preorder_find_paths_step5.png)
+=== "<10>"
+    ![Thử và quay lui, bước 10](backtracking_algorithm.assets/preorder_find_paths_step10.png)
 
-**Bước 6**
-
-![Thử và quay lui, bước 6](backtracking_algorithm.assets/preorder_find_paths_step6.png)
-
-**Bước 7**
-
-![Thử và quay lui, bước 7](backtracking_algorithm.assets/preorder_find_paths_step7.png)
-
-**Bước 8**
-
-![Thử và quay lui, bước 8](backtracking_algorithm.assets/preorder_find_paths_step8.png)
-
-**Bước 9**
-
-![Thử và quay lui, bước 9](backtracking_algorithm.assets/preorder_find_paths_step9.png)
-
-**Bước 10**
-
-![Thử và quay lui, bước 10](backtracking_algorithm.assets/preorder_find_paths_step10.png)
-
-**Bước 11**
-
-![Thử và quay lui, bước 11](backtracking_algorithm.assets/preorder_find_paths_step11.png)
+=== "<11>"
+    ![Thử và quay lui, bước 11](backtracking_algorithm.assets/preorder_find_paths_step11.png)
 
 ## Cắt tỉa
 

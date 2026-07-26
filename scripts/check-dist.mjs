@@ -197,6 +197,7 @@ export async function checkBuiltSite(outputRoot) {
       ? [
           { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Vietnamese Chapter 2" },
           { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Vietnamese Chapter 3" },
+          { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Vietnamese Chapter 4" },
           { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" },
           { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" },
           { prefix: "en/docs/chapter_tree/", count: 8, label: "Vietnamese Chapter 7" },
@@ -222,7 +223,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_graph/", count: 6, label: "Korean Chapter 9" },
           { prefix: "en/docs/chapter_searching/", count: 8, label: "Korean Chapter 10" },
           { prefix: "en/docs/chapter_sorting/", count: 13, label: "Korean Chapter 11" },
-          { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Korean Chapter 12" }
+          { prefix: "en/docs/chapter_divide_and_conquer/", count: 7, label: "Korean Chapter 12" },
+          { prefix: "en/docs/chapter_backtracking/", count: 7, label: "Korean Chapter 13" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -714,7 +716,11 @@ export async function checkBuiltSite(outputRoot) {
   const vietnamesePermutations = await readFile(path.join(pilotDirectory, "bai-toan-hoan-vi.html"), "utf8");
   const vietnameseSubsetSum = await readFile(path.join(pilotDirectory, "bai-toan-tong-tap-con.html"), "utf8");
   const vietnameseBacktrackingExercises = await readFile(path.join(pilotDirectory, "bai-tap-quay-lui.html"), "utf8");
+  const koreanBacktrackingAlgorithm = await readFile(path.join(koreanDirectory, "backtracking-algorithm.html"), "utf8");
   const koreanBacktracking = await readFile(path.join(koreanDirectory, "n-queens.html"), "utf8");
+  const koreanPermutations = await readFile(path.join(koreanDirectory, "permutations.html"), "utf8");
+  const koreanSubsetSum = await readFile(path.join(koreanDirectory, "subset-sum.html"), "utf8");
+  const koreanBacktrackingExercises = await readFile(path.join(koreanDirectory, "chapter-13-exercises.html"), "utf8");
   const vietnameseDpIntro = await readFile(path.join(pilotDirectory, "gioi-thieu-quy-hoach-dong.html"), "utf8");
   const vietnameseDpFeatures = await readFile(path.join(pilotDirectory, "dac-trung-bai-toan-quy-hoach-dong.html"), "utf8");
   const vietnameseDpPipeline = await readFile(path.join(pilotDirectory, "quy-trinh-giai-quy-hoach-dong.html"), "utf8");
@@ -724,7 +730,7 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseDynamicExercises = await readFile(path.join(pilotDirectory, "bai-tap-quy-hoach-dong.html"), "utf8");
   const koreanDynamicProgramming = await readFile(path.join(koreanDirectory, "edit-distance.html"), "utf8");
   if (!vietnameseBacktracking.includes("solution_4_queens.png") || !koreanBacktracking.includes("solution_4_queens.png") || !vietnameseBacktracking.includes('<pre><code class="language-python"') || !koreanBacktracking.includes('<pre><code class="language-python"')) failures.push("Chapter 13 N-Queens pages are missing diagrams or Python examples");
-  if ((vietnameseBacktrackingAlgorithm.match(/class="content-tabs"/g) || []).length !== 5 ||
+  if ((vietnameseBacktrackingAlgorithm.match(/class="content-tabs"/g) || []).length !== 6 ||
       !vietnameseBacktrackingAlgorithm.includes("preorder_find_paths_step11.png") ||
       !vietnameseBacktrackingAlgorithm.includes("preorder_find_constrained_paths.png") ||
       !vietnameseBacktrackingAlgorithm.includes("backtrack_remove_return_or_not.png") ||
@@ -744,6 +750,27 @@ export async function checkBuiltSite(outputRoot) {
       (vietnameseBacktrackingExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
       !vietnameseBacktrackingExercises.includes("leetcode.com/problems/permutations")) {
     failures.push("Vietnamese Chapter 13 is missing complete code tabs, decision traces, pruning media, tables, callouts, or exercises");
+  }
+  if ((koreanBacktrackingAlgorithm.match(/class="content-tabs"/g) || []).length !== 6 ||
+      !koreanBacktrackingAlgorithm.includes("preorder_find_paths_step11.png") ||
+      !koreanBacktrackingAlgorithm.includes("preorder_find_constrained_paths.png") ||
+      !koreanBacktrackingAlgorithm.includes("backtrack_remove_return_or_not.png") ||
+      !koreanBacktrackingAlgorithm.includes("<table>") ||
+      (koreanBacktrackingAlgorithm.match(/class="admonition/g) || []).length !== 4 ||
+      (koreanBacktracking.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !koreanBacktracking.includes("n_queens_cols_diagonals.png") ||
+      !koreanBacktracking.includes('class="admonition admonition-question"') ||
+      !koreanBacktracking.includes('class="admonition admonition-tip"') ||
+      (koreanPermutations.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanPermutations.includes("permutations_ii_pruning_summary.png") ||
+      !koreanPermutations.includes("<table>") ||
+      (koreanSubsetSum.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanSubsetSum.includes("subset_sum_i.png") ||
+      !koreanSubsetSum.includes("subset_sum_ii.png") ||
+      (koreanBacktrackingExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (koreanBacktrackingExercises.match(/class="admonition admonition-tip"/g) || []).length !== 1 ||
+      !koreanBacktrackingExercises.includes("leetcode.com/problems/permutations")) {
+    failures.push("Korean Chapter 13 is missing complete code tabs, decision traces, pruning media, tables, callouts, or exercises");
   }
   if (!vietnameseDynamicProgramming.includes("edit_distance_example.png") || !koreanDynamicProgramming.includes("edit_distance_example.png") || !vietnameseDynamicProgramming.includes('<pre><code class="language-python"') || !koreanDynamicProgramming.includes('<pre><code class="language-python"')) failures.push("Chapter 14 edit-distance pages are missing diagrams or Python examples");
   if ((vietnameseDpIntro.match(/class="content-tabs"/g) || []).length !== 5 ||
@@ -937,9 +964,25 @@ export async function checkBuiltSite(outputRoot) {
 
   const arrayPage = await readFile(path.join(pilotDirectory, "mang.html"), "utf8");
   const linkedListPage = await readFile(path.join(pilotDirectory, "danh-sach-lien-ket.html"), "utf8");
+  const vietnameseDynamicList = await readFile(path.join(pilotDirectory, "danh-sach-dong.html"), "utf8");
+  const vietnameseRamAndCache = await readFile(path.join(pilotDirectory, "ram-va-bo-nho-dem.html"), "utf8");
+  const vietnameseArrayExercises = await readFile(path.join(pilotDirectory, "bai-tap-mang-va-danh-sach-lien-ket.html"), "utf8");
   if (!arrayPage.includes('<pre><code class="language-python"') || !arrayPage.includes("array_definition.png") ||
       !linkedListPage.includes('<pre><code class="language-python"') || !linkedListPage.includes("linkedlist_definition.png")) {
     failures.push("Vietnamese Chapter 4 pages are missing representative Python code or core diagrams");
+  }
+  if ((arrayPage.match(/class="content-tabs"/g) || []).length !== 7 ||
+      (linkedListPage.match(/class="content-tabs"/g) || []).length !== 7 ||
+      (vietnameseDynamicList.match(/class="content-tabs"/g) || []).length !== 7 ||
+      !linkedListPage.includes("linkedlist_common_types.png") ||
+      !linkedListPage.includes("<table>") ||
+      !vietnameseRamAndCache.includes("computer_storage_devices.png") ||
+      !vietnameseRamAndCache.includes("<table>") ||
+      (vietnameseDynamicList.match(/class="admonition admonition-pythontutor"/g) || []).length !== 6 ||
+      (vietnameseArrayExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (vietnameseArrayExercises.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
+      !vietnameseArrayExercises.includes("leetcode.com/problems/reverse-linked-list")) {
+    failures.push("Vietnamese Chapter 4 is missing complete code tabs, linked-list/cache media, tables, visualizations, or exercises");
   }
 
   const englishAtlas = await readFile(path.join(outputRoot, "en", "index.html"), "utf8");
