@@ -45,7 +45,8 @@ const requiredFiles = [
   ".github/ISSUE_TEMPLATE/ko-translation.yml",
   ".github/PULL_REQUEST_TEMPLATE/ko-translation.md",
   "NEXT_RELEASE_PLAN.md",
-  "NEXT_CONTENT_RELEASE_PLAN.md"
+  "NEXT_CONTENT_RELEASE_PLAN.md",
+  "NEXT_CONTENT_RELEASE_PLAN_V1_3.md"
 ];
 
 for (const relativePath of requiredFiles) {

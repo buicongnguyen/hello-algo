@@ -193,13 +193,21 @@ export async function checkBuiltSite(outputRoot) {
         failures.push(`${document.target} is marked ${document.status} but fails parity: ${document.failures.join(", ")}`);
       }
     }
-    const releaseUnit = language === "vi"
-      ? { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" }
-      : { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" };
-    const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
-    if (releaseDocuments.length !== releaseUnit.count ||
-        releaseDocuments.some((document) => !document.structuralParity || document.officialCodeGroups.deferred !== 0)) {
-      failures.push(`${releaseUnit.label} is not a complete, structurally ready inline-code release unit`);
+    const releaseUnits = language === "vi"
+      ? [
+          { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Vietnamese Chapter 5" },
+          { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" }
+        ]
+      : [
+          { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
+          { prefix: "en/docs/chapter_introduction/", count: 4, label: "Korean Chapter 1" }
+        ];
+    for (const releaseUnit of releaseUnits) {
+      const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
+      if (releaseDocuments.length !== releaseUnit.count ||
+          releaseDocuments.some((document) => !document.structuralParity || document.officialCodeGroups.deferred !== 0)) {
+        failures.push(`${releaseUnit.label} is not a complete, structurally ready inline-code release unit`);
+      }
     }
   }
   for (const language of ["vi", "ko", "en"]) {
@@ -319,7 +327,11 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseHash = await readFile(path.join(pilotDirectory, "bang-bam.html"), "utf8");
   const koreanHash = await readFile(path.join(koreanDirectory, "hash-table.html"), "utf8");
   if (!vietnameseStack.includes("stack_operations.png") || !koreanStack.includes("stack_operations.png") || !vietnameseStack.includes('<pre><code class="language-python"') || !koreanStack.includes('<pre><code class="language-python"')) failures.push("Chapter 5 stack pages are missing diagrams or Python examples");
-  if (!vietnameseHash.includes("hash_table_lookup.png") || !koreanHash.includes("hash_table_lookup.png") || !vietnameseHash.includes('class="math-block"') || !koreanHash.includes('class="math-block"')) failures.push("Chapter 6 hash-table pages are missing diagrams or rendered mathematics");
+  if (!vietnameseHash.includes("hash_table_lookup.png") || !koreanHash.includes("hash_table_lookup.png") ||
+      !vietnameseHash.includes('class="math"') || !koreanHash.includes('class="math"') ||
+      !vietnameseHash.includes('<pre><code class="language-python"') || !koreanHash.includes('<pre><code class="language-python"')) {
+    failures.push("Chapter 6 hash-table pages are missing diagrams, inline mathematics, or Python examples");
+  }
 
   const vietnameseTree = await readFile(path.join(pilotDirectory, "cay-nhi-phan.html"), "utf8");
   const koreanTree = await readFile(path.join(koreanDirectory, "binary-tree.html"), "utf8");
