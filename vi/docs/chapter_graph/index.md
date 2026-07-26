@@ -2,6 +2,8 @@
 
 ![Đồ thị](../assets/covers/chapter_graph.jpg)
 
-Đồ thị mô hình hóa các quan hệ mạng bằng tập đỉnh và tập cạnh. Đây là nền tảng của mạng xã hội, bản đồ giao thông, mạng máy tính và nhiều bài toán phụ thuộc.
+!!! abstract
 
-Chương này giới thiệu cách biểu diễn đồ thị, các thao tác cơ bản, cùng hai chiến lược duyệt BFS và DFS.
+    Trên hành trình cuộc sống, mỗi người giống như một đỉnh được nối với những người khác bằng vô số cạnh vô hình.
+
+    Mỗi cuộc gặp gỡ và chia xa đều để lại một dấu ấn riêng trong mạng lưới đồ thị rộng lớn ấy.
