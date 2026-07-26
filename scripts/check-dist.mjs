@@ -200,7 +200,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_tree/", count: 8, label: "Vietnamese Chapter 7" },
           { prefix: "en/docs/chapter_heap/", count: 6, label: "Vietnamese Chapter 8" },
           { prefix: "en/docs/chapter_graph/", count: 6, label: "Vietnamese Chapter 9" },
-          { prefix: "en/docs/chapter_searching/", count: 8, label: "Vietnamese Chapter 10" }
+          { prefix: "en/docs/chapter_searching/", count: 8, label: "Vietnamese Chapter 10" },
+          { prefix: "en/docs/chapter_sorting/", count: 13, label: "Vietnamese Chapter 11" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
@@ -208,7 +209,8 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Korean Chapter 2" },
           { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Korean Chapter 3" },
           { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Korean Chapter 4" },
-          { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Korean Chapter 5" }
+          { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Korean Chapter 5" },
+          { prefix: "en/docs/chapter_hashing/", count: 6, label: "Korean Chapter 6" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -363,6 +365,9 @@ export async function checkBuiltSite(outputRoot) {
   const koreanStackExercises = await readFile(path.join(koreanDirectory, "chapter-5-exercises.html"), "utf8");
   const vietnameseHash = await readFile(path.join(pilotDirectory, "bang-bam.html"), "utf8");
   const koreanHash = await readFile(path.join(koreanDirectory, "hash-table.html"), "utf8");
+  const koreanHashCollision = await readFile(path.join(koreanDirectory, "hash-collision.html"), "utf8");
+  const koreanHashAlgorithm = await readFile(path.join(koreanDirectory, "hash-algorithm.html"), "utf8");
+  const koreanHashExercises = await readFile(path.join(koreanDirectory, "chapter-6-exercises.html"), "utf8");
   if (!vietnameseStack.includes("stack_operations.png") || !koreanStack.includes("stack_operations.png") || !vietnameseStack.includes('<pre><code class="language-python"') || !koreanStack.includes('<pre><code class="language-python"')) failures.push("Chapter 5 stack pages are missing diagrams or Python examples");
   if ((koreanStack.match(/class="content-tabs"/g) || []).length !== 3 ||
       (koreanQueue.match(/class="content-tabs"/g) || []).length !== 3 ||
@@ -384,6 +389,22 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseHash.includes('class="math"') || !koreanHash.includes('class="math"') ||
       !vietnameseHash.includes('<pre><code class="language-python"') || !koreanHash.includes('<pre><code class="language-python"')) {
     failures.push("Chapter 6 hash-table pages are missing diagrams, inline mathematics, or Python examples");
+  }
+  if ((koreanHash.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanHash.includes("hash_table_reshash.png") ||
+      !koreanHash.includes("<table>") ||
+      (koreanHash.match(/class="admonition admonition-pythontutor"/g) || []).length !== 2 ||
+      (koreanHashCollision.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !koreanHashCollision.includes("hash_table_open_addressing_deletion.png") ||
+      !koreanHashCollision.includes('class="admonition admonition-tip"') ||
+      (koreanHashAlgorithm.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanHashAlgorithm.match(/class="math-block"/g) || []).length !== 2 ||
+      !koreanHashAlgorithm.includes("hash_collision_best_worst_condition.png") ||
+      !koreanHashAlgorithm.includes("<table>") ||
+      (koreanHashAlgorithm.match(/class="admonition/g) || []).length !== 2 ||
+      (koreanHashExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      !koreanHashExercises.includes("leetcode.com/problems/valid-anagram")) {
+    failures.push("Korean Chapter 6 is missing complete code tabs, collision media, mathematics, tables, callouts, or exercises");
   }
 
   const vietnameseTree = await readFile(path.join(pilotDirectory, "cay-nhi-phan.html"), "utf8");
@@ -462,10 +483,35 @@ export async function checkBuiltSite(outputRoot) {
   }
 
   const vietnameseSort = await readFile(path.join(pilotDirectory, "sap-xep-nhanh.html"), "utf8");
+  const vietnameseMergeSort = await readFile(path.join(pilotDirectory, "sap-xep-tron.html"), "utf8");
+  const vietnameseHeapSort = await readFile(path.join(pilotDirectory, "sap-xep-vun-dong.html"), "utf8");
+  const vietnameseCountingSort = await readFile(path.join(pilotDirectory, "sap-xep-dem.html"), "utf8");
+  const vietnameseRadixSort = await readFile(path.join(pilotDirectory, "sap-xep-co-so.html"), "utf8");
+  const vietnameseSortExercises = await readFile(path.join(pilotDirectory, "bai-tap-sap-xep.html"), "utf8");
   const koreanSort = await readFile(path.join(koreanDirectory, "quick-sort.html"), "utf8");
   const vietnameseDivide = await readFile(path.join(pilotDirectory, "thap-ha-noi.html"), "utf8");
   const koreanDivide = await readFile(path.join(koreanDirectory, "hanota.html"), "utf8");
   if (!vietnameseSort.includes("quick_sort_overview.png") || !koreanSort.includes("quick_sort_overview.png") || !vietnameseSort.includes('<pre><code class="language-python"') || !koreanSort.includes('<pre><code class="language-python"')) failures.push("Chapter 11 quick-sort pages are missing diagrams or Python examples");
+  if ((vietnameseSort.match(/class="content-tabs"/g) || []).length !== 4 ||
+      !vietnameseSort.includes("pivot_division_step9.png") ||
+      !vietnameseSort.includes('class="admonition admonition-note"') ||
+      (vietnameseMergeSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseMergeSort.includes("merge_sort_step10.png") ||
+      (vietnameseHeapSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      !vietnameseHeapSort.includes("heap_sort_step12.png") ||
+      (vietnameseHeapSort.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
+      (vietnameseCountingSort.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !vietnameseCountingSort.includes("counting_sort_step8.png") ||
+      (vietnameseCountingSort.match(/class="math-block"/g) || []).length !== 1 ||
+      !vietnameseCountingSort.includes('class="admonition admonition-note"') ||
+      (vietnameseRadixSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseRadixSort.match(/class="math-block"/g) || []).length !== 1 ||
+      !vietnameseRadixSort.includes('class="admonition admonition-question"') ||
+      (vietnameseSortExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
+      (vietnameseSortExercises.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
+      !vietnameseSortExercises.includes("leetcode.com/problems/sort-an-array")) {
+    failures.push("Vietnamese Chapter 11 is missing complete code tabs, sorting traces, mathematics, callouts, or exercises");
+  }
   if (!vietnameseDivide.includes("hanota_example.png") || !koreanDivide.includes("hanota_example.png") || !vietnameseDivide.includes('<pre><code class="language-python"') || !koreanDivide.includes('<pre><code class="language-python"')) failures.push("Chapter 12 Hanota pages are missing diagrams or Python examples");
 
   const vietnameseBacktracking = await readFile(path.join(pilotDirectory, "bai-toan-n-hau.html"), "utf8");
