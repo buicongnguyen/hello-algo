@@ -2,4 +2,8 @@
 
 ![Tìm kiếm](../assets/covers/chapter_searching.jpg)
 
-Tìm kiếm là quá trình xác định phần tử hoặc vị trí thỏa điều kiện. Chương này tập trung vào tìm kiếm nhị phân, vị trí chèn, biên trái/phải, tối ưu bằng bảng băm và cách chọn chiến lược tìm kiếm.
+!!! abstract
+
+    Tìm kiếm là một cuộc phiêu lưu vào miền chưa biết. Đôi khi cần lần lượt đi qua mọi ngóc ngách của không gian bí ẩn; đôi khi có thể dựa vào cấu trúc dữ liệu để nhanh chóng khóa chặt vị trí của mục tiêu.
+
+    Trong hành trình khám phá này, mỗi phép so sánh giúp thu hẹp phạm vi và có thể đưa đến một câu trả lời bất ngờ. Chương này bắt đầu từ tìm kiếm nhị phân, mở rộng sang điểm chèn và biên, rồi so sánh cách tìm kiếm bằng mảng, cây và bảng băm.

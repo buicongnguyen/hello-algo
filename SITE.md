@@ -40,6 +40,8 @@ The v1.5 content wave completes structural parity for all six Vietnamese Chapter
 
 The v1.6 content wave completes structural parity for all six Vietnamese Chapter 9 documents. Graph terminology and representations, matrix/list operations, 11-step BFS and DFS sequences, 41 images, two tables, exercises, and all four official code groups are preserved at their source teaching positions.
 
+The v1.7 content wave completes structural parity for all eight Vietnamese Chapter 10 documents. Binary search, insertion points, boundary variants, hash optimization, search-method selection, 27 images, 113 formula spans, exercises, and all eight official code groups are preserved at their source teaching positions.
+
 ## Korean draft
 
 The Korean Atlas has section-for-section parity with the English and Vietnamese Atlas, localized interactions, and accessibility labels. The Korean reader contains all 119 source-locked drafts with exact Vietnamese and English counterpart links. Documents preserve the official diagrams and 13-language code groups; condensed prose remains draft until content-parity and review gates pass. Governance files live under `ko/`.
@@ -55,6 +57,8 @@ The v1.4 content wave completes structural parity for all seven Korean Chapter 2
 The v1.5 content wave completes structural parity for all seven Korean Chapter 3 documents. Logical and physical structure, basic data types, integer and floating-point encoding, Unicode and UTF encodings, nine images, thirteen display-math blocks, exercises, and the official 13-language code group are preserved inline. The full remaining roadmap is recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_5.md](NEXT_CONTENT_RELEASE_PLAN_V1_5.md).
 
 The v1.6 content wave completes structural parity for all seven Korean Chapter 4 documents. Arrays, linked lists, dynamic arrays, RAM and cache behavior, 11 images, two tables, 15 callouts, exercises, and all 21 official code groups are preserved inline. The implemented scope and next release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_6.md](NEXT_CONTENT_RELEASE_PLAN_V1_6.md).
+
+The v1.7 content wave completes structural parity for all six Korean Chapter 5 documents. Stack, queue, and deque operations and implementations, circular indexing, 26 images, three tables, eight callouts, exercises, and all nine official code groups are preserved inline. The implemented scope and next release boundary are recorded in [NEXT_CONTENT_RELEASE_PLAN_V1_7.md](NEXT_CONTENT_RELEASE_PLAN_V1_7.md).
 
 ## Shared Atlas experience
 

@@ -199,14 +199,16 @@ export async function checkBuiltSite(outputRoot) {
           { prefix: "en/docs/chapter_hashing/", count: 6, label: "Vietnamese Chapter 6" },
           { prefix: "en/docs/chapter_tree/", count: 8, label: "Vietnamese Chapter 7" },
           { prefix: "en/docs/chapter_heap/", count: 6, label: "Vietnamese Chapter 8" },
-          { prefix: "en/docs/chapter_graph/", count: 6, label: "Vietnamese Chapter 9" }
+          { prefix: "en/docs/chapter_graph/", count: 6, label: "Vietnamese Chapter 9" },
+          { prefix: "en/docs/chapter_searching/", count: 8, label: "Vietnamese Chapter 10" }
         ]
       : [
           { prefix: "en/docs/chapter_preface/", count: 4, label: "Korean Preface" },
           { prefix: "en/docs/chapter_introduction/", count: 4, label: "Korean Chapter 1" },
           { prefix: "en/docs/chapter_computational_complexity/", count: 7, label: "Korean Chapter 2" },
           { prefix: "en/docs/chapter_data_structure/", count: 7, label: "Korean Chapter 3" },
-          { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Korean Chapter 4" }
+          { prefix: "en/docs/chapter_array_and_linkedlist/", count: 7, label: "Korean Chapter 4" },
+          { prefix: "en/docs/chapter_stack_and_queue/", count: 6, label: "Korean Chapter 5" }
         ];
     for (const releaseUnit of releaseUnits) {
       const releaseDocuments = report.documents.filter((document) => document.source.startsWith(releaseUnit.prefix));
@@ -356,9 +358,28 @@ export async function checkBuiltSite(outputRoot) {
   }
   const vietnameseStack = await readFile(path.join(pilotDirectory, "ngan-xep.html"), "utf8");
   const koreanStack = await readFile(path.join(koreanDirectory, "stack.html"), "utf8");
+  const koreanQueue = await readFile(path.join(koreanDirectory, "queue.html"), "utf8");
+  const koreanDeque = await readFile(path.join(koreanDirectory, "deque.html"), "utf8");
+  const koreanStackExercises = await readFile(path.join(koreanDirectory, "chapter-5-exercises.html"), "utf8");
   const vietnameseHash = await readFile(path.join(pilotDirectory, "bang-bam.html"), "utf8");
   const koreanHash = await readFile(path.join(koreanDirectory, "hash-table.html"), "utf8");
   if (!vietnameseStack.includes("stack_operations.png") || !koreanStack.includes("stack_operations.png") || !vietnameseStack.includes('<pre><code class="language-python"') || !koreanStack.includes('<pre><code class="language-python"')) failures.push("Chapter 5 stack pages are missing diagrams or Python examples");
+  if ((koreanStack.match(/class="content-tabs"/g) || []).length !== 3 ||
+      (koreanQueue.match(/class="content-tabs"/g) || []).length !== 3 ||
+      (koreanDeque.match(/class="content-tabs"/g) || []).length !== 3 ||
+      !koreanStack.includes("linkedlist_stack_step3_pop.png") ||
+      !koreanStack.includes("array_stack_step3_pop.png") ||
+      !koreanStack.includes("<table>") ||
+      !koreanQueue.includes("linkedlist_queue_step3_pop.png") ||
+      !koreanQueue.includes("array_queue_step3_pop.png") ||
+      !koreanQueue.includes("<table>") ||
+      !koreanDeque.includes("linkedlist_deque_step5_pop_first.png") ||
+      !koreanDeque.includes("array_deque_step5_pop_first.png") ||
+      !koreanDeque.includes("<table>") ||
+      !koreanStackExercises.includes('class="admonition admonition-success"') ||
+      !koreanStackExercises.includes("leetcode.com/problems/valid-parentheses")) {
+    failures.push("Korean Chapter 5 is missing complete code tabs, operation media, tables, or exercises");
+  }
   if (!vietnameseHash.includes("hash_table_lookup.png") || !koreanHash.includes("hash_table_lookup.png") ||
       !vietnameseHash.includes('class="math"') || !koreanHash.includes('class="math"') ||
       !vietnameseHash.includes('<pre><code class="language-python"') || !koreanHash.includes('<pre><code class="language-python"')) {
@@ -406,6 +427,11 @@ export async function checkBuiltSite(outputRoot) {
   const vietnameseGraphOperations = await readFile(path.join(pilotDirectory, "thao-tac-do-thi.html"), "utf8");
   const koreanGraph = await readFile(path.join(koreanDirectory, "graph-traversal.html"), "utf8");
   const vietnameseSearch = await readFile(path.join(pilotDirectory, "tim-kiem-nhi-phan.html"), "utf8");
+  const vietnameseSearchInsertion = await readFile(path.join(pilotDirectory, "diem-chen-tim-kiem-nhi-phan.html"), "utf8");
+  const vietnameseSearchEdge = await readFile(path.join(pilotDirectory, "bien-tim-kiem-nhi-phan.html"), "utf8");
+  const vietnameseHashOptimization = await readFile(path.join(pilotDirectory, "toi-uu-tim-kiem-bang-bam.html"), "utf8");
+  const vietnameseSearchRevisited = await readFile(path.join(pilotDirectory, "nhin-lai-thuat-toan-tim-kiem.html"), "utf8");
+  const vietnameseSearchExercises = await readFile(path.join(pilotDirectory, "bai-tap-tim-kiem.html"), "utf8");
   const koreanSearch = await readFile(path.join(koreanDirectory, "binary-search.html"), "utf8");
   if (!vietnameseGraph.includes("graph_bfs.png") || !koreanGraph.includes("graph_bfs.png") || !vietnameseGraph.includes('<pre><code class="language-python"') || !koreanGraph.includes('<pre><code class="language-python"')) failures.push("Chapter 9 graph-traversal pages are missing diagrams or Python examples");
   if (!vietnameseGraphOperations.includes("adjacency_matrix_step5_remove_vertex.png") ||
@@ -419,6 +445,21 @@ export async function checkBuiltSite(outputRoot) {
     failures.push("Vietnamese Chapter 9 is missing graph-operation steps, traversal sequences, tables, code tabs, or callouts");
   }
   if (!vietnameseSearch.includes("binary_search_example.png") || !koreanSearch.includes("binary_search_example.png") || !vietnameseSearch.includes('<pre><code class="language-python"') || !koreanSearch.includes('<pre><code class="language-python"')) failures.push("Chapter 10 binary-search pages are missing diagrams or Python examples");
+  if (!vietnameseSearch.includes("binary_search_step7.png") ||
+      !vietnameseSearch.includes("binary_search_ranges.png") ||
+      (vietnameseSearch.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !vietnameseSearchInsertion.includes("binary_search_insertion_step8.png") ||
+      (vietnameseSearchInsertion.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseSearchInsertion.match(/class="admonition/g) || []).length < 3 ||
+      !vietnameseSearchEdge.includes("binary_search_edge_by_element.png") ||
+      (vietnameseSearchEdge.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !vietnameseHashOptimization.includes("two_sum_hashtable_step3.png") ||
+      (vietnameseHashOptimization.match(/class="content-tabs"/g) || []).length !== 2 ||
+      !vietnameseSearchRevisited.includes("searching_algorithms.png") ||
+      !vietnameseSearchRevisited.includes("<table>") ||
+      (vietnameseSearchExercises.match(/class="admonition/g) || []).length < 5) {
+    failures.push("Vietnamese Chapter 10 is missing search traces, code tabs, comparison media/table, callouts, or exercises");
+  }
 
   const vietnameseSort = await readFile(path.join(pilotDirectory, "sap-xep-nhanh.html"), "utf8");
   const koreanSort = await readFile(path.join(koreanDirectory, "quick-sort.html"), "utf8");
