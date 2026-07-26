@@ -1,6 +1,7 @@
 import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
+import { sourceCodeAppendix } from "./source-code-tabs.mjs";
 import { englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
 const pages = [
@@ -324,21 +325,83 @@ const escapeHtml = (value) => value
   .replaceAll(">", "&gt;")
   .replaceAll('"', "&quot;");
 
-const formatMath = (value) => value
+function readMathGroup(value, start) {
+  while (/\s/.test(value[start] || "")) start += 1;
+  if (value[start] !== "{") return null;
+  let depth = 0;
+  for (let index = start; index < value.length; index += 1) {
+    if (value[index] === "{") depth += 1;
+    if (value[index] === "}") depth -= 1;
+    if (depth === 0) return { content: value.slice(start + 1, index), end: index + 1 };
+  }
+  return null;
+}
+
+function replaceFractions(value) {
+  let output = "";
+  let cursor = 0;
+  while (cursor < value.length) {
+    const fractionIndex = value.indexOf("\\frac", cursor);
+    if (fractionIndex < 0) return output + value.slice(cursor);
+    const numerator = readMathGroup(value, fractionIndex + "\\frac".length);
+    const denominator = numerator && readMathGroup(value, numerator.end);
+    if (!numerator || !denominator) {
+      output += value.slice(cursor, fractionIndex) + "frac";
+      cursor = fractionIndex + "\\frac".length;
+      continue;
+    }
+    output += value.slice(cursor, fractionIndex);
+    output += `(${replaceFractions(numerator.content)})/(${replaceFractions(denominator.content)})`;
+    cursor = denominator.end;
+  }
+  return output;
+}
+
+const formatMath = (value) => replaceFractions(value)
+  .replace(/\\begin\s*\{[^{}]+\}/g, "")
+  .replace(/\\end\s*\{[^{}]+\}/g, "")
   .replace(/\\(?:mathrm|text)\s*\{([^{}]*)\}/g, "$1")
+  .replace(/\\hat\s*\{([^{}]*)\}/g, "$1̂")
+  .replaceAll("\\Rightarrow", "⇒")
+  .replaceAll("\\rightarrow", "→")
+  .replaceAll("\\leftarrow", "←")
   .replaceAll("\\left", "")
   .replaceAll("\\right", "")
   .replace(/\\([{}])/g, "$1")
+  .replaceAll("\\newline", "\n")
+  .replaceAll("\\infty", "∞")
+  .replaceAll("\\approx", "≈")
+  .replaceAll("\\subset", "⊂")
+  .replaceAll("\\pm", "±")
+  .replaceAll("\\ne", "≠")
+  .replace(/\\in\b/g, "∈")
+  .replaceAll("\\sum", "Σ")
+  .replaceAll("\\prod", "Π")
+  .replaceAll("\\bmod", " mod ")
+  .replaceAll("\\min", "min")
+  .replaceAll("\\max", "max")
+  .replaceAll("\\ll", "≪")
+  .replaceAll("\\gg", "≫")
+  .replaceAll("\\quad", "  ")
+  .replaceAll("\\ldots", "…")
   .replaceAll("\\log", "log")
   .replaceAll("\\Omega", "Ω")
   .replaceAll("\\Theta", "Θ")
   .replaceAll("\\times", "×")
   .replaceAll("\\cdot", "·")
   .replaceAll("\\dots", "…")
-  .replace(/\\leq?\b/g, "≤")
-  .replace(/\\geq?\b/g, "≥")
+  .replace(/\\leq?/g, "≤")
+  .replace(/\\geq?/g, "≥")
   .replaceAll("\\lfloor", "⌊")
-  .replaceAll("\\rfloor", "⌋");
+  .replaceAll("\\rfloor", "⌋")
+  .replaceAll("\\;", " ")
+  .replace(/\\(?=\s)/g, "")
+  .replace(/\\([A-Za-z]+)/g, "$1")
+  .replaceAll("&", "")
+  .trim();
+
+const prepareMath = (value) => value.replaceAll("\\newline", "\\\\");
+const encodeMath = (value) => Buffer.from(prepareMath(value), "utf8").toString("base64");
 
 function renderInline(value) {
   const tokens = [];
@@ -351,7 +414,7 @@ function renderInline(value) {
   const protectedValue = value
     .replace(/`([^`]+)`/g, (_, code) => protect(`<code>${escapeHtml(code)}</code>`))
     .replace(/\$([^$]+)\$/g, (_, expression) => {
-      return protect(`<span class="math">${escapeHtml(formatMath(expression))}</span>`);
+      return protect(`<span class="math" data-math="${encodeMath(expression)}">${escapeHtml(formatMath(expression))}</span>`);
     })
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
       if (!safeUrl.test(url)) return escapeHtml(label);
@@ -483,7 +546,8 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0 }) {
       }
       if (index >= lines.length) throw new Error(`Unclosed display math in ${sourcePath}`);
       index += 1;
-      output.push(`<div class="math-block" role="math">${escapeHtml(formatMath(expression.join(" ")))}</div>`);
+      const rawExpression = expression.join("\n");
+      output.push(`<div class="math-block" role="math" data-math="${encodeMath(rawExpression)}">${escapeHtml(formatMath(rawExpression))}</div>`);
       continue;
     }
 
@@ -603,8 +667,10 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/vi/learn/${canonicalName}">
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
-  <link rel="stylesheet" href="book.css?v=20260726a">
-  <script src="book.js?v=20260726a" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
+  <link rel="stylesheet" href="book.css?v=20260726b">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
+  <script src="book.js?v=20260726b" defer></script>
 </head>
 <body data-translation-status="${vietnameseDocument.status}">
   <a class="skip-link" href="#article">Bỏ qua để đến bài đọc</a>
@@ -765,7 +831,10 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
       throw new Error(`Vietnamese registry identity does not match reader page ${page.source}`);
     }
     const markdown = await readFile(path.join(projectRoot, page.target), "utf8");
-    const html = pageTemplate(page, renderMarkdown(markdown, page.target), pageIndex, registry.sourceCommit, vietnameseDocument, registry.byLanguage.ko.get(page.source));
+    const sourceMarkdown = await readFile(path.join(projectRoot, page.source), "utf8");
+    const codeAppendix = await sourceCodeAppendix({ projectRoot, sourcePath: page.source, sourceMarkdown, locale: "vi" });
+    const completeMarkdown = codeAppendix ? `${markdown.trimEnd()}\n\n${codeAppendix}` : markdown;
+    const html = pageTemplate(page, renderMarkdown(completeMarkdown, page.target), pageIndex, registry.sourceCommit, vietnameseDocument, registry.byLanguage.ko.get(page.source));
     await writeFile(path.join(bookOutput, outputName), html);
   }
 

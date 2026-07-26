@@ -62,6 +62,32 @@ document.addEventListener("keydown", (event) => {
 mobileReader.addEventListener("change", syncMenu);
 syncMenu();
 
+function decodeMath(value) {
+  try {
+    const bytes = Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  } catch {
+    return null;
+  }
+}
+
+function renderMath() {
+  if (!globalThis.katex?.render) return;
+  for (const element of document.querySelectorAll("[data-math]")) {
+    const expression = decodeMath(element.dataset.math);
+    if (!expression) continue;
+    globalThis.katex.render(expression, element, {
+      displayMode: element.classList.contains("math-block"),
+      throwOnError: false,
+      strict: "ignore",
+      trust: false,
+      output: "htmlAndMathml"
+    });
+  }
+}
+
+renderMath();
+
 const contentTabGroups = [...document.querySelectorAll("[data-content-tabs]")];
 const supportedCodeLanguages = new Set(["Python", "C++", "Java", "C#", "Go", "Swift", "JS", "TS", "Dart", "Rust", "C", "Kotlin", "Ruby"]);
 const readStoredCodeLanguage = () => {

@@ -8,6 +8,7 @@ import { interactiveLocale as koreanInteractiveLocale } from "../ko/atlas-locale
 import { createTranslationRegistry, translationReadinessFailures } from "./translation-registry.mjs";
 import { resolveSiteRequest } from "./server-path.mjs";
 import { renderMarkdown } from "./build-vi-book.mjs";
+import { extractSourceSnippet, sourceCodeAppendix, sourceCodeLanguages, sourceDirectiveTabs } from "./source-code-tabs.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
@@ -30,6 +31,7 @@ const requiredFiles = [
   "KOREAN_TRANSLATION_PLAN.md",
   "ko/atlas-locale.mjs", "ko/README.md", "ko/CONTRIBUTING.md", "ko/glossary.md", "ko/style-guide.md", "ko/translation-status.json",
   "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs",
+  "scripts/source-code-tabs.mjs",
   "scripts/server-path.mjs"
 ];
 
@@ -110,6 +112,60 @@ const illustrationTabs = renderMarkdown(`=== "<1>"
     Second step`, "vi/docs/test.md");
 if (!illustrationTabs.includes('aria-label="Các bước minh họa"') || illustrationTabs.includes('data-tab-sync="language"')) {
   failures.push("Shared Markdown renderer does not keep illustration tabs independent");
+}
+
+const sourceCodeTabsFixture = await sourceDirectiveTabs({
+  projectRoot,
+  sourcePath: "en/docs/chapter_array_and_linkedlist/array.md",
+  file: "array",
+  className: "",
+  functionName: "random_access"
+});
+if ((sourceCodeTabsFixture.match(/^=== "/gm) || []).length !== sourceCodeLanguages.length ||
+    !sourceCodeTabsFixture.includes("def random_access(") ||
+    !sourceCodeTabsFixture.includes("int randomAccess(") ||
+    !sourceCodeTabsFixture.includes('=== "Ruby"')) {
+  failures.push("Official source directives do not expand to all 13 programming-language snippets");
+}
+const arraySourceMarkdown = await readFile(path.join(projectRoot, "en", "docs", "chapter_array_and_linkedlist", "array.md"), "utf8");
+const vietnameseCodeAppendix = await sourceCodeAppendix({
+  projectRoot,
+  sourcePath: "en/docs/chapter_array_and_linkedlist/array.md",
+  sourceMarkdown: arraySourceMarkdown,
+  locale: "vi"
+});
+if (!vietnameseCodeAppendix.includes("## Các ví dụ mã nguồn chính thức") ||
+    (vietnameseCodeAppendix.match(/^=== "/gm) || []).length !== 6 * sourceCodeLanguages.length) {
+  failures.push("Localized readers do not restore every official multilingual source-code group");
+}
+const dartQuickSort = await readFile(path.join(projectRoot, "en", "codes", "dart", "chapter_sorting", "quick_sort.dart"), "utf8");
+const dartLanguage = sourceCodeLanguages.find((language) => language.label === "Dart");
+const standardPartition = extractSourceSnippet(dartQuickSort, { className: "quick_sort", functionName: "partition", language: dartLanguage, file: "quick_sort" });
+const medianPartition = extractSourceSnippet(dartQuickSort, { className: "quick_sort_median", functionName: "partition", language: dartLanguage, file: "quick_sort" });
+if (!standardPartition?.includes("Use nums[left] as the pivot") ||
+    !medianPartition?.includes("median of three") ||
+    standardPartition === medianPartition) {
+  failures.push("Source-code extraction does not respect the requested class when method names repeat");
+}
+
+const renderedMath = renderMarkdown(String.raw`Inline $x \ne 0$.
+
+$$
+\begin{aligned}
+a & \rightarrow b \newline
+c & \in \{1, 2\}
+\end{aligned}
+$$`, "en/docs/test.md");
+const mathSources = [...renderedMath.matchAll(/data-math="([^"]+)"/g)].map((match) => Buffer.from(match[1], "base64").toString("utf8"));
+if (mathSources.length !== 2 ||
+    !mathSources[0].includes(String.raw`\ne`) ||
+    !mathSources[1].includes(String.raw`\begin{aligned}`) ||
+    mathSources[1].includes(String.raw`\newline`) ||
+    !mathSources[1].includes("\\\\") ||
+    !renderedMath.includes("→") ||
+    renderedMath.includes(" arrow ") ||
+    /<(?:span|div) class="(?:math|math-block)"[^>]*>[^<]*\\[A-Za-z]+/.test(renderedMath)) {
+  failures.push("Shared Markdown renderer does not preserve complex math for KaTeX with a readable fallback");
 }
 
 const validServerPath = resolveSiteRequest(path.join(projectRoot, "dist"), "/en/");
@@ -259,6 +315,11 @@ if (!bookCss.includes(".content-tablist") || !bookCss.includes(".content-tabpane
     !bookJs.includes("hello-algo-code-language") || !bookJs.includes("aria-selected") ||
     !bookJs.includes("ArrowLeft") || !bookJs.includes("ArrowRight")) {
   failures.push("Reader code tabs are missing accessible styles, persistence, or keyboard navigation");
+}
+if (!bookCss.includes(".math-block .katex-display") || !bookJs.includes("globalThis.katex?.render") ||
+    !bookJs.includes("TextDecoder") || !bookJs.includes('querySelectorAll("[data-math]")') ||
+    !bookJs.includes('output: "htmlAndMathml"')) {
+  failures.push("Reader math is missing KaTeX rendering, accessible output, or display styles");
 }
 if (translationStatus.sourceCommit !== "a3166c201853739213d5a3a31b1e4a237aaf1076") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");

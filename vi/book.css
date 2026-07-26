@@ -106,7 +106,10 @@ pre code { padding: 0; border: 0; background: transparent; color: color-mix(in s
 .content-tabpanel > :first-child { margin-top: 0; }
 .content-tabpanel > :last-child { margin-bottom: 0; }
 .content-tabpanel > pre, .content-tabpanel > figure { border-radius: .6rem; }
-.math-block { margin: 1.5rem 0; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); border-radius: .7rem; background: var(--surface-2); color: var(--violet); font: .9rem/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; text-align: center; white-space: nowrap; }
+.math-block { margin: 1.5rem 0; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); border-radius: .7rem; background: var(--surface-2); color: var(--violet); font: .9rem/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; text-align: center; white-space: pre; }
+.math .katex { font-size: 1em; }
+.math-block .katex { font-size: 1.05em; }
+.math-block .katex-display { margin: 0; }
 article a { color: var(--blue-2); text-underline-offset: .18rem; }
 article ul, article ol { padding-left: 1.35rem; }
 article li { margin: .55rem 0; padding-left: .2rem; }

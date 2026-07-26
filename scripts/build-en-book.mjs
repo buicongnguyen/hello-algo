@@ -2,6 +2,7 @@ import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
 import { renderMarkdown } from "./build-vi-book.mjs";
+import { sourceDirectiveTabs } from "./source-code-tabs.mjs";
 import { englishReaderCatalog, englishReaderRoutes, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -41,7 +42,7 @@ function stripMkDocsAttributes(value) {
   );
 }
 
-function prepareEnglishMarkdown(markdown, source, sourceCommit) {
+async function prepareEnglishMarkdown(markdown, source, projectRoot) {
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const output = [];
   for (let index = 0; index < lines.length;) {
@@ -51,10 +52,7 @@ function prepareEnglishMarkdown(markdown, source, sourceCommit) {
         throw new Error(`Invalid source-code directive in ${source} at line ${index + 1}`);
       }
       const [, file, className, functionName] = directive;
-      const chapter = path.posix.basename(path.posix.dirname(source));
-      const symbol = functionName || className;
-      const sourceUrl = `https://github.com/krahets/hello-algo/blob/${sourceCommit}/en/codes/javascript/${chapter}/${file}.js`;
-      output.push(`[Open JavaScript implementation: ${file}.js${symbol ? ` · ${symbol}` : ""}](${sourceUrl})`);
+      output.push(await sourceDirectiveTabs({ projectRoot, sourcePath: source, file, className, functionName }));
       index += 3;
       continue;
     }
@@ -111,7 +109,10 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
   <meta name="description" content="${escapeHtml(page.description)}">
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/en/learn/${page.slug}.html">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo English</title>
-  <link rel="stylesheet" href="book.css?v=20260726a"><script src="book.js?v=20260726a" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
+  <link rel="stylesheet" href="book.css?v=20260726b">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
+  <script src="book.js?v=20260726b" defer></script>
 </head>
 <body data-translation-status="source">
   <a class="skip-link" href="#article">Skip to the article</a>
@@ -185,7 +186,7 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
   for (const [index, page] of pages.entries()) {
     const vietnameseDocument = registry.byLanguage.vi.get(page.source);
     const koreanDocument = registry.byLanguage.ko.get(page.source);
-    const markdown = prepareEnglishMarkdown(page.markdown, page.source, registry.sourceCommit);
+    const markdown = await prepareEnglishMarkdown(page.markdown, page.source, projectRoot);
     const body = renderMarkdown(rewriteInternalLinks(markdown, page.source), page.source);
     await writeFile(path.join(bookOutput, `${page.slug}.html`), pageTemplate(pages, page, body, index, registry.sourceCommit, vietnameseDocument, koreanDocument));
     await access(path.join(bookOutput, `${page.slug}.html`), constants.R_OK);

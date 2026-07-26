@@ -2,6 +2,7 @@ import { access, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
 import { renderMarkdown } from "./build-vi-book.mjs";
+import { sourceCodeAppendix } from "./source-code-tabs.mjs";
 import { englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 
 const pages = [
@@ -151,7 +152,10 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
   <meta name="description" content="${escapeHtml(page.description)}">
   <link rel="canonical" href="https://buicongnguyen.github.io/hello-algo/ko/learn/${outputName}">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo 한국어</title>
-  <link rel="stylesheet" href="book.css?v=20260726a"><script src="book.js?v=20260726a" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
+  <link rel="stylesheet" href="book.css?v=20260726b">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
+  <script src="book.js?v=20260726b" defer></script>
 </head>
 <body data-translation-status="${koreanDocument.status}">
   <a class="skip-link" href="#article">본문으로 건너뛰기</a>
@@ -208,10 +212,13 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
     const vietnameseDocument = registry.byLanguage.vi.get(page.source);
     if (!koreanDocument || !vietnameseDocument) throw new Error(`Korean reader page has no shared translation identity: ${page.source}`);
     const markdown = await readFile(path.join(projectRoot, page.target), "utf8");
+    const sourceMarkdown = await readFile(path.join(projectRoot, page.source), "utf8");
+    const codeAppendix = await sourceCodeAppendix({ projectRoot, sourcePath: page.source, sourceMarkdown, locale: "ko" });
+    const completeMarkdown = codeAppendix ? `${markdown.trimEnd()}\n\n${codeAppendix}` : markdown;
     const outputName = page.slug === "index" ? "index.html" : `${page.slug}.html`;
     const expectedRoute = `ko/learn/${outputName === "index.html" ? "" : outputName}`;
     if (koreanDocument.target !== page.target || koreanDocument.route !== expectedRoute) throw new Error(`Korean registry identity does not match reader page ${page.source}`);
-    await writeFile(path.join(bookOutput, outputName), pageTemplate(page, renderMarkdown(markdown, page.target), index, registry.sourceCommit, koreanDocument, vietnameseDocument));
+    await writeFile(path.join(bookOutput, outputName), pageTemplate(page, renderMarkdown(completeMarkdown, page.target), index, registry.sourceCommit, koreanDocument, vietnameseDocument));
     await access(path.join(bookOutput, outputName), constants.R_OK);
   }
   return { pageCount: pages.length, sourceCommit: registry.sourceCommit, status: "draft" };

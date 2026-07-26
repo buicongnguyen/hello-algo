@@ -1,7 +1,13 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
+import { sourceCodeLanguages } from "./source-code-tabs.mjs";
 import { createTranslationRegistry, englishReaderHref, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
+
+const katexCssUrl = "https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css";
+const katexCssIntegrity = "sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1";
+const katexScriptUrl = "https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js";
+const katexScriptIntegrity = "sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7";
 
 async function collectHtml(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -50,6 +56,37 @@ function sourceTabStats(markdown) {
   return { groups, tabs };
 }
 
+function sourceCodeFenceCount(markdown) {
+  let open = false;
+  let count = 0;
+  for (const line of markdown.replaceAll("\r\n", "\n").split("\n")) {
+    const fence = line.trimStart().match(/^```([^\s`]*)/);
+    if (!fence) continue;
+    if (!open) {
+      if (fence[1] !== "src") count += 1;
+      open = true;
+    } else {
+      open = false;
+    }
+  }
+  return count;
+}
+
+function localizedCodeStats(sourceMarkdown, targetMarkdown, html) {
+  const sourceDirectives = (sourceMarkdown.match(/^```src\s*$/gm) || []).length;
+  const targetTabs = sourceTabStats(targetMarkdown);
+  return {
+    expectedGroups: targetTabs.groups + sourceDirectives,
+    expectedTabs: targetTabs.tabs + sourceDirectives * sourceCodeLanguages.length,
+    expectedCodeBlocks: sourceCodeFenceCount(targetMarkdown) + sourceDirectives * sourceCodeLanguages.length,
+    renderedGroups: (html.match(/class="content-tabs"/g) || []).length,
+    renderedTabs: (html.match(/role="tab"/g) || []).length,
+    renderedPanels: (html.match(/role="tabpanel"/g) || []).length,
+    selectedTabs: (html.match(/aria-selected="true"/g) || []).length,
+    renderedCodeBlocks: (html.match(/<pre><code(?: class="language-[^"]+")?>/g) || []).length
+  };
+}
+
 export async function checkBuiltSite(outputRoot) {
   const failures = [];
   const htmlFiles = await collectHtml(outputRoot);
@@ -61,8 +98,19 @@ export async function checkBuiltSite(outputRoot) {
     if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml) && !html.includes("app.js?v=20260725a")) {
       failures.push(`${relativeHtml} does not use the current Atlas script cache key`);
     }
-    if (/^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml) && (!html.includes("book.js?v=20260726a") || !html.includes("book.css?v=20260726a"))) {
+    const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
+    if (readerPage && (!html.includes("book.js?v=20260726b") || !html.includes("book.css?v=20260726b"))) {
       failures.push(`${relativeHtml} does not use the current reader asset cache keys`);
+    }
+    if (readerPage && (!html.includes(`href="${katexCssUrl}" integrity="${katexCssIntegrity}"`) ||
+        !html.includes(`src="${katexScriptUrl}" integrity="${katexScriptIntegrity}"`))) {
+      failures.push(`${relativeHtml} does not load the pinned KaTeX assets with integrity checks`);
+    }
+    if (readerPage) {
+      for (const match of html.matchAll(/<(?:span|div) class="(?:math|math-block)"[^>]*>([^<]*)<\/(?:span|div)>/g)) {
+        if (!match[0].includes('data-math="')) failures.push(`${relativeHtml} has a math node without an encoded source expression`);
+        if (/\\[A-Za-z]+/.test(match[1])) failures.push(`${relativeHtml} exposes an unrendered math command: ${match[1].slice(0, 80)}`);
+      }
     }
 
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
@@ -118,11 +166,22 @@ export async function checkBuiltSite(outputRoot) {
   for (const document of translationStatus.documents) {
     const pilotPage = routeFileName(document.route);
     const html = await readFile(path.join(pilotDirectory, pilotPage), "utf8");
+    const sourceMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.source), "utf8");
+    const targetMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.target), "utf8");
+    const codeStats = localizedCodeStats(sourceMarkdown, targetMarkdown, html);
+    const proseHtml = html.replace(/<pre><code[\s\S]*?<\/code><\/pre>/g, "");
+    if (codeStats.renderedGroups !== codeStats.expectedGroups ||
+        codeStats.renderedTabs !== codeStats.expectedTabs ||
+        codeStats.renderedPanels !== codeStats.expectedTabs ||
+        codeStats.selectedTabs !== codeStats.expectedGroups ||
+        codeStats.renderedCodeBlocks !== codeStats.expectedCodeBlocks) {
+      failures.push(`${pilotPage} does not preserve all authored and official multilingual code examples`);
+    }
     if (!html.includes(`data-translation-status="${document.status}"`)) failures.push(`${pilotPage} does not display its manifest translation status`);
-    if (/\$[^$<>]+\$/.test(html)) failures.push(`${pilotPage} contains unrendered inline math`);
-    if (html.includes("```") || html.includes("```src")) failures.push(`${pilotPage} contains an unrendered code fence`);
-    if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(html)) failures.push(`${pilotPage} contains unrendered MkDocs-only syntax`);
-    if (/\\(?:Omega|Theta|times|cdot|dots|le|ge|lfloor|rfloor)\b/.test(html)) failures.push(`${pilotPage} contains an unreadable raw math command`);
+    if (/\$[^$<>]+\$/.test(proseHtml)) failures.push(`${pilotPage} contains unrendered inline math`);
+    if (proseHtml.includes("```") || proseHtml.includes("```src")) failures.push(`${pilotPage} contains an unrendered code fence`);
+    if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(proseHtml)) failures.push(`${pilotPage} contains unrendered MkDocs-only syntax`);
+    if (/\\(?:Omega|Theta|times|cdot|dots|le|ge|lfloor|rfloor)\b/.test(proseHtml)) failures.push(`${pilotPage} contains an unreadable raw math command`);
     if (!html.includes("Chuyển ngữ, chọn lọc ví dụ và biên tập bổ sung") || !html.includes("krahets và cộng đồng đóng góp")) {
       failures.push(`${pilotPage} does not disclose source authorship, translation, selection, and editorial modification`);
     }
@@ -152,12 +211,23 @@ export async function checkBuiltSite(outputRoot) {
   for (const document of koreanStatus.documents) {
     const koreanPage = routeFileName(document.route);
     const pageHtml = await readFile(path.join(koreanDirectory, koreanPage), "utf8");
+    const sourceMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.source), "utf8");
+    const targetMarkdown = await readFile(path.resolve(import.meta.dirname, "..", document.target), "utf8");
+    const codeStats = localizedCodeStats(sourceMarkdown, targetMarkdown, pageHtml);
+    const proseHtml = pageHtml.replace(/<pre><code[\s\S]*?<\/code><\/pre>/g, "");
+    if (codeStats.renderedGroups !== codeStats.expectedGroups ||
+        codeStats.renderedTabs !== codeStats.expectedTabs ||
+        codeStats.renderedPanels !== codeStats.expectedTabs ||
+        codeStats.selectedTabs !== codeStats.expectedGroups ||
+        codeStats.renderedCodeBlocks !== codeStats.expectedCodeBlocks) {
+      failures.push(`${koreanPage} does not preserve all authored and official multilingual code examples`);
+    }
     const vietnameseDocument = translationRegistry.byLanguage.vi.get(document.source);
     const expectedVietnameseAlternate = vietnameseDocument && `href="${readerHref(vietnameseDocument)}" lang="vi" hreflang="vi"`;
     const expectedEnglishAlternate = `href="${englishReaderHref(document.source)}" lang="en" hreflang="en"`;
     if (!pageHtml.includes(`data-translation-status="${document.status}"`)) failures.push(`${koreanPage} does not display its manifest translation status`);
     if (!pageHtml.includes('hreflang="ko"') || !expectedVietnameseAlternate || !pageHtml.includes(expectedVietnameseAlternate) || !pageHtml.includes(expectedEnglishAlternate)) failures.push(`${koreanPage} does not expose exact KO / VI / EN counterparts`);
-    if (pageHtml.includes("```") || /\$[^$<>]+\$/.test(pageHtml)) failures.push(`${koreanPage} contains unrendered Markdown`);
+    if (proseHtml.includes("```") || /\$[^$<>]+\$/.test(proseHtml)) failures.push(`${koreanPage} contains unrendered Markdown`);
   }
   const koreanTime = await readFile(path.join(koreanDirectory, "time-complexity.html"), "utf8");
   if (!koreanTime.includes('<pre><code class="language-python"') || !koreanTime.includes('class="math-block"')) failures.push("Korean time-complexity page is missing rendered Python or display mathematics");
@@ -224,14 +294,17 @@ export async function checkBuiltSite(outputRoot) {
     const englishPage = await readFile(path.join(outputRoot, route), "utf8");
     const sourceMarkdown = await readFile(path.resolve(import.meta.dirname, "..", source), "utf8");
     const sourceTabs = sourceTabStats(sourceMarkdown);
+    const sourceDirectives = (sourceMarkdown.match(/^```src\s*$/gm) || []).length;
+    const expectedGroups = sourceTabs.groups + sourceDirectives;
+    const expectedTabs = sourceTabs.tabs + sourceDirectives * sourceCodeLanguages.length;
     const renderedGroups = (englishPage.match(/class="content-tabs"/g) || []).length;
     const renderedTabs = (englishPage.match(/role="tab"/g) || []).length;
     const renderedPanels = (englishPage.match(/role="tabpanel"/g) || []).length;
     const selectedTabs = (englishPage.match(/aria-selected="true"/g) || []).length;
-    expectedEnglishTabGroups += sourceTabs.groups;
-    expectedEnglishTabs += sourceTabs.tabs;
-    if (renderedGroups !== sourceTabs.groups || renderedTabs !== sourceTabs.tabs || renderedPanels !== sourceTabs.tabs || selectedTabs !== sourceTabs.groups) {
-      failures.push(`${route} does not preserve all ${sourceTabs.groups} source tab groups and ${sourceTabs.tabs} choices`);
+    expectedEnglishTabGroups += expectedGroups;
+    expectedEnglishTabs += expectedTabs;
+    if (renderedGroups !== expectedGroups || renderedTabs !== expectedTabs || renderedPanels !== expectedTabs || selectedTabs !== expectedGroups) {
+      failures.push(`${route} does not preserve its ${expectedGroups} code groups and ${expectedTabs} tab choices`);
     }
     const vietnameseDocument = translationRegistry.byLanguage.vi.get(source);
     const koreanDocument = translationRegistry.byLanguage.ko.get(source);
@@ -277,9 +350,9 @@ export async function checkBuiltSite(outputRoot) {
   const englishGreedyExercises = await readFile(path.join(englishDirectory, "greedy-exercises.html"), "utf8");
   if (!englishTree.includes("binary_tree_definition.png") || !englishHeap.includes("min_heap_and_max_heap.png") || !englishGraph.includes("graph_bfs.png") || !englishSearch.includes("binary_search_example.png") || !englishSort.includes("quick_sort_overview.png") || !englishDivide.includes("hanota_example.png") || !englishBacktracking.includes("solution_4_queens.png") || !englishDynamicProgramming.includes("edit_distance_example.png") || !englishGreedy.includes("fractional_knapsack_example.png") || !englishAppendix.includes("vscode_installation.png") || !englishGlossary.includes("<table>") || !englishGlossary.includes("greedy algorithm") || !englishTree.includes("Source-faithful English edition")) failures.push("Local English pages are missing official source content or attribution");
   if (!englishTree.includes("2^{h+1} - 1") || !englishSubsetSum.includes("{3, 4, 5}")) failures.push("English preprocessing removed mathematical braces or exponents");
-  if (!englishSubsetSum.includes("Open JavaScript implementation: subset_sum_i.js · subset_sum_i") || !englishSubsetSum.includes(`/blob/${translationRegistry.sourceCommit}/en/codes/javascript/chapter_backtracking/subset_sum_i.js`)) failures.push("English source directives do not link to their locked JavaScript implementations");
+  if (!englishSubsetSum.includes("def subset_sum_i(") || !englishSubsetSum.includes("function subsetSumI(") || !englishSubsetSum.includes('data-tab-label="Ruby"')) failures.push("English source directives do not render their multilingual implementations");
   if (!englishTree.includes("language-cpp") || !englishTree.includes("language-java") || !englishTree.includes("language-python")) failures.push("Local English code examples do not preserve the official programming-language tabs");
-  if (expectedEnglishTabGroups === 0 || expectedEnglishTabs !== 708 || !englishSuggestions.includes('role="tablist" aria-label="Programming language examples"') || !englishSuggestions.includes('data-tab-label="C++"') || !englishSuggestions.includes('data-tab-label="Ruby"')) failures.push("English tab audit is incomplete or the suggestions language selector is missing");
+  if (expectedEnglishTabGroups === 0 || expectedEnglishTabs !== 2437 || !englishSuggestions.includes('role="tablist" aria-label="Programming language examples"') || !englishSuggestions.includes('data-tab-label="C++"') || !englishSuggestions.includes('data-tab-label="Ruby"')) failures.push("English tab audit is incomplete or the suggestions language selector is missing");
   if (!englishBookCss.includes(".content-tablist") || !englishBookJs.includes("hello-algo-code-language") || !englishBookJs.includes("ArrowRight")) failures.push("Reader assets do not style or operate accessible synchronized tabs");
   if (!englishTree.includes('class="visualization-link"') || !englishTree.includes("Open interactive code visualization")) failures.push("Local English Python Tutor examples are not exposed as usable visualization links");
   if (!englishBookCss.includes("overflow-wrap: anywhere")) failures.push("Reader CSS does not contain long official visualization URLs");
