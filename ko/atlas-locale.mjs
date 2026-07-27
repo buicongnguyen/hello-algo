@@ -12,6 +12,7 @@ export const htmlTranslations = {
   "Sorting": "정렬",
   "Chapters": "장별 학습",
   "Original book ↗": "원본 도서 ↗",
+  "Modern C++20 ↗": "모던 C++20 ↗",
   "Switch color theme": "색상 테마 전환",
   "Light theme": "밝은 테마",
   "Visual data structures &amp; algorithms guide": "자료구조와 알고리즘을 위한 시각적 안내서",

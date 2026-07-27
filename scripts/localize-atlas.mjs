@@ -16,6 +16,7 @@ export function localizeAtlas(sourceEnglish, config) {
     .replace('<title>Hello Algo Atlas</title>', `<title>${config.title}</title>`)
     .replace('href="styles.css', 'href="../styles.css')
     .replaceAll('src="en/docs/', 'src="../en/docs/')
+    .replaceAll("https://buicongnguyen.github.io/Modern_c_20/en/", config.modernCppUrl)
     .replaceAll('<a href="learn/">English reader</a>', `<a href="learn/">${config.readerLabel}</a>`);
 
   const translations = Object.entries(config.htmlTranslations).sort(([a], [b]) => b.length - a.length);
@@ -32,7 +33,7 @@ export function localizeAtlas(sourceEnglish, config) {
   );
   html = html.replace(
     /<div class="footer-links">.*?<\/div>/,
-    `<div class="footer-links"><a href="learn/">${config.readerLabel}</a><a href="${config.planUrl}" target="_blank" rel="noreferrer">${config.planLabel}</a><a href="https://github.com/krahets/hello-algo" target="_blank" rel="noreferrer">${config.repositoryLabel}</a></div>`
+    `<div class="footer-links"><a href="learn/">${config.readerLabel}</a><a href="${config.modernCppUrl}" target="_blank" rel="noreferrer">${config.modernCppLabel}</a><a href="${config.planUrl}" target="_blank" rel="noreferrer">${config.planLabel}</a><a href="https://github.com/krahets/hello-algo" target="_blank" rel="noreferrer">${config.repositoryLabel}</a></div>`
   );
   if (html.includes('src="app.js') || html.includes('src="en/docs/')) throw new Error(`${config.code} Atlas contains an unadjusted English asset path`);
   return html;

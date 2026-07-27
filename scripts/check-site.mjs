@@ -20,6 +20,7 @@ import {
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const requiredFiles = [
   "index.html",
+  "README.md",
   "styles.css",
   "app.js",
   ".nojekyll",
@@ -76,6 +77,7 @@ for (const relativePath of requiredFiles) {
 }
 
 const html = await readFile(path.join(projectRoot, "index.html"), "utf8");
+const rootReadme = await readFile(path.join(projectRoot, "README.md"), "utf8");
 const css = await readFile(path.join(projectRoot, "styles.css"), "utf8");
 const js = await readFile(path.join(projectRoot, "app.js"), "utf8");
 const viHtml = localizeVietnameseAtlas(html);
@@ -382,6 +384,16 @@ if (!viHtml.includes('<html lang="vi">') || !viHtml.includes('href="../en/"')) {
   failures.push("Vietnamese page or English language option is missing");
 }
 if (!koHtml.includes('<html lang="ko">') || !koHtml.includes('href="../vi/"') || !koHtml.includes('href="../en/"')) failures.push("Korean Atlas or its language options are missing");
+if (!rootReadme.includes("https://buicongnguyen.github.io/Modern_c_20/vi/")) {
+  failures.push("Default README does not link to the Modern C++20 companion");
+}
+if (!html.includes('href="https://buicongnguyen.github.io/Modern_c_20/en/"') ||
+    !viHtml.includes('href="https://buicongnguyen.github.io/Modern_c_20/vi/"') ||
+    !viHtml.includes("C++20 hiện đại ↗") ||
+    !koHtml.includes('href="https://buicongnguyen.github.io/Modern_c_20/ko/"') ||
+    !koHtml.includes("모던 C++20 ↗")) {
+  failures.push("Atlas pages do not expose the localized Modern C++20 companion");
+}
 const englishSectionIds = [...html.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);
 const vietnameseSectionIds = [...viHtml.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);
 const koreanSectionIds = [...koHtml.matchAll(/<section[^>]+id="([^"]+)"/g)].map((match) => match[1]);

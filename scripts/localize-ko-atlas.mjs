@@ -17,6 +17,8 @@ export function localizeKoreanAtlas(sourceEnglish) {
     </div>`,
     readerLabel: "한국어 읽기",
     originalBookLabel: "원본 도서 ↗",
+    modernCppUrl: "https://buicongnguyen.github.io/Modern_c_20/ko/",
+    modernCppLabel: "모던 C++20 ↗",
     planUrl: "https://github.com/buicongnguyen/hello-algo/blob/main/KOREAN_TRANSLATION_PLAN.md",
     planLabel: "번역 계획 ↗",
     repositoryLabel: "원본 저장소 ↗"

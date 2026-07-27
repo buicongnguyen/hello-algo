@@ -117,8 +117,12 @@ export async function checkBuiltSite(outputRoot) {
         : relativeHtml.startsWith("ko/")
           ? "밝은 테마"
           : "Light theme";
+      const companionLanguage = relativeHtml.slice(0, 2);
       if (!html.includes(`id="theme-toggle" type="button" aria-label="${themeLabel}" title="${themeLabel}" aria-pressed="false"`)) {
         failures.push(`${relativeHtml} does not expose the stable localized Atlas theme state`);
+      }
+      if (!html.includes(`https://buicongnguyen.github.io/Modern_c_20/${companionLanguage}/`)) {
+        failures.push(`${relativeHtml} does not link to its localized Modern C++20 companion`);
       }
     }
     const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
@@ -131,6 +135,7 @@ export async function checkBuiltSite(outputRoot) {
         : relativeHtml.startsWith("ko/")
           ? "밝은 테마"
           : "Light theme";
+      const companionLanguage = relativeHtml.slice(0, 2);
       const headingIds = [...html.matchAll(/<h[1-4] id="([^"]+)">/g)].map((match) => match[1]);
       const headingAnchors = [...html.matchAll(/<a class="heading-anchor" href="#([^"]+)"/g)].map((match) => match[1]);
       if (!headingIds.length || JSON.stringify(headingIds) !== JSON.stringify(headingAnchors)) {
@@ -149,6 +154,9 @@ export async function checkBuiltSite(outputRoot) {
       }
       if (!html.includes(`id="reader-theme" type="button" aria-label="${themeLabel}" aria-pressed="false"`)) {
         failures.push(`${relativeHtml} does not expose the stable localized theme state`);
+      }
+      if (!html.includes(`https://buicongnguyen.github.io/Modern_c_20/${companionLanguage}/`)) {
+        failures.push(`${relativeHtml} does not link to its localized Modern C++20 companion`);
       }
     }
     if (readerPage && (!html.includes(`href="${katexCssUrl}" integrity="${katexCssIntegrity}"`) ||

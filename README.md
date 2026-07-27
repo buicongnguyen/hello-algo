@@ -14,6 +14,8 @@
   ·
   <a href="https://buicongnguyen.github.io/hello-algo/vi/learn/"><strong>Đọc bản dịch đang biên tập</strong></a>
   ·
+  <a href="https://buicongnguyen.github.io/Modern_c_20/vi/"><strong>Học kỹ thuật C++20 hiện đại</strong></a>
+  ·
   <a href="https://github.com/krahets/hello-algo/releases"><strong>Tải PDF / EPUB gốc</strong></a>
 </p>
 

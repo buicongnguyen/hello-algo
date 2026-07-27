@@ -16,6 +16,8 @@ export function localizeVietnameseAtlas(sourceEnglish) {
     </div>`,
     readerLabel: "Bản đọc thử",
     originalBookLabel: "Sách gốc ↗",
+    modernCppUrl: "https://buicongnguyen.github.io/Modern_c_20/vi/",
+    modernCppLabel: "C++20 hiện đại ↗",
     planUrl: "https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md",
     planLabel: "Kế hoạch dịch ↗",
     repositoryLabel: "Kho mã nguồn ↗"

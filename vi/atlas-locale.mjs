@@ -13,6 +13,7 @@ export const htmlTranslations = {
   "Sorting": "Sắp xếp",
   "Chapters": "Các chương",
   "Original book ↗": "Sách gốc ↗",
+  "Modern C++20 ↗": "C++20 hiện đại ↗",
   "Visual data structures &amp; algorithms guide": "Hướng dẫn trực quan về cấu trúc dữ liệu và thuật toán",
   "See the connections.": "Nhìn thấy các mối liên hệ.",
   "Then write the code.": "Rồi viết thành mã.",

@@ -420,7 +420,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
     <aside class="reader-sidebar" id="reader-sidebar" aria-label="Mục lục bản tiếng Việt">
       <div class="sidebar-top"><strong>Bản đọc tiếng Việt</strong><small>Chương 0–16 · ${statusCopy.sidebar}</small></div>
       ${navigation(page.slug)}
-      <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
+      <div class="sidebar-links"><a href="../#roadmap">Bản đồ học tập</a><a href="https://buicongnguyen.github.io/Modern_c_20/vi/">Hướng dẫn C++20 hiện đại</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/VIETNAMESE_TRANSLATION_PLAN.md">Kế hoạch dịch</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/glossary.md">Thuật ngữ</a><a href="https://github.com/buicongnguyen/hello-algo/blob/main/vi/CONTRIBUTING.md">Đóng góp</a></div>
     </aside>
     <main class="reader-main">
       <section class="reader-search" id="reader-search" role="search" hidden aria-label="Tìm trong sách">
