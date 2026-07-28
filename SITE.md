@@ -124,3 +124,56 @@ Run `npm start` to validate, build, and preview the exact `dist` artifact. The d
 Run `npm run check` for source validation or `npm run build` to recreate `dist`, render the localized Markdown readers, and check every generated local reference and counterpart route.
 
 The GitHub Pages workflow runs the same build whenever `main` is pushed. Original Hello Algo source and artwork remain under their upstream license; see `LICENSE` and the upstream project for details.
+
+## Release gate
+
+`npm run build` is the complete release command. It runs the source and algorithm audits, renders the three Atlas and 119-page readers, then audits the generated `dist` tree for structural parity, counterpart routes, accessibility requirements, and broken local references. The command exits with an error as soon as a required audit fails.
+
+The GitHub Pages job contains the same `npm run build` gate before artifact upload and deployment. Because workflow steps stop after a failed command, an invalid build is never uploaded or deployed. Keep the existing Node-based `Dockerfile`, Pages workflow, and single source tree; MkDocs and copied asset/code trees are not part of this fork's release architecture.
+
+### Release smoke test
+
+After every successful build, run `npm start` and verify the built artifact rather than source files:
+
+- Vietnamese Atlas homepage and at least one reader page;
+- title/heading search and result navigation;
+- chapter menu plus previous/next navigation;
+- exact VI/EN/KO language switching;
+- at least one 13-language code-tab group;
+- representative images and the Atlas motion animations;
+- desktop and narrow mobile layouts, including keyboard focus and reduced motion;
+- `/404.html` and `/sitemap.xml`.
+
+Record the tested commit, browser, viewport, result, and any issue links in the release or Pull Request description.
+
+## Read-only comparison with upstream PR #1935
+
+The comparison command accepts any two local Git references and reads their committed trees without checking either one out:
+
+```bash
+git fetch upstream refs/pull/1935/head:refs/pr-comparison/1935
+npm run compare:vi -- HEAD refs/pr-comparison/1935
+```
+
+Add `--json` for machine-readable output. For the current comparison, the report identifies 105 shared Vietnamese documents, 104 different translations, and 14 exercise documents present only in this fork. It also reports heading, image, table, formula, and code-fence totals and mismatches; important glossary differences; and the declared source revision or English source-tree identity for each ref. The command is deliberately read-only: it does not choose wording, modify files, or merge either translation.
+
+The reviewed snapshot and exact compared commits are recorded in [PR_1935_COMPARISON.md](PR_1935_COMPARISON.md).
+
+## Vietnamese review waves
+
+Review work stays manageable and preserves the current draft until both disciplines have evidence:
+
+1. glossary and style conventions;
+2. Preface and Introduction;
+3. complexity and basic data structures;
+4. trees, graphs, searching, and sorting;
+5. advanced algorithm chapters;
+6. exercises and Appendix.
+
+Each document in `vi/translation-status.json` inherits separate `reviews.technical` and `reviews.language` values of `pending`. Add explicit values to a document only as its review progresses. A document remains `draft` while either review is pending; `pilot` requires both reviews to be at least `self-reviewed`, and `published` requires both to be `independently-reviewed`. A comparison report can inform a reviewer, but cannot serve as human review or automatically select wording.
+
+## Community beta
+
+Publish and share the GitHub Pages reader as an **independent community draft**, never as an official Hello Algo translation. Collect page-specific feedback with the Vietnamese beta issue template and link each issue to the affected document.
+
+Treat feedback as review evidence, not automatic approval. A technical reviewer and a Vietnamese-language reviewer independently evaluate the report, update their respective fields in `vi/translation-status.json`, and keep the document at `draft` until both gates pass.

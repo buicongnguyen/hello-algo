@@ -40,10 +40,12 @@ const requiredFiles = [
   "scripts/localize-vi-atlas.mjs",
   "VIETNAMESE_TRANSLATION_PLAN.md",
   "KOREAN_TRANSLATION_PLAN.md",
+  "PR_1935_COMPARISON.md",
   "ko/atlas-locale.mjs", "ko/README.md", "ko/CONTRIBUTING.md", "ko/glossary.md", "ko/style-guide.md", "ko/translation-status.json",
   "scripts/build-en-book.mjs", "scripts/build-ko-book.mjs", "scripts/localize-ko-atlas.mjs", "scripts/localize-atlas.mjs", "scripts/translation-registry.mjs",
   "scripts/source-code-tabs.mjs",
   "scripts/translation-parity.mjs",
+  "scripts/compare-vietnamese-refs.mjs",
   "scripts/check-full-book.mjs",
   "scripts/markdown-renderer.mjs",
   "scripts/server-path.mjs",
@@ -88,7 +90,9 @@ const translationStatus = JSON.parse(await readFile(path.join(projectRoot, "vi",
 const translationPlan = await readFile(path.join(projectRoot, "VIETNAMESE_TRANSLATION_PLAN.md"), "utf8");
 const koreanPlan = await readFile(path.join(projectRoot, "KOREAN_TRANSLATION_PLAN.md"), "utf8");
 const vietnameseGlossary = await readFile(path.join(projectRoot, "vi", "glossary.md"), "utf8");
+const koreanReadme = await readFile(path.join(projectRoot, "ko", "README.md"), "utf8");
 const koreanContributing = await readFile(path.join(projectRoot, "ko", "CONTRIBUTING.md"), "utf8");
+const comparisonScript = await readFile(path.join(projectRoot, "scripts", "compare-vietnamese-refs.mjs"), "utf8");
 const koreanStatus = JSON.parse(await readFile(path.join(projectRoot, "ko", "translation-status.json"), "utf8"));
 const dockerfile = await readFile(path.join(projectRoot, "Dockerfile"), "utf8");
 const dockerCompose = await readFile(path.join(projectRoot, "docker-compose.yml"), "utf8");
@@ -579,6 +583,34 @@ if (translationPlan.length < 15000 || !translationPlan.includes("Sáu giai đo�
 }
 if (koreanPlan.length < 20000 || !koreanPlan.includes("Korean draft `v1.0`")) {
   failures.push("Korean translation plan is not sufficiently detailed");
+}
+if (
+  !comparisonScript.includes("spawnSync(\"git\"") ||
+  !comparisonScript.includes("Differences are reported for review only") ||
+  !comparisonScript.includes("exercisesOnlyLeft") ||
+  !comparisonScript.includes("importantDifferences")
+) {
+  failures.push("Vietnamese Git-ref comparison must remain read-only and report document, structure, exercise, glossary, and source-revision differences");
+}
+const koreanReadmeSections = ["## 이 한국어판에서 제공하는 것", "## 번역 상태와 품질 기준", "## 참여 방법", "## 라이선스와 출처"];
+const koreanReadmeLinks = [
+  "https://buicongnguyen.github.io/hello-algo/ko/",
+  "https://buicongnguyen.github.io/hello-algo/ko/learn/",
+  "https://buicongnguyen.github.io/hello-algo/en/",
+  "https://buicongnguyen.github.io/hello-algo/vi/",
+  "../KOREAN_TRANSLATION_PLAN.md",
+  "CONTRIBUTING.md",
+  "glossary.md",
+  "style-guide.md"
+];
+if (
+  koreanReadme.length < 2000 ||
+  koreanReadmeSections.some((section) => !koreanReadme.includes(section)) ||
+  koreanReadmeLinks.some((link) => !koreanReadme.includes(link)) ||
+  !koreanReadme.includes("119/119") ||
+  !koreanReadme.includes(koreanStatus.sourceCommit)
+) {
+  failures.push("Korean README is missing the reader overview, status, comparison links, contribution guidance, or source lock");
 }
 if (vietnameseGlossary.includes("4935d2d") || koreanContributing.includes("4935d2d") || !vietnameseGlossary.includes(translationStatus.sourceCommit) || !koreanContributing.includes(koreanStatus.sourceCommit)) {
   failures.push("Translation governance files do not use the current locked upstream revision");

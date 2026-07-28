@@ -1,0 +1,49 @@
+name: Vietnamese reader beta feedback
+description: Report a technical, language, navigation, or accessibility issue in the independent Vietnamese community draft.
+title: "[VI beta] "
+labels: ["translation", "vi", "beta-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cảm ơn bạn đã đọc bản nháp cộng đồng độc lập. Phản hồi này là bằng chứng để người duyệt kỹ thuật và tiếng Việt đánh giá; việc gửi issue không tự động thay đổi trạng thái tài liệu.
+  - type: input
+    id: page
+    attributes:
+      label: Trang
+      description: Dán URL GitHub Pages hoặc đường dẫn tài liệu.
+      placeholder: https://buicongnguyen.github.io/hello-algo/vi/learn/...
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Loại phản hồi
+      options:
+        - Nội dung kỹ thuật
+        - Tiếng Việt và thuật ngữ
+        - Mã nguồn
+        - Điều hướng hoặc tìm kiếm
+        - Hình ảnh, công thức hoặc bảng
+        - Trợ năng hoặc giao diện
+    validations:
+      required: true
+  - type: textarea
+    id: observation
+    attributes:
+      label: Nội dung cần xem xét
+      description: Nêu nội dung hiện tại, điều bạn cho là chưa đúng và lý do.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Bằng chứng hoặc đề xuất
+      description: Có thể thêm nguồn kỹ thuật, ảnh chụp màn hình hoặc cách diễn đạt đề xuất.
+  - type: checkboxes
+    id: draft
+    attributes:
+      label: Xác nhận
+      options:
+        - label: Tôi hiểu đây là bản nháp cộng đồng độc lập, chưa phải bản dịch chính thức của Hello Algo.
+          required: true
