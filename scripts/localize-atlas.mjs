@@ -35,6 +35,12 @@ export function localizeAtlas(sourceEnglish, config) {
     /<div class="footer-links">.*?<\/div>/,
     `<div class="footer-links"><a href="learn/">${config.readerLabel}</a><a href="${config.modernCppUrl}" target="_blank" rel="noreferrer">${config.modernCppLabel}</a><a href="${config.planUrl}" target="_blank" rel="noreferrer">${config.planLabel}</a><a href="https://github.com/krahets/hello-algo" target="_blank" rel="noreferrer">${config.repositoryLabel}</a></div>`
   );
+  for (const [source, target] of Object.entries(config.readerRoutes)) {
+    html = html.replace(
+      new RegExp(`href="[^"]+" data-reader-source="${source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`),
+      `href="${target}" data-reader-source="${source}"`
+    );
+  }
   if (html.includes('src="app.js') || html.includes('src="en/docs/')) throw new Error(`${config.code} Atlas contains an unadjusted English asset path`);
   return html;
 }

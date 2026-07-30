@@ -388,6 +388,32 @@ if (!viHtml.includes('<html lang="vi">') || !viHtml.includes('href="../en/"')) {
   failures.push("Vietnamese page or English language option is missing");
 }
 if (!koHtml.includes('<html lang="ko">') || !koHtml.includes('href="../vi/"') || !koHtml.includes('href="../en/"')) failures.push("Korean Atlas or its language options are missing");
+const readerLaunchUrls = [
+  "https://buicongnguyen.github.io/hello-algo/en/learn/",
+  "https://buicongnguyen.github.io/hello-algo/vi/learn/",
+  "https://buicongnguyen.github.io/hello-algo/ko/learn/"
+];
+for (const document of [html, viHtml, koHtml]) {
+  if (
+    !document.includes('class="book-access"') ||
+    (document.match(/class="reader-button /g) || []).length !== 3 ||
+    (document.match(/data-reader-source="en\/docs\//g) || []).length !== 20 ||
+    readerLaunchUrls.some((url) => !document.includes(`href="${url}"`))
+  ) {
+    failures.push("Every Atlas must expose the prominent trilingual reader launcher and complete book contents");
+  }
+}
+if (
+  !viHtml.includes('href="learn/trang-chu-sach.html" data-reader-source="en/docs/index.md"') ||
+  !viHtml.includes('href="learn/tai-lieu-tham-khao.html" data-reader-source="en/docs/chapter_reference/index.md"') ||
+  !koHtml.includes('href="learn/book-home.html" data-reader-source="en/docs/index.md"') ||
+  !koHtml.includes('href="learn/references.html" data-reader-source="en/docs/chapter_reference/index.md"') ||
+  !css.includes("grid-template-columns: 264px minmax(0, 1fr)") ||
+  !css.includes(".reader-button") ||
+  !css.includes(".book-access")
+) {
+  failures.push("Localized Atlas book contents or responsive left-column presentation is incomplete");
+}
 if (!rootReadme.includes("https://buicongnguyen.github.io/Modern_c_20/vi/")) {
   failures.push("Default README does not link to the Modern C++20 companion");
 }

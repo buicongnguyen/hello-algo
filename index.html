@@ -10,7 +10,7 @@
   <meta property="og:url" content="https://buicongnguyen.github.io/hello-algo/en/">
   <meta name="theme-color" content="#07111f">
   <title>Hello Algo Atlas</title>
-  <link rel="stylesheet" href="styles.css?v=20260717a">
+  <link rel="stylesheet" href="styles.css?v=20260728a">
   <script src="app.js?v=20260727b" defer></script>
 </head>
 <body>
@@ -41,7 +41,52 @@
     <button class="icon-button" id="theme-toggle" type="button" aria-label="Light theme" title="Light theme" aria-pressed="false"><span aria-hidden="true">◐</span></button>
   </header>
 
-  <main id="main">
+  <div class="atlas-layout">
+    <aside class="book-access" aria-labelledby="book-access-title">
+      <div class="book-access-heading">
+        <p class="eyebrow">Read the complete book</p>
+        <h2 id="book-access-title">Choose your language</h2>
+        <p>119 documents in every reader</p>
+      </div>
+      <div class="reader-buttons" aria-label="Complete book translations">
+        <a class="reader-button reader-en" href="https://buicongnguyen.github.io/hello-algo/en/learn/" aria-label="Open English reader">
+          <strong>EN</strong><span>English</span><b>Read book →</b>
+        </a>
+        <a class="reader-button reader-vi" href="https://buicongnguyen.github.io/hello-algo/vi/learn/" aria-label="Open Vietnamese reader">
+          <strong>VI</strong><span>Tiếng Việt</span><b>Đọc sách →</b>
+        </a>
+        <a class="reader-button reader-ko" href="https://buicongnguyen.github.io/hello-algo/ko/learn/" aria-label="Open Korean reader">
+          <strong>KO</strong><span>한국어</span><b>책 읽기 →</b>
+        </a>
+      </div>
+      <nav class="book-contents" aria-label="Book contents">
+        <strong>Book contents</strong>
+        <ol>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/index.html" data-reader-source="en/docs/index.md">Book home</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/before-starting.html" data-reader-source="en/docs/chapter_hello_algo/index.md">Before starting</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/preface.html" data-reader-source="en/docs/chapter_preface/index.md">Preface</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/encounter-with-algorithms.html" data-reader-source="en/docs/chapter_introduction/index.md">Introduction</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/complexity-analysis.html" data-reader-source="en/docs/chapter_computational_complexity/index.md">Complexity</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/data-structures.html" data-reader-source="en/docs/chapter_data_structure/index.md">Data structures</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/arrays-and-linked-lists.html" data-reader-source="en/docs/chapter_array_and_linkedlist/index.md">Arrays &amp; linked lists</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/stacks-and-queues.html" data-reader-source="en/docs/chapter_stack_and_queue/index.md">Stacks &amp; queues</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/hashing.html" data-reader-source="en/docs/chapter_hashing/index.md">Hashing</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/trees.html" data-reader-source="en/docs/chapter_tree/index.md">Trees</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/heaps.html" data-reader-source="en/docs/chapter_heap/index.md">Heaps</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/graphs.html" data-reader-source="en/docs/chapter_graph/index.md">Graphs</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/searching.html" data-reader-source="en/docs/chapter_searching/index.md">Searching</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/sorting.html" data-reader-source="en/docs/chapter_sorting/index.md">Sorting</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/divide-and-conquer.html" data-reader-source="en/docs/chapter_divide_and_conquer/index.md">Divide &amp; conquer</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/backtracking.html" data-reader-source="en/docs/chapter_backtracking/index.md">Backtracking</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/dynamic-programming.html" data-reader-source="en/docs/chapter_dynamic_programming/index.md">Dynamic programming</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/greedy.html" data-reader-source="en/docs/chapter_greedy/index.md">Greedy</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/appendix.html" data-reader-source="en/docs/chapter_appendix/index.md">Appendix</a></li>
+          <li><a href="https://buicongnguyen.github.io/hello-algo/en/learn/references.html" data-reader-source="en/docs/chapter_reference/index.md">References</a></li>
+        </ol>
+      </nav>
+    </aside>
+
+    <main id="main">
     <section class="hero" id="top">
       <div class="hero-copy">
         <p class="eyebrow">Visual data structures &amp; algorithms guide</p>
@@ -474,7 +519,8 @@
         </a>
       </div>
     </section>
-  </main>
+    </main>
+  </div>
 
   <footer>
     <div><strong>Hello Algo Atlas</strong><span>A visual learning layer with paraphrased concepts and credited artwork from the open-source Hello Algo book.</span></div>
