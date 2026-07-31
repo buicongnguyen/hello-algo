@@ -408,6 +408,7 @@ if (
   !viHtml.includes('href="learn/tai-lieu-tham-khao.html" data-reader-source="en/docs/chapter_reference/index.md"') ||
   !koHtml.includes('href="learn/book-home.html" data-reader-source="en/docs/index.md"') ||
   !koHtml.includes('href="learn/references.html" data-reader-source="en/docs/chapter_reference/index.md"') ||
+  !css.includes(".atlas-layout {\n  width: 100%;\n  margin: 0;") ||
   !css.includes("grid-template-columns: 264px minmax(0, 1fr)") ||
   !css.includes(".reader-button") ||
   !css.includes(".book-access")
