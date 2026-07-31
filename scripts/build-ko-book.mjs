@@ -196,7 +196,7 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
   <script src="book.js?v=20260727b" defer></script>
 </head>
-<body data-translation-status="${koreanDocument.status}">
+<body data-reader-source="${page.source}" data-translation-status="${koreanDocument.status}">
   <a class="skip-link" href="#article">본문으로 건너뛰기</a>
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="목차 열기" aria-expanded="false">☰</button>

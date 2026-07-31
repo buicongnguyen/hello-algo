@@ -8,6 +8,8 @@ const sourceCommitPattern = /^[0-9a-f]{40}$/;
 const manifestDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 const stableEnglishReaderRoutes = new Map([
+  ["en/docs/index.md", "en/learn/book-home.html"],
+  ["en/docs/chapter_introduction/index.md", "en/learn/index.html"],
   ["en/docs/chapter_tree/index.md", "en/learn/trees.html"],
   ["en/docs/chapter_tree/binary_tree.md", "en/learn/binary-tree.html"],
   ["en/docs/chapter_tree/binary_tree_traversal.md", "en/learn/binary-tree-traversal.html"],
@@ -90,7 +92,6 @@ function slugify(value) {
 function generatedEnglishRoute(source, chapter) {
   const stableRoute = stableEnglishReaderRoutes.get(source);
   if (stableRoute) return stableRoute;
-  if (source === "en/docs/index.md") return "en/learn/index.html";
   if (source === "en/docs/chapter_hello_algo/index.md") return "en/learn/before-starting.html";
   if (source === "en/docs/chapter_reference/index.md") return "en/learn/references.html";
 
@@ -110,7 +111,7 @@ async function loadEnglishReaderCatalog() {
     source: "en/docs/index.md",
     chapter: "Home",
     shortTitle: "Official English home",
-    route: "en/learn/index.html"
+    route: generatedEnglishRoute("en/docs/index.md", "Home")
   }];
   let chapter = "";
 
@@ -141,6 +142,25 @@ async function loadEnglishReaderCatalog() {
 
 export const englishReaderCatalog = await loadEnglishReaderCatalog();
 export const englishReaderRoutes = new Map(englishReaderCatalog.map((page) => [page.source, page.route]));
+export const englishReaderLegacyAliases = new Map([
+  ["en/learn/encounter-with-algorithms.html", "en/docs/chapter_introduction/index.md"]
+]);
+
+const canonicalEnglishRoutes = new Set(englishReaderRoutes.values());
+for (const [aliasRoute, source] of englishReaderLegacyAliases) {
+  if (!/^en\/learn\/[a-z0-9]+(?:-[a-z0-9]+)*\.html$/.test(aliasRoute) ||
+      canonicalEnglishRoutes.has(aliasRoute) ||
+      !englishReaderRoutes.has(source)) {
+    throw new Error(`Invalid English reader compatibility alias: ${aliasRoute}`);
+  }
+}
+
+const readerLandingSource = "en/docs/chapter_introduction/index.md";
+const readerBookHomeSource = "en/docs/index.md";
+if (englishReaderRoutes.get(readerLandingSource) !== "en/learn/index.html" ||
+    englishReaderRoutes.get(readerBookHomeSource) !== "en/learn/book-home.html") {
+  throw new Error("English reader landing and Book Home routes are not aligned with the localized readers");
+}
 
 function isSafeDocumentPath(value, prefix) {
   return typeof value === "string" &&
@@ -213,6 +233,13 @@ export function createTranslationRegistry(manifests) {
     byLanguage[language] = documents;
   }
 
+  for (const language of supportedLanguages) {
+    if (byLanguage[language].get(readerLandingSource)?.route !== `${language}/learn/` ||
+        byLanguage[language].get(readerBookHomeSource)?.route === `${language}/learn/`) {
+      throw new Error(`${language} reader landing must open Chapter 1 while Book Home remains a separate page`);
+    }
+  }
+
   return { manifests, byLanguage, sourceCommit };
 }
 
@@ -239,9 +266,13 @@ export function officialEnglishUrl(source) {
   return `https://www.hello-algo.com/en/${parts.at(-2)}/${file === "index" ? "" : `${file}/`}`;
 }
 
+export function publicEnglishReaderRoute(route) {
+  return route?.endsWith("/index.html") ? route.slice(0, -"index.html".length) : route;
+}
+
 export function englishReaderHref(source) {
-  const route = englishReaderRoutes.get(source);
-  return route ? `../../${route}` : officialEnglishUrl(source);
+  const publicRoute = publicEnglishReaderRoute(englishReaderRoutes.get(source));
+  return publicRoute ? `../../${publicRoute}` : officialEnglishUrl(source);
 }
 
 export function markdownStructure(markdown) {

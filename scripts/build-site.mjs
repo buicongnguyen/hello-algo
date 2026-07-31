@@ -7,7 +7,7 @@ import { checkBuiltSite } from "./check-dist.mjs";
 import { localizeVietnameseAtlas } from "./localize-vi-atlas.mjs";
 import { localizeKoreanAtlas } from "./localize-ko-atlas.mjs";
 import { createTranslationParityReport } from "./translation-parity.mjs";
-import { englishReaderCatalog } from "./translation-registry.mjs";
+import { englishReaderCatalog, publicEnglishReaderRoute } from "./translation-registry.mjs";
 import { auditFullBook } from "./check-full-book.mjs";
 
 await import("./check-site.mjs");
@@ -96,7 +96,7 @@ const sitemapRoutes = [
   "en/",
   "vi/",
   "ko/",
-  ...englishReaderCatalog.map((page) => page.route),
+  ...englishReaderCatalog.map((page) => publicEnglishReaderRoute(page.route)),
   ...vietnameseStatus.documents.map((document) => document.route),
   ...koreanStatus.documents.map((document) => document.route)
 ];

@@ -404,6 +404,8 @@ for (const document of [html, viHtml, koHtml]) {
   }
 }
 if (
+  !html.includes('href="https://buicongnguyen.github.io/hello-algo/en/learn/book-home.html" data-reader-source="en/docs/index.md"') ||
+  !html.includes('href="https://buicongnguyen.github.io/hello-algo/en/learn/" data-reader-source="en/docs/chapter_introduction/index.md"') ||
   !viHtml.includes('href="learn/trang-chu-sach.html" data-reader-source="en/docs/index.md"') ||
   !viHtml.includes('href="learn/tai-lieu-tham-khao.html" data-reader-source="en/docs/chapter_reference/index.md"') ||
   !koHtml.includes('href="learn/book-home.html" data-reader-source="en/docs/index.md"') ||

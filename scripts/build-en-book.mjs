@@ -3,7 +3,7 @@ import { constants } from "node:fs";
 import path from "node:path";
 import { articleOutline, markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
 import { sourceDirectiveTabs } from "./source-code-tabs.mjs";
-import { englishReaderCatalog, englishReaderRoutes, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
+import { englishReaderCatalog, englishReaderLegacyAliases, englishReaderRoutes, loadTranslationRegistry, publicEnglishReaderRoute, readerHref } from "./translation-registry.mjs";
 
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 
@@ -103,7 +103,7 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
     ? "KO and VI open the exact translated counterpart."
     : "A localized counterpart is marked as pending when that source page has not yet been translated.";
   const siteRoot = "https://buicongnguyen.github.io/hello-algo/";
-  const englishCanonical = `${siteRoot}en/learn/${page.slug}.html`;
+  const englishCanonical = `${siteRoot}${publicEnglishReaderRoute(page.route)}`;
   const vietnameseCanonical = `${siteRoot}${vietnameseDocument.route}`;
   const koreanCanonical = `${siteRoot}${koreanDocument.route}`;
   const outline = articleOutline(body, "On this page");
@@ -123,7 +123,7 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
   <script src="book.js?v=20260727b" defer></script>
 </head>
-<body data-translation-status="source">
+<body data-reader-source="${page.source}" data-translation-status="source">
   <a class="skip-link" href="#article">Skip to the article</a>
   <header class="reader-header">
     <button class="reader-menu" id="reader-menu" type="button" aria-label="Open table of contents" aria-expanded="false">☰</button>
@@ -202,6 +202,14 @@ export async function buildEnglishBook({ projectRoot, outputRoot }) {
     searchIndex.push({ title: page.title, shortTitle: page.shortTitle, chapter: page.chapter, url: `${page.slug}.html`, headings: markdownHeadings(preparedMarkdown) });
     await writeFile(path.join(bookOutput, `${page.slug}.html`), pageTemplate(pages, page, body, index, registry.sourceCommit, vietnameseDocument, koreanDocument));
     await access(path.join(bookOutput, `${page.slug}.html`), constants.R_OK);
+  }
+  for (const [aliasRoute, source] of englishReaderLegacyAliases) {
+    const canonicalRoute = englishReaderRoutes.get(source);
+    if (!canonicalRoute) throw new Error(`Unknown English reader alias source: ${source}`);
+    await writeFile(
+      path.join(outputRoot, aliasRoute),
+      await readFile(path.join(outputRoot, canonicalRoute), "utf8")
+    );
   }
   await writeFile(path.join(bookOutput, "search-index.json"), JSON.stringify(searchIndex, null, 2) + "\n");
   return { pageCount: pages.length, sourceCommit: registry.sourceCommit };

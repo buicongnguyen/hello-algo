@@ -2,7 +2,7 @@ import { access, readdir, readFile, stat } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
 import { localizeSourceExamples, sourceCodeLanguages } from "./source-code-tabs.mjs";
-import { createTranslationRegistry, englishReaderHref, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
+import { createTranslationRegistry, englishReaderHref, englishReaderLegacyAliases, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
 import { createTranslationParityReport } from "./translation-parity.mjs";
 import { auditFullBook } from "./check-full-book.mjs";
 
@@ -323,7 +323,7 @@ export async function checkBuiltSite(outputRoot) {
   if (!pilotHome.includes("nguồn khóa tại") || !pilotHome.includes("CC BY-NC-SA 4.0")) {
     failures.push("Vietnamese reader pages are missing source-lock or license disclosure");
   }
-  if (!pilotHome.includes("119 / 119 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 20) {
+  if (!pilotHome.includes('data-reader-source="en/docs/chapter_introduction/index.md"') || !pilotHome.includes("119 / 119 tài liệu") || (pilotHome.match(/class="book-nav-group"/g) || []).length !== 20) {
     failures.push("Vietnamese reader progress or complete book navigation is incomplete");
   }
   for (const document of translationStatus.documents) {
@@ -411,7 +411,7 @@ export async function checkBuiltSite(outputRoot) {
     if (!await referenceExists(candidate)) failures.push(`Korean status route was not built: ${route}`);
   }
   const koreanHome = await readFile(path.join(koreanDirectory, "index.html"), "utf8");
-  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes("119 / 119 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("Korean reader metadata, progress, or complete book navigation is incomplete");
+  if (!koreanHome.includes('lang="ko"') || !koreanHome.includes('data-reader-source="en/docs/chapter_introduction/index.md"') || !koreanHome.includes("119 / 119 문서") || (koreanHome.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("Korean reader identity, metadata, progress, or complete book navigation is incomplete");
   if (!koreanHome.includes("CC BY-NC-SA 4.0") || !koreanHome.includes("공식 후원을 의미하지 않습니다")) failures.push("Korean reader is missing source and license disclosure");
   for (const document of koreanStatus.documents) {
     const koreanPage = routeFileName(document.route);
@@ -1064,7 +1064,8 @@ export async function checkBuiltSite(outputRoot) {
 
   const englishDirectory = path.join(outputRoot, "en", "learn");
   const englishPages = (await readdir(englishDirectory)).filter((file) => file.endsWith(".html"));
-  if (englishPages.length !== englishReaderRoutes.size || englishPages.length !== 119) failures.push(`Expected all 119 official English documents, found ${englishPages.length}`);
+  const expectedEnglishFiles = englishReaderRoutes.size + englishReaderLegacyAliases.size;
+  if (englishPages.length !== expectedEnglishFiles || englishReaderRoutes.size !== 119) failures.push(`Expected 119 official English documents and ${englishReaderLegacyAliases.size} compatibility alias, found ${englishPages.length} HTML files`);
   let expectedEnglishTabGroups = 0;
   let expectedEnglishTabs = 0;
   for (const [source, route] of englishReaderRoutes) {
@@ -1100,20 +1101,33 @@ export async function checkBuiltSite(outputRoot) {
     if (/^(?:===|!!!|\?\?\?|--8<--)/m.test(englishPage) || englishPage.includes("&lt;u&gt;") || englishPage.includes("&lt;id&gt;") || englishPage.includes("&lt;h2") || englishPage.includes('class="language-src"')) failures.push(`${route} contains unrendered MkDocs-only syntax`);
     if (englishPage.includes("≤q") || englishPage.includes("≥q")) failures.push(`${route} contains a partially rendered comparison operator`);
   }
-  const englishOfficialHome = await readFile(path.join(englishDirectory, "index.html"), "utf8");
+  for (const [aliasRoute, source] of englishReaderLegacyAliases) {
+    const canonicalRoute = englishReaderRoutes.get(source);
+    const aliasPage = await readFile(path.join(outputRoot, aliasRoute), "utf8");
+    const canonicalPage = await readFile(path.join(outputRoot, canonicalRoute), "utf8");
+    if (aliasPage !== canonicalPage) failures.push(`${aliasRoute} does not preserve its canonical ${canonicalRoute} content`);
+  }
+  const englishReaderLanding = await readFile(path.join(englishDirectory, "index.html"), "utf8");
+  const englishBookHome = await readFile(path.join(englishDirectory, "book-home.html"), "utf8");
   const englishBeforeStarting = await readFile(path.join(englishDirectory, "before-starting.html"), "utf8");
   const englishPreface = await readFile(path.join(englishDirectory, "preface.html"), "utf8");
   const englishChapterTwoExercises = await readFile(path.join(englishDirectory, "chapter-2-exercises.html"), "utf8");
   const englishChapterSevenExercises = await readFile(path.join(englishDirectory, "chapter-7-exercises.html"), "utf8");
   const englishReferences = await readFile(path.join(englishDirectory, "references.html"), "utf8");
-  if (!englishOfficialHome.includes("Hello Algo") || !englishBeforeStarting.includes("Before Starting") || !englishPreface.includes("Preface") || !englishReferences.includes("References")) failures.push("English special pages are missing official source content");
+  if (!englishReaderLanding.includes('data-reader-source="en/docs/chapter_introduction/index.md"') ||
+      !englishReaderLanding.includes("Encounter with Algorithms") ||
+      !englishBookHome.includes('data-reader-source="en/docs/index.md"') ||
+      !englishBookHome.includes("Hello Algo") ||
+      !englishBeforeStarting.includes("Before Starting") ||
+      !englishPreface.includes("Preface") ||
+      !englishReferences.includes("References")) failures.push("English landing, Book Home, or other special pages are missing their exact official source content");
   if (!englishChapterTwoExercises.includes('class="admonition') ||
       !englishChapterTwoExercises.includes('href="../../vi/learn/bai-tap-do-phuc-tap.html" lang="vi" hreflang="vi"') ||
       !englishChapterTwoExercises.includes('href="../../ko/learn/chapter-2-exercises.html" lang="ko" hreflang="ko"')) {
     failures.push("English Chapter 2 exercises do not render answers or exact localized counterparts");
   }
   if (!englishChapterSevenExercises.includes('<pre><code class="language-text">') || englishChapterSevenExercises.includes("<p>``")) failures.push("Nested exercise code blocks are not rendered as block code");
-  if (!englishOfficialHome.includes("119 / 119 documents") || (englishOfficialHome.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("English reader progress or full Home / Chapters 0–16 / References navigation is incomplete");
+  if (!englishReaderLanding.includes("119 / 119 documents") || (englishReaderLanding.match(/class="book-nav-group"/g) || []).length !== 20) failures.push("English reader progress or full Home / Chapters 0–16 / References navigation is incomplete");
   const englishTree = await readFile(path.join(englishDirectory, "binary-tree.html"), "utf8");
   const englishSubsetSum = await readFile(path.join(englishDirectory, "subset-sum.html"), "utf8");
   const englishBookCss = await readFile(path.join(englishDirectory, "book.css"), "utf8");
