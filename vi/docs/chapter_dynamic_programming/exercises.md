@@ -96,7 +96,7 @@ Hãy dùng mảng quy hoạch động một chiều. Trước mắt, chưa dùng
     2. Do đó, dp[i] = dp[i-1] + dp[i-2]
     3. Xử lý trước trường hợp n bằng 1 hoặc 2, rồi điền bảng từ bậc 3
 
-[LeetCode](https://leetcode.com/problems/climbing-stairs/)
+[LeetCode](https://leetcode.com/problems/climbing-stairs/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }
 
 ### Ba lô 0-1
 

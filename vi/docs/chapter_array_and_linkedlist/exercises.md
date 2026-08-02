@@ -67,7 +67,7 @@ Hãy mô phỏng phép cộng dọc để cộng 1 và trả về mảng kết q
     2. Nếu chữ số nhỏ hơn 9, tăng lên 1 rồi trả về ngay.
     3. Nếu bằng 9, đổi thành 0 và tiếp tục sang trái. Nếu mọi chữ số đều bằng 9, thêm 1 ở đầu.
 
-[LeetCode](https://leetcode.com/problems/plus-one/)
+[LeetCode](https://leetcode.com/problems/plus-one/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }
 
 ### Đảo danh sách liên kết đơn
 
@@ -81,4 +81,4 @@ Hãy dùng vòng lặp để đảo hướng mọi liên kết, không tạo nú
     2. Lưu `nxt = cur.next` trước khi đổi `cur.next = prev`.
     3. Sau khi đảo liên kết, cập nhật `prev = cur`, rồi `cur = nxt` để tiếp tục theo danh sách cũ.
 
-[LeetCode](https://leetcode.com/problems/reverse-linked-list/)
+[LeetCode](https://leetcode.com/problems/reverse-linked-list/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }

@@ -76,7 +76,7 @@
     2. 현재 자릿수가 9보다 작으면 1을 더한 뒤 즉시 반환합니다.
     3. 현재 자릿수가 9이면 0으로 바꾸고 왼쪽으로 계속합니다. 모든 자릿수가 9였다면 맨 앞에 1을 둡니다.
 
-[LeetCode](https://leetcode.com/problems/plus-one/)
+[LeetCode](https://leetcode.com/problems/plus-one/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }
 
 ### 단일 연결 리스트 뒤집기
 
@@ -91,4 +91,4 @@
     2. `cur.next`를 바꾸기 전에 원래 다음 노드를 `nxt = cur.next`에 저장합니다.
     3. `cur.next`를 뒤집은 뒤 `prev = cur`, 이어서 `cur = nxt`로 갱신해 원래 리스트의 다음 노드로 진행합니다.
 
-[LeetCode](https://leetcode.com/problems/reverse-linked-list/)
+[LeetCode](https://leetcode.com/problems/reverse-linked-list/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }

@@ -101,6 +101,7 @@ async function localizedCodeStats({ projectRoot, sourcePath, sourceMarkdown, tar
 
 export async function checkBuiltSite(outputRoot) {
   const failures = [];
+  let renderedExerciseLinks = 0;
   const projectRoot = path.resolve(import.meta.dirname, "..");
   const htmlFiles = await collectHtml(outputRoot);
 
@@ -126,10 +127,22 @@ export async function checkBuiltSite(outputRoot) {
       }
     }
     const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
-    if (readerPage && (!html.includes("book.js?v=20260727b") || !html.includes("book.css?v=20260727a"))) {
+    if (readerPage && (!html.includes("book.js?v=20260727b") || !html.includes("book.css?v=20260803a"))) {
       failures.push(`${relativeHtml} does not use the current reader asset cache keys`);
     }
     if (readerPage) {
+      if (html.includes("{ .rounded-button") || html.includes("{ .exercise-button")) {
+        failures.push(`${relativeHtml} exposes raw MkDocs link attributes`);
+      }
+      for (const link of html.matchAll(/<a\b[^>]*href="https:\/\/leetcode\.com\/problems\/[^"]+"[^>]*>/g)) {
+        renderedExerciseLinks += 1;
+        const openingTag = link[0];
+        if (!/class="[^"]*\brounded-button\b[^"]*\bexercise-button\b[^"]*"/.test(openingTag) ||
+            !/target="_blank"/.test(openingTag) ||
+            !/rel="[^"]*\bnoopener\b[^"]*\bnoreferrer\b[^"]*"/.test(openingTag)) {
+          failures.push(`${relativeHtml} has a LeetCode exercise link without its safe button attributes`);
+        }
+      }
       const themeLabel = relativeHtml.startsWith("vi/")
         ? "Giao diện sáng"
         : relativeHtml.startsWith("ko/")
@@ -199,6 +212,10 @@ export async function checkBuiltSite(outputRoot) {
         }
       }
     }
+  }
+
+  if (renderedExerciseLinks !== 51) {
+    failures.push(`Expected 51 styled LeetCode exercise links across the trilingual readers, found ${renderedExerciseLinks}`);
   }
 
   const pilotDirectory = path.join(outputRoot, "vi", "learn");

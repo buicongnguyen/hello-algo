@@ -163,6 +163,20 @@ if (!illustrationTabs.includes('aria-label="Các bước minh họa"') || illust
   failures.push("Shared Markdown renderer does not keep illustration tabs independent");
 }
 
+const attributedElements = renderMarkdown(`[LeetCode](https://leetcode.com/problems/number-of-1-bits/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }
+
+![Cover](../assets/covers/chapter_hello_algo.jpg){ class="cover-image" }`, "vi/docs/test.md");
+if (!attributedElements.includes('<a href="https://leetcode.com/problems/number-of-1-bits/" class="rounded-button exercise-button" target="_blank" rel="noopener noreferrer">LeetCode</a>') ||
+    !attributedElements.includes('<img class="cover-image" src="assets/covers/chapter_hello_algo.jpg"') ||
+    attributedElements.includes("{ .rounded-button")) {
+  failures.push("Shared Markdown renderer does not safely apply inline link or image attributes");
+}
+const filteredAttributes = renderMarkdown('[External](https://example.com/){ target="_blank" onclick="alert(1)" }', "en/docs/test.md");
+if (!filteredAttributes.includes('<a href="https://example.com/" target="_blank" rel="noopener noreferrer">External</a>') ||
+    filteredAttributes.includes("onclick")) {
+  failures.push("Shared Markdown renderer does not reject unsafe attributes or secure new-tab links");
+}
+
 const nestedListFixture = renderMarkdown(`??? success "Answer"
 
     1. First:
@@ -480,7 +494,7 @@ for (const [attribute, dataset] of [
 if (viHtml.includes("See the connections.") || viHtml.includes("Choose the shape that makes the operation cheap")) {
   failures.push("Vietnamese Atlas still contains primary English copy");
 }
-if (!bookCss.includes("@media (max-width: 820px)") || !bookJs.includes("reader-menu")) {
+if (!bookCss.includes("@media (max-width: 820px)") || !bookCss.includes(".rounded-button.exercise-button") || !bookJs.includes("reader-menu")) {
   failures.push("Vietnamese reader responsive navigation is incomplete");
 }
 if (!bookJs.includes('["light", "dark"].includes(value)') || !bookJs.includes("try {") || !bookJs.includes("catch {")) {

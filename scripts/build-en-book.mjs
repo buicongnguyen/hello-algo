@@ -35,13 +35,6 @@ function pageDescription(markdown, fallback) {
   return fallback;
 }
 
-function stripMkDocsAttributes(value) {
-  return value.replace(
-    /\s*\{\s*(?=[.#a-zA-Z])(?:(?:[.#][a-zA-Z0-9_-]+|[a-zA-Z][a-zA-Z0-9_-]*=(?:"[^"]*"|'[^']*'|[^\s}]+))\s*)+\}\s*$/,
-    ""
-  );
-}
-
 async function prepareEnglishMarkdown(markdown, source, projectRoot) {
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const output = [];
@@ -57,12 +50,12 @@ async function prepareEnglishMarkdown(markdown, source, projectRoot) {
       continue;
     }
 
-    output.push(stripMkDocsAttributes(lines[index]
+    output.push(lines[index]
       .replace(/^\s*<p[^>]*>\s*Table\s+<id>\s+&nbsp;\s*(.*?)\s*<\/p>\s*$/, "Table: $1")
       .replace(/^\s*<h2[^>]*>(.*?)<\/h2>\s*$/, "## $1")
       .replaceAll("<u>", "")
       .replaceAll("</u>", "")
-      .replace(/<\/?(?:div|p|span|center)[^>]*>/g, "")));
+      .replace(/<\/?(?:div|p|span|center)[^>]*>/g, ""));
     index += 1;
   }
   return output.join("\n");
@@ -119,7 +112,7 @@ function pageTemplate(pages, page, body, index, sourceCommit, vietnameseDocument
   <link rel="alternate" hreflang="x-default" href="${vietnameseCanonical}">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo English</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260727a">
+  <link rel="stylesheet" href="book.css?v=20260803a">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
   <script src="book.js?v=20260727b" defer></script>
 </head>

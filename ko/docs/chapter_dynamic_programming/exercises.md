@@ -97,7 +97,7 @@
     2. 따라서 dp[i] = dp[i-1] + dp[i-2]입니다.
     3. n이 1 또는 2인 경우를 먼저 처리하고 계단 3부터 표를 채웁니다.
 
-[LeetCode](https://leetcode.com/problems/climbing-stairs/)
+[LeetCode](https://leetcode.com/problems/climbing-stairs/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }
 
 ### 0-1 배낭
 

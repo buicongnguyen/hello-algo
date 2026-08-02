@@ -84,6 +84,56 @@ const formatMath = (value) => replaceFractions(value)
 const prepareMath = (value) => value.replaceAll("\\newline", "\\\\");
 const encodeMath = (value) => Buffer.from(prepareMath(value), "utf8").toString("base64");
 
+function markdownAttributes(rawAttributes, allowedNames) {
+  const classes = [];
+  const named = new Map();
+  let remaining = (rawAttributes || "").trim();
+  const tokenPattern = /^(?:\.([a-zA-Z][a-zA-Z0-9_-]*)|([a-zA-Z][a-zA-Z0-9_-]*)=(?:"([^"]*)"|'([^']*)'|([^\s]+)))(?:\s+|$)/;
+
+  while (remaining) {
+    const token = remaining.match(tokenPattern);
+    if (!token) break;
+    remaining = remaining.slice(token[0].length).trimStart();
+    if (token[1]) {
+      classes.push(token[1]);
+      continue;
+    }
+
+    const name = token[2].toLowerCase();
+    const value = token[3] ?? token[4] ?? token[5] ?? "";
+    if (name === "class") {
+      classes.push(...value.split(/\s+/).filter((className) => /^[a-zA-Z][a-zA-Z0-9_-]*$/.test(className)));
+    } else if (allowedNames.has(name)) {
+      named.set(name, value);
+    }
+  }
+
+  return { classes: [...new Set(classes)], named };
+}
+
+function linkAttributes(rawAttributes) {
+  const parsed = markdownAttributes(rawAttributes, new Set(["target", "rel"]));
+  const attributes = [];
+  if (parsed.classes.length) attributes.push(`class="${escapeHtml(parsed.classes.join(" "))}"`);
+
+  const requestedTarget = parsed.named.get("target");
+  const target = new Set(["_blank", "_self", "_parent", "_top"]).has(requestedTarget) ? requestedTarget : "";
+  if (target) attributes.push(`target="${target}"`);
+
+  const relTokens = (parsed.named.get("rel") || "")
+    .split(/\s+/)
+    .filter((token) => /^[a-zA-Z][a-zA-Z0-9_-]*$/.test(token));
+  if (target === "_blank") relTokens.push("noopener", "noreferrer");
+  const rel = [...new Set(relTokens)];
+  if (rel.length) attributes.push(`rel="${escapeHtml(rel.join(" "))}"`);
+  return attributes.length ? ` ${attributes.join(" ")}` : "";
+}
+
+function imageAttributes(rawAttributes) {
+  const { classes } = markdownAttributes(rawAttributes, new Set());
+  return classes.length ? ` class="${escapeHtml(classes.join(" "))}"` : "";
+}
+
 function renderInline(value) {
   const tokens = [];
   const protect = (html) => {
@@ -99,9 +149,9 @@ function renderInline(value) {
     .replace(/\$([^$]+)\$/g, (_, expression) => {
       return protect(`<span class="math" data-math="${encodeMath(expression)}">${escapeHtml(formatMath(expression))}</span>`);
     })
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
+    .replace(/\[([^\]]+)\]\(([^)]+)\)(?:\s*\{([^{}]*)\})?/g, (_, label, url, rawAttributes) => {
       if (!safeUrl.test(url)) return escapeHtml(label);
-      return protect(`<a href="${escapeHtml(url)}">${escapeHtml(label)}</a>`);
+      return protect(`<a href="${escapeHtml(url)}"${linkAttributes(rawAttributes)}>${escapeHtml(label)}</a>`);
     });
   let rendered = escapeHtml(protectedValue).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   tokens.forEach((tokenContent, index) => {
@@ -440,9 +490,9 @@ export function renderMarkdown(markdown, sourcePath, tabState = { count: 0, head
       continue;
     }
 
-    const image = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    const image = line.match(/^!\[([^\]]*)\]\(([^)]+)\)(?:\s*\{([^{}]*)\})?$/);
     if (image) {
-      output.push(`<figure><img src="${escapeHtml(assetUrl(sourcePath, image[2]))}" alt="${escapeHtml(image[1])}" loading="lazy"><figcaption>${renderInline(image[1])}</figcaption></figure>`);
+      output.push(`<figure><img${imageAttributes(image[3])} src="${escapeHtml(assetUrl(sourcePath, image[2]))}" alt="${escapeHtml(image[1])}" loading="lazy"><figcaption>${renderInline(image[1])}</figcaption></figure>`);
       index += 1;
       continue;
     }

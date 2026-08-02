@@ -127,6 +127,10 @@ blockquote p { margin: .35rem 0; color: var(--muted); }
 .admonition > strong { display: block; margin-bottom: .65rem; color: var(--blue-2); }
 .admonition > :last-child { margin-bottom: 0; }
 .visualization-link { display: inline-flex; padding: .55rem .75rem; border: 1px solid color-mix(in srgb, var(--blue-2) 45%, var(--line)); border-radius: .55rem; background: color-mix(in srgb, var(--blue-2) 10%, var(--surface)); font-weight: 720; text-decoration: none; }
+.rounded-button.exercise-button { min-height: 40px; margin: .45rem 0; padding: .55rem .9rem; display: inline-flex; align-items: center; gap: .4rem; border: 1px solid color-mix(in srgb, var(--green) 48%, var(--line)); border-radius: 999px; background: color-mix(in srgb, var(--green) 11%, var(--surface)); color: var(--green); font-weight: 760; text-decoration: none; transition: border-color .15s ease, background-color .15s ease, transform .15s ease; }
+.rounded-button.exercise-button::after { content: "↗"; font-size: .78em; }
+.rounded-button.exercise-button:hover { border-color: var(--green); background: color-mix(in srgb, var(--green) 18%, var(--surface)); transform: translateY(-1px); }
+.rounded-button.exercise-button:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
 figure { margin: 2.2rem 0; overflow: hidden; border: 1px solid var(--line); border-radius: .85rem; background: #eef2f5; }
 figure img { width: 100%; display: block; object-fit: contain; }
 figcaption { padding: .65rem 1rem; border-top: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: .72rem; text-align: center; }
