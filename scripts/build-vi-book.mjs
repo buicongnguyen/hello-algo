@@ -4,6 +4,7 @@ import path from "node:path";
 import { localizeSourceExamples } from "./source-code-tabs.mjs";
 import { englishReaderCatalog, englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
 import { articleOutline, markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
+import { addEnglishTerminology, restoreIllustrationTabs } from "./localized-content.mjs";
 
 const escapeHtml = (value) => value
   .replaceAll("&", "&amp;")
@@ -398,7 +399,7 @@ function pageTemplate(page, body, pageIndex, sourceCommit, vietnameseDocument, k
   <meta name="theme-color" content="#07111f">
   <title>${escapeHtml(page.title)} · Hello Algo tiếng Việt</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260803a">
+  <link rel="stylesheet" href="book.css?v=20260804a">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
   <script src="book.js?v=20260727b" defer></script>
 </head>
@@ -578,8 +579,16 @@ export async function buildVietnameseBook({ projectRoot, outputRoot }) {
       targetMarkdown: markdown,
       locale: "vi"
     });
-    const completeMarkdown = localizedExamples.markdown;
-    const body = renderMarkdown(completeMarkdown, page.target);
+    const localizedIllustrations = restoreIllustrationTabs(sourceMarkdown, localizedExamples.markdown);
+    if (localizedIllustrations.unresolved.length) {
+      throw new Error(`Vietnamese illustration tabs do not match the English source for ${page.source}`);
+    }
+    const completeMarkdown = localizedIllustrations.markdown;
+    const body = addEnglishTerminology(
+      renderMarkdown(completeMarkdown, page.target),
+      markdownHeadings(sourceMarkdown)[0],
+      "vi"
+    );
     searchIndex.push({
       title: page.title,
       shortTitle: page.shortTitle,

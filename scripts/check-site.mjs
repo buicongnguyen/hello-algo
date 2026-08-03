@@ -9,6 +9,7 @@ import { createTranslationRegistry, markdownStructure, translationReadinessFailu
 import { createTranslationParityReport } from "./translation-parity.mjs";
 import { resolveByteRange, resolveSiteRequest } from "./server-path.mjs";
 import { markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
+import { addEnglishTerminology, restoreIllustrationTabs } from "./localized-content.mjs";
 import {
   extractSourceSnippet,
   localizeSourceExamples,
@@ -48,6 +49,7 @@ const requiredFiles = [
   "scripts/compare-vietnamese-refs.mjs",
   "scripts/check-full-book.mjs",
   "scripts/markdown-renderer.mjs",
+  "scripts/localized-content.mjs",
   "scripts/server-path.mjs",
   "scripts/serve-site.mjs",
   ".github/workflows/ci.yml",
@@ -161,6 +163,34 @@ const illustrationTabs = renderMarkdown(`=== "<1>"
     Second step`, "vi/docs/test.md");
 if (!illustrationTabs.includes('aria-label="Các bước minh họa"') || illustrationTabs.includes('data-tab-sync="language"')) {
   failures.push("Shared Markdown renderer does not keep illustration tabs independent");
+}
+
+const englishIllustrationFixture = `Before
+
+=== "<1>"
+    ![First](steps/step1.png)
+
+=== "<2>"
+    ![Second](steps/step2.png)
+
+After`;
+const localizedIllustrationFixture = `Trước
+
+![Bước một](steps/step1.png)
+
+![Bước hai](steps/step2.png)
+
+Sau`;
+const restoredIllustrations = restoreIllustrationTabs(englishIllustrationFixture, localizedIllustrationFixture);
+const restoredIllustrationHtml = renderMarkdown(restoredIllustrations.markdown, "vi/docs/test.md");
+if (restoredIllustrations.restoredGroups !== 1 || restoredIllustrations.unresolved.length ||
+    (restoredIllustrationHtml.match(/role="tab"/g) || []).length !== 2 ||
+    !restoredIllustrationHtml.includes('alt="Bước một"') || !restoredIllustrationHtml.includes('alt="Bước hai"')) {
+  failures.push("Localized readers do not restore English illustration tabs while preserving translated captions");
+}
+const terminologyFixture = addEnglishTerminology('<h1 id="stack">Ngăn xếp</h1><p>Nội dung</p>', "Stack", "vi");
+if (!terminologyFixture.includes('<p class="english-term" role="note"><span>Thuật ngữ tiếng Anh</span><strong lang="en">Stack</strong></p>')) {
+  failures.push("Localized reader headings do not expose their English terminology");
 }
 
 const attributedElements = renderMarkdown(`[LeetCode](https://leetcode.com/problems/number-of-1-bits/){ .rounded-button .exercise-button target="_blank" rel="noopener noreferrer" }

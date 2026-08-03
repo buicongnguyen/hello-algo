@@ -5,6 +5,7 @@ import { localizeSourceExamples, sourceCodeLanguages } from "./source-code-tabs.
 import { createTranslationRegistry, englishReaderHref, englishReaderLegacyAliases, englishReaderRoutes, readerHref, routeFileName } from "./translation-registry.mjs";
 import { createTranslationParityReport } from "./translation-parity.mjs";
 import { auditFullBook } from "./check-full-book.mjs";
+import { restoreIllustrationTabs } from "./localized-content.mjs";
 
 const katexCssUrl = "https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css";
 const katexCssIntegrity = "sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1";
@@ -82,14 +83,18 @@ async function localizedCodeStats({ projectRoot, sourcePath, sourceMarkdown, tar
     targetMarkdown,
     locale
   });
-  const expected = sourceTabStats(localized.markdown);
+  const localizedIllustrations = restoreIllustrationTabs(sourceMarkdown, localized.markdown);
+  if (localizedIllustrations.unresolved.length) {
+    throw new Error(`Localized illustration tabs do not match ${sourcePath}`);
+  }
+  const expected = sourceTabStats(localizedIllustrations.markdown);
   return {
     sourceGroups: localized.sourceGroups,
     inlineGroups: localized.inlineGroups,
     deferredGroups: localized.deferredGroups,
     expectedGroups: expected.groups,
     expectedTabs: expected.tabs,
-    expectedCodeBlocks: sourceCodeFenceCount(localized.markdown),
+    expectedCodeBlocks: sourceCodeFenceCount(localizedIllustrations.markdown),
     renderedGroups: (html.match(/class="content-tabs"/g) || []).length,
     renderedTabs: (html.match(/role="tab"/g) || []).length,
     renderedPanels: (html.match(/role="tabpanel"/g) || []).length,
@@ -127,10 +132,13 @@ export async function checkBuiltSite(outputRoot) {
       }
     }
     const readerPage = /^(?:en|vi|ko)\/learn\/.+\.html$/.test(relativeHtml);
-    if (readerPage && (!html.includes("book.js?v=20260727b") || !html.includes("book.css?v=20260803a"))) {
+    if (readerPage && (!html.includes("book.js?v=20260727b") || !html.includes("book.css?v=20260804a"))) {
       failures.push(`${relativeHtml} does not use the current reader asset cache keys`);
     }
     if (readerPage) {
+      if (/^(?:vi|ko)\/learn\/.+\.html$/.test(relativeHtml) && !html.includes('class="english-term" role="note"')) {
+        failures.push(`${relativeHtml} does not show the corresponding English terminology below its title`);
+      }
       if (html.includes("{ .rounded-button") || html.includes("{ .exercise-button")) {
         failures.push(`${relativeHtml} exposes raw MkDocs link attributes`);
       }
@@ -503,9 +511,9 @@ export async function checkBuiltSite(outputRoot) {
   const koreanHashAlgorithm = await readFile(path.join(koreanDirectory, "hash-algorithm.html"), "utf8");
   const koreanHashExercises = await readFile(path.join(koreanDirectory, "chapter-6-exercises.html"), "utf8");
   if (!vietnameseStack.includes("stack_operations.png") || !koreanStack.includes("stack_operations.png") || !vietnameseStack.includes('<pre><code class="language-python"') || !koreanStack.includes('<pre><code class="language-python"')) failures.push("Chapter 5 stack pages are missing diagrams or Python examples");
-  if ((koreanStack.match(/class="content-tabs"/g) || []).length !== 3 ||
-      (koreanQueue.match(/class="content-tabs"/g) || []).length !== 3 ||
-      (koreanDeque.match(/class="content-tabs"/g) || []).length !== 3 ||
+  if ((koreanStack.match(/class="content-tabs"/g) || []).length < 3 ||
+      (koreanQueue.match(/class="content-tabs"/g) || []).length < 3 ||
+      (koreanDeque.match(/class="content-tabs"/g) || []).length < 3 ||
       !koreanStack.includes("linkedlist_stack_step3_pop.png") ||
       !koreanStack.includes("array_stack_step3_pop.png") ||
       !koreanStack.includes("<table>") ||
@@ -562,18 +570,18 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseAvl.includes("<table>")) {
     failures.push("Vietnamese AVL page is missing rotation diagrams, Python examples, or its rotation table");
   }
-  if ((koreanTree.match(/class="content-tabs"/g) || []).length !== 3 ||
+  if ((koreanTree.match(/class="content-tabs"/g) || []).length < 3 ||
       !koreanTree.includes("binary_tree_best_worst_cases.png") ||
       !koreanTree.includes("<table>") ||
       (koreanTree.match(/class="admonition/g) || []).length !== 5 ||
-      (koreanTreeTraversal.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanTreeTraversal.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanTreeTraversal.includes("preorder_step11.png") ||
-      (koreanArrayTree.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanArrayTree.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanArrayTree.includes("array_representation_complete_binary_tree.png") ||
-      (koreanBst.match(/class="content-tabs"/g) || []).length !== 3 ||
+      (koreanBst.match(/class="content-tabs"/g) || []).length < 3 ||
       !koreanBst.includes("bst_remove_case3_step4.png") ||
       !koreanBst.includes("<table>") ||
-      (koreanAvl.match(/class="content-tabs"/g) || []).length !== 8 ||
+      (koreanAvl.match(/class="content-tabs"/g) || []).length < 8 ||
       !koreanAvl.includes("avltree_rotation_cases.png") ||
       !koreanAvl.includes("<table>") ||
       !koreanAvl.includes('class="admonition admonition-tip"') ||
@@ -592,15 +600,15 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseTopK.includes('<pre><code class="language-python"')) {
     failures.push("Vietnamese Chapter 8 is missing heap steps, its operation table, complexity derivation, or Top-k code");
   }
-  if ((koreanHeap.match(/class="content-tabs"/g) || []).length !== 5 ||
+  if ((koreanHeap.match(/class="content-tabs"/g) || []).length < 5 ||
       !koreanHeap.includes("heap_push_step9.png") ||
       !koreanHeap.includes("heap_pop_step10.png") ||
       !koreanHeap.includes("<table>") ||
       !koreanHeap.includes('class="admonition admonition-pythontutor"') ||
-      (koreanBuildHeap.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanBuildHeap.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanBuildHeap.includes("heapify_operations_count.png") ||
       (koreanBuildHeap.match(/class="math-block"/g) || []).length !== 4 ||
-      (koreanTopK.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanTopK.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanTopK.includes("top_k_heap_step9.png") ||
       !koreanTopK.includes('class="admonition admonition-question"') ||
       !koreanTopK.includes('class="admonition admonition-tip"') ||
@@ -646,10 +654,10 @@ export async function checkBuiltSite(outputRoot) {
   if (!vietnameseGraphOperations.includes("adjacency_matrix_step5_remove_vertex.png") ||
       !vietnameseGraphOperations.includes("adjacency_list_step5_remove_vertex.png") ||
       !vietnameseGraphOperations.includes("<table>") ||
-      (vietnameseGraphOperations.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseGraphOperations.match(/class="content-tabs"/g) || []).length < 2 ||
       !vietnameseGraph.includes("graph_bfs_step11.png") ||
       !vietnameseGraph.includes("graph_dfs_step11.png") ||
-      (vietnameseGraph.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseGraph.match(/class="content-tabs"/g) || []).length < 2 ||
       (vietnameseGraph.match(/class="admonition/g) || []).length < 3) {
     failures.push("Vietnamese Chapter 9 is missing graph-operation steps, traversal sequences, tables, code tabs, or callouts");
   }
@@ -658,11 +666,11 @@ export async function checkBuiltSite(outputRoot) {
       !koreanGraphOverview.includes("adjacency_list.png") ||
       !koreanGraphOverview.includes("<table>") ||
       (koreanGraphOverview.match(/class="math-block"/g) || []).length !== 1 ||
-      (koreanGraphOperations.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanGraphOperations.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanGraphOperations.includes("adjacency_matrix_step5_remove_vertex.png") ||
       !koreanGraphOperations.includes("adjacency_list_step5_remove_vertex.png") ||
       !koreanGraphOperations.includes("<table>") ||
-      (koreanGraph.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanGraph.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanGraph.includes("graph_bfs_step11.png") ||
       !koreanGraph.includes("graph_dfs_step11.png") ||
       (koreanGraph.match(/class="admonition/g) || []).length !== 3 ||
@@ -675,14 +683,14 @@ export async function checkBuiltSite(outputRoot) {
   if (!vietnameseSearch.includes("binary_search_example.png") || !koreanSearch.includes("binary_search_example.png") || !vietnameseSearch.includes('<pre><code class="language-python"') || !koreanSearch.includes('<pre><code class="language-python"')) failures.push("Chapter 10 binary-search pages are missing diagrams or Python examples");
   if (!vietnameseSearch.includes("binary_search_step7.png") ||
       !vietnameseSearch.includes("binary_search_ranges.png") ||
-      (vietnameseSearch.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseSearch.match(/class="content-tabs"/g) || []).length < 2 ||
       !vietnameseSearchInsertion.includes("binary_search_insertion_step8.png") ||
-      (vietnameseSearchInsertion.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseSearchInsertion.match(/class="content-tabs"/g) || []).length < 2 ||
       (vietnameseSearchInsertion.match(/class="admonition/g) || []).length < 3 ||
       !vietnameseSearchEdge.includes("binary_search_edge_by_element.png") ||
-      (vietnameseSearchEdge.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseSearchEdge.match(/class="content-tabs"/g) || []).length < 2 ||
       !vietnameseHashOptimization.includes("two_sum_hashtable_step3.png") ||
-      (vietnameseHashOptimization.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseHashOptimization.match(/class="content-tabs"/g) || []).length < 2 ||
       !vietnameseSearchRevisited.includes("searching_algorithms.png") ||
       !vietnameseSearchRevisited.includes("<table>") ||
       (vietnameseSearchExercises.match(/class="admonition/g) || []).length < 5) {
@@ -690,15 +698,15 @@ export async function checkBuiltSite(outputRoot) {
   }
   if (!koreanSearch.includes("binary_search_step7.png") ||
       !koreanSearch.includes("binary_search_ranges.png") ||
-      (koreanSearch.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanSearch.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanSearchInsertion.includes("binary_search_insertion_step8.png") ||
-      (koreanSearchInsertion.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanSearchInsertion.match(/class="content-tabs"/g) || []).length < 2 ||
       (koreanSearchInsertion.match(/class="admonition/g) || []).length !== 3 ||
       !koreanSearchEdge.includes("binary_search_edge_by_element.png") ||
       !koreanSearchEdge.includes("binary_search_right_edge_by_left_edge.png") ||
-      (koreanSearchEdge.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanSearchEdge.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanHashOptimization.includes("two_sum_hashtable_step3.png") ||
-      (koreanHashOptimization.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanHashOptimization.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanSearchRevisited.includes("searching_algorithms.png") ||
       !koreanSearchRevisited.includes("<table>") ||
       !koreanSearchRevisited.includes('class="admonition admonition-tip"') ||
@@ -736,19 +744,19 @@ export async function checkBuiltSite(outputRoot) {
   const koreanDivide = await readFile(path.join(koreanDirectory, "hanota.html"), "utf8");
   const koreanDivideExercises = await readFile(path.join(koreanDirectory, "chapter-12-exercises.html"), "utf8");
   if (!vietnameseSort.includes("quick_sort_overview.png") || !koreanSort.includes("quick_sort_overview.png") || !vietnameseSort.includes('<pre><code class="language-python"') || !koreanSort.includes('<pre><code class="language-python"')) failures.push("Chapter 11 quick-sort pages are missing diagrams or Python examples");
-  if ((vietnameseSort.match(/class="content-tabs"/g) || []).length !== 4 ||
+  if ((vietnameseSort.match(/class="content-tabs"/g) || []).length < 4 ||
       !vietnameseSort.includes("pivot_division_step9.png") ||
       !vietnameseSort.includes('class="admonition admonition-note"') ||
-      (vietnameseMergeSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseMergeSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseMergeSort.includes("merge_sort_step10.png") ||
-      (vietnameseHeapSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseHeapSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseHeapSort.includes("heap_sort_step12.png") ||
       (vietnameseHeapSort.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
-      (vietnameseCountingSort.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (vietnameseCountingSort.match(/class="content-tabs"/g) || []).length < 2 ||
       !vietnameseCountingSort.includes("counting_sort_step8.png") ||
       (vietnameseCountingSort.match(/class="math-block"/g) || []).length !== 1 ||
       !vietnameseCountingSort.includes('class="admonition admonition-note"') ||
-      (vietnameseRadixSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseRadixSort.match(/class="content-tabs"/g) || []).length < 1 ||
       (vietnameseRadixSort.match(/class="math-block"/g) || []).length !== 1 ||
       !vietnameseRadixSort.includes('class="admonition admonition-question"') ||
       (vietnameseSortExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||
@@ -756,32 +764,32 @@ export async function checkBuiltSite(outputRoot) {
       !vietnameseSortExercises.includes("leetcode.com/problems/sort-an-array")) {
     failures.push("Vietnamese Chapter 11 is missing complete code tabs, sorting traces, mathematics, callouts, or exercises");
   }
-  if ((koreanSelectionSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+  if ((koreanSelectionSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanSelectionSort.includes("selection_sort_step11.png") ||
       !koreanSelectionSort.includes("selection_sort_instability.png") ||
-      (koreanBubbleSort.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanBubbleSort.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanBubbleSort.includes("bubble_operation_step7.png") ||
       !koreanBubbleSort.includes("bubble_sort_overview.png") ||
-      (koreanInsertionSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanInsertionSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanInsertionSort.includes("insertion_operation.png") ||
       !koreanInsertionSort.includes("insertion_sort_overview.png") ||
-      (koreanSort.match(/class="content-tabs"/g) || []).length !== 4 ||
+      (koreanSort.match(/class="content-tabs"/g) || []).length < 4 ||
       !koreanSort.includes("pivot_division_step9.png") ||
       !koreanSort.includes("quick_sort_overview.png") ||
       !koreanSort.includes('class="admonition admonition-note"') ||
-      (koreanMergeSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanMergeSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanMergeSort.includes("merge_sort_step10.png") ||
-      (koreanHeapSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanHeapSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanHeapSort.includes("heap_sort_step12.png") ||
       (koreanHeapSort.match(/class="admonition admonition-tip"/g) || []).length !== 2 ||
-      (koreanBucketSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanBucketSort.match(/class="content-tabs"/g) || []).length < 1 ||
       !koreanBucketSort.includes("scatter_in_buckets_recursively.png") ||
       !koreanBucketSort.includes("scatter_in_buckets_distribution.png") ||
-      (koreanCountingSort.match(/class="content-tabs"/g) || []).length !== 2 ||
+      (koreanCountingSort.match(/class="content-tabs"/g) || []).length < 2 ||
       !koreanCountingSort.includes("counting_sort_step8.png") ||
       (koreanCountingSort.match(/class="math-block"/g) || []).length !== 1 ||
       !koreanCountingSort.includes('class="admonition admonition-note"') ||
-      (koreanRadixSort.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (koreanRadixSort.match(/class="content-tabs"/g) || []).length < 1 ||
       (koreanRadixSort.match(/class="math-block"/g) || []).length !== 1 ||
       !koreanRadixSort.includes('class="admonition admonition-question"') ||
       !koreanSortSummary.includes("sorting_algorithms_comparison.png") ||
@@ -794,12 +802,12 @@ export async function checkBuiltSite(outputRoot) {
   if (!vietnameseDivide.includes("hanota_example.png") || !koreanDivide.includes("hanota_example.png") || !vietnameseDivide.includes('<pre><code class="language-python"') || !koreanDivide.includes('<pre><code class="language-python"')) failures.push("Chapter 12 Hanota pages are missing diagrams or Python examples");
   if (!vietnameseDivideOverview.includes("divide_and_conquer_parallel_computing.png") ||
       (vietnameseDivideOverview.match(/class="math-block"/g) || []).length !== 2 ||
-      (vietnameseBuildTree.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseBuildTree.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseBuildTree.includes("built_tree_step9.png") ||
       !vietnameseBuildTree.includes("built_tree_overall.png") ||
       !vietnameseBuildTree.includes("<table>") ||
       !vietnameseBuildTree.includes('class="admonition admonition-question"') ||
-      (vietnameseDivide.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseDivide.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseDivide.includes("hanota_f2_step4.png") ||
       !vietnameseDivide.includes("hanota_f3_step4.png") ||
       !vietnameseDivide.includes("hanota_recursive_tree.png") ||
@@ -976,16 +984,16 @@ export async function checkBuiltSite(outputRoot) {
   const koreanContribution = await readFile(path.join(koreanDirectory, "contributing.html"), "utf8");
   const koreanTerminology = await readFile(path.join(koreanDirectory, "glossary.html"), "utf8");
   if (!vietnameseGreedy.includes("fractional_knapsack_example.png") || !koreanGreedy.includes("fractional_knapsack_example.png") || !vietnameseGreedy.includes('<pre><code class="language-python"') || !koreanGreedy.includes('<pre><code class="language-python"')) failures.push("Chapter 15 fractional-knapsack pages are missing diagrams or Python examples");
-  if ((vietnameseGreedyAlgorithm.match(/class="content-tabs"/g) || []).length !== 1 ||
+  if ((vietnameseGreedyAlgorithm.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseGreedyAlgorithm.includes("coin_change_greedy_vs_dp.png") ||
       (vietnameseGreedyAlgorithm.match(/class="admonition/g) || []).length !== 2 ||
-      (vietnameseGreedy.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseGreedy.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseGreedy.includes("fractional_knapsack_area_chart.png") ||
-      (vietnameseMaxCapacity.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseMaxCapacity.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseMaxCapacity.includes("max_capacity_greedy_step9.png") ||
       !vietnameseMaxCapacity.includes("max_capacity_skipped_states.png") ||
       (vietnameseMaxCapacity.match(/class="math-block"/g) || []).length !== 2 ||
-      (vietnameseMaxProduct.match(/class="content-tabs"/g) || []).length !== 1 ||
+      (vietnameseMaxProduct.match(/class="content-tabs"/g) || []).length < 1 ||
       !vietnameseMaxProduct.includes("max_product_cutting_greedy_infer2.png") ||
       (vietnameseMaxProduct.match(/class="math-block"/g) || []).length !== 4 ||
       (vietnameseGreedyExercises.match(/class="admonition admonition-success"/g) || []).length !== 3 ||

@@ -4,6 +4,7 @@ import path from "node:path";
 import { articleOutline, markdownHeadings, renderMarkdown } from "./markdown-renderer.mjs";
 import { localizeSourceExamples } from "./source-code-tabs.mjs";
 import { englishReaderCatalog, englishReaderHref, loadTranslationRegistry, readerHref } from "./translation-registry.mjs";
+import { addEnglishTerminology, restoreIllustrationTabs } from "./localized-content.mjs";
 
 const corePages = [
   ["preface", "머리말", "머리말", "0장", "en/docs/chapter_preface/index.md", "ko/docs/chapter_preface/index.md", "자료구조와 알고리즘 학습 여정을 여는 머리말입니다."],
@@ -192,7 +193,7 @@ function pageTemplate(page, body, index, sourceCommit, koreanDocument, vietnames
   <link rel="alternate" hreflang="x-default" href="${vietnameseCanonical}">
   <meta name="theme-color" content="#07111f"><title>${escapeHtml(page.title)} · Hello Algo 한국어</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css" integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1" crossorigin="anonymous">
-  <link rel="stylesheet" href="book.css?v=20260803a">
+  <link rel="stylesheet" href="book.css?v=20260804a">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js" integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7" crossorigin="anonymous" defer></script>
   <script src="book.js?v=20260727b" defer></script>
 </head>
@@ -266,11 +267,19 @@ export async function buildKoreanBook({ projectRoot, outputRoot }) {
       targetMarkdown: markdown,
       locale: "ko"
     });
-    const completeMarkdown = localizedExamples.markdown;
+    const localizedIllustrations = restoreIllustrationTabs(sourceMarkdown, localizedExamples.markdown);
+    if (localizedIllustrations.unresolved.length) {
+      throw new Error(`Korean illustration tabs do not match the English source for ${page.source}`);
+    }
+    const completeMarkdown = localizedIllustrations.markdown;
     const outputName = page.slug === "index" ? "index.html" : `${page.slug}.html`;
     const expectedRoute = `ko/learn/${outputName === "index.html" ? "" : outputName}`;
     if (koreanDocument.target !== page.target || koreanDocument.route !== expectedRoute) throw new Error(`Korean registry identity does not match reader page ${page.source}`);
-    const body = renderMarkdown(completeMarkdown, page.target);
+    const body = addEnglishTerminology(
+      renderMarkdown(completeMarkdown, page.target),
+      markdownHeadings(sourceMarkdown)[0],
+      "ko"
+    );
     searchIndex.push({ title: page.title, shortTitle: page.shortTitle, chapter: page.chapter, url: outputName, headings: markdownHeadings(completeMarkdown) });
     await writeFile(path.join(bookOutput, outputName), pageTemplate(page, body, index, registry.sourceCommit, koreanDocument, vietnameseDocument));
     await access(path.join(bookOutput, outputName), constants.R_OK);
