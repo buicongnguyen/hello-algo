@@ -62,7 +62,7 @@ These are review candidates, not automatic replacements.
 
 ## Source revisions
 
-- This fork declares upstream English commit `a3166c201853739213d5a3a31b1e4a237aaf1076`; its `en/docs` tree is `64aeab67e73c42387b2b9b1dfa4a6b25ec2cc0b6`.
+- This fork declares upstream English commit `69932aed1891a7b7f6a0de88cd116d3fe13e7032`; its audited English-source digest is recorded by the release checks.
 - PR #1935 does not declare a translation source commit in `vi/translation-status.json`; its `en/docs` tree at the compared ref is `339c1dccbbc60e0bfb9ebb78dc31d6094a40028f`.
 
 The English tree IDs make the source difference reproducible without guessing which translation should be preferred.

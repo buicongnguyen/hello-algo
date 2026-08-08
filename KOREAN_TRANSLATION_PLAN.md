@@ -6,7 +6,7 @@ Target release: Korean draft `v1.0`, followed by per-document pilot promotion af
 
 Target scope: Korean Atlas plus all 119 official reader documents
 
-Source revision: `a3166c201853739213d5a3a31b1e4a237aaf1076`
+Source revision: `69932aed1891a7b7f6a0de88cd116d3fe13e7032`
 
 ## 1. Objective
 
@@ -209,7 +209,7 @@ The English source remains authoritative:
 
 ```text
 Source language: English
-Source commit: a3166c201853739213d5a3a31b1e4a237aaf1076
+Source commit: 69932aed1891a7b7f6a0de88cd116d3fe13e7032
 Secondary reference: Vietnamese pilot
 Target language: Korean
 ```
@@ -484,7 +484,7 @@ Every Korean document passes six gates.
 ### Gate 1 — Lock the source
 
 - Confirm the English source path.
-- Confirm upstream commit `a3166c201853739213d5a3a31b1e4a237aaf1076`.
+- Confirm upstream commit `69932aed1891a7b7f6a0de88cd116d3fe13e7032`.
 - Record the route and translation wave.
 
 ### Gate 2 — Create the Korean draft

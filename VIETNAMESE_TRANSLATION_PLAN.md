@@ -14,7 +14,7 @@ Cập nhật ngày 2026-07-26:
 
 - [x] Giai đoạn 1: đường dẫn `/vi/`, `/en/`, chuyển ngôn ngữ và GitHub Pages song ngữ.
 - [x] Atlas `/vi/` có cùng cấu trúc, nội dung trực quan và tương tác như `/en/`, với toàn bộ giao diện được Việt hóa.
-- [x] Khóa nguồn hiện tại tại upstream commit `a3166c201853739213d5a3a31b1e4a237aaf1076`.
+- [x] Khóa nguồn hiện tại tại upstream commit `69932aed1891a7b7f6a0de88cd116d3fe13e7032`.
 - [x] Từ điển `v0.3-pilot`, quy chuẩn văn phong và hướng dẫn đóng góp.
 - [x] Issue form và mẫu pull request cho công việc tiếng Việt.
 - [x] Đủ 119/119 tuyến tài liệu ở cả tiếng Việt, tiếng Hàn và tiếng Anh, gồm trang chủ sách, *Before Starting*, bài tập Chương 2–15 và tài liệu tham khảo.

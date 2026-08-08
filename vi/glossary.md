@@ -2,7 +2,7 @@
 
 Phiên bản: `v0.3-pilot`
 
-Nguồn chuẩn: bản tiếng Anh tại commit upstream `a3166c201853739213d5a3a31b1e4a237aaf1076`
+Nguồn chuẩn: bản tiếng Anh tại commit upstream `69932aed1891a7b7f6a0de88cd116d3fe13e7032`
 
 Từ điển này quy định cách gọi ưu tiên trong bản dịch. Khi một thuật ngữ xuất hiện lần đầu trong một chương, có thể ghi từ tiếng Anh trong ngoặc nếu điều đó giúp người học tra cứu. Những lần sau chỉ dùng cách gọi tiếng Việt đã thống nhất.
 

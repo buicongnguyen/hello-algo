@@ -560,7 +560,7 @@ if (!bookCss.includes(".math-block .katex-display") || !bookJs.includes("globalT
     !bookJs.includes('output: "htmlAndMathml"')) {
   failures.push("Reader math is missing KaTeX rendering, accessible output, or display styles");
 }
-if (translationStatus.sourceCommit !== "a3166c201853739213d5a3a31b1e4a237aaf1076") {
+if (translationStatus.sourceCommit !== "69932aed1891a7b7f6a0de88cd116d3fe13e7032") {
   failures.push("Vietnamese translation source commit is not locked to the audited upstream revision");
 }
 if (translationStatus.documents.length !== 119 || translationStatus.documents.some((document) => !["draft", "pilot", "published"].includes(document.status))) {

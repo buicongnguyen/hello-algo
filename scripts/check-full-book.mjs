@@ -7,8 +7,8 @@ import { createTranslationParityReport } from "./translation-parity.mjs";
 import { englishReaderCatalog, loadTranslationRegistry } from "./translation-registry.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
-const expectedSourceCommit = "a3166c201853739213d5a3a31b1e4a237aaf1076";
-const expectedSourceDigest = "a78c2f1f0ea9016b0afc0e1e1adc697c6ec1f95bf005dd16cae482a95d5915f2";
+const expectedSourceCommit = "69932aed1891a7b7f6a0de88cd116d3fe13e7032";
+const expectedSourceDigest = "730fbd241bc773be5aa4514ad8981c2dd215702879c917ba2c3e738de9a9249d";
 const sourceExceptions = [{
   path: "en/codes/javascript/chapter_searching/binary_search_insertion.js",
   sha256: "c7fd7c24121a0fbd2f44dab5a996afb27d954165cff8ea7edd2defd329e07146",

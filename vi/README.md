@@ -14,7 +14,7 @@
 
 Trình đọc hiện có đủ 119/119 tuyến tài liệu: trang chủ sách, *Before Starting*, Chương 0–16, toàn bộ bài tập và tài liệu tham khảo. Mọi tài liệu vẫn giữ trạng thái `draft` cho đến khi báo cáo tương đương cấu trúc và phản biện kỹ thuật/ngôn ngữ đều đạt yêu cầu. Mỗi trang cung cấp nút mở đúng bản tiếng Anh và tiếng Hàn tương ứng, mục lục trong bài, tìm kiếm và các nhóm mã 13 ngôn ngữ dạng thẻ.
 
-Nguồn tiếng Anh hiện được khóa tại commit upstream `a3166c201853739213d5a3a31b1e4a237aaf1076`.
+Nguồn tiếng Anh hiện được khóa tại commit upstream `69932aed1891a7b7f6a0de88cd116d3fe13e7032`.
 
 ## Giấy phép và ghi công
 

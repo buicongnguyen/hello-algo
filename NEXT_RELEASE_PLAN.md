@@ -6,7 +6,7 @@ Target release: `v1.1` — complete trilingual routes, code parity, and reader n
 
 Baseline commit: `71b9e110cef417830c078377164118878e179e8d`
 
-Source revision: `a3166c201853739213d5a3a31b1e4a237aaf1076`
+Source revision: `69932aed1891a7b7f6a0de88cd116d3fe13e7032`
 
 ## 1. Release objective
 

@@ -2,7 +2,7 @@
 
 Reviewed: 2026-07-26
 
-Official source: [`krahets/hello-algo` at `a3166c201853739213d5a3a31b1e4a237aaf1076`](https://github.com/krahets/hello-algo/tree/a3166c201853739213d5a3a31b1e4a237aaf1076/en)
+Official source: [`krahets/hello-algo` at `69932aed1891a7b7f6a0de88cd116d3fe13e7032`](https://github.com/krahets/hello-algo/tree/69932aed1891a7b7f6a0de88cd116d3fe13e7032/en)
 
 ## Outcome
 
