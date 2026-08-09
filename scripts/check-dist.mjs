@@ -114,7 +114,7 @@ export async function checkBuiltSite(outputRoot) {
     const relativeHtml = path.relative(outputRoot, htmlFile).replaceAll("\\", "/");
     const html = await readFile(htmlFile, "utf8");
     if (!/<html lang="(?:vi|en|ko)">/.test(html)) failures.push(`${relativeHtml} has no supported document language`);
-    if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml) && !html.includes("app.js?v=20260727b")) {
+    if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml) && !html.includes("app.js?v=20260809a")) {
       failures.push(`${relativeHtml} does not use the current Atlas script cache key`);
     }
     if (/^(?:en|vi|ko)\/index\.html$/.test(relativeHtml)) {
@@ -124,6 +124,15 @@ export async function checkBuiltSite(outputRoot) {
           ? "밝은 테마"
           : "Light theme";
       const companionLanguage = relativeHtml.slice(0, 2);
+      const searchLabel = relativeHtml.startsWith("vi/")
+        ? "Tìm trong sách"
+        : relativeHtml.startsWith("ko/")
+          ? "책에서 검색"
+          : "Search the book";
+      if (!html.includes(`id="atlas-search-open" type="button" aria-label="${searchLabel}"`) ||
+          !html.includes('id="atlas-search-input" type="search"')) {
+        failures.push(`${relativeHtml} does not expose localized Atlas book search`);
+      }
       if (!html.includes(`id="theme-toggle" type="button" aria-label="${themeLabel}" title="${themeLabel}" aria-pressed="false"`)) {
         failures.push(`${relativeHtml} does not expose the stable localized Atlas theme state`);
       }

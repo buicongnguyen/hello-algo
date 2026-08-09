@@ -24,12 +24,12 @@ export function localizeAtlas(sourceEnglish, config) {
     ? (value) => config.htmlTranslations[value.trim()] ?? config.htmlTranslations[value] ?? value
     : (value) => translations.reduce((result, [source, target]) => result.replaceAll(source, target), value);
   html = html.replace(/>([^<]+)</g, (_, value) => `>${translate(value)}<`);
-  html = html.replace(/(aria-label|alt|title)="([^"]+)"/g, (_, attribute, value) => `${attribute}="${translate(value)}"`);
+  html = html.replace(/(aria-label|alt|title|placeholder|data-empty-label)="([^"]+)"/g, (_, attribute, value) => `${attribute}="${translate(value)}"`);
 
   const localeJson = JSON.stringify(config.interactiveLocale).replaceAll("<", "\\u003c");
   html = html.replace(
-    '<script src="app.js?v=20260727b" defer></script>',
-    `<script>window.HELLO_ALGO_LOCALE=${localeJson};</script>\n  <script src="../app.js?v=20260727b" defer></script>`
+    '<script src="app.js?v=20260809a" defer></script>',
+    `<script>window.HELLO_ALGO_LOCALE=${localeJson};</script>\n  <script src="../app.js?v=20260809a" defer></script>`
   );
   html = html.replace(
     /<div class="footer-links">.*?<\/div>/,

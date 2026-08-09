@@ -45,6 +45,105 @@ themeToggle.addEventListener("click", () => {
 });
 syncThemeToggle();
 
+const atlasSearchOpen = document.querySelector("#atlas-search-open");
+const atlasSearchClose = document.querySelector("#atlas-search-close");
+const atlasSearchPanel = document.querySelector("#atlas-search");
+const atlasSearchDialog = document.querySelector(".atlas-search-dialog");
+const atlasSearchInput = document.querySelector("#atlas-search-input");
+const atlasSearchResults = document.querySelector("#atlas-search-results");
+let atlasSearchIndexPromise;
+
+const normalizeSearchText = (value) => value
+  .normalize("NFKD")
+  .replace(/\p{Mark}/gu, "")
+  .toLocaleLowerCase(root.lang);
+
+function loadAtlasSearchIndex() {
+  atlasSearchIndexPromise ??= fetch("learn/search-index.json")
+    .then((response) => {
+      if (!response.ok) throw new Error(`Search index returned ${response.status}`);
+      return response.json();
+    })
+    .catch(() => []);
+  return atlasSearchIndexPromise;
+}
+
+function renderAtlasSearchResults(documents, query) {
+  if (!atlasSearchResults) return;
+  atlasSearchResults.replaceChildren();
+  const normalizedQuery = normalizeSearchText(query.trim());
+  if (!normalizedQuery) return;
+
+  const matches = documents.filter((document) =>
+    normalizeSearchText([document.title, document.shortTitle, document.chapter, ...document.headings].join(" ")).includes(normalizedQuery)
+  ).slice(0, 12);
+
+  if (!matches.length) {
+    const item = document.createElement("li");
+    item.className = "search-empty";
+    item.textContent = atlasSearchInput?.dataset.emptyLabel || "No results found";
+    atlasSearchResults.append(item);
+    return;
+  }
+
+  for (const match of matches) {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    const title = document.createElement("strong");
+    const context = document.createElement("span");
+    link.href = `learn/${match.url}`;
+    title.textContent = match.title;
+    context.textContent = match.chapter;
+    link.append(title, context);
+    item.append(link);
+    atlasSearchResults.append(item);
+  }
+}
+
+async function openAtlasSearch() {
+  if (!atlasSearchPanel || !atlasSearchInput) return;
+  atlasSearchPanel.hidden = false;
+  atlasSearchOpen?.setAttribute("aria-expanded", "true");
+  atlasSearchInput.focus();
+  renderAtlasSearchResults(await loadAtlasSearchIndex(), atlasSearchInput.value);
+}
+
+function closeAtlasSearch() {
+  if (!atlasSearchPanel) return;
+  atlasSearchPanel.hidden = true;
+  atlasSearchOpen?.setAttribute("aria-expanded", "false");
+  atlasSearchOpen?.focus();
+}
+
+atlasSearchOpen?.addEventListener("click", openAtlasSearch);
+atlasSearchClose?.addEventListener("click", closeAtlasSearch);
+atlasSearchInput?.addEventListener("input", async () => renderAtlasSearchResults(await loadAtlasSearchIndex(), atlasSearchInput.value));
+atlasSearchPanel?.addEventListener("click", (event) => {
+  if (event.target === atlasSearchPanel) closeAtlasSearch();
+});
+atlasSearchDialog?.addEventListener("keydown", (event) => {
+  if (event.key !== "Tab") return;
+  const focusable = [...atlasSearchDialog.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href]')];
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    openAtlasSearch();
+  } else if (event.key === "Escape" && atlasSearchPanel && !atlasSearchPanel.hidden) {
+    closeAtlasSearch();
+  }
+});
+
 const topicData = {
   foundations: {
     number: "Node 01",

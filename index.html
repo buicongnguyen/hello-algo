@@ -10,8 +10,8 @@
   <meta property="og:url" content="https://buicongnguyen.github.io/hello-algo/en/">
   <meta name="theme-color" content="#07111f">
   <title>Hello Algo Atlas</title>
-  <link rel="stylesheet" href="styles.css?v=20260728a">
-  <script src="app.js?v=20260727b" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260809a">
+  <script src="app.js?v=20260809a" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -38,8 +38,27 @@
       <a href="../vi/" lang="vi" hreflang="vi">VI</a>
       <a class="active" href="./" lang="en" hreflang="en" aria-current="page">EN</a>
     </div>
+    <button class="icon-button" id="atlas-search-open" type="button" aria-label="Search the book" title="Search the book" aria-expanded="false" aria-controls="atlas-search"><span aria-hidden="true">⌕</span></button>
     <button class="icon-button" id="theme-toggle" type="button" aria-label="Light theme" title="Light theme" aria-pressed="false"><span aria-hidden="true">◐</span></button>
   </header>
+
+  <div class="atlas-search-backdrop" id="atlas-search" hidden>
+    <section class="atlas-search-dialog" role="dialog" aria-modal="true" aria-labelledby="atlas-search-title">
+      <div class="atlas-search-heading">
+        <div>
+          <p class="eyebrow">Find a topic</p>
+          <h2 id="atlas-search-title">Search 119 documents</h2>
+        </div>
+        <button class="icon-button" id="atlas-search-close" type="button" aria-label="Close search" title="Close search"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="atlas-search-field" role="search">
+        <label class="visually-hidden" for="atlas-search-input">Search the book</label>
+        <input id="atlas-search-input" type="search" autocomplete="off" placeholder="Algorithm, data structure, heading…" data-empty-label="No results found">
+        <span aria-hidden="true">⌕</span>
+      </div>
+      <ul id="atlas-search-results" aria-live="polite" aria-label="Search results"></ul>
+    </section>
+  </div>
 
   <div class="atlas-layout">
     <aside class="book-access" aria-labelledby="book-access-title">

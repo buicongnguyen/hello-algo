@@ -391,6 +391,8 @@ for (const selector of [
   "binary-array",
   "binary-target",
   "binary-next",
+  "atlas-search-open",
+  "atlas-search-input",
   "theme-toggle"
 ]) {
   if (!html.includes(`id="${selector}"`) || !js.includes(`#${selector}`)) {
@@ -412,6 +414,13 @@ if (!html.includes('id="theme-toggle" type="button" aria-label="Light theme" tit
     !js.includes("syncThemeToggle") ||
     !js.includes('setAttribute("aria-pressed"')) {
   failures.push("Atlas theme control does not expose a synchronized localized pressed state");
+}
+if (!html.includes('id="atlas-search-open" type="button" aria-label="Search the book"') ||
+    !viHtml.includes('id="atlas-search-open" type="button" aria-label="Tìm trong sách"') ||
+    !koHtml.includes('id="atlas-search-open" type="button" aria-label="책에서 검색"') ||
+    !js.includes('fetch("learn/search-index.json")') || !js.includes("normalizeSearchText") ||
+    !css.includes(".atlas-search-dialog")) {
+  failures.push("Atlas pages do not expose the shared localized book search");
 }
 if (!js.includes("traversedEdges.has(traversalEdgeKey(a, b))") || !js.includes("traversedEdges.add(traversalEdgeKey(current, node))")) {
   failures.push("Traversal visualization does not track the actual BFS/DFS discovery edges");
